@@ -38,6 +38,32 @@ def test_enum_hierarchical_access():
     assert enums.Substance_Medium.Mix.Fluid.Air is enums.Fluid_Air
 
 
+def test_enum_tree_prints_all_descendants(capsys):
+    result = enums.Substance_Medium.tree()
+
+    assert result is None
+    tree = capsys.readouterr().out
+    assert tree.startswith("Substance-Medium\n├── Medium-Constituent\n")
+    assert "│   ├── Constituent-H2O\n" in tree
+    assert "├── Medium-Mix\n" in tree
+    assert "│   ├── Mix-Fluid\n" in tree
+    assert "│   │   ├── Fluid-Air\n" in tree
+    assert tree.endswith("└── Medium-ThermalContact\n")
+
+
+def test_enum_tree_text_options():
+    tree = enums.Substance_Medium.tree_text(max_depth=1)
+    assert "├── Medium-Constituent\n│   └── …" in tree
+    assert "Fluid-Air" not in tree
+
+    iris = enums.Fluid_Water.tree_text(max_depth=0, show_iris=True)
+    assert iris.startswith(f"{S}Fluid-Water")
+    assert "\n└── …" in iris
+
+    with pytest.raises(ValueError, match="non-negative"):
+        enums.Fluid_Water.tree_text(max_depth=-1)
+
+
 def test_enums_registered():
     reg = s223.Connectable.meta.registry
     assert reg.resolve_enum(f"{S}Fluid-Water") is enums.Fluid_Water

@@ -16,6 +16,8 @@ for exploratory use; the flat names are the primary, statically-typed API.
 
 from __future__ import annotations
 
+from typing import TextIO
+
 
 class EnumValue:
     """One enumeration member (a punned class/individual in the ontology)."""
@@ -46,6 +48,59 @@ class EnumValue:
                 return True
             node = node.parent
         return False
+
+    def tree_text(
+        self,
+        *,
+        max_depth: int | None = None,
+        show_iris: bool = False,
+    ) -> str:
+        """Return a deterministic text tree rooted at this value.
+
+        ``max_depth=0`` shows only this value (and an ellipsis when it has
+        children); the default walks every descendant. Set ``show_iris`` to
+        display full RDF identifiers instead of ontology-local names.
+        """
+        if max_depth is not None and (
+            isinstance(max_depth, bool) or max_depth < 0
+        ):
+            raise ValueError("max_depth must be a non-negative integer or None")
+
+        def display(node: EnumValue) -> str:
+            return node.iri if show_iris else _local(node.iri)
+
+        lines = [display(self)]
+
+        def walk(node: EnumValue, prefix: str, depth: int) -> None:
+            children = sorted(
+                node._children.values(),
+                key=lambda item: (_local(item.iri), item.iri),
+            )
+            if max_depth is not None and depth >= max_depth:
+                if children:
+                    lines.append(f"{prefix}└── …")
+                return
+            for index, child in enumerate(children):
+                last = index == len(children) - 1
+                branch = "└── " if last else "├── "
+                lines.append(f"{prefix}{branch}{display(child)}")
+                walk(child, prefix + ("    " if last else "│   "), depth + 1)
+
+        walk(self, "", 0)
+        return "\n".join(lines)
+
+    def tree(
+        self,
+        *,
+        max_depth: int | None = None,
+        show_iris: bool = False,
+        file: TextIO | None = None,
+    ) -> None:
+        """Print the hierarchy rooted at this value."""
+        print(
+            self.tree_text(max_depth=max_depth, show_iris=show_iris),
+            file=file,
+        )
 
     def __getattr__(self, name: str) -> EnumValue:
         try:
