@@ -1,4 +1,4 @@
-@prefix : <urn:example/watertap/seawater-ro/pump-as-turbine#> .
+@prefix : <urn:example/watertap/seawater-ro/full#> .
 @prefix ns1: <http://qudt.org/schema/qudt/> .
 @prefix ns2: <urn:nawi-water-ontology#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -7,8 +7,8 @@
 @prefix watr: <http://data.ashrae.org/standard223#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<urn:example/watertap/seawater-ro/pump-as-turbine> a owl:Ontology ;
-    rdfs:label "WaTr seawater RO reference (pump-as-turbine)" ;
+<urn:example/watertap/seawater-ro/full> a owl:Ontology ;
+    rdfs:label "WaTr seawater RO reference" ;
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
         <urn:nawi-water-ontology> .
 
@@ -35,20 +35,6 @@
 :disposal a watr:Equipment ;
     rdfs:label "Brine disposal" ;
     watr:hasConnectionPoint :disposal-in .
-
-:energy-recovery-device-efficiency a watr:QuantifiableProperty ;
-    rdfs:label "Energy-recovery efficiency" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 9.5e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
-
-:energy-recovery-device-permeate-side-pressure a watr:QuantifiableProperty ;
-    rdfs:label "Permeate-side pressure" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.01325e+05 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PA> .
 
 :feed a watr:Equipment ;
     rdfs:label "Seawater feed" ;
@@ -116,6 +102,13 @@
     rdfs:label "Municipal distribution" ;
     watr:hasConnectionPoint :municipal-in .
 
+:pressure-exchanger-efficiency a watr:QuantifiableProperty ;
+    rdfs:label "Pressure-exchanger efficiency" ;
+    watr:hasAspect watr:Aspect-Nominal ;
+    watr:hasValue 9.5e-01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
 :pump-1-efficiency a watr:QuantifiableProperty ;
     rdfs:label "Pump efficiency" ;
     watr:hasAspect watr:Aspect-Nominal ;
@@ -129,6 +122,13 @@
     watr:hasValue 7e+06 ;
     ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
     ns1:hasUnit <http://qudt.org/vocab/unit/PA> .
+
+:pump-2-efficiency a watr:QuantifiableProperty ;
+    rdfs:label "Pump efficiency" ;
+    watr:hasAspect watr:Aspect-Nominal ;
+    watr:hasValue 8e-01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
 
 :reverse-osmosis-membrane-area a watr:QuantifiableProperty ;
     rdfs:label "Membrane area" ;
@@ -152,6 +152,14 @@
     rdfs:label "Water permeability coefficient [m/(Pa·s)]" ;
     watr:hasAspect watr:Aspect-Nominal ;
     watr:hasValue 4.2e-12 .
+
+:ro-feed-mixing-process a ns2:Process-Mixing ;
+    rdfs:label "ro-feed-mixing-process" ;
+    skos:definition "Combine the P1 and pressure-exchanger feed streams." .
+
+:separator-1-process a ns2:Process-Separation ;
+    rdfs:label "separator-1-process" ;
+    skos:definition "Split pretreated seawater between P1 and the pressure exchanger." .
 
 :static-mixing-process a ns2:Process-Mixing ;
     rdfs:label "static-mixing-process" ;
@@ -335,40 +343,9 @@
 
 :disposal-in a watr:InletConnectionPoint ;
     rdfs:label "disposal-in" ;
-    watr:connectsThrough :erd-brine-out ;
+    watr:connectsThrough :pxr-brine-connection-out ;
     watr:hasMedium ns2:Water-Brine ;
     watr:isConnectionPointOf :disposal .
-
-:energy-recovery-device a ns2:Pump ;
-    rdfs:label "Pump-as-turbine ERD" ;
-    watr:hasConnectionPoint :energy-recovery-device-in,
-        :energy-recovery-device-out ;
-    watr:hasProperty :energy-recovery-device-efficiency,
-        :energy-recovery-device-permeate-side-pressure .
-
-:energy-recovery-device-in a watr:InletConnectionPoint ;
-    rdfs:label "energy-recovery-device-in" ;
-    watr:connectsThrough :erd-brine-in ;
-    watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :energy-recovery-device .
-
-:energy-recovery-device-out a watr:OutletConnectionPoint ;
-    rdfs:label "energy-recovery-device-out" ;
-    watr:connectsThrough :erd-brine-out ;
-    watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :energy-recovery-device .
-
-:erd-brine-in a watr:Pipe ;
-    rdfs:label "erd-brine-in" ;
-    watr:connectsAt :energy-recovery-device-in,
-        :reverse-osmosis-out ;
-    watr:hasMedium ns2:Water-Brine .
-
-:erd-brine-out a watr:Pipe ;
-    rdfs:label "erd-brine-out" ;
-    watr:connectsAt :disposal-in,
-        :energy-recovery-device-out ;
-    watr:hasMedium ns2:Water-Brine .
 
 :feed--intake a watr:Pipe ;
     rdfs:label "feed--intake" ;
@@ -495,6 +472,24 @@
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :media-filtration .
 
+:mixer-1-in a watr:InletConnectionPoint ;
+    rdfs:label "mixer-1-in" ;
+    watr:connectsThrough :pump-1--mixer-1 ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :mixer-1 .
+
+:mixer-1-in_2 a watr:InletConnectionPoint ;
+    rdfs:label "mixer-1-in_2" ;
+    watr:connectsThrough :pump-2--mixer-1 ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :mixer-1 .
+
+:mixer-1-out a watr:OutletConnectionPoint ;
+    rdfs:label "mixer-1-out" ;
+    watr:connectsThrough :ro-feed ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :mixer-1 .
+
 :municipal-in a watr:InletConnectionPoint ;
     rdfs:label "municipal-in" ;
     watr:connectsThrough :municipal-supply ;
@@ -520,10 +515,10 @@
     watr:hasConnectionPoint :pretreatment-to-desalination-boundary-in,
         :pretreatment-to-desalination-boundary-out .
 
-:pretreatment-to-desalination-boundary--pump-1 a watr:Pipe ;
-    rdfs:label "pretreatment-to-desalination-boundary--pump-1" ;
+:pretreatment-to-desalination-boundary--separator-1 a watr:Pipe ;
+    rdfs:label "pretreatment-to-desalination-boundary--separator-1" ;
     watr:connectsAt :pretreatment-to-desalination-boundary-out,
-        :pump-1-in ;
+        :separator-1-in ;
     watr:hasMedium ns2:Water-Seawater .
 
 :pretreatment-to-desalination-boundary-in a watr:InletConnectionPoint ;
@@ -534,7 +529,7 @@
 
 :pretreatment-to-desalination-boundary-out a watr:OutletConnectionPoint ;
     rdfs:label "pretreatment-to-desalination-boundary-out" ;
-    watr:connectsThrough :pretreatment-to-desalination-boundary--pump-1 ;
+    watr:connectsThrough :pretreatment-to-desalination-boundary--separator-1 ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :pretreatment-to-desalination-boundary .
 
@@ -545,17 +540,71 @@
     watr:hasProperty :pump-1-efficiency,
         :pump-1-operating-pressure .
 
+:pump-1--mixer-1 a watr:Pipe ;
+    rdfs:label "pump-1--mixer-1" ;
+    watr:connectsAt :mixer-1-in,
+        :pump-1-out ;
+    watr:hasMedium ns2:Water-Seawater .
+
 :pump-1-in a watr:InletConnectionPoint ;
     rdfs:label "pump-1-in" ;
-    watr:connectsThrough :pretreatment-to-desalination-boundary--pump-1 ;
+    watr:connectsThrough :separator-1--pump-1 ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :pump-1 .
 
 :pump-1-out a watr:OutletConnectionPoint ;
     rdfs:label "pump-1-out" ;
-    watr:connectsThrough :ro-feed ;
+    watr:connectsThrough :pump-1--mixer-1 ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :pump-1 .
+
+:pump-2 a ns2:Pump ;
+    rdfs:label "Booster pump P2" ;
+    watr:hasConnectionPoint :pump-2-in,
+        :pump-2-out ;
+    watr:hasProperty :pump-2-efficiency .
+
+:pump-2--mixer-1 a watr:Pipe ;
+    rdfs:label "pump-2--mixer-1" ;
+    watr:connectsAt :mixer-1-in_2,
+        :pump-2-out ;
+    watr:hasMedium ns2:Water-Seawater .
+
+:pump-2-in a watr:InletConnectionPoint ;
+    rdfs:label "pump-2-in" ;
+    watr:connectsThrough :pxr-feed-connection-out ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :pump-2 .
+
+:pump-2-out a watr:OutletConnectionPoint ;
+    rdfs:label "pump-2-out" ;
+    watr:connectsThrough :pump-2--mixer-1 ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :pump-2 .
+
+:pxr-brine-connection-in a watr:Pipe ;
+    rdfs:label "pxr-brine-connection-in" ;
+    watr:connectsAt :pxr-brine-in,
+        :reverse-osmosis-out ;
+    watr:hasMedium ns2:Water-Brine .
+
+:pxr-brine-connection-out a watr:Pipe ;
+    rdfs:label "pxr-brine-connection-out" ;
+    watr:connectsAt :disposal-in,
+        :pxr-brine-out ;
+    watr:hasMedium ns2:Water-Brine .
+
+:pxr-feed-connection-in a watr:Pipe ;
+    rdfs:label "pxr-feed-connection-in" ;
+    watr:connectsAt :pxr-feed-in,
+        :separator-1-out_2 ;
+    watr:hasMedium ns2:Water-Seawater .
+
+:pxr-feed-connection-out a watr:Pipe ;
+    rdfs:label "pxr-feed-connection-out" ;
+    watr:connectsAt :pump-2-in,
+        :pxr-feed-out ;
+    watr:hasMedium ns2:Water-Seawater .
 
 :reverse-osmosis-in a watr:InletConnectionPoint ;
     rdfs:label "reverse-osmosis-in" ;
@@ -565,7 +614,7 @@
 
 :reverse-osmosis-out a watr:OutletConnectionPoint ;
     rdfs:label "reverse-osmosis-out" ;
-    watr:connectsThrough :erd-brine-in ;
+    watr:connectsThrough :pxr-brine-connection-in ;
     watr:hasMedium ns2:Water-Brine ;
     watr:isConnectionPointOf :reverse-osmosis .
 
@@ -577,7 +626,7 @@
 
 :ro-feed a watr:Pipe ;
     rdfs:label "ro-feed" ;
-    watr:connectsAt :pump-1-out,
+    watr:connectsAt :mixer-1-out,
         :reverse-osmosis-in ;
     watr:hasMedium ns2:Water-Seawater .
 
@@ -587,6 +636,30 @@
         :reverse-osmosis-out_2 ;
     watr:hasMedium ns2:Water-Freshwater ;
     watr:hasRole watr:Role-Supply .
+
+:separator-1--pump-1 a watr:Pipe ;
+    rdfs:label "separator-1--pump-1" ;
+    watr:connectsAt :pump-1-in,
+        :separator-1-out ;
+    watr:hasMedium ns2:Water-Seawater .
+
+:separator-1-in a watr:InletConnectionPoint ;
+    rdfs:label "separator-1-in" ;
+    watr:connectsThrough :pretreatment-to-desalination-boundary--separator-1 ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :separator-1 .
+
+:separator-1-out a watr:OutletConnectionPoint ;
+    rdfs:label "separator-1-out" ;
+    watr:connectsThrough :separator-1--pump-1 ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :separator-1 .
+
+:separator-1-out_2 a watr:OutletConnectionPoint ;
+    rdfs:label "separator-1-out_2" ;
+    watr:connectsThrough :pxr-feed-connection-in ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :separator-1 .
 
 :static-mixer a ns2:StaticMixer ;
     rdfs:label "Static mixer" ;
@@ -711,6 +784,41 @@
         :media-filtration-out_2 ;
     ns2:hasProcess :media-filtration-process .
 
+:mixer-1 a ns2:StaticMixer ;
+    rdfs:label "RO feed mixer M1" ;
+    watr:hasConnectionPoint :mixer-1-in,
+        :mixer-1-in_2,
+        :mixer-1-out ;
+    ns2:hasProcess :ro-feed-mixing-process .
+
+:pxr-brine-in a watr:InletConnectionPoint ;
+    rdfs:label "pxr-brine-in" ;
+    watr:connectsThrough :pxr-brine-connection-in ;
+    watr:hasMedium ns2:Water-Brine ;
+    watr:isConnectionPointOf :pressure-exchanger ;
+    watr:pairedConnectionPoint :pxr-brine-out .
+
+:pxr-brine-out a watr:OutletConnectionPoint ;
+    rdfs:label "pxr-brine-out" ;
+    watr:connectsThrough :pxr-brine-connection-out ;
+    watr:hasMedium ns2:Water-Brine ;
+    watr:isConnectionPointOf :pressure-exchanger ;
+    watr:pairedConnectionPoint :pxr-brine-in .
+
+:pxr-feed-in a watr:InletConnectionPoint ;
+    rdfs:label "pxr-feed-in" ;
+    watr:connectsThrough :pxr-feed-connection-in ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :pressure-exchanger ;
+    watr:pairedConnectionPoint :pxr-feed-out .
+
+:pxr-feed-out a watr:OutletConnectionPoint ;
+    rdfs:label "pxr-feed-out" ;
+    watr:connectsThrough :pxr-feed-connection-out ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :pressure-exchanger ;
+    watr:pairedConnectionPoint :pxr-feed-in .
+
 :reverse-osmosis a ns2:UnitProcess ;
     rdfs:label "Reverse osmosis" ;
     watr:hasConnectionPoint :reverse-osmosis-in,
@@ -720,4 +828,19 @@
         :reverse-osmosis-salt-permeability,
         :reverse-osmosis-water-permeability ;
     ns2:hasProcess :reverse-osmosis-process .
+
+:separator-1 a ns2:UnitProcess ;
+    rdfs:label "Feed separator S1" ;
+    watr:hasConnectionPoint :separator-1-in,
+        :separator-1-out,
+        :separator-1-out_2 ;
+    ns2:hasProcess :separator-1-process .
+
+:pressure-exchanger a ns2:PressureExchanger ;
+    rdfs:label "Pressure exchanger PXR" ;
+    watr:hasConnectionPoint :pxr-brine-in,
+        :pxr-brine-out,
+        :pxr-feed-in,
+        :pxr-feed-out ;
+    watr:hasProperty :pressure-exchanger-efficiency .
 

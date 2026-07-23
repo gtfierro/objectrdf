@@ -9,12 +9,19 @@ seawater_RO_desalination.html#full-flowsheet
 """
 
 from pathlib import Path
-from typing import Literal
 
-from objectrdf import ConnectionHandle, Entity, Model, TermValue, connect
+from objectrdf import (
+    ConnectionHandle,
+    Entity,
+    Model,
+    ResolvedModel,
+    TermValue,
+    connect,
+)
 from objectrdf.qudt import quantity, quantity_kinds, stream_state, units
 from objectrdf.watr import (
     ChlorinationUnit,
+    Connection,
     Equipment,
     OutletConnectionPoint,
     PressureExchanger,
@@ -39,8 +46,6 @@ from objectrdf.watr import (
     UnitProcess,
     enums,
 )
-
-ERDType = Literal["pressure-exchanger", "pump-as-turbine"]
 
 
 def nominal_quantity(
@@ -92,11 +97,11 @@ def unit_process(
     )
 
 
-def build_model(erd_type: ERDType) -> Model:
-    """Build one WaTr/S223 representation of the reference configuration."""
+def build_model() -> Model:
+    """Build the pressure-exchanger WaTr/S223 reference configuration."""
     model = Model(
-        f"urn:example/watertap/seawater-ro/{erd_type}#",
-        name=f"WaTr seawater RO reference ({erd_type})",
+        "urn:example/watertap/seawater-ro/full#",
+        name="WaTr seawater RO reference",
     )
 
     with model:
@@ -323,125 +328,84 @@ def build_model(erd_type: ERDType) -> Model:
         )
         disposal = Equipment("disposal", label="Brine disposal")
 
-        if erd_type == "pressure-exchanger":
-            separator = unit_process(
-                "separator-1",
-                "Feed separator S1",
-                Process_Separation,
-                "Split pretreated seawater between P1 and the pressure exchanger.",
-            )
-            pressure_exchanger = PressureExchanger(
-                "pressure-exchanger",
-                label="Pressure exchanger PXR",
-            )
-            nominal_quantity(
-                "pressure-exchanger-efficiency",
-                "Pressure-exchanger efficiency",
-                0.95,
-                units.UNITLESS,
-                quantity_kinds.Efficiency,
-                of=pressure_exchanger,
-            )
-            pxr_feed_in = pressure_exchanger.port("pxr-feed-in", direction="in")
-            pxr_feed_out = pressure_exchanger.port("pxr-feed-out", direction="out")
-            pxr_feed_in.pair(pxr_feed_out)
-            pxr_brine_in = pressure_exchanger.port("pxr-brine-in", direction="in")
-            pxr_brine_out = pressure_exchanger.port("pxr-brine-out", direction="out")
-            pxr_brine_in.pair(pxr_brine_out)
-            pump_2 = Pump(
-                "pump-2",
-                label="Booster pump P2",
-            )
-            nominal_quantity(
-                "pump-2-efficiency",
-                "Pump efficiency",
-                0.8,
-                units.UNITLESS,
-                quantity_kinds.Efficiency,
-                of=pump_2,
-            )
-            mixer_1 = StaticMixer(
-                "mixer-1",
-                label="RO feed mixer M1",
-                has_process=[
-                    process(
-                        Process_Mixing,
-                        "ro-feed-mixing-process",
-                        "Combine the P1 and pressure-exchanger feed streams.",
-                    )
-                ],
-            )
+        separator = unit_process(
+            "separator-1",
+            "Feed separator S1",
+            Process_Separation,
+            "Split pretreated seawater between P1 and the pressure exchanger.",
+        )
+        pressure_exchanger = PressureExchanger(
+            "pressure-exchanger",
+            label="Pressure exchanger PXR",
+        )
+        nominal_quantity(
+            "pressure-exchanger-efficiency",
+            "Pressure-exchanger efficiency",
+            0.95,
+            units.UNITLESS,
+            quantity_kinds.Efficiency,
+            of=pressure_exchanger,
+        )
+        pxr_feed_in = pressure_exchanger.port("pxr-feed-in", direction="in")
+        pxr_feed_out = pressure_exchanger.port("pxr-feed-out", direction="out")
+        pxr_feed_in.pair(pxr_feed_out)
+        pxr_brine_in = pressure_exchanger.port("pxr-brine-in", direction="in")
+        pxr_brine_out = pressure_exchanger.port("pxr-brine-out", direction="out")
+        pxr_brine_in.pair(pxr_brine_out)
+        pump_2 = Pump(
+            "pump-2",
+            label="Booster pump P2",
+        )
+        nominal_quantity(
+            "pump-2-efficiency",
+            "Pump efficiency",
+            0.8,
+            units.UNITLESS,
+            quantity_kinds.Efficiency,
+            of=pump_2,
+        )
+        mixer_1 = StaticMixer(
+            "mixer-1",
+            label="RO feed mixer M1",
+            has_process=[
+                process(
+                    Process_Mixing,
+                    "ro-feed-mixing-process",
+                    "Combine the P1 and pressure-exchanger feed streams.",
+                )
+            ],
+        )
 
-            pretreatment_to_desalination >> separator >> pump_1 >> mixer_1
-            connect(
-                mixer_1,
-                reverse_osmosis,
-                medium=enums.Water_Seawater,
-                name="ro-feed",
-            )
-            connect(
-                separator,
-                pxr_feed_in,
-                medium=enums.Water_Seawater,
-                name="pxr-feed-connection-in",
-            )
-            connect(
-                pxr_feed_out,
-                pump_2,
-                name="pxr-feed-connection-out",
-            )
-            pump_2 >> mixer_1
-            connect(
-                reverse_osmosis,
-                pxr_brine_in,
-                medium=enums.Water_Brine,
-                name="pxr-brine-connection-in",
-            )
-            connect(
-                pxr_brine_out,
-                disposal,
-                name="pxr-brine-connection-out",
-            )
-        else:
-            energy_recovery_device = Pump(
-                "energy-recovery-device",
-                label="Pump-as-turbine ERD",
-            )
-            nominal_quantity(
-                "energy-recovery-device-efficiency",
-                "Energy-recovery efficiency",
-                0.95,
-                units.UNITLESS,
-                quantity_kinds.Efficiency,
-                of=energy_recovery_device,
-            )
-            nominal_quantity(
-                "energy-recovery-device-permeate-side-pressure",
-                "Permeate-side pressure",
-                101325.0,
-                units.PA,
-                quantity_kinds.Pressure,
-                of=energy_recovery_device,
-            )
-            pretreatment_to_desalination >> pump_1
-            connect(
-                pump_1,
-                reverse_osmosis,
-                medium=enums.Water_Seawater,
-                name="ro-feed",
-            )
-            connect(
-                reverse_osmosis,
-                energy_recovery_device,
-                medium=enums.Water_Brine,
-                name="erd-brine-in",
-            )
-            connect(
-                energy_recovery_device,
-                disposal,
-                medium=enums.Water_Brine,
-                name="erd-brine-out",
-            )
+        pretreatment_to_desalination >> separator >> pump_1 >> mixer_1
+        connect(
+            mixer_1,
+            reverse_osmosis,
+            medium=enums.Water_Seawater,
+            name="ro-feed",
+        )
+        connect(
+            separator,
+            pxr_feed_in,
+            medium=enums.Water_Seawater,
+            name="pxr-feed-connection-in",
+        )
+        connect(
+            pxr_feed_out,
+            pump_2,
+            name="pxr-feed-connection-out",
+        )
+        pump_2 >> mixer_1
+        connect(
+            reverse_osmosis,
+            pxr_brine_in,
+            medium=enums.Water_Brine,
+            name="pxr-brine-connection-in",
+        )
+        connect(
+            pxr_brine_out,
+            disposal,
+            name="pxr-brine-connection-out",
+        )
 
         # The RO process changes the medium, so its two product connections
         # are hard facts rather than affinity-inferred flow-through links.
@@ -552,12 +516,55 @@ def build_model(erd_type: ERDType) -> Model:
     return model
 
 
-if __name__ == "__main__":
-    for configuration in ("pressure-exchanger", "pump-as-turbine"):
-        model = build_model(configuration)
-        resolved = model.compile()
-        out = Path(__file__).with_name(
-            f"seawater_ro_full_{configuration.replace('-', '_')}.ttl"
+def resolved_topology(resolved: ResolvedModel) -> str:
+    """Render the concrete connections selected by the S223 solver."""
+    lines = [
+        f"resolved {len(resolved)} entities",
+        "connections:",
+    ]
+    connections = sorted(
+        (entity for entity in resolved if isinstance(entity, Connection)),
+        key=lambda entity: entity.name,
+    )
+    for connection in connections:
+        points = sorted(
+            connection.connects_at,
+            key=lambda point: (
+                not isinstance(point, OutletConnectionPoint),
+                point.name,
+            ),
         )
-        model.save(out)
-        print(f"wrote {out}: {len(resolved)} resolved entities")
+        path = " -> ".join(point.name for point in points)
+        medium = connection.has_medium
+        medium_name = medium.iri.rsplit("#", 1)[-1] if medium else "unresolved"
+        lines.append(
+            f"  {connection.name}: {type(connection).__name__}"
+            f" [{medium_name}] {path}"
+        )
+
+    paired = sorted(
+        (
+            entity
+            for entity in resolved
+            if isinstance(entity, OutletConnectionPoint)
+            and entity.paired_connection_point is not None
+        ),
+        key=lambda entity: entity.name,
+    )
+    if paired:
+        lines.append("paired connection points:")
+        for point in paired:
+            mate = point.paired_connection_point
+            medium = point.has_medium
+            medium_name = medium.iri.rsplit("#", 1)[-1] if medium else "unresolved"
+            lines.append(f"  {mate.name} <-> {point.name} [{medium_name}]")
+    return "\n".join(lines)
+
+
+if __name__ == "__main__":
+    model = build_model()
+    resolved = model.compile()
+    out = Path(__file__).with_name("seawater_ro_full.ttl")
+    model.save(out)
+    print(f"wrote {out}")
+    print(resolved_topology(resolved))
