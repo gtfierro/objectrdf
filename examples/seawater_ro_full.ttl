@@ -1,10 +1,10 @@
 @prefix : <urn:example/watertap/seawater-ro/full#> .
-@prefix ns1: <http://qudt.org/schema/qudt/> .
-@prefix ns2: <urn:nawi-water-ontology#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix watr: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/watertap/seawater-ro/full> a owl:Ontology ;
@@ -12,881 +12,945 @@
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
         <urn:nawi-water-ontology> .
 
-:antiscalant-addition-process a ns2:Process-ChemicalAddition ;
+:antiscalant-addition-process a watr:Process-ChemicalAddition ;
     rdfs:label "antiscalant-addition-process" ;
     skos:definition "Add antiscalant before cartridge filtration." .
 
-:backwash-handling-process a ns2:Process-Backwashing ;
+:backwash-handling-process a watr:Process-Separation ;
     rdfs:label "backwash-handling-process" ;
-    skos:definition "Collect and handle backwash from media filtration." .
+    skos:definition "Separate media-filter backwash into treated water and a solids-rich byproduct." .
 
-:cartridge-filtration-process a ns2:Process-Filtration ;
+:cartridge-filtration-process a watr:Process-Filtration ;
     rdfs:label "cartridge-filtration-process" ;
     skos:definition "Polish the pretreated seawater by cartridge filtration." .
 
-:chlorination-process a ns2:Process-Chlorination ;
+:chlorination-process a watr:Process-Chlorination ;
     rdfs:label "chlorination-process" ;
     skos:definition "Disinfect the seawater by chlorination." .
 
-:co2-addition-process a ns2:Process-ChemicalAddition ;
+:co2-addition-process a watr:Process-ChemicalAddition ;
     rdfs:label "co2-addition-process" ;
     skos:definition "Add carbon dioxide during remineralization." .
 
-:disposal a watr:Equipment ;
+:disposal a s223:Equipment ;
     rdfs:label "Brine disposal" ;
-    watr:hasConnectionPoint :disposal-in .
+    s223:hasConnectionPoint :disposal-in ;
+    s223:hasRole s223:Role-Discharge .
 
-:feed a watr:Equipment ;
+:feed a s223:Equipment ;
     rdfs:label "Seawater feed" ;
-    watr:hasConnectionPoint :feed-seawater-out .
+    s223:hasConnectionPoint :feed-seawater-out ;
+    s223:hasRole watr:Role-Feed .
 
-:ferric-chloride-addition-process a ns2:Process-Coagulation ;
+:ferric-chloride-addition-process a watr:Process-Coagulation ;
     rdfs:label "ferric-chloride-addition-process" ;
     skos:definition "Add 20 mg/L ferric chloride to promote coagulation." .
 
-:influent-flow-rate a watr:QuantifiableProperty ;
+:influent-flow-rate a s223:QuantifiableProperty ;
     rdfs:label "Influent flow rate" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 7.05e+06 ;
-    watr:ofMedium ns2:Water-Seawater ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-DAY> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7.05e+06 ;
+    s223:ofMedium watr:Water-Seawater ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-DAY> .
 
-:influent-pressure a watr:QuantifiableProperty ;
+:influent-pressure a s223:QuantifiableProperty ;
     rdfs:label "Influent pressure" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+05 ;
-    watr:ofMedium ns2:Water-Seawater ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PA> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+05 ;
+    s223:ofMedium watr:Water-Seawater ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/PA> .
 
-:influent-tds-concentration a watr:QuantifiableProperty ;
+:influent-tds-concentration a s223:QuantifiableProperty ;
     rdfs:label "Influent total dissolved solids concentration" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3.5e+01 ;
-    watr:ofMedium ns2:Water-Seawater ;
-    watr:ofSubstance ns2:Constituent-Salt ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-L> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3.5e+01 ;
+    s223:ofMedium watr:Water-Seawater ;
+    s223:ofSubstance watr:Constituent-Salt ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/GM-PER-L> .
 
-:influent-temperature a watr:QuantifiableProperty ;
+:influent-temperature a s223:QuantifiableProperty ;
     rdfs:label "Influent temperature" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2.98e+02 ;
-    watr:ofMedium ns2:Water-Seawater ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/K> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.98e+02 ;
+    s223:ofMedium watr:Water-Seawater ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/K> .
 
-:influent-tss-concentration a watr:QuantifiableProperty ;
+:influent-tss-concentration a s223:QuantifiableProperty ;
     rdfs:label "Influent total suspended solids concentration" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3e-02 ;
-    watr:ofMedium ns2:Water-Seawater ;
-    watr:ofSubstance ns2:Constituent-SuspendedSolids ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-L> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3e-02 ;
+    s223:ofMedium watr:Water-Seawater ;
+    s223:ofSubstance watr:Constituent-SuspendedSolids ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/GM-PER-L> .
 
-:landfill a watr:Equipment ;
-    rdfs:label "Landfill" ;
-    watr:hasConnectionPoint :landfill-in .
+:landfill-process a watr:Process-Landfill ;
+    rdfs:label "landfill-process" ;
+    skos:definition "Dispose of the backwash solids by landfilling." .
 
-:lime-addition-process a ns2:Process-ChemicalAddition ;
+:lime-addition-process a watr:Process-ChemicalAddition ;
     rdfs:label "lime-addition-process" ;
     skos:definition "Add 2.3 mg/L lime during remineralization." .
 
-:media-filtration-process a ns2:Process-MediaFiltration ;
+:media-filtration-process a watr:Process-MediaFiltration ;
     rdfs:label "media-filtration-process" ;
     skos:definition "Remove suspended matter by filtration through media." .
 
-:municipal a watr:Equipment ;
+:municipal a s223:Equipment ;
     rdfs:label "Municipal distribution" ;
-    watr:hasConnectionPoint :municipal-in .
+    s223:hasConnectionPoint :municipal-in ;
+    s223:hasRole s223:Role-Supply .
 
-:pressure-exchanger-efficiency a watr:QuantifiableProperty ;
+:pressure-exchanger-efficiency a s223:QuantifiableProperty ;
     rdfs:label "Pressure-exchanger efficiency" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 9.5e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 9.5e-01 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
 
-:pump-1-efficiency a watr:QuantifiableProperty ;
+:pump-1-efficiency a s223:QuantifiableProperty ;
     rdfs:label "Pump efficiency" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 8e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e-01 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
 
-:pump-1-operating-pressure a watr:QuantifiableProperty ;
+:pump-1-operating-pressure a s223:QuantifiableProperty ;
     rdfs:label "Operating pressure" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 7e+06 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PA> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+06 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/PA> .
 
-:pump-2-efficiency a watr:QuantifiableProperty ;
+:pump-2-efficiency a s223:QuantifiableProperty ;
     rdfs:label "Pump efficiency" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 8e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e-01 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
 
-:reverse-osmosis-membrane-area a watr:QuantifiableProperty ;
+:reverse-osmosis-channel-height a s223:QuantifiableProperty ;
+    rdfs:label "Membrane channel height" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-03 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/M> .
+
+:reverse-osmosis-membrane-area a s223:QuantifiableProperty ;
     rdfs:label "Membrane area" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.3914e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Area> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M2> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3914e+04 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Area> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/M2> .
 
-:reverse-osmosis-process a ns2:Process-ReverseOsmosis ;
+:reverse-osmosis-permeate-side-pressure a s223:QuantifiableProperty ;
+    rdfs:label "Nominal permeate-side pressure" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.01325e+05 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/PA> .
+
+:reverse-osmosis-process a watr:Process-ReverseOsmosis ;
     rdfs:label "reverse-osmosis-process" ;
     skos:definition "Separate pressurized seawater into freshwater permeate and brine." .
 
-:reverse-osmosis-salt-permeability a watr:QuantifiableProperty ;
+:reverse-osmosis-salt-permeability a s223:QuantifiableProperty ;
     rdfs:label "Salt permeability coefficient" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3.5e-08 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Velocity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M-PER-SEC> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3.5e-08 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Velocity> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/M-PER-SEC> .
 
-:reverse-osmosis-water-permeability a watr:Property ;
+:reverse-osmosis-spacer-porosity a s223:QuantifiableProperty ;
+    rdfs:label "Feed spacer porosity" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 9.7e-01 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:reverse-osmosis-stage-width a s223:QuantifiableProperty ;
+    rdfs:label "Membrane width per stage" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+03 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/M> .
+
+:reverse-osmosis-water-permeability a s223:Property ;
     rdfs:label "Water permeability coefficient [m/(Pa·s)]" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 4.2e-12 .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 4.2e-12 .
 
-:ro-feed-mixing-process a ns2:Process-Mixing ;
+:ro-feed-mixing-process a watr:Process-Mixing ;
     rdfs:label "ro-feed-mixing-process" ;
     skos:definition "Combine the P1 and pressure-exchanger feed streams." .
 
-:separator-1-process a ns2:Process-Separation ;
-    rdfs:label "separator-1-process" ;
-    skos:definition "Split pretreated seawater between P1 and the pressure exchanger." .
-
-:static-mixing-process a ns2:Process-Mixing ;
+:static-mixing-process a watr:Process-Mixing ;
     rdfs:label "static-mixing-process" ;
     skos:definition "Mix added treatment chemicals into the seawater." .
 
-:storage-tank-1-residence-time a watr:QuantifiableProperty ;
+:storage-tank-1-residence-time a s223:QuantifiableProperty ;
     rdfs:label "Nominal residence time" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/HR> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+00 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/HR> .
 
-:storage-tank-2-residence-time a watr:QuantifiableProperty ;
+:storage-tank-2-residence-time a s223:QuantifiableProperty ;
     rdfs:label "Nominal residence time" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/HR> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+00 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/HR> .
 
-:storage-tank-3-residence-time a watr:QuantifiableProperty ;
+:storage-tank-3-residence-time a s223:QuantifiableProperty ;
     rdfs:label "Nominal residence time" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/HR> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+00 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/HR> .
 
-:uv-aop-process a ns2:Process-AdvancedOxidation ;
+:uv-aop-process a watr:Process-AdvancedOxidation ;
     rdfs:label "uv-aop-process" ;
     skos:definition "Disinfect freshwater by UV advanced oxidation." .
 
-:uv-aop-reduction-equivalent-dose a watr:QuantifiableProperty ;
+:uv-aop-reduction-equivalent-dose a s223:QuantifiableProperty ;
     rdfs:label "Reduction-equivalent UV dose" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3.5e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/EnergyPerArea> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/J-PER-CentiM2> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3.5e-01 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/EnergyPerArea> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/J-PER-CentiM2> .
 
-:uv-aop-transmittance a watr:QuantifiableProperty ;
+:uv-aop-transmittance a s223:QuantifiableProperty ;
     rdfs:label "UV transmittance" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 9.5e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Transmittance> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 9.5e-01 ;
+    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Transmittance> ;
+    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
 
-:antiscalant-addition a ns2:Reactor ;
+:antiscalant-addition a watr:Reactor ;
     rdfs:label "Antiscalant addition" ;
-    watr:hasConnectionPoint :antiscalant-addition-in,
+    s223:hasConnectionPoint :antiscalant-addition-in,
         :antiscalant-addition-out ;
-    ns2:hasProcess :antiscalant-addition-process .
+    watr:hasProcess :antiscalant-addition-process .
 
-:antiscalant-addition--cartridge-filtration a watr:Pipe ;
+:antiscalant-addition--cartridge-filtration a s223:Pipe ;
     rdfs:label "antiscalant-addition--cartridge-filtration" ;
-    watr:connectsAt :antiscalant-addition-out,
+    s223:connectsAt :antiscalant-addition-out,
         :cartridge-filtration-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:antiscalant-addition-in a watr:InletConnectionPoint ;
+:antiscalant-addition-in a s223:InletConnectionPoint ;
     rdfs:label "antiscalant-addition-in" ;
-    watr:connectsThrough :media-filtration--antiscalant-addition ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :antiscalant-addition .
+    s223:connectsThrough :media-filtration--antiscalant-addition ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :antiscalant-addition .
 
-:antiscalant-addition-out a watr:OutletConnectionPoint ;
+:antiscalant-addition-out a s223:OutletConnectionPoint ;
     rdfs:label "antiscalant-addition-out" ;
-    watr:connectsThrough :antiscalant-addition--cartridge-filtration ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :antiscalant-addition .
+    s223:connectsThrough :antiscalant-addition--cartridge-filtration ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :antiscalant-addition .
 
-:backwash-handling a ns2:UnitProcess ;
-    rdfs:label "Media-filter backwash handling" ;
-    watr:hasConnectionPoint :backwash-handling-in,
-        :backwash-handling-out ;
-    ns2:hasProcess :backwash-handling-process .
+:backwash-handling-byproduct-out a s223:OutletConnectionPoint ;
+    rdfs:label "backwash-handling-byproduct-out" ;
+    s223:connectsThrough :landfill-waste ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :backwash-handling .
 
-:backwash-handling-in a watr:InletConnectionPoint ;
+:backwash-handling-in a s223:InletConnectionPoint ;
     rdfs:label "backwash-handling-in" ;
-    watr:connectsThrough :pretreatment-backwash ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :backwash-handling .
+    s223:connectsThrough :pretreatment-backwash ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :backwash-handling .
 
-:backwash-handling-out a watr:OutletConnectionPoint ;
-    rdfs:label "backwash-handling-out" ;
-    watr:connectsThrough :landfill-waste ;
-    watr:hasMedium ns2:Fluid-Sludge ;
-    watr:isConnectionPointOf :backwash-handling .
+:backwash-handling-treated-out a s223:OutletConnectionPoint ;
+    rdfs:label "backwash-handling-treated-out" ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :backwash-handling .
 
-:cartridge-filtration a ns2:CartridgeFiltrationUnit ;
+:cartridge-filtration a watr:CartridgeFiltrationUnit ;
     rdfs:label "Cartridge filtration" ;
-    watr:hasConnectionPoint :cartridge-filtration-in,
+    s223:hasConnectionPoint :cartridge-filtration-in,
         :cartridge-filtration-out ;
-    ns2:hasProcess :cartridge-filtration-process .
+    watr:hasProcess :cartridge-filtration-process .
 
-:cartridge-filtration--pretreatment-to-desalination-boundary a watr:Pipe ;
+:cartridge-filtration--pretreatment-to-desalination-boundary a s223:Pipe ;
     rdfs:label "cartridge-filtration--pretreatment-to-desalination-boundary" ;
-    watr:connectsAt :cartridge-filtration-out,
+    s223:connectsAt :cartridge-filtration-out,
         :pretreatment-to-desalination-boundary-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:cartridge-filtration-in a watr:InletConnectionPoint ;
+:cartridge-filtration-in a s223:InletConnectionPoint ;
     rdfs:label "cartridge-filtration-in" ;
-    watr:connectsThrough :antiscalant-addition--cartridge-filtration ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :cartridge-filtration .
+    s223:connectsThrough :antiscalant-addition--cartridge-filtration ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :cartridge-filtration .
 
-:cartridge-filtration-out a watr:OutletConnectionPoint ;
+:cartridge-filtration-out a s223:OutletConnectionPoint ;
     rdfs:label "cartridge-filtration-out" ;
-    watr:connectsThrough :cartridge-filtration--pretreatment-to-desalination-boundary ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :cartridge-filtration .
+    s223:connectsThrough :cartridge-filtration--pretreatment-to-desalination-boundary ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :cartridge-filtration .
 
-:chlorination a ns2:ChlorinationUnit ;
+:chlorination a watr:ChlorinationUnit ;
     rdfs:label "chlorination" ;
-    watr:hasConnectionPoint :chlorination-in,
+    s223:hasConnectionPoint :chlorination-in,
         :chlorination-out ;
-    ns2:hasProcess :chlorination-process .
+    watr:hasProcess :chlorination-process .
 
-:chlorination--static-mixer a watr:Pipe ;
+:chlorination--static-mixer a s223:Pipe ;
     rdfs:label "chlorination--static-mixer" ;
-    watr:connectsAt :chlorination-out,
+    s223:connectsAt :chlorination-out,
         :static-mixer-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:chlorination-in a watr:InletConnectionPoint ;
+:chlorination-in a s223:InletConnectionPoint ;
     rdfs:label "chlorination-in" ;
-    watr:connectsThrough :ferric-chloride-addition--chlorination ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :chlorination .
+    s223:connectsThrough :ferric-chloride-addition--chlorination ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :chlorination .
 
-:chlorination-out a watr:OutletConnectionPoint ;
+:chlorination-out a s223:OutletConnectionPoint ;
     rdfs:label "chlorination-out" ;
-    watr:connectsThrough :chlorination--static-mixer ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :chlorination .
+    s223:connectsThrough :chlorination--static-mixer ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :chlorination .
 
-:co2-addition a ns2:Reactor ;
+:co2-addition a watr:Reactor ;
     rdfs:label "Carbon dioxide addition" ;
-    watr:hasConnectionPoint :co2-addition-in,
+    s223:hasConnectionPoint :co2-addition-in,
         :co2-addition-out ;
-    ns2:hasProcess :co2-addition-process .
+    watr:hasProcess :co2-addition-process .
 
-:co2-addition--lime-addition a watr:Pipe ;
+:co2-addition--lime-addition a s223:Pipe ;
     rdfs:label "co2-addition--lime-addition" ;
-    watr:connectsAt :co2-addition-out,
+    s223:connectsAt :co2-addition-out,
         :lime-addition-in ;
-    watr:hasMedium ns2:Water-Freshwater .
+    s223:hasMedium watr:Water-Freshwater .
 
-:co2-addition-in a watr:InletConnectionPoint ;
+:co2-addition-in a s223:InletConnectionPoint ;
     rdfs:label "co2-addition-in" ;
-    watr:connectsThrough :uv-aop--co2-addition ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :co2-addition .
+    s223:connectsThrough :uv-aop--co2-addition ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :co2-addition .
 
-:co2-addition-out a watr:OutletConnectionPoint ;
+:co2-addition-out a s223:OutletConnectionPoint ;
     rdfs:label "co2-addition-out" ;
-    watr:connectsThrough :co2-addition--lime-addition ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :co2-addition .
+    s223:connectsThrough :co2-addition--lime-addition ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :co2-addition .
 
-:desalination-to-posttreatment-boundary a watr:Equipment ;
+:desalination-to-posttreatment-boundary a s223:Equipment ;
     rdfs:label "Desalination-to-posttreatment semantic boundary" ;
-    watr:hasConnectionPoint :desalination-to-posttreatment-boundary-in,
-        :desalination-to-posttreatment-boundary-out .
+    s223:hasConnectionPoint :desalination-to-posttreatment-boundary-in,
+        :desalination-to-posttreatment-boundary-out ;
+    s223:hasRole watr:Role-Posttreatment .
 
-:desalination-to-posttreatment-boundary--storage-tank-2 a watr:Pipe ;
+:desalination-to-posttreatment-boundary--storage-tank-2 a s223:Pipe ;
     rdfs:label "desalination-to-posttreatment-boundary--storage-tank-2" ;
-    watr:connectsAt :desalination-to-posttreatment-boundary-out,
+    s223:connectsAt :desalination-to-posttreatment-boundary-out,
         :storage-tank-2-in ;
-    watr:hasMedium ns2:Water-Freshwater .
+    s223:hasMedium watr:Water-Freshwater .
 
-:desalination-to-posttreatment-boundary-in a watr:InletConnectionPoint ;
+:desalination-to-posttreatment-boundary-in a s223:InletConnectionPoint ;
     rdfs:label "desalination-to-posttreatment-boundary-in" ;
-    watr:connectsThrough :ro-permeate ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :desalination-to-posttreatment-boundary .
+    s223:connectsThrough :ro-permeate ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :desalination-to-posttreatment-boundary .
 
-:desalination-to-posttreatment-boundary-out a watr:OutletConnectionPoint ;
+:desalination-to-posttreatment-boundary-out a s223:OutletConnectionPoint ;
     rdfs:label "desalination-to-posttreatment-boundary-out" ;
-    watr:connectsThrough :desalination-to-posttreatment-boundary--storage-tank-2 ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :desalination-to-posttreatment-boundary .
+    s223:connectsThrough :desalination-to-posttreatment-boundary--storage-tank-2 ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :desalination-to-posttreatment-boundary .
 
-:disposal-in a watr:InletConnectionPoint ;
+:disposal-in a s223:InletConnectionPoint ;
     rdfs:label "disposal-in" ;
-    watr:connectsThrough :pxr-brine-connection-out ;
-    watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :disposal .
+    s223:connectsThrough :pxr-brine-connection-out ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :disposal .
 
-:feed--intake a watr:Pipe ;
+:feed--intake a s223:Pipe ;
     rdfs:label "feed--intake" ;
-    watr:connectsAt :feed-seawater-out,
+    s223:connectsAt :feed-seawater-out,
         :intake-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater ;
+    s223:hasRole watr:Role-Feed .
 
-:feed-seawater-out a watr:OutletConnectionPoint ;
+:feed-seawater-out a s223:OutletConnectionPoint ;
     rdfs:label "feed-seawater-out" ;
-    watr:connectsThrough :feed--intake ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:hasProperty :influent-flow-rate,
+    s223:connectsThrough :feed--intake ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:hasProperty :influent-flow-rate,
         :influent-pressure,
         :influent-tds-concentration,
         :influent-temperature,
         :influent-tss-concentration ;
-    watr:isConnectionPointOf :feed .
+    s223:isConnectionPointOf :feed .
 
-:ferric-chloride-addition a ns2:CoagulationBasin ;
+:ferric-chloride-addition a watr:CoagulationBasin ;
     rdfs:label "Ferric chloride addition" ;
-    watr:hasConnectionPoint :ferric-chloride-addition-in,
+    s223:hasConnectionPoint :ferric-chloride-addition-in,
         :ferric-chloride-addition-out ;
-    ns2:hasProcess :ferric-chloride-addition-process .
+    watr:hasProcess :ferric-chloride-addition-process .
 
-:ferric-chloride-addition--chlorination a watr:Pipe ;
+:ferric-chloride-addition--chlorination a s223:Pipe ;
     rdfs:label "ferric-chloride-addition--chlorination" ;
-    watr:connectsAt :chlorination-in,
+    s223:connectsAt :chlorination-in,
         :ferric-chloride-addition-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:ferric-chloride-addition-in a watr:InletConnectionPoint ;
+:ferric-chloride-addition-in a s223:InletConnectionPoint ;
     rdfs:label "ferric-chloride-addition-in" ;
-    watr:connectsThrough :intake--ferric-chloride-addition ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :ferric-chloride-addition .
+    s223:connectsThrough :intake--ferric-chloride-addition ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :ferric-chloride-addition .
 
-:ferric-chloride-addition-out a watr:OutletConnectionPoint ;
+:ferric-chloride-addition-out a s223:OutletConnectionPoint ;
     rdfs:label "ferric-chloride-addition-out" ;
-    watr:connectsThrough :ferric-chloride-addition--chlorination ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :ferric-chloride-addition .
+    s223:connectsThrough :ferric-chloride-addition--chlorination ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :ferric-chloride-addition .
 
-:intake a ns2:Pump ;
+:intake a watr:Pump ;
     rdfs:label "Seawater intake" ;
-    watr:hasConnectionPoint :intake-in,
-        :intake-out .
-
-:intake--ferric-chloride-addition a watr:Pipe ;
-    rdfs:label "intake--ferric-chloride-addition" ;
-    watr:connectsAt :ferric-chloride-addition-in,
+    s223:hasConnectionPoint :intake-in,
         :intake-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasRole watr:Role-Feed .
 
-:intake-in a watr:InletConnectionPoint ;
+:intake--ferric-chloride-addition a s223:Pipe ;
+    rdfs:label "intake--ferric-chloride-addition" ;
+    s223:connectsAt :ferric-chloride-addition-in,
+        :intake-out ;
+    s223:hasMedium watr:Water-Seawater .
+
+:intake-in a s223:InletConnectionPoint ;
     rdfs:label "intake-in" ;
-    watr:connectsThrough :feed--intake ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :intake .
+    s223:connectsThrough :feed--intake ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :intake .
 
-:intake-out a watr:OutletConnectionPoint ;
+:intake-out a s223:OutletConnectionPoint ;
     rdfs:label "intake-out" ;
-    watr:connectsThrough :intake--ferric-chloride-addition ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :intake .
+    s223:connectsThrough :intake--ferric-chloride-addition ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :intake .
 
-:landfill-in a watr:InletConnectionPoint ;
+:landfill a watr:UnitProcess ;
+    rdfs:label "Landfill" ;
+    s223:hasConnectionPoint :landfill-in,
+        :landfill-out ;
+    s223:hasOptionalConnectionPoint :landfill-out ;
+    s223:hasRole watr:Role-SolidsHandling ;
+    watr:hasProcess :landfill-process .
+
+:landfill-in a s223:InletConnectionPoint ;
     rdfs:label "landfill-in" ;
-    watr:connectsThrough :landfill-waste ;
-    watr:hasMedium ns2:Fluid-Sludge ;
-    watr:isConnectionPointOf :landfill .
+    s223:connectsThrough :landfill-waste ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :landfill .
 
-:landfill-waste a watr:Pipe ;
+:landfill-out a s223:OutletConnectionPoint ;
+    rdfs:label "landfill-out" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :landfill .
+
+:landfill-waste a s223:Pipe ;
     rdfs:label "landfill-waste" ;
-    watr:connectsAt :backwash-handling-out,
+    s223:connectsAt :backwash-handling-byproduct-out,
         :landfill-in ;
-    watr:hasMedium ns2:Fluid-Sludge ;
-    watr:hasRole ns2:Role-SolidsHandling .
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:hasRole watr:Role-SolidsHandling .
 
-:lime-addition a ns2:Reactor ;
+:lime-addition a watr:Reactor ;
     rdfs:label "Lime addition" ;
-    watr:hasConnectionPoint :lime-addition-in,
+    s223:hasConnectionPoint :lime-addition-in,
         :lime-addition-out ;
-    ns2:hasProcess :lime-addition-process .
+    watr:hasProcess :lime-addition-process .
 
-:lime-addition--storage-tank-3 a watr:Pipe ;
+:lime-addition--storage-tank-3 a s223:Pipe ;
     rdfs:label "lime-addition--storage-tank-3" ;
-    watr:connectsAt :lime-addition-out,
+    s223:connectsAt :lime-addition-out,
         :storage-tank-3-in ;
-    watr:hasMedium ns2:Water-Freshwater .
+    s223:hasMedium watr:Water-Freshwater .
 
-:lime-addition-in a watr:InletConnectionPoint ;
+:lime-addition-in a s223:InletConnectionPoint ;
     rdfs:label "lime-addition-in" ;
-    watr:connectsThrough :co2-addition--lime-addition ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :lime-addition .
+    s223:connectsThrough :co2-addition--lime-addition ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :lime-addition .
 
-:lime-addition-out a watr:OutletConnectionPoint ;
+:lime-addition-out a s223:OutletConnectionPoint ;
     rdfs:label "lime-addition-out" ;
-    watr:connectsThrough :lime-addition--storage-tank-3 ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :lime-addition .
+    s223:connectsThrough :lime-addition--storage-tank-3 ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :lime-addition .
 
-:media-filtration--antiscalant-addition a watr:Pipe ;
+:media-filtration--antiscalant-addition a s223:Pipe ;
     rdfs:label "media-filtration--antiscalant-addition" ;
-    watr:connectsAt :antiscalant-addition-in,
+    s223:connectsAt :antiscalant-addition-in,
         :media-filtration-product-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:media-filtration-backwash-out a watr:OutletConnectionPoint ;
+:media-filtration-backwash-out a s223:OutletConnectionPoint ;
     rdfs:label "media-filtration-backwash-out" ;
-    watr:connectsThrough :pretreatment-backwash ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :media-filtration .
+    s223:connectsThrough :pretreatment-backwash ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :media-filtration .
 
-:media-filtration-in a watr:InletConnectionPoint ;
+:media-filtration-in a s223:InletConnectionPoint ;
     rdfs:label "media-filtration-in" ;
-    watr:connectsThrough :storage-tank-1--media-filtration ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :media-filtration .
+    s223:connectsThrough :storage-tank-1--media-filtration ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :media-filtration .
 
-:media-filtration-product-out a watr:OutletConnectionPoint ;
+:media-filtration-product-out a s223:OutletConnectionPoint ;
     rdfs:label "media-filtration-product-out" ;
-    watr:connectsThrough :media-filtration--antiscalant-addition ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :media-filtration .
+    s223:connectsThrough :media-filtration--antiscalant-addition ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :media-filtration .
 
-:mixer-1-out a watr:OutletConnectionPoint ;
+:mixer-1-out a s223:OutletConnectionPoint ;
     rdfs:label "mixer-1-out" ;
-    watr:connectsThrough :ro-feed ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :mixer-1 .
+    s223:connectsThrough :ro-feed ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :mixer-1 .
 
-:mixer-1-pump-1-in a watr:InletConnectionPoint ;
+:mixer-1-pump-1-in a s223:InletConnectionPoint ;
     rdfs:label "mixer-1-pump-1-in" ;
-    watr:connectsThrough :pump-1--mixer-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :mixer-1 .
+    s223:connectsThrough :pump-1--mixer-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :mixer-1 .
 
-:mixer-1-pump-2-in a watr:InletConnectionPoint ;
+:mixer-1-pump-2-in a s223:InletConnectionPoint ;
     rdfs:label "mixer-1-pump-2-in" ;
-    watr:connectsThrough :pump-2--mixer-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :mixer-1 .
+    s223:connectsThrough :pump-2--mixer-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :mixer-1 .
 
-:municipal-in a watr:InletConnectionPoint ;
+:municipal-in a s223:InletConnectionPoint ;
     rdfs:label "municipal-in" ;
-    watr:connectsThrough :municipal-supply ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :municipal .
+    s223:connectsThrough :municipal-supply ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :municipal .
 
-:municipal-supply a watr:Pipe ;
+:municipal-supply a s223:Pipe ;
     rdfs:label "municipal-supply" ;
-    watr:connectsAt :municipal-in,
+    s223:connectsAt :municipal-in,
         :storage-tank-3-out ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:hasRole watr:Role-Supply .
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:hasRole s223:Role-Supply .
 
-:pretreatment-backwash a watr:Pipe ;
+:pretreatment-backwash a s223:Pipe ;
     rdfs:label "pretreatment-backwash" ;
-    watr:connectsAt :backwash-handling-in,
+    s223:connectsAt :backwash-handling-in,
         :media-filtration-backwash-out ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:hasRole ns2:Role-Backwash .
+    s223:hasMedium watr:Water-Seawater ;
+    s223:hasRole watr:Role-Backwash .
 
-:pretreatment-to-desalination-boundary a watr:Equipment ;
+:pretreatment-to-desalination-boundary a s223:Equipment ;
     rdfs:label "Pretreatment-to-desalination semantic boundary" ;
-    watr:hasConnectionPoint :pretreatment-to-desalination-boundary-in,
-        :pretreatment-to-desalination-boundary-out .
+    s223:hasConnectionPoint :pretreatment-to-desalination-boundary-in,
+        :pretreatment-to-desalination-boundary-out ;
+    s223:hasRole watr:Role-Pretreatment .
 
-:pretreatment-to-desalination-boundary--separator-1 a watr:Pipe ;
+:pretreatment-to-desalination-boundary--separator-1 a s223:Pipe ;
     rdfs:label "pretreatment-to-desalination-boundary--separator-1" ;
-    watr:connectsAt :pretreatment-to-desalination-boundary-out,
+    s223:connectsAt :pretreatment-to-desalination-boundary-out,
         :separator-1-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:pretreatment-to-desalination-boundary-in a watr:InletConnectionPoint ;
+:pretreatment-to-desalination-boundary-in a s223:InletConnectionPoint ;
     rdfs:label "pretreatment-to-desalination-boundary-in" ;
-    watr:connectsThrough :cartridge-filtration--pretreatment-to-desalination-boundary ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pretreatment-to-desalination-boundary .
+    s223:connectsThrough :cartridge-filtration--pretreatment-to-desalination-boundary ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pretreatment-to-desalination-boundary .
 
-:pretreatment-to-desalination-boundary-out a watr:OutletConnectionPoint ;
+:pretreatment-to-desalination-boundary-out a s223:OutletConnectionPoint ;
     rdfs:label "pretreatment-to-desalination-boundary-out" ;
-    watr:connectsThrough :pretreatment-to-desalination-boundary--separator-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pretreatment-to-desalination-boundary .
+    s223:connectsThrough :pretreatment-to-desalination-boundary--separator-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pretreatment-to-desalination-boundary .
 
-:pump-1 a ns2:Pump ;
+:pump-1 a watr:Pump ;
     rdfs:label "High-pressure pump P1" ;
-    watr:hasConnectionPoint :pump-1-in,
+    s223:hasConnectionPoint :pump-1-in,
         :pump-1-out ;
-    watr:hasProperty :pump-1-efficiency,
+    s223:hasProperty :pump-1-efficiency,
         :pump-1-operating-pressure .
 
-:pump-1--mixer-1 a watr:Pipe ;
+:pump-1--mixer-1 a s223:Pipe ;
     rdfs:label "pump-1--mixer-1" ;
-    watr:connectsAt :mixer-1-pump-1-in,
+    s223:connectsAt :mixer-1-pump-1-in,
         :pump-1-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:pump-1-in a watr:InletConnectionPoint ;
+:pump-1-in a s223:InletConnectionPoint ;
     rdfs:label "pump-1-in" ;
-    watr:connectsThrough :separator-1--pump-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pump-1 .
+    s223:connectsThrough :separator-1--pump-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pump-1 .
 
-:pump-1-out a watr:OutletConnectionPoint ;
+:pump-1-out a s223:OutletConnectionPoint ;
     rdfs:label "pump-1-out" ;
-    watr:connectsThrough :pump-1--mixer-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pump-1 .
+    s223:connectsThrough :pump-1--mixer-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pump-1 .
 
-:pump-2 a ns2:Pump ;
+:pump-2 a watr:Pump ;
     rdfs:label "Booster pump P2" ;
-    watr:hasConnectionPoint :pump-2-in,
+    s223:hasConnectionPoint :pump-2-in,
         :pump-2-out ;
-    watr:hasProperty :pump-2-efficiency .
+    s223:hasProperty :pump-2-efficiency .
 
-:pump-2--mixer-1 a watr:Pipe ;
+:pump-2--mixer-1 a s223:Pipe ;
     rdfs:label "pump-2--mixer-1" ;
-    watr:connectsAt :mixer-1-pump-2-in,
+    s223:connectsAt :mixer-1-pump-2-in,
         :pump-2-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:pump-2-in a watr:InletConnectionPoint ;
+:pump-2-in a s223:InletConnectionPoint ;
     rdfs:label "pump-2-in" ;
-    watr:connectsThrough :pxr-feed-connection-out ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pump-2 .
+    s223:connectsThrough :pxr-feed-connection-out ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pump-2 .
 
-:pump-2-out a watr:OutletConnectionPoint ;
+:pump-2-out a s223:OutletConnectionPoint ;
     rdfs:label "pump-2-out" ;
-    watr:connectsThrough :pump-2--mixer-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pump-2 .
+    s223:connectsThrough :pump-2--mixer-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pump-2 .
 
-:pxr-brine-connection-in a watr:Pipe ;
+:pxr-brine-connection-in a s223:Pipe ;
     rdfs:label "pxr-brine-connection-in" ;
-    watr:connectsAt :pxr-brine-in,
+    s223:connectsAt :pxr-brine-in,
         :ro-concentrate-boundary-out ;
-    watr:hasMedium ns2:Water-Brine .
+    s223:hasMedium watr:Water-Brine .
 
-:pxr-brine-connection-out a watr:Pipe ;
+:pxr-brine-connection-out a s223:Pipe ;
     rdfs:label "pxr-brine-connection-out" ;
-    watr:connectsAt :disposal-in,
+    s223:connectsAt :disposal-in,
         :pxr-brine-out ;
-    watr:hasMedium ns2:Water-Brine .
+    s223:hasMedium watr:Water-Brine ;
+    s223:hasRole s223:Role-Discharge .
 
-:pxr-feed-connection-in a watr:Pipe ;
+:pxr-feed-connection-in a s223:Pipe ;
     rdfs:label "pxr-feed-connection-in" ;
-    watr:connectsAt :pxr-feed-in,
+    s223:connectsAt :pxr-feed-in,
         :separator-1-pxr-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:pxr-feed-connection-out a watr:Pipe ;
+:pxr-feed-connection-out a s223:Pipe ;
     rdfs:label "pxr-feed-connection-out" ;
-    watr:connectsAt :pump-2-in,
+    s223:connectsAt :pump-2-in,
         :pxr-feed-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:reverse-osmosis-concentrate-out a watr:OutletConnectionPoint ;
+:reverse-osmosis-concentrate-out a s223:OutletConnectionPoint ;
     rdfs:label "reverse-osmosis-concentrate-out" ;
-    watr:connectsThrough :ro-concentrate ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :reverse-osmosis .
+    s223:connectsThrough :ro-concentrate ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :reverse-osmosis .
 
-:reverse-osmosis-in a watr:InletConnectionPoint ;
+:reverse-osmosis-in a s223:InletConnectionPoint ;
     rdfs:label "reverse-osmosis-in" ;
-    watr:connectsThrough :ro-membrane-feed ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :reverse-osmosis .
+    s223:connectsThrough :ro-membrane-feed ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :reverse-osmosis .
 
-:reverse-osmosis-permeate-out a watr:OutletConnectionPoint ;
+:reverse-osmosis-permeate-out a s223:OutletConnectionPoint ;
     rdfs:label "reverse-osmosis-permeate-out" ;
-    watr:connectsThrough :ro-permeate ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :reverse-osmosis .
+    s223:connectsThrough :ro-permeate ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :reverse-osmosis .
 
-:ro-concentrate a watr:Pipe ;
+:ro-concentrate a s223:Pipe ;
     rdfs:label "ro-concentrate" ;
-    watr:connectsAt :reverse-osmosis-concentrate-out,
+    s223:connectsAt :reverse-osmosis-concentrate-out,
         :ro-concentrate-boundary-in ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:ro-concentrate-boundary a watr:Equipment ;
+:ro-concentrate-boundary a s223:Equipment ;
     rdfs:label "RO-carrier-to-brine semantic boundary" ;
-    watr:hasConnectionPoint :ro-concentrate-boundary-in,
+    s223:hasConnectionPoint :ro-concentrate-boundary-in,
         :ro-concentrate-boundary-out .
 
-:ro-concentrate-boundary-in a watr:InletConnectionPoint ;
+:ro-concentrate-boundary-in a s223:InletConnectionPoint ;
     rdfs:label "ro-concentrate-boundary-in" ;
-    watr:connectsThrough :ro-concentrate ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :ro-concentrate-boundary .
+    s223:connectsThrough :ro-concentrate ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :ro-concentrate-boundary .
 
-:ro-concentrate-boundary-out a watr:OutletConnectionPoint ;
+:ro-concentrate-boundary-out a s223:OutletConnectionPoint ;
     rdfs:label "ro-concentrate-boundary-out" ;
-    watr:connectsThrough :pxr-brine-connection-in ;
-    watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :ro-concentrate-boundary .
+    s223:connectsThrough :pxr-brine-connection-in ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :ro-concentrate-boundary .
 
-:ro-feed a watr:Pipe ;
+:ro-feed a s223:Pipe ;
     rdfs:label "ro-feed" ;
-    watr:connectsAt :mixer-1-out,
+    s223:connectsAt :mixer-1-out,
         :ro-feed-boundary-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater ;
+    s223:hasRole watr:Role-Feed .
 
-:ro-feed-boundary a watr:Equipment ;
+:ro-feed-boundary a s223:Equipment ;
     rdfs:label "Seawater-to-RO-carrier semantic boundary" ;
-    watr:hasConnectionPoint :ro-feed-boundary-in,
-        :ro-feed-boundary-out .
-
-:ro-feed-boundary-in a watr:InletConnectionPoint ;
-    rdfs:label "ro-feed-boundary-in" ;
-    watr:connectsThrough :ro-feed ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :ro-feed-boundary .
-
-:ro-feed-boundary-out a watr:OutletConnectionPoint ;
-    rdfs:label "ro-feed-boundary-out" ;
-    watr:connectsThrough :ro-membrane-feed ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :ro-feed-boundary .
-
-:ro-membrane-feed a watr:Pipe ;
-    rdfs:label "ro-membrane-feed" ;
-    watr:connectsAt :reverse-osmosis-in,
+    s223:hasConnectionPoint :ro-feed-boundary-in,
         :ro-feed-boundary-out ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasRole watr:Role-Feed .
 
-:ro-permeate a watr:Pipe ;
+:ro-feed-boundary-in a s223:InletConnectionPoint ;
+    rdfs:label "ro-feed-boundary-in" ;
+    s223:connectsThrough :ro-feed ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :ro-feed-boundary .
+
+:ro-feed-boundary-out a s223:OutletConnectionPoint ;
+    rdfs:label "ro-feed-boundary-out" ;
+    s223:connectsThrough :ro-membrane-feed ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :ro-feed-boundary .
+
+:ro-membrane-feed a s223:Pipe ;
+    rdfs:label "ro-membrane-feed" ;
+    s223:connectsAt :reverse-osmosis-in,
+        :ro-feed-boundary-out ;
+    s223:hasMedium s223:Fluid-Water .
+
+:ro-permeate a s223:Pipe ;
     rdfs:label "ro-permeate" ;
-    watr:connectsAt :desalination-to-posttreatment-boundary-in,
+    s223:connectsAt :desalination-to-posttreatment-boundary-in,
         :reverse-osmosis-permeate-out ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasRole watr:Role-Supply .
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :reverse-osmosis-permeate-side-pressure ;
+    s223:hasRole s223:Role-Supply,
+        watr:Role-Permeate .
 
-:separator-1--pump-1 a watr:Pipe ;
+:separator-1--pump-1 a s223:Pipe ;
     rdfs:label "separator-1--pump-1" ;
-    watr:connectsAt :pump-1-in,
+    s223:connectsAt :pump-1-in,
         :separator-1-pump-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:separator-1-in a watr:InletConnectionPoint ;
+:separator-1-in a s223:InletConnectionPoint ;
     rdfs:label "separator-1-in" ;
-    watr:connectsThrough :pretreatment-to-desalination-boundary--separator-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :separator-1 .
+    s223:connectsThrough :pretreatment-to-desalination-boundary--separator-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :separator-1 .
 
-:separator-1-pump-out a watr:OutletConnectionPoint ;
+:separator-1-pump-out a s223:OutletConnectionPoint ;
     rdfs:label "separator-1-pump-out" ;
-    watr:connectsThrough :separator-1--pump-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :separator-1 .
+    s223:connectsThrough :separator-1--pump-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :separator-1 .
 
-:separator-1-pxr-out a watr:OutletConnectionPoint ;
+:separator-1-pxr-out a s223:OutletConnectionPoint ;
     rdfs:label "separator-1-pxr-out" ;
-    watr:connectsThrough :pxr-feed-connection-in ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :separator-1 .
+    s223:connectsThrough :pxr-feed-connection-in ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :separator-1 .
 
-:static-mixer a ns2:StaticMixer ;
+:static-mixer a watr:StaticMixer ;
     rdfs:label "Static mixer" ;
-    watr:hasConnectionPoint :static-mixer-in,
+    s223:hasConnectionPoint :static-mixer-in,
         :static-mixer-out ;
-    ns2:hasProcess :static-mixing-process .
+    watr:hasProcess :static-mixing-process .
 
-:static-mixer--storage-tank-1 a watr:Pipe ;
+:static-mixer--storage-tank-1 a s223:Pipe ;
     rdfs:label "static-mixer--storage-tank-1" ;
-    watr:connectsAt :static-mixer-out,
+    s223:connectsAt :static-mixer-out,
         :storage-tank-1-in ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:static-mixer-in a watr:InletConnectionPoint ;
+:static-mixer-in a s223:InletConnectionPoint ;
     rdfs:label "static-mixer-in" ;
-    watr:connectsThrough :chlorination--static-mixer ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :static-mixer .
+    s223:connectsThrough :chlorination--static-mixer ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :static-mixer .
 
-:static-mixer-out a watr:OutletConnectionPoint ;
+:static-mixer-out a s223:OutletConnectionPoint ;
     rdfs:label "static-mixer-out" ;
-    watr:connectsThrough :static-mixer--storage-tank-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :static-mixer .
+    s223:connectsThrough :static-mixer--storage-tank-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :static-mixer .
 
-:storage-tank-1 a ns2:Tank ;
+:storage-tank-1 a watr:Tank ;
     rdfs:label "Pretreatment storage tank" ;
-    watr:hasConnectionPoint :storage-tank-1-in,
+    s223:hasConnectionPoint :storage-tank-1-in,
         :storage-tank-1-out ;
-    watr:hasProperty :storage-tank-1-residence-time .
+    s223:hasProperty :storage-tank-1-residence-time ;
+    s223:hasRole watr:Role-Storage .
 
-:storage-tank-1--media-filtration a watr:Pipe ;
+:storage-tank-1--media-filtration a s223:Pipe ;
     rdfs:label "storage-tank-1--media-filtration" ;
-    watr:connectsAt :media-filtration-in,
+    s223:connectsAt :media-filtration-in,
         :storage-tank-1-out ;
-    watr:hasMedium ns2:Water-Seawater .
+    s223:hasMedium watr:Water-Seawater .
 
-:storage-tank-1-in a watr:InletConnectionPoint ;
+:storage-tank-1-in a s223:InletConnectionPoint ;
     rdfs:label "storage-tank-1-in" ;
-    watr:connectsThrough :static-mixer--storage-tank-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :storage-tank-1 .
+    s223:connectsThrough :static-mixer--storage-tank-1 ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :storage-tank-1 .
 
-:storage-tank-1-out a watr:OutletConnectionPoint ;
+:storage-tank-1-out a s223:OutletConnectionPoint ;
     rdfs:label "storage-tank-1-out" ;
-    watr:connectsThrough :storage-tank-1--media-filtration ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :storage-tank-1 .
+    s223:connectsThrough :storage-tank-1--media-filtration ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :storage-tank-1 .
 
-:storage-tank-2 a ns2:Tank ;
+:storage-tank-2 a watr:Tank ;
     rdfs:label "Post-treatment storage tank 2" ;
-    watr:hasConnectionPoint :storage-tank-2-in,
+    s223:hasConnectionPoint :storage-tank-2-in,
         :storage-tank-2-out ;
-    watr:hasProperty :storage-tank-2-residence-time .
+    s223:hasProperty :storage-tank-2-residence-time ;
+    s223:hasRole watr:Role-Storage .
 
-:storage-tank-2--uv-aop a watr:Pipe ;
+:storage-tank-2--uv-aop a s223:Pipe ;
     rdfs:label "storage-tank-2--uv-aop" ;
-    watr:connectsAt :storage-tank-2-out,
+    s223:connectsAt :storage-tank-2-out,
         :uv-aop-in ;
-    watr:hasMedium ns2:Water-Freshwater .
+    s223:hasMedium watr:Water-Freshwater .
 
-:storage-tank-2-in a watr:InletConnectionPoint ;
+:storage-tank-2-in a s223:InletConnectionPoint ;
     rdfs:label "storage-tank-2-in" ;
-    watr:connectsThrough :desalination-to-posttreatment-boundary--storage-tank-2 ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :storage-tank-2 .
+    s223:connectsThrough :desalination-to-posttreatment-boundary--storage-tank-2 ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :storage-tank-2 .
 
-:storage-tank-2-out a watr:OutletConnectionPoint ;
+:storage-tank-2-out a s223:OutletConnectionPoint ;
     rdfs:label "storage-tank-2-out" ;
-    watr:connectsThrough :storage-tank-2--uv-aop ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :storage-tank-2 .
+    s223:connectsThrough :storage-tank-2--uv-aop ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :storage-tank-2 .
 
-:storage-tank-3 a ns2:Tank ;
+:storage-tank-3 a watr:Tank ;
     rdfs:label "Municipal-water storage tank 3" ;
-    watr:hasConnectionPoint :storage-tank-3-in,
+    s223:hasConnectionPoint :storage-tank-3-in,
         :storage-tank-3-out ;
-    watr:hasProperty :storage-tank-3-residence-time .
+    s223:hasProperty :storage-tank-3-residence-time ;
+    s223:hasRole watr:Role-Storage .
 
-:storage-tank-3-in a watr:InletConnectionPoint ;
+:storage-tank-3-in a s223:InletConnectionPoint ;
     rdfs:label "storage-tank-3-in" ;
-    watr:connectsThrough :lime-addition--storage-tank-3 ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :storage-tank-3 .
+    s223:connectsThrough :lime-addition--storage-tank-3 ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :storage-tank-3 .
 
-:storage-tank-3-out a watr:OutletConnectionPoint ;
+:storage-tank-3-out a s223:OutletConnectionPoint ;
     rdfs:label "storage-tank-3-out" ;
-    watr:connectsThrough :municipal-supply ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :storage-tank-3 .
+    s223:connectsThrough :municipal-supply ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :storage-tank-3 .
 
-:uv-aop a ns2:UVH2O2Reactor ;
+:uv-aop a watr:UVH2O2Reactor ;
     rdfs:label "UV advanced oxidation process" ;
-    watr:hasConnectionPoint :uv-aop-in,
+    s223:hasConnectionPoint :uv-aop-in,
         :uv-aop-out ;
-    watr:hasProperty :uv-aop-reduction-equivalent-dose,
+    s223:hasProperty :uv-aop-reduction-equivalent-dose,
         :uv-aop-transmittance ;
-    ns2:hasProcess :uv-aop-process .
+    watr:hasProcess :uv-aop-process .
 
-:uv-aop--co2-addition a watr:Pipe ;
+:uv-aop--co2-addition a s223:Pipe ;
     rdfs:label "uv-aop--co2-addition" ;
-    watr:connectsAt :co2-addition-in,
+    s223:connectsAt :co2-addition-in,
         :uv-aop-out ;
-    watr:hasMedium ns2:Water-Freshwater .
+    s223:hasMedium watr:Water-Freshwater .
 
-:uv-aop-in a watr:InletConnectionPoint ;
+:uv-aop-in a s223:InletConnectionPoint ;
     rdfs:label "uv-aop-in" ;
-    watr:connectsThrough :storage-tank-2--uv-aop ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :uv-aop .
+    s223:connectsThrough :storage-tank-2--uv-aop ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :uv-aop .
 
-:uv-aop-out a watr:OutletConnectionPoint ;
+:uv-aop-out a s223:OutletConnectionPoint ;
     rdfs:label "uv-aop-out" ;
-    watr:connectsThrough :uv-aop--co2-addition ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :uv-aop .
+    s223:connectsThrough :uv-aop--co2-addition ;
+    s223:hasMedium watr:Water-Freshwater ;
+    s223:isConnectionPointOf :uv-aop .
 
-:media-filtration a ns2:MediaFiltration ;
+:backwash-handling a watr:UnitProcess ;
+    rdfs:label "Media-filter backwash handling" ;
+    s223:hasConnectionPoint :backwash-handling-byproduct-out,
+        :backwash-handling-in,
+        :backwash-handling-treated-out ;
+    s223:hasOptionalConnectionPoint :backwash-handling-treated-out ;
+    s223:hasRole watr:Role-SolidsHandling ;
+    watr:hasProcess :backwash-handling-process .
+
+:media-filtration a watr:MediaFiltration ;
     rdfs:label "Media filtration" ;
-    watr:hasConnectionPoint :media-filtration-backwash-out,
+    s223:hasConnectionPoint :media-filtration-backwash-out,
         :media-filtration-in,
         :media-filtration-product-out ;
-    ns2:hasProcess :media-filtration-process .
+    watr:hasProcess :media-filtration-process .
 
-:mixer-1 a ns2:StaticMixer ;
+:mixer-1 a watr:StaticMixer ;
     rdfs:label "RO feed mixer M1" ;
-    watr:hasConnectionPoint :mixer-1-out,
+    s223:hasConnectionPoint :mixer-1-out,
         :mixer-1-pump-1-in,
         :mixer-1-pump-2-in ;
-    ns2:hasProcess :ro-feed-mixing-process .
+    watr:hasProcess :ro-feed-mixing-process .
 
-:pxr-brine-in a watr:InletConnectionPoint ;
+:pxr-brine-in a s223:InletConnectionPoint ;
     rdfs:label "pxr-brine-in" ;
-    watr:connectsThrough :pxr-brine-connection-in ;
-    watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :pressure-exchanger ;
-    watr:pairedConnectionPoint :pxr-brine-out .
+    s223:connectsThrough :pxr-brine-connection-in ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :pressure-exchanger ;
+    s223:pairedConnectionPoint :pxr-brine-out .
 
-:pxr-brine-out a watr:OutletConnectionPoint ;
+:pxr-brine-out a s223:OutletConnectionPoint ;
     rdfs:label "pxr-brine-out" ;
-    watr:connectsThrough :pxr-brine-connection-out ;
-    watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :pressure-exchanger ;
-    watr:pairedConnectionPoint :pxr-brine-in .
+    s223:connectsThrough :pxr-brine-connection-out ;
+    s223:hasMedium watr:Water-Brine ;
+    s223:isConnectionPointOf :pressure-exchanger ;
+    s223:pairedConnectionPoint :pxr-brine-in .
 
-:pxr-feed-in a watr:InletConnectionPoint ;
+:pxr-feed-in a s223:InletConnectionPoint ;
     rdfs:label "pxr-feed-in" ;
-    watr:connectsThrough :pxr-feed-connection-in ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pressure-exchanger ;
-    watr:pairedConnectionPoint :pxr-feed-out .
+    s223:connectsThrough :pxr-feed-connection-in ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pressure-exchanger ;
+    s223:pairedConnectionPoint :pxr-feed-out .
 
-:pxr-feed-out a watr:OutletConnectionPoint ;
+:pxr-feed-out a s223:OutletConnectionPoint ;
     rdfs:label "pxr-feed-out" ;
-    watr:connectsThrough :pxr-feed-connection-out ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :pressure-exchanger ;
-    watr:pairedConnectionPoint :pxr-feed-in .
+    s223:connectsThrough :pxr-feed-connection-out ;
+    s223:hasMedium watr:Water-Seawater ;
+    s223:isConnectionPointOf :pressure-exchanger ;
+    s223:pairedConnectionPoint :pxr-feed-in .
 
-:reverse-osmosis a ns2:ReverseOsmosisMembrane ;
+:reverse-osmosis a watr:ReverseOsmosisMembrane ;
     rdfs:label "Reverse osmosis" ;
-    watr:hasConnectionPoint :reverse-osmosis-concentrate-out,
+    s223:hasConnectionPoint :reverse-osmosis-concentrate-out,
         :reverse-osmosis-in,
         :reverse-osmosis-permeate-out ;
-    watr:hasProperty :reverse-osmosis-membrane-area,
+    s223:hasProperty :reverse-osmosis-channel-height,
+        :reverse-osmosis-membrane-area,
         :reverse-osmosis-salt-permeability,
+        :reverse-osmosis-spacer-porosity,
+        :reverse-osmosis-stage-width,
         :reverse-osmosis-water-permeability ;
-    ns2:hasProcess :reverse-osmosis-process .
+    watr:hasProcess :reverse-osmosis-process .
 
-:separator-1 a ns2:UnitProcess ;
+:separator-1 a s223:Junction ;
     rdfs:label "Feed separator S1" ;
-    watr:hasConnectionPoint :separator-1-in,
+    s223:hasConnectionPoint :separator-1-in,
         :separator-1-pump-out,
         :separator-1-pxr-out ;
-    ns2:hasProcess :separator-1-process .
+    s223:hasMedium watr:Water-Seawater ;
+    rdfs:comment "IDAES stream splitter; this junction does not perform a water-treatment process." .
 
-:pressure-exchanger a ns2:PressureExchanger ;
+:pressure-exchanger a watr:PressureExchanger ;
     rdfs:label "Pressure exchanger PXR" ;
-    watr:hasConnectionPoint :pxr-brine-in,
+    s223:hasConnectionPoint :pxr-brine-in,
         :pxr-brine-out,
         :pxr-feed-in,
         :pxr-feed-out ;
-    watr:hasProperty :pressure-exchanger-efficiency .
+    s223:hasProperty :pressure-exchanger-efficiency .
 

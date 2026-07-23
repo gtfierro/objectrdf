@@ -15,7 +15,7 @@ from __future__ import annotations
 import re
 from contextvars import ContextVar, Token
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Iterable, Iterator
+from typing import TYPE_CHECKING, Any, Iterable, Iterator, Mapping
 from urllib.parse import quote
 
 import rdflib
@@ -48,11 +48,14 @@ class Model:
         name: str | None = None,
         ontology_iri: str | None = None,
         imports: Iterable[str] = (),
+        prefixes: Mapping[str, str] | None = None,
     ) -> None:
         """Create a model.
 
         ``namespace`` is the IRI prefix instance IRIs are minted under; a
         trailing ``#`` is added if it doesn't already end in ``#`` or ``/``.
+        ``prefixes`` declares stable, readable RDF namespace bindings used
+        during serialization.
         """
         if not namespace.endswith(("#", "/")):
             namespace += "#"
@@ -60,6 +63,9 @@ class Model:
         self.name = name
         self.ontology_iri = ontology_iri or namespace.rstrip("#/")
         self.imports = set(imports)
+        self.prefixes = dict(prefixes or {})
+        if "" in self.prefixes:
+            raise ValueError("the default prefix is reserved for the model namespace")
         self.entities: list[Entity] = []
         self._by_name: dict[str, Entity] = {}
         self._by_iri: dict[str, Entity] = {}
@@ -229,7 +235,7 @@ class Model:
         valid, and keeps the serializer trivial.
         """
         g = rdflib.Graph()
-        namespaces: dict[str, str] = {"": self.namespace}
+        namespaces: dict[str, str] = {"": self.namespace, **self.prefixes}
         imports = set(self.imports)
         for entity in self.entities:
             subject = URIRef(entity._iri)
@@ -274,8 +280,8 @@ class Model:
             if dependency != self.ontology_iri:
                 g.add((ontology_subject, OWL.imports, URIRef(dependency)))
         for prefix, ns in namespaces.items():
-            g.bind(prefix, ns)
-        g.bind("owl", OWL)
+            g.bind(prefix, ns, replace=True)
+        g.bind("owl", OWL, replace=True)
         return g
 
     def check(self) -> ResolutionReport:

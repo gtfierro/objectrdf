@@ -30,6 +30,22 @@ with Model("urn:example/bldg1#"):
 snapshot. Use `model.compile(validate=False)` only when intentionally
 inspecting or emitting a partial graph.
 
+Declare stable, readable Turtle prefixes on the model rather than rebinding
+the `rdflib.Graph` during serialization:
+
+```python
+model = Model(
+    "urn:example/treatment#",
+    prefixes={
+        "qudt": "http://qudt.org/schema/qudt/",
+        "watr": "urn:nawi-water-ontology#",
+    },
+)
+```
+
+The empty prefix is reserved for the model namespace. Explicit bindings are
+preserved when deferred connections are resolved.
+
 ## Attributes: required vs optional
 
 Everything the ontology's SHACL shapes say about a class becomes its

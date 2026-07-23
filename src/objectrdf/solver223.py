@@ -965,6 +965,7 @@ def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
         name=model.name,
         ontology_iri=model.ontology_iri,
         imports=model.imports,
+        prefixes=model.prefixes,
     )
     clone._resolving = True
     mapping: dict[Entity, Entity] = {}

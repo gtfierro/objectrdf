@@ -25,20 +25,20 @@ from objectrdf.watr import (
     CoagulationBasin,
     Connection,
     Equipment,
+    Junction,
     MediaFiltration,
     OutletConnectionPoint,
     PressureExchanger,
-    Process,
     Process_AdvancedOxidation,
-    Process_Backwashing,
     Process_ChemicalAddition,
     Process_Chlorination,
     Process_Coagulation,
     Process_Filtration,
+    Process_Landfill,
     Process_MediaFiltration,
     Process_Mixing,
-    Process_ReverseOsmosis,
     Process_Separation,
+    Process_ReverseOsmosis,
     Property,
     Pump,
     QuantifiableProperty,
@@ -74,26 +74,26 @@ def nominal_quantity(
     )
 
 
-def process(
-    cls: type[Process],
-    name: str,
-    definition: str,
-) -> Process:
-    """Create a WaTr process with the definition required by its shape."""
-    return cls(name, definition=definition)
-
-
 def build_model() -> Model:
     """Build the pressure-exchanger WaTr/S223 reference configuration."""
     model = Model(
         "urn:example/watertap/seawater-ro/full#",
         name="WaTr seawater RO reference",
+        prefixes={
+            "qudt": "http://qudt.org/schema/qudt/",
+            "s223": "http://data.ashrae.org/standard223#",
+            "watr": "urn:nawi-water-ontology#",
+        },
     )
 
     with model:
         # Flowsheet feed. The known outlet is the sole seawater boundary hint
         # needed by the affinity solver for pretreatment and the RO feed path.
-        feed = Equipment("feed", label="Seawater feed")
+        feed = Equipment(
+            "feed",
+            label="Seawater feed",
+            has_role=[enums.Role_Feed],
+        )
         feed_out = OutletConnectionPoint(
             "feed-seawater-out",
             has_medium=enums.Water_Seawater,
@@ -149,25 +149,34 @@ def build_model() -> Model:
         )
 
         # Pretreatment.
-        intake = Pump("intake", label="Seawater intake")
+        intake = Pump(
+            "intake",
+            label="Seawater intake",
+            has_role=[enums.Role_Feed],
+        )
+        feed_connection = connect(
+            feed,
+            intake,
+            medium=enums.Water_Seawater,
+            name="feed--intake",
+        )
+        feed_connection.has_role.add(enums.Role_Feed)
         ferric_chloride_addition = CoagulationBasin(
             "ferric-chloride-addition",
             label="Ferric chloride addition",
             has_process=[
-                process(
-                    Process_Coagulation,
+                Process_Coagulation(
                     "ferric-chloride-addition-process",
-                    "Add 20 mg/L ferric chloride to promote coagulation.",
+                    definition="Add 20 mg/L ferric chloride to promote coagulation.",
                 )
             ],
         )
         chlorination = ChlorinationUnit(
             "chlorination",
             has_process=[
-                process(
-                    Process_Chlorination,
+                Process_Chlorination(
                     "chlorination-process",
-                    "Disinfect the seawater by chlorination.",
+                    definition="Disinfect the seawater by chlorination.",
                 )
             ],
         )
@@ -175,16 +184,16 @@ def build_model() -> Model:
             "static-mixer",
             label="Static mixer",
             has_process=[
-                process(
-                    Process_Mixing,
+                Process_Mixing(
                     "static-mixing-process",
-                    "Mix added treatment chemicals into the seawater.",
+                    definition="Mix added treatment chemicals into the seawater.",
                 )
             ],
         )
         storage_tank_1 = Tank(
             "storage-tank-1",
             label="Pretreatment storage tank",
+            has_role=[enums.Role_Storage],
         )
         nominal_quantity(
             "storage-tank-1-residence-time",
@@ -198,10 +207,9 @@ def build_model() -> Model:
             "media-filtration",
             label="Media filtration",
             has_process=[
-                process(
-                    Process_MediaFiltration,
+                Process_MediaFiltration(
                     "media-filtration-process",
-                    "Remove suspended matter by filtration through media.",
+                    definition="Remove suspended matter by filtration through media.",
                 )
             ],
         )
@@ -217,10 +225,9 @@ def build_model() -> Model:
             "antiscalant-addition",
             label="Antiscalant addition",
             has_process=[
-                process(
-                    Process_ChemicalAddition,
+                Process_ChemicalAddition(
                     "antiscalant-addition-process",
-                    "Add antiscalant before cartridge filtration.",
+                    definition="Add antiscalant before cartridge filtration.",
                 )
             ],
         )
@@ -228,10 +235,11 @@ def build_model() -> Model:
             "cartridge-filtration",
             label="Cartridge filtration",
             has_process=[
-                process(
-                    Process_Filtration,
+                Process_Filtration(
                     "cartridge-filtration-process",
-                    "Polish the pretreated seawater by cartridge filtration.",
+                    definition=(
+                        "Polish the pretreated seawater by cartridge filtration."
+                    ),
                 )
             ],
         )
@@ -239,18 +247,49 @@ def build_model() -> Model:
             "backwash-handling",
             label="Media-filter backwash handling",
             has_process=[
-                process(
-                    Process_Backwashing,
+                Process_Separation(
                     "backwash-handling-process",
-                    "Collect and handle backwash from media filtration.",
+                    definition=(
+                        "Separate media-filter backwash into treated water and a "
+                        "solids-rich byproduct."
+                    ),
                 )
             ],
+            has_role=[enums.Role_SolidsHandling],
         )
-        landfill = Equipment("landfill", label="Landfill")
+        backwash_treated_out = OutletConnectionPoint(
+            "backwash-handling-treated-out",
+            has_medium=enums.Water_Seawater,
+            is_connection_point_of=backwash_handling,
+        )
+        backwash_handling.has_optional_connection_point.add(backwash_treated_out)
+        backwash_byproduct_out = backwash_handling.port(
+            "backwash-handling-byproduct-out",
+            direction="out",
+            medium=enums.Fluid_Sludge,
+        )
+        landfill = UnitProcess(
+            "landfill",
+            label="Landfill",
+            has_process=[
+                Process_Landfill(
+                    "landfill-process",
+                    definition="Dispose of the backwash solids by landfilling.",
+                )
+            ],
+            has_role=[enums.Role_SolidsHandling],
+        )
+        # WaterTAP models landfill as pass-through; its outlet is an external
+        # boundary of this reference flowsheet.
+        landfill_out = OutletConnectionPoint(
+            "landfill-out",
+            has_medium=enums.Fluid_Sludge,
+            is_connection_point_of=landfill,
+        )
+        landfill.has_optional_connection_point.add(landfill_out)
 
         (
-            feed
-            >> intake
+            intake
             >> ferric_chloride_addition
             >> chlorination
             >> static_mixer
@@ -267,12 +306,13 @@ def build_model() -> Model:
         backwash = connect(
             media_backwash_out,
             backwash_handling,
+            medium=enums.Water_Seawater,
             name="pretreatment-backwash",
         )
         backwash.has_role.add(enums.Role_Backwash)
 
         landfill_waste = connect(
-            backwash_handling,
+            backwash_byproduct_out,
             landfill,
             medium=enums.Fluid_Sludge,
             name="landfill-waste",
@@ -284,6 +324,7 @@ def build_model() -> Model:
         pretreatment_to_desalination = Equipment(
             "pretreatment-to-desalination-boundary",
             label="Pretreatment-to-desalination semantic boundary",
+            has_role=[enums.Role_Pretreatment],
         )
         cartridge_filtration >> pretreatment_to_desalination
 
@@ -292,10 +333,12 @@ def build_model() -> Model:
             "reverse-osmosis",
             label="Reverse osmosis",
             has_process=[
-                process(
-                    Process_ReverseOsmosis,
+                Process_ReverseOsmosis(
                     "reverse-osmosis-process",
-                    "Separate pressurized seawater into freshwater permeate and brine.",
+                    definition=(
+                        "Separate pressurized seawater into freshwater permeate "
+                        "and brine."
+                    ),
                 )
             ],
         )
@@ -305,6 +348,30 @@ def build_model() -> Model:
             13914.0,
             units.M2,
             quantity_kinds.Area,
+            of=reverse_osmosis,
+        )
+        nominal_quantity(
+            "reverse-osmosis-spacer-porosity",
+            "Feed spacer porosity",
+            0.97,
+            units.UNITLESS,
+            quantity_kinds.DimensionlessRatio,
+            of=reverse_osmosis,
+        )
+        nominal_quantity(
+            "reverse-osmosis-channel-height",
+            "Membrane channel height",
+            1e-3,
+            units.M,
+            quantity_kinds.Length,
+            of=reverse_osmosis,
+        )
+        nominal_quantity(
+            "reverse-osmosis-stage-width",
+            "Membrane width per stage",
+            1000.0,
+            units.M,
+            quantity_kinds.Length,
             of=reverse_osmosis,
         )
         water_permeability = Property(
@@ -344,26 +411,35 @@ def build_model() -> Model:
             quantity_kinds.Pressure,
             of=pump_1,
         )
-        disposal = Equipment("disposal", label="Brine disposal")
+        disposal = Equipment(
+            "disposal",
+            label="Brine disposal",
+            has_role=[enums.Role_Discharge],
+        )
 
-        separator = UnitProcess(
+        separator = Junction(
             "separator-1",
             label="Feed separator S1",
-            has_process=[
-                process(
-                    Process_Separation,
-                    "separator-1-process",
-                    "Split pretreated seawater between P1 and the pressure exchanger.",
-                )
-            ],
+            has_medium=enums.Water_Seawater,
+            comment=(
+                "IDAES stream splitter; this junction does not perform a "
+                "water-treatment process."
+            ),
+        )
+        separator_in = separator.port(
+            "separator-1-in",
+            direction="in",
+            medium=enums.Water_Seawater,
         )
         separator_pump_out = separator.port(
             "separator-1-pump-out",
             direction="out",
+            medium=enums.Water_Seawater,
         )
         separator_pxr_out = separator.port(
             "separator-1-pxr-out",
             direction="out",
+            medium=enums.Water_Seawater,
         )
         pressure_exchanger = PressureExchanger(
             "pressure-exchanger",
@@ -399,10 +475,11 @@ def build_model() -> Model:
             "mixer-1",
             label="RO feed mixer M1",
             has_process=[
-                process(
-                    Process_Mixing,
+                Process_Mixing(
                     "ro-feed-mixing-process",
-                    "Combine the P1 and pressure-exchanger feed streams.",
+                    definition=(
+                        "Combine the P1 and pressure-exchanger feed streams."
+                    ),
                 )
             ],
         )
@@ -417,16 +494,26 @@ def build_model() -> Model:
             "reverse-osmosis-permeate-out",
             direction="out",
         )
+        # ReverseOsmosisMembrane is also an S223 Filter. Filter ports must use
+        # compatible media, so the membrane uses Fluid-Water as its carrier
+        # while these explicit semantic boundaries preserve the WaterTAP stream
+        # classifications on either side.
         ro_feed_boundary = Equipment(
             "ro-feed-boundary",
             label="Seawater-to-RO-carrier semantic boundary",
+            has_role=[enums.Role_Feed],
         )
         ro_concentrate_boundary = Equipment(
             "ro-concentrate-boundary",
             label="RO-carrier-to-brine semantic boundary",
         )
 
-        pretreatment_to_desalination >> separator
+        connect(
+            pretreatment_to_desalination,
+            separator_in,
+            medium=enums.Water_Seawater,
+            name="pretreatment-to-desalination-boundary--separator-1",
+        )
         connect(
             separator_pump_out,
             pump_1,
@@ -437,12 +524,13 @@ def build_model() -> Model:
             mixer_pump_1_in,
             name="pump-1--mixer-1",
         )
-        connect(
+        ro_feed = connect(
             mixer_out,
             ro_feed_boundary,
             medium=enums.Water_Seawater,
             name="ro-feed",
         )
+        ro_feed.has_role.add(enums.Role_Feed)
         connect(
             ro_feed_boundary,
             reverse_osmosis,
@@ -477,18 +565,17 @@ def build_model() -> Model:
             medium=enums.Water_Brine,
             name="pxr-brine-connection-in",
         )
-        connect(
+        brine_disposal = connect(
             pxr_brine_out,
             disposal,
             name="pxr-brine-connection-out",
         )
+        brine_disposal.has_role.add(enums.Role_Discharge)
 
-        # S223 Filter ports use the common water carrier. These boundaries
-        # record the process-specific feed and product classifications without
-        # claiming that seawater, freshwater, and brine flow through unchanged.
         desalination_to_posttreatment = Equipment(
             "desalination-to-posttreatment-boundary",
             label="Desalination-to-posttreatment semantic boundary",
+            has_role=[enums.Role_Posttreatment],
         )
         permeate = connect(
             reverse_osmosis_permeate_out,
@@ -496,12 +583,22 @@ def build_model() -> Model:
             medium=enums.Fluid_Water,
             name="ro-permeate",
         )
+        permeate.has_role.add(enums.Role_Permeate)
         permeate.has_role.add(enums.Role_Supply)
+        nominal_quantity(
+            "reverse-osmosis-permeate-side-pressure",
+            "Nominal permeate-side pressure",
+            101325.0,
+            units.PA,
+            quantity_kinds.Pressure,
+            of=permeate,
+        )
 
         # Post-treatment.
         storage_tank_2 = Tank(
             "storage-tank-2",
             label="Post-treatment storage tank 2",
+            has_role=[enums.Role_Storage],
         )
         nominal_quantity(
             "storage-tank-2-residence-time",
@@ -515,10 +612,9 @@ def build_model() -> Model:
             "uv-aop",
             label="UV advanced oxidation process",
             has_process=[
-                process(
-                    Process_AdvancedOxidation,
+                Process_AdvancedOxidation(
                     "uv-aop-process",
-                    "Disinfect freshwater by UV advanced oxidation.",
+                    definition="Disinfect freshwater by UV advanced oxidation.",
                 )
             ],
         )
@@ -542,10 +638,9 @@ def build_model() -> Model:
             "co2-addition",
             label="Carbon dioxide addition",
             has_process=[
-                process(
-                    Process_ChemicalAddition,
+                Process_ChemicalAddition(
                     "co2-addition-process",
-                    "Add carbon dioxide during remineralization.",
+                    definition="Add carbon dioxide during remineralization.",
                 )
             ],
         )
@@ -553,16 +648,16 @@ def build_model() -> Model:
             "lime-addition",
             label="Lime addition",
             has_process=[
-                process(
-                    Process_ChemicalAddition,
+                Process_ChemicalAddition(
                     "lime-addition-process",
-                    "Add 2.3 mg/L lime during remineralization.",
+                    definition="Add 2.3 mg/L lime during remineralization.",
                 )
             ],
         )
         storage_tank_3 = Tank(
             "storage-tank-3",
             label="Municipal-water storage tank 3",
+            has_role=[enums.Role_Storage],
         )
         nominal_quantity(
             "storage-tank-3-residence-time",
@@ -572,7 +667,11 @@ def build_model() -> Model:
             quantity_kinds.Time,
             of=storage_tank_3,
         )
-        municipal = Equipment("municipal", label="Municipal distribution")
+        municipal = Equipment(
+            "municipal",
+            label="Municipal distribution",
+            has_role=[enums.Role_Supply],
+        )
 
         connect(
             desalination_to_posttreatment,

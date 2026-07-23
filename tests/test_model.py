@@ -31,6 +31,22 @@ def test_namespace_gets_separator_appended():
     assert fan.meta.instance_iri == "urn:ex/bldg#f1"
 
 
+def test_explicit_prefixes_are_bound_to_graph():
+    with Model(
+        "urn:ex/bldg#",
+        prefixes={"qudt": "http://qudt.org/schema/qudt/"},
+    ) as m:
+        toy.Fan("f1")
+
+    namespaces = {prefix: str(namespace) for prefix, namespace in m.graph().namespaces()}
+    assert namespaces["qudt"] == "http://qudt.org/schema/qudt/"
+
+
+def test_default_prefix_is_reserved_for_model_namespace():
+    with pytest.raises(ValueError, match="default prefix is reserved"):
+        Model("urn:ex/bldg#", prefixes={"": "urn:other#"})
+
+
 def test_duplicate_names_rejected():
     with Model("urn:ex/bldg#") as m:
         toy.Fan("f1")
