@@ -246,7 +246,7 @@
     watr:hasMedium ns2:Fluid-Sludge ;
     watr:isConnectionPointOf :backwash-handling .
 
-:cartridge-filtration a ns2:UnitProcess ;
+:cartridge-filtration a ns2:CartridgeFiltrationUnit ;
     rdfs:label "Cartridge filtration" ;
     watr:hasConnectionPoint :cartridge-filtration-in,
         :cartridge-filtration-out ;
@@ -332,7 +332,7 @@
 :desalination-to-posttreatment-boundary-in a watr:InletConnectionPoint ;
     rdfs:label "desalination-to-posttreatment-boundary-in" ;
     watr:connectsThrough :ro-permeate ;
-    watr:hasMedium ns2:Water-Freshwater ;
+    watr:hasMedium watr:Fluid-Water ;
     watr:isConnectionPointOf :desalination-to-posttreatment-boundary .
 
 :desalination-to-posttreatment-boundary-out a watr:OutletConnectionPoint ;
@@ -364,7 +364,7 @@
         :influent-tss-concentration ;
     watr:isConnectionPointOf :feed .
 
-:ferric-chloride-addition a ns2:Reactor ;
+:ferric-chloride-addition a ns2:CoagulationBasin ;
     rdfs:label "Ferric chloride addition" ;
     watr:hasConnectionPoint :ferric-chloride-addition-in,
         :ferric-chloride-addition-out ;
@@ -451,8 +451,14 @@
 :media-filtration--antiscalant-addition a watr:Pipe ;
     rdfs:label "media-filtration--antiscalant-addition" ;
     watr:connectsAt :antiscalant-addition-in,
-        :media-filtration-out_2 ;
+        :media-filtration-product-out ;
     watr:hasMedium ns2:Water-Seawater .
+
+:media-filtration-backwash-out a watr:OutletConnectionPoint ;
+    rdfs:label "media-filtration-backwash-out" ;
+    watr:connectsThrough :pretreatment-backwash ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :media-filtration .
 
 :media-filtration-in a watr:InletConnectionPoint ;
     rdfs:label "media-filtration-in" ;
@@ -460,33 +466,27 @@
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :media-filtration .
 
-:media-filtration-out a watr:OutletConnectionPoint ;
-    rdfs:label "media-filtration-out" ;
-    watr:connectsThrough :pretreatment-backwash ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :media-filtration .
-
-:media-filtration-out_2 a watr:OutletConnectionPoint ;
-    rdfs:label "media-filtration-out_2" ;
+:media-filtration-product-out a watr:OutletConnectionPoint ;
+    rdfs:label "media-filtration-product-out" ;
     watr:connectsThrough :media-filtration--antiscalant-addition ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :media-filtration .
 
-:mixer-1-in a watr:InletConnectionPoint ;
-    rdfs:label "mixer-1-in" ;
+:mixer-1-out a watr:OutletConnectionPoint ;
+    rdfs:label "mixer-1-out" ;
+    watr:connectsThrough :ro-feed ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :mixer-1 .
+
+:mixer-1-pump-1-in a watr:InletConnectionPoint ;
+    rdfs:label "mixer-1-pump-1-in" ;
     watr:connectsThrough :pump-1--mixer-1 ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :mixer-1 .
 
-:mixer-1-in_2 a watr:InletConnectionPoint ;
-    rdfs:label "mixer-1-in_2" ;
+:mixer-1-pump-2-in a watr:InletConnectionPoint ;
+    rdfs:label "mixer-1-pump-2-in" ;
     watr:connectsThrough :pump-2--mixer-1 ;
-    watr:hasMedium ns2:Water-Seawater ;
-    watr:isConnectionPointOf :mixer-1 .
-
-:mixer-1-out a watr:OutletConnectionPoint ;
-    rdfs:label "mixer-1-out" ;
-    watr:connectsThrough :ro-feed ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :mixer-1 .
 
@@ -506,7 +506,7 @@
 :pretreatment-backwash a watr:Pipe ;
     rdfs:label "pretreatment-backwash" ;
     watr:connectsAt :backwash-handling-in,
-        :media-filtration-out ;
+        :media-filtration-backwash-out ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:hasRole ns2:Role-Backwash .
 
@@ -542,7 +542,7 @@
 
 :pump-1--mixer-1 a watr:Pipe ;
     rdfs:label "pump-1--mixer-1" ;
-    watr:connectsAt :mixer-1-in,
+    watr:connectsAt :mixer-1-pump-1-in,
         :pump-1-out ;
     watr:hasMedium ns2:Water-Seawater .
 
@@ -566,7 +566,7 @@
 
 :pump-2--mixer-1 a watr:Pipe ;
     rdfs:label "pump-2--mixer-1" ;
-    watr:connectsAt :mixer-1-in_2,
+    watr:connectsAt :mixer-1-pump-2-in,
         :pump-2-out ;
     watr:hasMedium ns2:Water-Seawater .
 
@@ -585,7 +585,7 @@
 :pxr-brine-connection-in a watr:Pipe ;
     rdfs:label "pxr-brine-connection-in" ;
     watr:connectsAt :pxr-brine-in,
-        :reverse-osmosis-out ;
+        :ro-concentrate-boundary-out ;
     watr:hasMedium ns2:Water-Brine .
 
 :pxr-brine-connection-out a watr:Pipe ;
@@ -597,7 +597,7 @@
 :pxr-feed-connection-in a watr:Pipe ;
     rdfs:label "pxr-feed-connection-in" ;
     watr:connectsAt :pxr-feed-in,
-        :separator-1-out_2 ;
+        :separator-1-pxr-out ;
     watr:hasMedium ns2:Water-Seawater .
 
 :pxr-feed-connection-out a watr:Pipe ;
@@ -606,41 +606,87 @@
         :pxr-feed-out ;
     watr:hasMedium ns2:Water-Seawater .
 
+:reverse-osmosis-concentrate-out a watr:OutletConnectionPoint ;
+    rdfs:label "reverse-osmosis-concentrate-out" ;
+    watr:connectsThrough :ro-concentrate ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :reverse-osmosis .
+
 :reverse-osmosis-in a watr:InletConnectionPoint ;
     rdfs:label "reverse-osmosis-in" ;
-    watr:connectsThrough :ro-feed ;
-    watr:hasMedium ns2:Water-Seawater ;
+    watr:connectsThrough :ro-membrane-feed ;
+    watr:hasMedium watr:Fluid-Water ;
     watr:isConnectionPointOf :reverse-osmosis .
 
-:reverse-osmosis-out a watr:OutletConnectionPoint ;
-    rdfs:label "reverse-osmosis-out" ;
+:reverse-osmosis-permeate-out a watr:OutletConnectionPoint ;
+    rdfs:label "reverse-osmosis-permeate-out" ;
+    watr:connectsThrough :ro-permeate ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :reverse-osmosis .
+
+:ro-concentrate a watr:Pipe ;
+    rdfs:label "ro-concentrate" ;
+    watr:connectsAt :reverse-osmosis-concentrate-out,
+        :ro-concentrate-boundary-in ;
+    watr:hasMedium watr:Fluid-Water .
+
+:ro-concentrate-boundary a watr:Equipment ;
+    rdfs:label "RO-carrier-to-brine semantic boundary" ;
+    watr:hasConnectionPoint :ro-concentrate-boundary-in,
+        :ro-concentrate-boundary-out .
+
+:ro-concentrate-boundary-in a watr:InletConnectionPoint ;
+    rdfs:label "ro-concentrate-boundary-in" ;
+    watr:connectsThrough :ro-concentrate ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :ro-concentrate-boundary .
+
+:ro-concentrate-boundary-out a watr:OutletConnectionPoint ;
+    rdfs:label "ro-concentrate-boundary-out" ;
     watr:connectsThrough :pxr-brine-connection-in ;
     watr:hasMedium ns2:Water-Brine ;
-    watr:isConnectionPointOf :reverse-osmosis .
-
-:reverse-osmosis-out_2 a watr:OutletConnectionPoint ;
-    rdfs:label "reverse-osmosis-out_2" ;
-    watr:connectsThrough :ro-permeate ;
-    watr:hasMedium ns2:Water-Freshwater ;
-    watr:isConnectionPointOf :reverse-osmosis .
+    watr:isConnectionPointOf :ro-concentrate-boundary .
 
 :ro-feed a watr:Pipe ;
     rdfs:label "ro-feed" ;
     watr:connectsAt :mixer-1-out,
-        :reverse-osmosis-in ;
+        :ro-feed-boundary-in ;
     watr:hasMedium ns2:Water-Seawater .
+
+:ro-feed-boundary a watr:Equipment ;
+    rdfs:label "Seawater-to-RO-carrier semantic boundary" ;
+    watr:hasConnectionPoint :ro-feed-boundary-in,
+        :ro-feed-boundary-out .
+
+:ro-feed-boundary-in a watr:InletConnectionPoint ;
+    rdfs:label "ro-feed-boundary-in" ;
+    watr:connectsThrough :ro-feed ;
+    watr:hasMedium ns2:Water-Seawater ;
+    watr:isConnectionPointOf :ro-feed-boundary .
+
+:ro-feed-boundary-out a watr:OutletConnectionPoint ;
+    rdfs:label "ro-feed-boundary-out" ;
+    watr:connectsThrough :ro-membrane-feed ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :ro-feed-boundary .
+
+:ro-membrane-feed a watr:Pipe ;
+    rdfs:label "ro-membrane-feed" ;
+    watr:connectsAt :reverse-osmosis-in,
+        :ro-feed-boundary-out ;
+    watr:hasMedium watr:Fluid-Water .
 
 :ro-permeate a watr:Pipe ;
     rdfs:label "ro-permeate" ;
     watr:connectsAt :desalination-to-posttreatment-boundary-in,
-        :reverse-osmosis-out_2 ;
-    watr:hasMedium ns2:Water-Freshwater ;
+        :reverse-osmosis-permeate-out ;
+    watr:hasMedium watr:Fluid-Water ;
     watr:hasRole watr:Role-Supply .
 
 :separator-1--pump-1 a watr:Pipe ;
     rdfs:label "separator-1--pump-1" ;
     watr:connectsAt :pump-1-in,
-        :separator-1-out ;
+        :separator-1-pump-out ;
     watr:hasMedium ns2:Water-Seawater .
 
 :separator-1-in a watr:InletConnectionPoint ;
@@ -649,14 +695,14 @@
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :separator-1 .
 
-:separator-1-out a watr:OutletConnectionPoint ;
-    rdfs:label "separator-1-out" ;
+:separator-1-pump-out a watr:OutletConnectionPoint ;
+    rdfs:label "separator-1-pump-out" ;
     watr:connectsThrough :separator-1--pump-1 ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :separator-1 .
 
-:separator-1-out_2 a watr:OutletConnectionPoint ;
-    rdfs:label "separator-1-out_2" ;
+:separator-1-pxr-out a watr:OutletConnectionPoint ;
+    rdfs:label "separator-1-pxr-out" ;
     watr:connectsThrough :pxr-feed-connection-in ;
     watr:hasMedium ns2:Water-Seawater ;
     watr:isConnectionPointOf :separator-1 .
@@ -777,18 +823,18 @@
     watr:hasMedium ns2:Water-Freshwater ;
     watr:isConnectionPointOf :uv-aop .
 
-:media-filtration a ns2:UnitProcess ;
+:media-filtration a ns2:MediaFiltration ;
     rdfs:label "Media filtration" ;
-    watr:hasConnectionPoint :media-filtration-in,
-        :media-filtration-out,
-        :media-filtration-out_2 ;
+    watr:hasConnectionPoint :media-filtration-backwash-out,
+        :media-filtration-in,
+        :media-filtration-product-out ;
     ns2:hasProcess :media-filtration-process .
 
 :mixer-1 a ns2:StaticMixer ;
     rdfs:label "RO feed mixer M1" ;
-    watr:hasConnectionPoint :mixer-1-in,
-        :mixer-1-in_2,
-        :mixer-1-out ;
+    watr:hasConnectionPoint :mixer-1-out,
+        :mixer-1-pump-1-in,
+        :mixer-1-pump-2-in ;
     ns2:hasProcess :ro-feed-mixing-process .
 
 :pxr-brine-in a watr:InletConnectionPoint ;
@@ -819,11 +865,11 @@
     watr:isConnectionPointOf :pressure-exchanger ;
     watr:pairedConnectionPoint :pxr-feed-in .
 
-:reverse-osmosis a ns2:UnitProcess ;
+:reverse-osmosis a ns2:ReverseOsmosisMembrane ;
     rdfs:label "Reverse osmosis" ;
-    watr:hasConnectionPoint :reverse-osmosis-in,
-        :reverse-osmosis-out,
-        :reverse-osmosis-out_2 ;
+    watr:hasConnectionPoint :reverse-osmosis-concentrate-out,
+        :reverse-osmosis-in,
+        :reverse-osmosis-permeate-out ;
     watr:hasProperty :reverse-osmosis-membrane-area,
         :reverse-osmosis-salt-permeability,
         :reverse-osmosis-water-permeability ;
@@ -832,8 +878,8 @@
 :separator-1 a ns2:UnitProcess ;
     rdfs:label "Feed separator S1" ;
     watr:hasConnectionPoint :separator-1-in,
-        :separator-1-out,
-        :separator-1-out_2 ;
+        :separator-1-pump-out,
+        :separator-1-pxr-out ;
     ns2:hasProcess :separator-1-process .
 
 :pressure-exchanger a ns2:PressureExchanger ;
