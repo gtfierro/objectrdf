@@ -1,0 +1,37 @@
+[project]
+name = "objectrdf"
+version = "0.1.0"
+description = "Author RDF building models (Brick, 223P, WATR) as plain typed Python"
+readme = "README.md"
+authors = [
+    { name = "Gabe Fierro", email = "gtfierro@mines.edu" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "ontoenv>=0.5.5",
+    "pyshifty>=0.2.6",
+    "rdflib>=7.6.0",
+    "z3-solver>=5.0.0.0",
+]
+
+[project.scripts]
+objectrdf = "objectrdf.cli:main"
+
+[tool.ruff]
+line-length = 88
+# Generated packages are compiler output; they carry `# ruff: noqa` too.
+extend-exclude = ["src/objectrdf/brick", "src/objectrdf/s223", "src/objectrdf/watr"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["uv_build>=0.11.26,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.15.22",
+    "ty>=0.0.62",
+]

@@ -1,0 +1,67 @@
+{
+  "nodes": [
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pump_as_turbine.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pump_as_turbine.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/s223/_shapes.ttl"
+      },
+      "name": "https://open223.info/223p.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+      },
+      "name": "urn:mini"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+      },
+      "name": "https://open223.info/223p.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/bldg1.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/bldg1.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pressure_exchanger.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pressure_exchanger.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/brick/_shapes.ttl"
+      },
+      "name": "https://brickschema.org/schema/1.4/Brick.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_pretreatment.ttl"
+    }
+  ],
+  "node_holes": [],
+  "edge_property": "directed",
+  "edges": []
+}

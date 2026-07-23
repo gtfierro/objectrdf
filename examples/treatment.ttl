@@ -1,0 +1,69 @@
+@prefix : <urn:example/treatment#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix watr: <http://data.ashrae.org/standard223#> .
+
+<urn:example/treatment> a owl:Ontology ;
+    owl:imports <urn:nawi-water-ontology> .
+
+:product-tank-out a watr:OutletConnectionPoint ;
+    rdfs:label "product-tank-out" ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :product-tank .
+
+:water-source-in a watr:InletConnectionPoint ;
+    rdfs:label "water-source-in" ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :water-source .
+
+:product-tank a <urn:nawi-water-ontology#Tank> ;
+    rdfs:label "product-tank" ;
+    watr:hasConnectionPoint :product-tank-in,
+        :product-tank-out .
+
+:product-tank-in a watr:InletConnectionPoint ;
+    rdfs:label "product-tank-in" ;
+    watr:connectsThrough :transfer-pump--product-tank ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :product-tank .
+
+:transfer-pump a <urn:nawi-water-ontology#Pump> ;
+    rdfs:label "transfer-pump" ;
+    watr:hasConnectionPoint :transfer-pump-in,
+        :transfer-pump-out .
+
+:transfer-pump--product-tank a watr:Pipe ;
+    rdfs:label "transfer-pump--product-tank" ;
+    watr:connectsAt :product-tank-in,
+        :transfer-pump-out ;
+    watr:hasMedium watr:Fluid-Water .
+
+:transfer-pump-in a watr:InletConnectionPoint ;
+    rdfs:label "transfer-pump-in" ;
+    watr:connectsThrough :water-source--transfer-pump ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :transfer-pump .
+
+:transfer-pump-out a watr:OutletConnectionPoint ;
+    rdfs:label "transfer-pump-out" ;
+    watr:connectsThrough :transfer-pump--product-tank ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :transfer-pump .
+
+:water-source a watr:Chiller ;
+    rdfs:label "water-source" ;
+    watr:hasConnectionPoint :water-source-in,
+        :water-source-out .
+
+:water-source--transfer-pump a watr:Pipe ;
+    rdfs:label "water-source--transfer-pump" ;
+    watr:connectsAt :transfer-pump-in,
+        :water-source-out ;
+    watr:hasMedium watr:Fluid-Water .
+
+:water-source-out a watr:OutletConnectionPoint ;
+    rdfs:label "water-source-out" ;
+    watr:connectsThrough :water-source--transfer-pump ;
+    watr:hasMedium watr:Fluid-Water ;
+    watr:isConnectionPointOf :water-source .
+

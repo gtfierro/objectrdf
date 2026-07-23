@@ -1,0 +1,80 @@
+# A miniature ontology exercising everything the compiler handles:
+# hierarchy, labels/definitions, object + datatype properties, inverses,
+# SHACL narrowing (minCount -> required, maxCount 1 -> scalar), and a
+# class-is-shape (223-style) property declaration.
+@prefix mini: <urn:mini#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:mini> a owl:Ontology ;
+    rdfs:label "Mini" ;
+    owl:versionInfo "1.2.3" .
+
+mini:Equipment a owl:Class ;
+    rdfs:label "Equipment" ;
+    skos:definition "A device that does something useful." .
+
+mini:Fan a owl:Class ;
+    rdfs:subClassOf mini:Equipment ;
+    rdfs:label "Fan" ;
+    skos:definition "Moves air using rotating blades." .
+
+mini:ExhaustFan a owl:Class ;
+    rdfs:subClassOf mini:Fan ;
+    rdfs:label "Exhaust Fan" .
+
+mini:Sensor a owl:Class ;
+    rdfs:label "Sensor" ;
+    rdfs:comment "Measures a physical quantity." .
+
+# -- plain domain/range object property with an inverse ---------------------
+
+mini:feeds a owl:ObjectProperty ;
+    rdfs:label "feeds" ;
+    skos:definition "Delivers a flow to the target." ;
+    rdfs:domain mini:Equipment ;
+    rdfs:range mini:Equipment ;
+    owl:inverseOf mini:isFedBy .
+
+mini:isFedBy a owl:ObjectProperty ;
+    rdfs:label "is fed by" ;
+    rdfs:domain mini:Equipment ;
+    rdfs:range mini:Equipment ;
+    owl:inverseOf mini:feeds .
+
+mini:hasSensor a owl:ObjectProperty ;
+    rdfs:label "has sensor" ;
+    rdfs:domain mini:Equipment ;
+    rdfs:range mini:Sensor .
+
+# -- datatype property ------------------------------------------------------
+
+mini:ratedPower a owl:DatatypeProperty ;
+    rdfs:label "rated power" ;
+    rdfs:domain mini:Equipment ;
+    rdfs:range xsd:double .
+
+# -- SHACL: Fan is its own shape (223 style) --------------------------------
+# A Fan must have at least one sensor, and belongs to at most one system
+# (a property introduced only by the shape, not by domain declarations).
+
+mini:Fan a sh:NodeShape ;
+    sh:property [
+        sh:path mini:hasSensor ;
+        sh:class mini:Sensor ;
+        sh:minCount 1 ;
+    ] ;
+    sh:property [
+        sh:path mini:partOfSystem ;
+        sh:class mini:System ;
+        sh:maxCount 1 ;
+    ] .
+
+mini:System a owl:Class ;
+    rdfs:label "System" .
+
+mini:partOfSystem a owl:ObjectProperty ;
+    rdfs:label "part of system" .
