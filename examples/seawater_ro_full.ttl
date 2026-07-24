@@ -359,7 +359,7 @@
 :desalination-to-posttreatment-boundary-in a s223:InletConnectionPoint ;
     rdfs:label "desalination-to-posttreatment-boundary-in" ;
     s223:connectsThrough :ro-permeate ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Water-Freshwater ;
     s223:isConnectionPointOf :desalination-to-posttreatment-boundary .
 
 :desalination-to-posttreatment-boundary-out a s223:OutletConnectionPoint ;
@@ -625,12 +625,6 @@
     s223:hasMedium watr:Water-Seawater ;
     s223:isConnectionPointOf :pump-2 .
 
-:pxr-brine-connection-in a s223:Pipe ;
-    rdfs:label "pxr-brine-connection-in" ;
-    s223:connectsAt :pxr-brine-in,
-        :ro-concentrate-boundary-out ;
-    s223:hasMedium watr:Water-Brine .
-
 :pxr-brine-connection-out a s223:Pipe ;
     rdfs:label "pxr-brine-connection-out" ;
     s223:connectsAt :disposal-in,
@@ -652,81 +646,40 @@
 
 :reverse-osmosis-concentrate-out a s223:OutletConnectionPoint ;
     rdfs:label "reverse-osmosis-concentrate-out" ;
-    s223:connectsThrough :ro-concentrate ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:connectsThrough :ro-concentrate--pxr-brine-connection-in ;
+    s223:hasMedium watr:Water-Brine ;
     s223:isConnectionPointOf :reverse-osmosis .
 
 :reverse-osmosis-in a s223:InletConnectionPoint ;
     rdfs:label "reverse-osmosis-in" ;
-    s223:connectsThrough :ro-membrane-feed ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:connectsThrough :ro-feed ;
+    s223:hasMedium watr:Water-Seawater ;
     s223:isConnectionPointOf :reverse-osmosis .
 
 :reverse-osmosis-permeate-out a s223:OutletConnectionPoint ;
     rdfs:label "reverse-osmosis-permeate-out" ;
     s223:connectsThrough :ro-permeate ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Water-Freshwater ;
     s223:isConnectionPointOf :reverse-osmosis .
 
-:ro-concentrate a s223:Pipe ;
-    rdfs:label "ro-concentrate" ;
-    s223:connectsAt :reverse-osmosis-concentrate-out,
-        :ro-concentrate-boundary-in ;
-    s223:hasMedium s223:Fluid-Water .
-
-:ro-concentrate-boundary a s223:Equipment ;
-    rdfs:label "RO-carrier-to-brine semantic boundary" ;
-    s223:hasConnectionPoint :ro-concentrate-boundary-in,
-        :ro-concentrate-boundary-out .
-
-:ro-concentrate-boundary-in a s223:InletConnectionPoint ;
-    rdfs:label "ro-concentrate-boundary-in" ;
-    s223:connectsThrough :ro-concentrate ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :ro-concentrate-boundary .
-
-:ro-concentrate-boundary-out a s223:OutletConnectionPoint ;
-    rdfs:label "ro-concentrate-boundary-out" ;
-    s223:connectsThrough :pxr-brine-connection-in ;
-    s223:hasMedium watr:Water-Brine ;
-    s223:isConnectionPointOf :ro-concentrate-boundary .
+:ro-concentrate--pxr-brine-connection-in a s223:Pipe ;
+    rdfs:label "ro-concentrate--pxr-brine-connection-in" ;
+    s223:connectsAt :pxr-brine-in,
+        :reverse-osmosis-concentrate-out ;
+    s223:hasMedium watr:Water-Brine .
 
 :ro-feed a s223:Pipe ;
     rdfs:label "ro-feed" ;
     s223:connectsAt :mixer-1-out,
-        :ro-feed-boundary-in ;
+        :reverse-osmosis-in ;
     s223:hasMedium watr:Water-Seawater ;
     s223:hasRole watr:Role-Feed .
-
-:ro-feed-boundary a s223:Equipment ;
-    rdfs:label "Seawater-to-RO-carrier semantic boundary" ;
-    s223:hasConnectionPoint :ro-feed-boundary-in,
-        :ro-feed-boundary-out ;
-    s223:hasRole watr:Role-Feed .
-
-:ro-feed-boundary-in a s223:InletConnectionPoint ;
-    rdfs:label "ro-feed-boundary-in" ;
-    s223:connectsThrough :ro-feed ;
-    s223:hasMedium watr:Water-Seawater ;
-    s223:isConnectionPointOf :ro-feed-boundary .
-
-:ro-feed-boundary-out a s223:OutletConnectionPoint ;
-    rdfs:label "ro-feed-boundary-out" ;
-    s223:connectsThrough :ro-membrane-feed ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :ro-feed-boundary .
-
-:ro-membrane-feed a s223:Pipe ;
-    rdfs:label "ro-membrane-feed" ;
-    s223:connectsAt :reverse-osmosis-in,
-        :ro-feed-boundary-out ;
-    s223:hasMedium s223:Fluid-Water .
 
 :ro-permeate a s223:Pipe ;
     rdfs:label "ro-permeate" ;
     s223:connectsAt :desalination-to-posttreatment-boundary-in,
         :reverse-osmosis-permeate-out ;
-    s223:hasMedium s223:Fluid-Water ;
+    s223:hasMedium watr:Water-Freshwater ;
     s223:hasProperty :reverse-osmosis-permeate-side-pressure ;
     s223:hasRole s223:Role-Supply,
         watr:Role-Permeate .
@@ -899,7 +852,7 @@
 
 :pxr-brine-in a s223:InletConnectionPoint ;
     rdfs:label "pxr-brine-in" ;
-    s223:connectsThrough :pxr-brine-connection-in ;
+    s223:connectsThrough :ro-concentrate--pxr-brine-connection-in ;
     s223:hasMedium watr:Water-Brine ;
     s223:isConnectionPointOf :pressure-exchanger ;
     s223:pairedConnectionPoint :pxr-brine-out .

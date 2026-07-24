@@ -2,21 +2,9 @@
   "nodes": [
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl"
-    },
-    {
-      "location": {
         "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
       },
-      "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl"
-    },
-    {
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pump_as_turbine.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pump_as_turbine.ttl"
+      "name": "urn:example/treatment"
     },
     {
       "location": {
@@ -26,27 +14,15 @@
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+        "url": "http://www.w3.org/2004/02/skos/core"
       },
-      "name": "urn:mini"
+      "name": "http://www.w3.org/2004/02/skos/core"
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+        "url": "http://www.linkedmodel.org/schema/vaem"
       },
-      "name": "https://open223.info/223p.ttl"
-    },
-    {
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/bldg1.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/bldg1.ttl"
-    },
-    {
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pressure_exchanger.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pressure_exchanger.ttl"
+      "name": "http://www.linkedmodel.org/schema/vaem"
     },
     {
       "location": {
@@ -56,12 +32,97 @@
     },
     {
       "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/bldg1.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/bldg1.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full.ttl"
+      },
+      "name": "urn:example/watertap/seawater-ro/full"
+    },
+    {
+      "location": {
         "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
       },
       "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_pretreatment.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+      },
+      "name": "https://open223.info/223p.ttl"
+    },
+    {
+      "location": {
+        "url": "http://qudt.org/3.4.0/qudt-all"
+      },
+      "name": "http://qudt.org/3.4.0/qudt-all"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+      },
+      "name": "urn:nawi-water-ontology"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
+      },
+      "name": "urn:example/watertap/seawater-ro/pretreatment"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+      },
+      "name": "urn:mini"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl"
     }
   ],
   "node_holes": [],
   "edge_property": "directed",
-  "edges": []
+  "edges": [
+    [
+      0,
+      10,
+      null
+    ],
+    [
+      6,
+      10,
+      null
+    ],
+    [
+      6,
+      9,
+      null
+    ],
+    [
+      9,
+      2,
+      null
+    ],
+    [
+      9,
+      3,
+      null
+    ],
+    [
+      11,
+      10,
+      null
+    ]
+  ]
 }

@@ -489,24 +489,16 @@ def build_model() -> Model:
         reverse_osmosis_concentrate_out = reverse_osmosis.port(
             "reverse-osmosis-concentrate-out",
             direction="out",
+            medium=enums.Water_Brine,
         )
         reverse_osmosis_permeate_out = reverse_osmosis.port(
             "reverse-osmosis-permeate-out",
             direction="out",
+            medium=enums.Water_Freshwater,
         )
-        # ReverseOsmosisMembrane is also an S223 Filter. Filter ports must use
-        # compatible media, so the membrane uses Fluid-Water as its carrier
-        # while these explicit semantic boundaries preserve the WaterTAP stream
-        # classifications on either side.
-        ro_feed_boundary = Equipment(
-            "ro-feed-boundary",
-            label="Seawater-to-RO-carrier semantic boundary",
-            has_role=[enums.Role_Feed],
-        )
-        ro_concentrate_boundary = Equipment(
-            "ro-concentrate-boundary",
-            label="RO-carrier-to-brine semantic boundary",
-        )
+        # WaTr models seawater, freshwater, and brine as constituent-bearing
+        # mixtures. Their shared H2O constituent makes the specific stream
+        # media compatible with the S223 Filter constraint on the membrane.
 
         connect(
             pretreatment_to_desalination,
@@ -526,17 +518,11 @@ def build_model() -> Model:
         )
         ro_feed = connect(
             mixer_out,
-            ro_feed_boundary,
+            reverse_osmosis,
             medium=enums.Water_Seawater,
             name="ro-feed",
         )
         ro_feed.has_role.add(enums.Role_Feed)
-        connect(
-            ro_feed_boundary,
-            reverse_osmosis,
-            medium=enums.Fluid_Water,
-            name="ro-membrane-feed",
-        )
         connect(
             separator_pxr_out,
             pxr_feed_in,
@@ -555,15 +541,9 @@ def build_model() -> Model:
         )
         connect(
             reverse_osmosis_concentrate_out,
-            ro_concentrate_boundary,
-            medium=enums.Fluid_Water,
-            name="ro-concentrate",
-        )
-        connect(
-            ro_concentrate_boundary,
             pxr_brine_in,
             medium=enums.Water_Brine,
-            name="pxr-brine-connection-in",
+            name="ro-concentrate--pxr-brine-connection-in",
         )
         brine_disposal = connect(
             pxr_brine_out,
@@ -580,7 +560,7 @@ def build_model() -> Model:
         permeate = connect(
             reverse_osmosis_permeate_out,
             desalination_to_posttreatment,
-            medium=enums.Fluid_Water,
+            medium=enums.Water_Freshwater,
             name="ro-permeate",
         )
         permeate.has_role.add(enums.Role_Permeate)

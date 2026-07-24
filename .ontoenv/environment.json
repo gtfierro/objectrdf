@@ -3,53 +3,21 @@
     {
       "id": {
         "location": {
-          "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
-        },
-        "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl",
-      "imports": [],
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
-      },
-      "last_updated": "2026-07-23T18:25:04.211725Z",
-      "version_properties": {},
-      "namespace_map": {},
-      "content_hash": "253c0264a0f1aeb184108106e7fba42f14813060f4f8804b0af41cfda82b70ce"
-    },
-    {
-      "id": {
-        "location": {
           "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
         },
-        "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl"
+        "name": "urn:example/treatment"
       },
-      "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl",
-      "imports": [],
+      "name": "urn:example/treatment",
+      "imports": [
+        "urn:nawi-water-ontology"
+      ],
       "location": {
         "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
       },
-      "last_updated": "2026-07-23T18:25:04.211721Z",
+      "last_updated": "2026-07-24T16:20:59.396742Z",
       "version_properties": {},
       "namespace_map": {},
-      "content_hash": "abe540209d82023570210f6afad02081e47f3d0cd4f7481f9c109594c78fb631"
-    },
-    {
-      "id": {
-        "location": {
-          "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pump_as_turbine.ttl"
-        },
-        "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pump_as_turbine.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pump_as_turbine.ttl",
-      "imports": [],
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pump_as_turbine.ttl"
-      },
-      "last_updated": "2026-07-23T18:25:04.211715Z",
-      "version_properties": {},
-      "namespace_map": {},
-      "content_hash": "34b90e464c950d242bf40ac3247a7a1748fa41916657e8ba481c42588478713f"
+      "content_hash": "396a2743b0e4c212112772f63ea7de2b843a330e2eb1dca49d2ea305dc85c9b7"
     },
     {
       "id": {
@@ -66,74 +34,91 @@
       "last_updated": "2026-07-23T18:25:04.211726Z",
       "version_properties": {},
       "namespace_map": {
-        "sh": "http://www.w3.org/ns/shacl#",
-        "quantitykind": "http://qudt.org/vocab/quantitykind/",
         "qkdv": "http://qudt.org/vocab/dimensionvector/",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-        "qudtqk": "http://qudt.org/vocab/quantitykind/",
-        "skos": "http://www.w3.org/2004/02/skos/core#",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "dcterms": "http://purl.org/dc/terms/",
-        "qudt": "http://qudt.org/schema/qudt/",
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "unit": "http://qudt.org/vocab/unit/",
+        "quantitykind": "http://qudt.org/vocab/quantitykind/",
         "s223": "http://data.ashrae.org/standard223#",
+        "qudtqk": "http://qudt.org/vocab/quantitykind/",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
         "role": "http://data.ashrae.org/standard223/1.0/vocab/role#",
-        "xsd": "http://www.w3.org/2001/XMLSchema#"
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "qudt": "http://qudt.org/schema/qudt/",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "sh": "http://www.w3.org/ns/shacl#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "unit": "http://qudt.org/vocab/unit/"
       },
       "content_hash": "4773a01b86c4d6897f8b92cc140584405efdd8463ed3fa20327113e3ff9fc301"
     },
     {
       "id": {
         "location": {
-          "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+          "url": "http://www.w3.org/2004/02/skos/core"
         },
-        "name": "urn:mini"
+        "name": "http://www.w3.org/2004/02/skos/core"
       },
-      "name": "urn:mini",
+      "name": "http://www.w3.org/2004/02/skos/core",
       "imports": [],
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+        "url": "http://www.w3.org/2004/02/skos/core"
       },
-      "last_updated": "2026-07-23T18:25:04.211716Z",
+      "last_updated": "2026-07-24T16:20:59.396746Z",
       "version_properties": {
-        "http://www.w3.org/2000/01/rdf-schema#label": "\"Mini\"",
-        "http://www.w3.org/2002/07/owl#versionInfo": "\"1.2.3\""
+        "http://www.w3.org/2000/01/rdf-schema#seeAlso": "<http://www.w3.org/TR/skos-reference/>",
+        "http://purl.org/dc/terms/title": "\"SKOS Vocabulary\"@en"
       },
       "namespace_map": {},
-      "content_hash": "62123ec187275b237980340b36b53f953894182ef8c38133c716cabfacfe96b2"
+      "content_hash": "ff114c5c20184d31e9ccbc59091b689dd108ec94910ed019446b6fdc5855cbfa"
     },
     {
       "id": {
         "location": {
-          "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+          "url": "http://www.linkedmodel.org/schema/vaem"
         },
-        "name": "https://open223.info/223p.ttl"
+        "name": "http://www.linkedmodel.org/schema/vaem"
       },
-      "name": "https://open223.info/223p.ttl",
+      "name": "http://www.linkedmodel.org/schema/vaem",
       "imports": [],
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+        "url": "http://www.linkedmodel.org/schema/vaem"
       },
-      "last_updated": "2026-07-23T18:25:04.211712Z",
+      "last_updated": "2026-07-24T16:20:59.396747Z",
+      "version_properties": {},
+      "namespace_map": {},
+      "content_hash": "428dd9c5e992169aaafbc120d79add28b70844c79021c8a93a3d3397519a7d71"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./src/objectrdf/brick/_shapes.ttl"
+        },
+        "name": "https://brickschema.org/schema/1.4/Brick.ttl"
+      },
+      "name": "https://brickschema.org/schema/1.4/Brick.ttl",
+      "imports": [],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/brick/_shapes.ttl"
+      },
+      "last_updated": "2026-07-23T18:25:04.211720Z",
       "version_properties": {},
       "namespace_map": {
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "s223": "http://data.ashrae.org/standard223#",
-        "qudtqk": "http://qudt.org/vocab/quantitykind/",
-        "role": "http://data.ashrae.org/standard223/1.0/vocab/role#",
-        "sh": "http://www.w3.org/ns/shacl#",
-        "quantitykind": "http://qudt.org/vocab/quantitykind/",
-        "dcterms": "http://purl.org/dc/terms/",
-        "skos": "http://www.w3.org/2004/02/skos/core#",
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
         "unit": "http://qudt.org/vocab/unit/",
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "rec": "https://w3id.org/rec#",
+        "ref": "https://brickschema.org/schema/Brick/ref#",
+        "dcterms": "http://purl.org/dc/terms/",
+        "brick": "https://brickschema.org/schema/Brick#",
+        "sh": "http://www.w3.org/ns/shacl#",
+        "qkdv": "http://qudt.org/vocab/dimensionvector/",
+        "quantitykind": "http://qudt.org/vocab/quantitykind/",
         "qudt": "http://qudt.org/schema/qudt/",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
         "owl": "http://www.w3.org/2002/07/owl#",
-        "qkdv": "http://qudt.org/vocab/dimensionvector/"
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "s223": "http://data.ashrae.org/standard223#"
       },
-      "content_hash": "a5ab55f4c500a01492643d1c6bea2e162c5f76429e4c7c3672db6d2aa21e60e0"
+      "content_hash": "99a6e5e2f18488927d22d04c06e9a14bb07241034df62a8ad8f3bd6afbb4c70c"
     },
     {
       "id": {
@@ -155,51 +140,24 @@
     {
       "id": {
         "location": {
-          "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pressure_exchanger.ttl"
+          "file": "/Users/gabe/src/objectrdf/examples/seawater_ro_full.ttl"
         },
-        "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pressure_exchanger.ttl"
+        "name": "urn:example/watertap/seawater-ro/full"
       },
-      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_full_pressure_exchanger.ttl",
-      "imports": [],
+      "name": "urn:example/watertap/seawater-ro/full",
+      "imports": [
+        "urn:nawi-water-ontology",
+        "http://qudt.org/3.4.0/qudt-all"
+      ],
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full_pressure_exchanger.ttl"
+        "file": "/Users/gabe/src/objectrdf/examples/seawater_ro_full.ttl"
       },
-      "last_updated": "2026-07-23T18:25:04.211717Z",
-      "version_properties": {},
+      "last_updated": "2026-07-24T16:20:59.396735Z",
+      "version_properties": {
+        "http://www.w3.org/2000/01/rdf-schema#label": "\"WaTr seawater RO reference\""
+      },
       "namespace_map": {},
-      "content_hash": "0d9829d2af9ee3165af929685be8c40f6a0c5ef33568d9ec171a0f45c12af073"
-    },
-    {
-      "id": {
-        "location": {
-          "file": "/Users/gabe/src/objectrdf/./src/objectrdf/brick/_shapes.ttl"
-        },
-        "name": "https://brickschema.org/schema/1.4/Brick.ttl"
-      },
-      "name": "https://brickschema.org/schema/1.4/Brick.ttl",
-      "imports": [],
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/brick/_shapes.ttl"
-      },
-      "last_updated": "2026-07-23T18:25:04.211720Z",
-      "version_properties": {},
-      "namespace_map": {
-        "brick": "https://brickschema.org/schema/Brick#",
-        "unit": "http://qudt.org/vocab/unit/",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-        "sh": "http://www.w3.org/ns/shacl#",
-        "s223": "http://data.ashrae.org/standard223#",
-        "quantitykind": "http://qudt.org/vocab/quantitykind/",
-        "skos": "http://www.w3.org/2004/02/skos/core#",
-        "rec": "https://w3id.org/rec#",
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "qudt": "http://qudt.org/schema/qudt/",
-        "dcterms": "http://purl.org/dc/terms/",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "qkdv": "http://qudt.org/vocab/dimensionvector/",
-        "ref": "https://brickschema.org/schema/Brick/ref#"
-      },
-      "content_hash": "99a6e5e2f18488927d22d04c06e9a14bb07241034df62a8ad8f3bd6afbb4c70c"
+      "content_hash": "d79d558fad9499d77a96832cdccbfcc863cbfd29018b8aae1f7567377a96a3ba"
     },
     {
       "id": {
@@ -217,6 +175,157 @@
       "version_properties": {},
       "namespace_map": {},
       "content_hash": "e989f8af6e49875ae67b829e0595a31d465a70cad3d84e8ebef312a32d6cf52c"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+        },
+        "name": "https://open223.info/223p.ttl"
+      },
+      "name": "https://open223.info/223p.ttl",
+      "imports": [],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+      },
+      "last_updated": "2026-07-23T18:25:04.211712Z",
+      "version_properties": {},
+      "namespace_map": {
+        "unit": "http://qudt.org/vocab/unit/",
+        "role": "http://data.ashrae.org/standard223/1.0/vocab/role#",
+        "qudt": "http://qudt.org/schema/qudt/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "s223": "http://data.ashrae.org/standard223#",
+        "qudtqk": "http://qudt.org/vocab/quantitykind/",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "sh": "http://www.w3.org/ns/shacl#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "quantitykind": "http://qudt.org/vocab/quantitykind/",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "qkdv": "http://qudt.org/vocab/dimensionvector/"
+      },
+      "content_hash": "a5ab55f4c500a01492643d1c6bea2e162c5f76429e4c7c3672db6d2aa21e60e0"
+    },
+    {
+      "id": {
+        "location": {
+          "url": "http://qudt.org/3.4.0/qudt-all"
+        },
+        "name": "http://qudt.org/3.4.0/qudt-all"
+      },
+      "name": "http://qudt.org/3.4.0/qudt-all",
+      "imports": [
+        "http://www.w3.org/2004/02/skos/core",
+        "http://www.linkedmodel.org/schema/vaem"
+      ],
+      "location": {
+        "url": "http://qudt.org/3.4.0/qudt-all"
+      },
+      "last_updated": "2026-07-24T16:20:59.396744Z",
+      "version_properties": {
+        "http://www.w3.org/2000/01/rdf-schema#label": "\"QUDT Collection Metadata Version 3.4.0\"",
+        "http://www.w3.org/2000/01/rdf-schema#isDefinedBy": "<http://qudt.org/3.4.0/qudt-all>",
+        "http://purl.org/dc/terms/modified": "\"2026-06-25T12:34:17Z\"^^<http://www.w3.org/2001/XMLSchema#dateTime>",
+        "http://purl.org/dc/terms/title": "\"QUDT Collection - Version 3.4.0\"",
+        "http://www.w3.org/2002/07/owl#versionIRI": "<http://qudt.org/3.4.0/qudt-all>",
+        "http://purl.org/dc/terms/created": "\"2025-05-12\"^^<http://www.w3.org/2001/XMLSchema#date>"
+      },
+      "namespace_map": {},
+      "content_hash": "53b881c6a71e65c9955be72ef797e920018fbb13290cdf737f5cd42ce00894e9"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+        },
+        "name": "urn:nawi-water-ontology"
+      },
+      "name": "urn:nawi-water-ontology",
+      "imports": [],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
+      },
+      "last_updated": "2026-07-24T16:20:59.396732Z",
+      "version_properties": {},
+      "namespace_map": {
+        "sh": "http://www.w3.org/ns/shacl#"
+      },
+      "content_hash": "3542e2692ad56f2281a15a529827e18ed8c52a545982475e25b778e5085694fc"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
+        },
+        "name": "urn:example/watertap/seawater-ro/pretreatment"
+      },
+      "name": "urn:example/watertap/seawater-ro/pretreatment",
+      "imports": [
+        "urn:nawi-water-ontology"
+      ],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
+      },
+      "last_updated": "2026-07-24T16:20:59.396729Z",
+      "version_properties": {},
+      "namespace_map": {},
+      "content_hash": "f5d4fedfca3a9ca5387fc5cbcf442082e695d73b50e8e2b77375374f89247a95"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
+        },
+        "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl",
+      "imports": [],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
+      },
+      "last_updated": "2026-07-23T18:25:04.211725Z",
+      "version_properties": {},
+      "namespace_map": {},
+      "content_hash": "253c0264a0f1aeb184108106e7fba42f14813060f4f8804b0af41cfda82b70ce"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+        },
+        "name": "urn:mini"
+      },
+      "name": "urn:mini",
+      "imports": [],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./tests/fixtures/mini.ttl"
+      },
+      "last_updated": "2026-07-23T18:25:04.211716Z",
+      "version_properties": {
+        "http://www.w3.org/2002/07/owl#versionInfo": "\"1.2.3\"",
+        "http://www.w3.org/2000/01/rdf-schema#label": "\"Mini\""
+      },
+      "namespace_map": {},
+      "content_hash": "62123ec187275b237980340b36b53f953894182ef8c38133c716cabfacfe96b2"
+    },
+    {
+      "id": {
+        "location": {
+          "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
+        },
+        "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl"
+      },
+      "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl",
+      "imports": [],
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
+      },
+      "last_updated": "2026-07-23T18:25:04.211721Z",
+      "version_properties": {},
+      "namespace_map": {},
+      "content_hash": "abe540209d82023570210f6afad02081e47f3d0cd4f7481f9c109594c78fb631"
     }
   ],
   "default_policy": "default",

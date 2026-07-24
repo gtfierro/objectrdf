@@ -1656,14 +1656,14 @@ Water_HotWater = _EnumValue('http://data.ashrae.org/standard223#Water-HotWater',
 """Water-Hot water"""
 Water_Steam = _EnumValue('http://data.ashrae.org/standard223#Water-Steam', label='Steam', definition='Water-Steam', parent=Fluid_Water)
 """Water-Steam"""
-Water_Brackish = _EnumValue('urn:nawi-water-ontology#Water-Brackish', label='Water-Brackish', definition='Water-Brackish', parent=Fluid_Water)
-"""Water-Brackish"""
-Water_Brine = _EnumValue('urn:nawi-water-ontology#Water-Brine', label='Water-Brine', definition='Water-Brine', parent=Fluid_Water)
-"""Water-Brine"""
-Water_Freshwater = _EnumValue('urn:nawi-water-ontology#Water-Freshwater', label='Water-Freshwater', definition='Water-Freshwater', parent=Fluid_Water)
-"""Water-Freshwater"""
-Water_Seawater = _EnumValue('urn:nawi-water-ontology#Water-Seawater', label='Water-Seawater', definition='Water-Seawater', parent=Fluid_Water)
-"""Water-Seawater"""
+Water_Brackish = _EnumValue('urn:nawi-water-ontology#Water-Brackish', label='Water-Brackish', definition='Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=Fluid_Water)
+"""Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
+Water_Brine = _EnumValue('urn:nawi-water-ontology#Water-Brine', label='Water-Brine', definition='Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=Fluid_Water)
+"""Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
+Water_Freshwater = _EnumValue('urn:nawi-water-ontology#Water-Freshwater', label='Water-Freshwater', definition='Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media.', parent=Fluid_Water)
+"""Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media."""
+Water_Seawater = _EnumValue('urn:nawi-water-ontology#Water-Seawater', label='Water-Seawater', definition='Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=Fluid_Water)
+"""Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
 Fluid_Sludge = _EnumValue('urn:nawi-water-ontology#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry composed of water and solids.', parent=Mix_Fluid)
 """A semi-solid slurry composed of water and solids."""
 Sludge_MixedLiquor = _EnumValue('urn:nawi-water-ontology#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=Fluid_Sludge)
