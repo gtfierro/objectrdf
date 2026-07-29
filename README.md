@@ -24,6 +24,27 @@ The ontology classes are generated code, so editors and type checkers see
 everything: completion, ontology definitions on hover, and type errors when a
 link's range doesn't fit.
 
+## Install and run the examples
+
+Objectrdf requires Python 3.12 or newer. From a checkout of this repository,
+install the project and its dependencies with
+[uv](https://docs.astral.sh/uv/):
+
+```bash
+uv sync
+```
+
+Then run an example from the repository root:
+
+```bash
+uv run python examples/brick/quickstart/brick_quickstart.py
+uv run python examples/s223/ahu/s223_quickstart.py
+uv run python examples/watr/treatment/watr_quickstart.py
+```
+
+Each example prints a short summary and writes its generated Turtle file next
+to the example script. See [examples/](examples/) for more scenarios.
+
 - Docs: [docs/index.md](docs/index.md)
 - Query existing RDF as typed objects: [docs/querying.md](docs/querying.md)
 - Z3 resolution and media hints: [docs/s223.md](docs/s223.md#giving-the-solver-media-hints)
