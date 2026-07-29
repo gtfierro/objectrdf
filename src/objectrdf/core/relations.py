@@ -49,6 +49,7 @@ class RelSet(Generic[T]):
         """Link one or more target entities. Duplicates are ignored."""
         self._owner._model._assert_mutable()
         changed = False
+        changed_items: list[T] = []
         for item in items:
             self._owner._check_range(self._spec, item)
             if item in self._items:
@@ -56,15 +57,16 @@ class RelSet(Generic[T]):
             self._items.append(item)
             _link_inverse(self._owner, self._spec, item)
             changed = True
+            changed_items.append(item)
         if changed:
-            self._owner._model._touch(self._owner)
+            self._owner._model._touch(self._owner, *changed_items)
 
     def remove(self, item: T) -> None:
         """Unlink a target entity (and the mirrored inverse edge)."""
         self._owner._model._assert_mutable()
         self._items.remove(item)
         _unlink_inverse(self._owner, self._spec, item)
-        self._owner._model._touch(self._owner)
+        self._owner._model._touch(self._owner, item)
 
     def clear(self) -> None:
         """Unlink everything."""
@@ -150,7 +152,7 @@ class RelOne(Generic[T]):
         obj._data[self.spec.name] = value
         if value is not None:
             _link_inverse(obj, self.spec, value)
-        obj._model._touch(obj)
+        obj._model._touch(obj, previous, value)
 
 
 class TermOne(Generic[V]):

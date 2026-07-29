@@ -38,6 +38,7 @@ oad >> Fan("supply-fan")    # media negotiated, Duct created, inverses set
 ## Documentation
 
 - [Authoring models](authoring.md) — the Model, containment, `>>`, validation
+- [Querying existing models](querying.md) — hydrate RDF as typed objects
 - [Authoring 223P](s223.md) — enums, connection negotiation, 223 specifics
 - [Authoring WaTr](watr.md) — water-treatment classes on the S223 topology model
 - [Code generation](codegen.md) — how ontologies become Python packages
@@ -49,9 +50,9 @@ oad >> Fan("supply-fan")    # media negotiated, Duct created, inverses set
 ## Status
 
 Phases 1–2 (see DESIGN.md §13): core runtime + compiler + generated Brick
-1.4, 223P, and WaTr packages, including enum namespaces and deferred
-connection compilation. BuildingMOTIF templates and round-trip loading are
-subsequent phases.
+1.4, 223P, and WaTr packages, including enum namespaces, deferred connection
+compilation, and a mutable typed object view over existing RDF graphs.
+BuildingMOTIF templates and broader round-trip coverage are subsequent phases.
 
 ## Development
 

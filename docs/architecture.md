@@ -2,10 +2,12 @@
 
 ```
 user script
-    │  plain typed Python
+    │  plain typed Python                     existing RDF graph
     ▼
 generated package (objectrdf.brick, ...)      ← output of objectrdf.gen
-    │  classes, PropertySpecs, overlay registrations
+    │  classes, PropertySpecs, registries          │
+    │                                              ▼
+    │                                      query hydration (core/query.py)
     ▼
 runtime core (objectrdf.core)
     │  Entity / Model / descriptors / deferred intentions
@@ -39,9 +41,15 @@ rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
   and applies the first matching rule, raising with guidance otherwise.
 - **`model.py`** — namespace, IRI minting, name uniqueness, entity lookup,
   revision tracking, resolution caching, and the only rdflib-touching
-  serializer. Serialization and validation operate on resolved snapshots;
-  output graphs declare an `owl:Ontology` and import the generated packages
-  and compiled vocabularies they reference.
+  serializer. It also exposes typed selection and tracked mutation over loaded
+  graphs.
+  Serialization and validation of authored models operate on resolved
+  snapshots; output graphs declare an `owl:Ontology` and import the generated
+  packages and compiled vocabularies they reference.
+- **`query.py`** — optionally runs shifty inference, chooses the most-specific
+  generated class for each typed RDF resource, hydrates generated attributes,
+  and implements the `find`/`find_all` filter semantics. Generated attribute
+  changes replace their managed triples while unmodeled RDF is preserved.
 - **`resolution.py`** — stable authored `ConnectionHandle`s, staged generated
   property collections, and the `ResolutionReport`/`ResolvedModel` public API.
 - **`validation.py`** — runs shifty, then translates the standard SHACL
@@ -98,4 +106,4 @@ is deterministic).
 ## Later phases
 
 - BuildingMOTIF templates as generated subclasses; `as_template()` export;
-- round-trip loading of existing TTL into objects.
+- blank-node hydration and refresh after direct rdflib mutations.

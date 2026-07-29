@@ -73,7 +73,13 @@ def test_quickstart_example_runs(tmp_path):
     import shutil
     from pathlib import Path
 
-    example = Path(__file__).parent.parent / "examples" / "brick_quickstart.py"
+    example = (
+        Path(__file__).parent.parent
+        / "examples"
+        / "brick"
+        / "quickstart"
+        / "brick_quickstart.py"
+    )
     target = tmp_path / "brick_quickstart.py"
     shutil.copy(example, target)
     runpy.run_path(str(target))

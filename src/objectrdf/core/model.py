@@ -15,7 +15,7 @@ from __future__ import annotations
 import re
 from contextvars import ContextVar, Token
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Iterable, Iterator, Mapping
+from typing import TYPE_CHECKING, Any, Iterable, Iterator, Mapping, TypeVar
 from urllib.parse import quote
 
 import rdflib
@@ -26,11 +26,13 @@ from .errors import ModelingError
 if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
+    from .meta import Registry
     from .resolution import ConnectionHandle, PortHandle, ResolutionReport, ResolvedModel
     from .validation import ValidationReport
 
 #: The ambient model set by ``with Model(...)`` blocks.
 _current: ContextVar[Model | None] = ContextVar("objectrdf_model", default=None)
+_EntityT = TypeVar("_EntityT", bound="Entity")
 
 
 def current_model() -> Model | None:
@@ -81,6 +83,8 @@ class Model:
         self._component_cache: dict[tuple[Any, ...], Any] = {}
         self._frozen = False
         self._resolving = False
+        self._loaded_graph: rdflib.Graph | None = None
+        self._managed_triples: dict[str, set[tuple[Any, Any, Any]]] = {}
 
     # -- ambient binding --------------------------------------------------
 
@@ -106,6 +110,20 @@ class Model:
         self._by_iri[entity._iri] = entity
         self._touch(entity)
 
+    def _bind_loaded(self, entity: Entity, iri: str, name: str) -> None:
+        """Index an entity hydrated from an existing graph without minting an IRI."""
+        candidate = name
+        suffix = 2
+        while candidate in self._by_name:
+            candidate = f"{name}_{suffix}"
+            suffix += 1
+        entity._name = candidate
+        entity._iri = iri
+        entity._model = self
+        self.entities.append(entity)
+        self._by_name[candidate] = entity
+        self._by_iri[iri] = entity
+
     def _unbind(self, entity: Entity) -> None:
         """Remove a partially constructed entity (failed __init__)."""
         self.entities.remove(entity)
@@ -122,6 +140,54 @@ class Model:
         self._assert_mutable()
         self._revision += 1
         self._resolved_cache = None
+        if self._loaded_graph is not None:
+            self._sync_loaded_graph(*entities)
+
+    def _sync_loaded_graph(self, *objects: object) -> None:
+        """Replace touched objects' managed triples, preserving all other RDF."""
+        if self._loaded_graph is None:  # pragma: no cover - caller invariant
+            return
+        from .entity import Entity as EntityBase
+
+        touched: dict[str, Entity] = {}
+        for obj in objects:
+            entity = getattr(obj, "owner", obj)
+            if isinstance(entity, EntityBase):
+                touched[entity._iri] = entity
+        for iri, entity in touched.items():
+            for triple in self._managed_triples.get(iri, ()):
+                self._loaded_graph.remove(triple)
+            current: set[tuple[Any, Any, Any]] = set()
+            if self._by_iri.get(iri) is entity:
+                current.update(self._entity_triples(entity))
+                for triple in current:
+                    self._loaded_graph.add(triple)
+                self._managed_triples[iri] = current
+            else:
+                self._managed_triples.pop(iri, None)
+
+    def _entity_triples(self, entity: Entity) -> Iterator[tuple[Any, Any, Any]]:
+        """Yield the RDF projection controlled by one generated object."""
+        subject = URIRef(entity._iri)
+        yield subject, RDF.type, URIRef(entity._classinfo_effective().iri)
+        yield subject, RDFS.label, Literal(entity.label)
+        if entity.comment is not None:
+            yield subject, RDFS.comment, Literal(entity.comment)
+        for spec, value in entity._property_values():
+            if spec.kind == "object":
+                obj = URIRef(value.iri if hasattr(value, "iri") else value._iri)
+            elif spec.kind in {"enum", "term"}:
+                obj = URIRef(value.iri)
+            elif spec.kind == "value":
+                if hasattr(value, "_iri"):
+                    obj = URIRef(value._iri)
+                elif hasattr(value, "iri"):
+                    obj = URIRef(value.iri)
+                else:
+                    obj = Literal(value)
+            else:
+                obj = Literal(value)
+            yield subject, URIRef(spec.predicate), obj
 
     def _defer_connection(
         self,
@@ -136,6 +202,12 @@ class Model:
         from .resolution import ConnectionHandle, PortHandle
 
         self._assert_mutable()
+        if self._loaded_graph is not None:
+            raise ModelingError(
+                "deferred S223/WaTr connections cannot yet be added to a "
+                "graph-backed model; edit its concrete Connection and "
+                "ConnectionPoint objects instead"
+            )
         source_owner = source.owner if isinstance(source, PortHandle) else source
         target_owner = target.owner if isinstance(target, PortHandle) else target
         if source_owner.meta.model is not self or target_owner.meta.model is not self:
@@ -175,6 +247,11 @@ class Model:
         from .resolution import PortHandle
 
         self._assert_mutable()
+        if self._loaded_graph is not None:
+            raise ModelingError(
+                "deferred S223/WaTr ports cannot yet be added to a "
+                "graph-backed model; create a concrete ConnectionPoint instead"
+            )
         if direction not in {"in", "out", "bi"}:
             raise ValueError("port direction must be 'in', 'out', or 'bi'")
         if owner.meta.model is not self:
@@ -206,22 +283,98 @@ class Model:
 
     def system(self, name: str, *, label: str | None = None) -> _SystemScope:
         """Collect equipment created in a scope into an S223 System."""
+        if self._loaded_graph is not None:
+            raise ModelingError(
+                "deferred system scopes cannot yet be added to a graph-backed "
+                "model; create a concrete System and edit has_member instead"
+            )
         return _SystemScope(self, name, label=label)
 
     # -- lookup -----------------------------------------------------------
 
     def __getitem__(self, name: str) -> Entity:
-        """Look an entity up by its local name."""
+        """Look an entity up by its local name or full instance IRI."""
         try:
-            return self._by_name[name]
+            return self._by_name.get(name) or self._by_iri[name]
         except KeyError:
-            raise KeyError(f"no entity named {name!r} in this model") from None
+            raise KeyError(f"no entity named or identified by {name!r}") from None
 
     def __iter__(self) -> Iterator[Entity]:
         return iter(self.entities)
 
     def __len__(self) -> int:
         return len(self.entities)
+
+    @classmethod
+    def from_graph(
+        cls,
+        source: rdflib.Graph | str | Path,
+        *,
+        registries: Registry | Iterable[Registry],
+        namespace: str | None = None,
+        infer: bool = False,
+        shapes: rdflib.Graph | str | Path | None = None,
+        strict: bool = True,
+    ) -> Model:
+        """Hydrate a mutable object model backed by an RDF graph.
+
+        ``registries`` tells the loader which generated ontology packages to
+        use, for example ``Fan.meta.registry``. When ``infer`` is true,
+        shifty applies SHACL-AF rules before objects and their relationships
+        are materialized. Mutating generated attributes writes through to the
+        graph; RDF outside the generated object projection is preserved.
+        Unknown RDF classes remain in :meth:`graph` but are not exposed as
+        Python objects.
+        """
+        from .query import load_graph
+
+        return load_graph(
+            cls,
+            source,
+            registries=registries,
+            namespace=namespace,
+            infer=infer,
+            shapes=shapes,
+            strict=strict,
+        )
+
+    def find_all(
+        self,
+        entity_type: type[_EntityT],
+        /,
+        **attributes: object,
+    ) -> list[_EntityT]:
+        """Return objects of ``entity_type`` matching the given attributes.
+
+        Subclasses are included. For multi-valued relationships an attribute
+        filter means membership, so ``find_all(AHU, feeds=vav)`` works as
+        expected.
+        """
+        from .query import matches
+
+        return [
+            entity
+            for entity in self.entities
+            if isinstance(entity, entity_type) and matches(entity, attributes)
+        ]
+
+    def find(
+        self,
+        entity_type: type[_EntityT],
+        /,
+        **attributes: object,
+    ) -> _EntityT | None:
+        """Return the first matching object, or ``None``."""
+        from .query import matches
+
+        return next(
+            (
+                entity
+                for entity in self.entities
+                if isinstance(entity, entity_type) and matches(entity, attributes)
+            ),
+            None,
+        )
 
     # -- RDF output -------------------------------------------------------
 
@@ -330,6 +483,12 @@ class Model:
 
     def graph(self) -> rdflib.Graph:
         """Resolve the authored model and return its concrete RDF graph."""
+        if self._loaded_graph is not None:
+            graph = rdflib.Graph()
+            for prefix, namespace in self._loaded_graph.namespaces():
+                graph.bind(prefix, namespace, replace=True)
+            graph += self._loaded_graph
+            return graph
         return self.resolve().graph()
 
     def save(self, path: str | Path, *, format: str | None = None) -> None:

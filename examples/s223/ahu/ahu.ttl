@@ -1,0 +1,191 @@
+@prefix : <urn:example/ahu#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+
+:tsta-1 a s223:Thermostat ;
+    rdfs:label "tsta-1" ;
+    s223:hasPhysicalLocation :mech-room .
+
+:ahu-1-in a s223:InletConnectionPoint ;
+    rdfs:label "ahu-1-in" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :ahu-1 .
+
+:ahu-1-out a s223:OutletConnectionPoint ;
+    rdfs:label "ahu-1-out" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :ahu-1 .
+
+:coil-air-in a s223:InletConnectionPoint ;
+    rdfs:label "coil-air-in" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :chilled_water_coil_1 .
+
+:coil-air-out a s223:OutletConnectionPoint ;
+    rdfs:label "coil-air-out" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :chilled_water_coil_1 .
+
+:mech-room a s223:PhysicalSpace ;
+    rdfs:label "mech-room" ;
+    s223:encloses :zone-1 .
+
+:oa-damper-in a s223:InletConnectionPoint ;
+    rdfs:label "oa-damper-in" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :oa-damper .
+
+:primary-pump-in a s223:InletConnectionPoint ;
+    rdfs:label "primary-pump-in" ;
+    s223:hasMedium s223:Water-ChilledWater ;
+    s223:isConnectionPointOf :primary-pump .
+
+:standby-pump-out a s223:OutletConnectionPoint ;
+    rdfs:label "standby-pump-out" ;
+    s223:hasMedium s223:Water-ChilledWater ;
+    s223:isConnectionPointOf :standby-pump .
+
+:supply-fan-out a s223:OutletConnectionPoint ;
+    rdfs:label "supply-fan-out" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :supply-fan .
+
+:zone-1 a s223:DomainSpace ;
+    rdfs:label "zone-1" ;
+    s223:hasDomain s223:Domain-HVAC .
+
+:ahu-1 a s223:AirHandlingUnit ;
+    rdfs:label "ahu-1" ;
+    s223:contains :chilled_water_coil_1,
+        :oa-damper,
+        :supply-fan ;
+    s223:hasConnectionPoint :ahu-1-in,
+        :ahu-1-out .
+
+:chilled_water_coil_1--chiller1 a s223:Pipe ;
+    rdfs:label "chilled_water_coil_1--chiller1" ;
+    s223:connectsAt :chiller1-in,
+        :coil-water-out ;
+    s223:hasMedium s223:Fluid-Water .
+
+:chiller1 a s223:Chiller ;
+    rdfs:label "chiller1" ;
+    s223:hasConnectionPoint :chiller1-in,
+        :chiller1-out .
+
+:chiller1--chw-pump2 a s223:Pipe ;
+    rdfs:label "chiller1--chw-pump2" ;
+    s223:connectsAt :chiller1-out,
+        :chw-pump2-in ;
+    s223:hasMedium s223:Fluid-Water .
+
+:chiller1-in a s223:InletConnectionPoint ;
+    rdfs:label "chiller1-in" ;
+    s223:connectsThrough :chilled_water_coil_1--chiller1 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chiller1 .
+
+:chiller1-out a s223:OutletConnectionPoint ;
+    rdfs:label "chiller1-out" ;
+    s223:connectsThrough :chiller1--chw-pump2 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chiller1 .
+
+:chw-pump2 a s223:Pump ;
+    rdfs:label "chw-pump2" ;
+    s223:hasConnectionPoint :chw-pump2-in,
+        :chw-pump2-out .
+
+:chw-pump2--chilled_water_coil_1 a s223:Pipe ;
+    rdfs:label "chw-pump2--chilled_water_coil_1" ;
+    s223:connectsAt :chw-pump2-out,
+        :coil-water-in ;
+    s223:hasMedium s223:Fluid-Water .
+
+:chw-pump2-in a s223:InletConnectionPoint ;
+    rdfs:label "chw-pump2-in" ;
+    s223:connectsThrough :chiller1--chw-pump2 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chw-pump2 .
+
+:chw-pump2-out a s223:OutletConnectionPoint ;
+    rdfs:label "chw-pump2-out" ;
+    s223:connectsThrough :chw-pump2--chilled_water_coil_1 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chw-pump2 .
+
+:coil-water-in a s223:InletConnectionPoint ;
+    rdfs:label "coil-water-in" ;
+    s223:connectsThrough :chw-pump2--chilled_water_coil_1 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chilled_water_coil_1 .
+
+:coil-water-out a s223:OutletConnectionPoint ;
+    rdfs:label "coil-water-out" ;
+    s223:connectsThrough :chilled_water_coil_1--chiller1 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chilled_water_coil_1 .
+
+:oa-damper--supply-fan a s223:Duct ;
+    rdfs:label "supply duct" ;
+    s223:connectsAt :oa-damper-out,
+        :supply-fan-in ;
+    s223:hasMedium s223:Fluid-Air .
+
+:oa-damper-out a s223:OutletConnectionPoint ;
+    rdfs:label "oa-damper-out" ;
+    s223:connectsThrough :oa-damper--supply-fan ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :oa-damper .
+
+:primary-pump a s223:Pump ;
+    rdfs:label "primary-pump" ;
+    s223:hasConnectionPoint :primary-pump-in,
+        :primary-pump-out .
+
+:primary-pump--standby-pump a s223:Pipe ;
+    rdfs:label "primary-pump--standby-pump" ;
+    s223:connectsAt :primary-pump-out,
+        :standby-pump-in ;
+    s223:hasMedium s223:Water-ChilledWater .
+
+:primary-pump-out a s223:OutletConnectionPoint ;
+    rdfs:label "primary-pump-out" ;
+    s223:connectsThrough :primary-pump--standby-pump ;
+    s223:hasMedium s223:Water-ChilledWater ;
+    s223:isConnectionPointOf :primary-pump .
+
+:standby-pump a s223:Pump ;
+    rdfs:label "standby-pump" ;
+    s223:hasConnectionPoint :standby-pump-in,
+        :standby-pump-out .
+
+:standby-pump-in a s223:InletConnectionPoint ;
+    rdfs:label "standby-pump-in" ;
+    s223:connectsThrough :primary-pump--standby-pump ;
+    s223:hasMedium s223:Water-ChilledWater ;
+    s223:isConnectionPointOf :standby-pump .
+
+:supply-fan-in a s223:InletConnectionPoint ;
+    rdfs:label "supply-fan-in" ;
+    s223:connectsThrough :oa-damper--supply-fan ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :supply-fan .
+
+:oa-damper a s223:Damper ;
+    rdfs:label "oa-damper" ;
+    s223:hasConnectionPoint :oa-damper-in,
+        :oa-damper-out .
+
+:supply-fan a s223:Fan ;
+    rdfs:label "supply-fan" ;
+    s223:hasConnectionPoint :supply-fan-in,
+        :supply-fan-out .
+
+:chilled_water_coil_1 a <http://data.ashrae.org/standard223/1.0/extensions/g36#ChilledWaterCoil> ;
+    rdfs:label "chilled_water_coil_1" ;
+    s223:hasConnectionPoint :coil-air-in,
+        :coil-air-out,
+        :coil-water-in,
+        :coil-water-out .
+

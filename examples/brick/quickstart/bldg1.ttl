@@ -1,0 +1,57 @@
+@prefix : <urn:example/bldg1#> .
+@prefix brick: <https://brickschema.org/schema/Brick#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:bldg1 a brick:Building ;
+    rdfs:label "Building 1" ;
+    brick:hasPart :floor1 .
+
+:room102 a brick:Room ;
+    rdfs:label "room102" ;
+    brick:isPartOf :floor1 .
+
+:sat1 a brick:Supply_Air_Temperature_Sensor ;
+    rdfs:label "sat1" ;
+    brick:isPointOf :ahu1 .
+
+:sf1 a brick:Supply_Fan ;
+    rdfs:label "sf1" ;
+    brick:isPartOf :ahu1 .
+
+:vav-102 a brick:VAV ;
+    rdfs:label "vav-102" ;
+    brick:isFedBy :ahu1 .
+
+:zat1 a brick:Zone_Air_Temperature_Sensor ;
+    rdfs:label "zat1" ;
+    brick:isPointOf :zone1 .
+
+:room101 a brick:Room ;
+    rdfs:label "room101" ;
+    brick:isPartOf :floor1,
+        :zone1 .
+
+:vav-101 a brick:VAV ;
+    rdfs:label "vav-101" ;
+    brick:feeds :zone1 ;
+    brick:isFedBy :ahu1 .
+
+:floor1 a brick:Floor ;
+    rdfs:label "floor1" ;
+    brick:hasPart :room101,
+        :room102 ;
+    brick:isPartOf :bldg1 .
+
+:zone1 a brick:HVAC_Zone ;
+    rdfs:label "zone1" ;
+    brick:hasPart :room101 ;
+    brick:hasPoint :zat1 ;
+    brick:isFedBy :vav-101 .
+
+:ahu1 a brick:AHU ;
+    rdfs:label "Main AHU" ;
+    brick:feeds :vav-101,
+        :vav-102 ;
+    brick:hasPart :sf1 ;
+    brick:hasPoint :sat1 .
+

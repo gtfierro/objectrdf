@@ -1,0 +1,2736 @@
+@prefix : <urn:example/epanet/anytown#> .
+@prefix ns1: <http://qudt.org/schema/qudt/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix watr: <urn:nawi-water-ontology#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:example/epanet/anytown> a owl:Ontology ;
+    rdfs:label "EPANET Anytown WaTr network" ;
+    owl:imports <http://qudt.org/3.4.0/qudt-all>,
+        <urn:nawi-water-ontology> .
+
+:flow-sensor-pipe-2 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-2 sensor" ;
+    s223:hasObservationLocation :junction-70 ;
+    s223:observes :observed-flow-pipe-2 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-2." .
+
+:flow-sensor-pipe-76 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-76 sensor" ;
+    s223:hasObservationLocation :junction-75 ;
+    s223:observes :observed-flow-pipe-76 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-76." .
+
+:flow-sensor-pipe-78 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-78 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-flow-pipe-78 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-78." .
+
+:flow-sensor-pipe-8 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-8 sensor" ;
+    s223:hasObservationLocation :junction-30 ;
+    s223:observes :observed-flow-pipe-8 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-8." .
+
+:flow-sensor-pipe-80 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-80 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-flow-pipe-80 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-80." .
+
+:flow-sensor-pump-82 a watr:FlowSensor ;
+    rdfs:label "Flow at pump-82 sensor" ;
+    s223:hasObservationLocation :junction-20 ;
+    s223:observes :observed-flow-pump-82 ;
+    rdfs:comment "Flow meter assigned to EPANET link pump-82." .
+
+:pressure-sensor-10 a watr:PressureSensor ;
+    rdfs:label "Pressure at 10 sensor" ;
+    s223:hasObservationLocation :reservoir-10 ;
+    s223:observes :observed-pressure-10 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-100 a watr:PressureSensor ;
+    rdfs:label "Pressure at 100 sensor" ;
+    s223:hasObservationLocation :junction-100 ;
+    s223:observes :observed-pressure-100 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-110 a watr:PressureSensor ;
+    rdfs:label "Pressure at 110 sensor" ;
+    s223:hasObservationLocation :junction-110 ;
+    s223:observes :observed-pressure-110 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-120 a watr:PressureSensor ;
+    rdfs:label "Pressure at 120 sensor" ;
+    s223:hasObservationLocation :junction-120 ;
+    s223:observes :observed-pressure-120 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-130 a watr:PressureSensor ;
+    rdfs:label "Pressure at 130 sensor" ;
+    s223:hasObservationLocation :junction-130 ;
+    s223:observes :observed-pressure-130 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-140 a watr:PressureSensor ;
+    rdfs:label "Pressure at 140 sensor" ;
+    s223:hasObservationLocation :junction-140 ;
+    s223:observes :observed-pressure-140 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-150 a watr:PressureSensor ;
+    rdfs:label "Pressure at 150 sensor" ;
+    s223:hasObservationLocation :junction-150 ;
+    s223:observes :observed-pressure-150 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-160 a watr:PressureSensor ;
+    rdfs:label "Pressure at 160 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-pressure-160 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-165 a watr:PressureSensor ;
+    rdfs:label "Pressure at 165 sensor" ;
+    s223:hasObservationLocation :reservoir-165 ;
+    s223:observes :observed-pressure-165 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-20 a watr:PressureSensor ;
+    rdfs:label "Pressure at 20 sensor" ;
+    s223:hasObservationLocation :junction-20 ;
+    s223:observes :observed-pressure-20 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-30 a watr:PressureSensor ;
+    rdfs:label "Pressure at 30 sensor" ;
+    s223:hasObservationLocation :junction-30 ;
+    s223:observes :observed-pressure-30 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-50 a watr:PressureSensor ;
+    rdfs:label "Pressure at 50 sensor" ;
+    s223:hasObservationLocation :junction-50 ;
+    s223:observes :observed-pressure-50 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-60 a watr:PressureSensor ;
+    rdfs:label "Pressure at 60 sensor" ;
+    s223:hasObservationLocation :junction-60 ;
+    s223:observes :observed-pressure-60 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-65 a watr:PressureSensor ;
+    rdfs:label "Pressure at 65 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-pressure-65 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-70 a watr:PressureSensor ;
+    rdfs:label "Pressure at 70 sensor" ;
+    s223:hasObservationLocation :junction-70 ;
+    s223:observes :observed-pressure-70 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-75 a watr:PressureSensor ;
+    rdfs:label "Pressure at 75 sensor" ;
+    s223:hasObservationLocation :junction-75 ;
+    s223:observes :observed-pressure-75 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-80 a watr:PressureSensor ;
+    rdfs:label "Pressure at 80 sensor" ;
+    s223:hasObservationLocation :junction-80 ;
+    s223:observes :observed-pressure-80 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-90 a watr:PressureSensor ;
+    rdfs:label "Pressure at 90 sensor" ;
+    s223:hasObservationLocation :junction-90 ;
+    s223:observes :observed-pressure-90 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:temperature-sensor-10 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 10 sensor" ;
+    s223:hasObservationLocation :reservoir-10 ;
+    s223:observes :observed-temperature-10 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-100 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 100 sensor" ;
+    s223:hasObservationLocation :junction-100 ;
+    s223:observes :observed-temperature-100 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-140 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 140 sensor" ;
+    s223:hasObservationLocation :junction-140 ;
+    s223:observes :observed-temperature-140 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-160 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 160 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-temperature-160 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-165 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 165 sensor" ;
+    s223:hasObservationLocation :reservoir-165 ;
+    s223:observes :observed-temperature-165 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-65 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 65 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-temperature-65 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-10 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 10 sensor" ;
+    s223:hasObservationLocation :reservoir-10 ;
+    s223:observes :observed-turbidity-10 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-100 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 100 sensor" ;
+    s223:hasObservationLocation :junction-100 ;
+    s223:observes :observed-turbidity-100 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-140 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 140 sensor" ;
+    s223:hasObservationLocation :junction-140 ;
+    s223:observes :observed-turbidity-140 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-160 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 160 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-turbidity-160 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-165 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 165 sensor" ;
+    s223:hasObservationLocation :reservoir-165 ;
+    s223:observes :observed-turbidity-165 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-65 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 65 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-turbidity-65 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:base-demand-100 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-110 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-120 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-130 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-140 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-150 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-160 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-170 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-20 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-30 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-40 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-50 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-60 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-70 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-80 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:base-demand-90 a s223:QuantifiableProperty ;
+    rdfs:label "Base demand" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:diameter-10 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-12 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-14 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-16 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-18 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-2 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.6e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-20 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-22 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-24 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-26 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-28 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-30 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-32 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-34 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-36 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-38 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-4 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-40 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-42 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-44 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-46 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-48 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-50 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-52 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-54 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-56 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-58 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-6 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-60 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-62 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-64 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-66 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+00 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-68 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-70 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-72 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-74 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-76 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-78 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-8 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:diameter-80 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe diameter" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+
+:elevation-100 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-110 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-115 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-120 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-130 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-140 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-150 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-160 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-170 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-20 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-30 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-40 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-50 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-55 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-60 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-70 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-75 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 8e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-80 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:elevation-90 a s223:QuantifiableProperty ;
+    rdfs:label "Junction elevation" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 5e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:hydraulic-head-10 a s223:QuantifiableProperty ;
+    rdfs:label "Hydraulic head" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:hydraulic-head-165 a s223:QuantifiableProperty ;
+    rdfs:label "Hydraulic head" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.15e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:hydraulic-head-65 a s223:QuantifiableProperty ;
+    rdfs:label "Hydraulic head" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.15e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-10 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-12 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-14 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-16 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-18 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-2 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+04 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-20 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-22 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-24 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-26 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-28 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-30 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-32 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-34 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-36 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-38 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-4 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+04 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-40 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-42 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-44 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-46 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-48 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-50 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-52 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-54 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-56 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-58 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-6 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+04 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-60 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-62 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-64 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+04 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-66 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+04 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-68 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-70 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-72 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-74 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-76 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-78 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-8 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 9e+03 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:length-80 a s223:QuantifiableProperty ;
+    rdfs:label "Pipe length" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+
+:roughness-10 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-12 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-14 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-16 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-18 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-2 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-20 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-22 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-24 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-26 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-28 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-30 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-32 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-34 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-36 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-38 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-4 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-40 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-42 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-44 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-46 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-48 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-50 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-52 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-54 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-56 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-58 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-6 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-60 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-62 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-64 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-66 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-68 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-70 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-72 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-74 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-76 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.3e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-78 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-8 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+01 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:roughness-80 a s223:QuantifiableProperty ;
+    rdfs:label "EPANET roughness coefficient" ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.2e+02 ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+
+:junction-115 a s223:Junction ;
+    rdfs:label "EPANET junction 115" ;
+    s223:hasConnectionPoint :pipe-68-115-end,
+        :pipe-72-115-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :elevation-115 ;
+    rdfs:comment "EPANET ID: 115. EPANET coordinates: (1655.27, 6787.11). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-170 a s223:Junction ;
+    rdfs:label "EPANET junction 170" ;
+    s223:hasConnectionPoint :pipe-60-170-end,
+        :pipe-64-170-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-170,
+        :elevation-170 ;
+    rdfs:comment "EPANET ID: 170. EPANET coordinates: (825.2, 5126.95). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-40 a s223:Junction ;
+    rdfs:label "EPANET junction 40" ;
+    s223:hasConnectionPoint :pipe-32-40-end,
+        :pipe-36-40-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-40,
+        :elevation-40 ;
+    rdfs:comment "EPANET ID: 40. EPANET coordinates: (5327.15, 7500). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-55 a s223:Junction ;
+    rdfs:label "EPANET junction 55" ;
+    s223:hasConnectionPoint :pipe-74-55-end,
+        :pipe-76-55-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :elevation-55 ;
+    rdfs:comment "EPANET ID: 55. EPANET coordinates: (3081.05, 7431.64). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:observed-flow-pipe-2 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Flow at pipe-2" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:observed-flow-pipe-76 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Flow at pipe-76" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:observed-flow-pipe-78 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Flow at pipe-78" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:observed-flow-pipe-8 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Flow at pipe-8" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:observed-flow-pipe-80 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Flow at pipe-80" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:observed-flow-pump-82 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Flow at pump-82" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+
+:observed-pressure-10 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 10" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-100 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 100" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-110 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 110" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-120 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 120" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-130 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 130" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-140 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 140" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-150 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 150" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-160 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 160" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-165 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 165" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-20 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 20" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-30 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 30" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-50 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 50" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-60 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 60" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-65 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 65" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-70 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 70" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-75 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 75" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-80 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 80" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-pressure-90 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Pressure at 90" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+
+:observed-temperature-10 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Water temperature at 10" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+
+:observed-temperature-100 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Water temperature at 100" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+
+:observed-temperature-140 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Water temperature at 140" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+
+:observed-temperature-160 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Water temperature at 160" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+
+:observed-temperature-165 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Water temperature at 165" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+
+:observed-temperature-65 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Water temperature at 65" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+
+:observed-turbidity-10 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Turbidity at 10" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+
+:observed-turbidity-100 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Turbidity at 100" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+
+:observed-turbidity-140 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Turbidity at 140" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+
+:observed-turbidity-160 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Turbidity at 160" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+
+:observed-turbidity-165 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Turbidity at 165" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+
+:observed-turbidity-65 a s223:QuantifiableObservableProperty ;
+    rdfs:label "Turbidity at 65" ;
+    s223:ofMedium s223:Fluid-Water ;
+    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
+    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+
+:pipe-10 a s223:Pipe ;
+    rdfs:label "EPANET pipe 10" ;
+    s223:connectsAt :pipe-10-100-end,
+        :pipe-10-70-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-10,
+        :length-10,
+        :roughness-10 ;
+    rdfs:comment "EPANET link 70 — 100." .
+
+:pipe-10-100-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-10-100-end" ;
+    s223:connectsThrough :pipe-10 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-100 .
+
+:pipe-10-70-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-10-70-end" ;
+    s223:connectsThrough :pipe-10 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-70 .
+
+:pipe-12 a s223:Pipe ;
+    rdfs:label "EPANET pipe 12" ;
+    s223:connectsAt :pipe-12-70-end,
+        :pipe-12-90-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-12,
+        :length-12,
+        :roughness-12 ;
+    rdfs:comment "EPANET link 70 — 90." .
+
+:pipe-12-70-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-12-70-end" ;
+    s223:connectsThrough :pipe-12 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-70 .
+
+:pipe-12-90-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-12-90-end" ;
+    s223:connectsThrough :pipe-12 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-90 .
+
+:pipe-14 a s223:Pipe ;
+    rdfs:label "EPANET pipe 14" ;
+    s223:connectsAt :pipe-14-60-end,
+        :pipe-14-70-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-14,
+        :length-14,
+        :roughness-14 ;
+    rdfs:comment "EPANET link 70 — 60." .
+
+:pipe-14-60-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-14-60-end" ;
+    s223:connectsThrough :pipe-14 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-60 .
+
+:pipe-14-70-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-14-70-end" ;
+    s223:connectsThrough :pipe-14 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-70 .
+
+:pipe-16 a s223:Pipe ;
+    rdfs:label "EPANET pipe 16" ;
+    s223:connectsAt :pipe-16-60-end,
+        :pipe-16-90-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-16,
+        :length-16,
+        :roughness-16 ;
+    rdfs:comment "EPANET link 90 — 60." .
+
+:pipe-16-60-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-16-60-end" ;
+    s223:connectsThrough :pipe-16 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-60 .
+
+:pipe-16-90-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-16-90-end" ;
+    s223:connectsThrough :pipe-16 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-90 .
+
+:pipe-18 a s223:Pipe ;
+    rdfs:label "EPANET pipe 18" ;
+    s223:connectsAt :pipe-18-60-end,
+        :pipe-18-80-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-18,
+        :length-18,
+        :roughness-18 ;
+    rdfs:comment "EPANET link 60 — 80." .
+
+:pipe-18-60-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-18-60-end" ;
+    s223:connectsThrough :pipe-18 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-60 .
+
+:pipe-18-80-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-18-80-end" ;
+    s223:connectsThrough :pipe-18 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-80 .
+
+:pipe-2 a s223:Pipe ;
+    rdfs:label "EPANET pipe 2" ;
+    s223:connectsAt :pipe-2-20-end,
+        :pipe-2-70-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-2,
+        :length-2,
+        :roughness-2 ;
+    rdfs:comment "EPANET link 20 — 70." .
+
+:pipe-2-20-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-2-20-end" ;
+    s223:connectsThrough :pipe-2 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-20 .
+
+:pipe-2-70-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-2-70-end" ;
+    s223:connectsThrough :pipe-2 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-70 .
+
+:pipe-20 a s223:Pipe ;
+    rdfs:label "EPANET pipe 20" ;
+    s223:connectsAt :pipe-20-80-end,
+        :pipe-20-90-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-20,
+        :length-20,
+        :roughness-20 ;
+    rdfs:comment "EPANET link 90 — 80." .
+
+:pipe-20-80-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-20-80-end" ;
+    s223:connectsThrough :pipe-20 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-80 .
+
+:pipe-20-90-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-20-90-end" ;
+    s223:connectsThrough :pipe-20 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-90 .
+
+:pipe-22 a s223:Pipe ;
+    rdfs:label "EPANET pipe 22" ;
+    s223:connectsAt :pipe-22-150-end,
+        :pipe-22-90-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-22,
+        :length-22,
+        :roughness-22 ;
+    rdfs:comment "EPANET link 90 — 150." .
+
+:pipe-22-150-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-22-150-end" ;
+    s223:connectsThrough :pipe-22 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-150 .
+
+:pipe-22-90-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-22-90-end" ;
+    s223:connectsThrough :pipe-22 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-90 .
+
+:pipe-24 a s223:Pipe ;
+    rdfs:label "EPANET pipe 24" ;
+    s223:connectsAt :pipe-24-100-end,
+        :pipe-24-90-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-24,
+        :length-24,
+        :roughness-24 ;
+    rdfs:comment "EPANET link 90 — 100." .
+
+:pipe-24-100-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-24-100-end" ;
+    s223:connectsThrough :pipe-24 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-100 .
+
+:pipe-24-90-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-24-90-end" ;
+    s223:connectsThrough :pipe-24 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-90 .
+
+:pipe-26 a s223:Pipe ;
+    rdfs:label "EPANET pipe 26" ;
+    s223:connectsAt :pipe-26-100-end,
+        :pipe-26-150-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-26,
+        :length-26,
+        :roughness-26 ;
+    rdfs:comment "EPANET link 100 — 150." .
+
+:pipe-26-100-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-26-100-end" ;
+    s223:connectsThrough :pipe-26 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-100 .
+
+:pipe-26-150-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-26-150-end" ;
+    s223:connectsThrough :pipe-26 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-150 .
+
+:pipe-28 a s223:Pipe ;
+    rdfs:label "EPANET pipe 28" ;
+    s223:connectsAt :pipe-28-150-end,
+        :pipe-28-80-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-28,
+        :length-28,
+        :roughness-28 ;
+    rdfs:comment "EPANET link 150 — 80." .
+
+:pipe-28-150-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-28-150-end" ;
+    s223:connectsThrough :pipe-28 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-150 .
+
+:pipe-28-80-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-28-80-end" ;
+    s223:connectsThrough :pipe-28 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-80 .
+
+:pipe-30 a s223:Pipe ;
+    rdfs:label "EPANET pipe 30" ;
+    s223:connectsAt :pipe-30-30-end,
+        :pipe-30-60-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-30,
+        :length-30,
+        :roughness-30 ;
+    rdfs:comment "EPANET link 60 — 30." .
+
+:pipe-30-30-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-30-30-end" ;
+    s223:connectsThrough :pipe-30 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-30 .
+
+:pipe-30-60-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-30-60-end" ;
+    s223:connectsThrough :pipe-30 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-60 .
+
+:pipe-32 a s223:Pipe ;
+    rdfs:label "EPANET pipe 32" ;
+    s223:connectsAt :pipe-32-30-end,
+        :pipe-32-40-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-32,
+        :length-32,
+        :roughness-32 ;
+    rdfs:comment "EPANET link 30 — 40." .
+
+:pipe-32-30-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-32-30-end" ;
+    s223:connectsThrough :pipe-32 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-30 .
+
+:pipe-32-40-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-32-40-end" ;
+    s223:connectsThrough :pipe-32 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-40 .
+
+:pipe-34 a s223:Pipe ;
+    rdfs:label "EPANET pipe 34" ;
+    s223:connectsAt :pipe-34-30-end,
+        :pipe-34-50-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-34,
+        :length-34,
+        :roughness-34 ;
+    rdfs:comment "EPANET link 30 — 50." .
+
+:pipe-34-30-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-34-30-end" ;
+    s223:connectsThrough :pipe-34 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-30 .
+
+:pipe-34-50-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-34-50-end" ;
+    s223:connectsThrough :pipe-34 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-50 .
+
+:pipe-36 a s223:Pipe ;
+    rdfs:label "EPANET pipe 36" ;
+    s223:connectsAt :pipe-36-40-end,
+        :pipe-36-50-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-36,
+        :length-36,
+        :roughness-36 ;
+    rdfs:comment "EPANET link 40 — 50." .
+
+:pipe-36-40-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-36-40-end" ;
+    s223:connectsThrough :pipe-36 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-40 .
+
+:pipe-36-50-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-36-50-end" ;
+    s223:connectsThrough :pipe-36 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-50 .
+
+:pipe-38 a s223:Pipe ;
+    rdfs:label "EPANET pipe 38" ;
+    s223:connectsAt :pipe-38-50-end,
+        :pipe-38-80-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-38,
+        :length-38,
+        :roughness-38 ;
+    rdfs:comment "EPANET link 50 — 80." .
+
+:pipe-38-50-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-38-50-end" ;
+    s223:connectsThrough :pipe-38 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-50 .
+
+:pipe-38-80-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-38-80-end" ;
+    s223:connectsThrough :pipe-38 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-80 .
+
+:pipe-4 a s223:Pipe ;
+    rdfs:label "EPANET pipe 4" ;
+    s223:connectsAt :pipe-4-20-end,
+        :pipe-4-30-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-4,
+        :length-4,
+        :roughness-4 ;
+    rdfs:comment "EPANET link 20 — 30." .
+
+:pipe-4-20-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-4-20-end" ;
+    s223:connectsThrough :pipe-4 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-20 .
+
+:pipe-4-30-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-4-30-end" ;
+    s223:connectsThrough :pipe-4 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-30 .
+
+:pipe-40 a s223:Pipe ;
+    rdfs:label "EPANET pipe 40" ;
+    s223:connectsAt :pipe-40-140-end,
+        :pipe-40-80-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-40,
+        :length-40,
+        :roughness-40 ;
+    rdfs:comment "EPANET link 80 — 140." .
+
+:pipe-40-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-40-140-end" ;
+    s223:connectsThrough :pipe-40 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-40-80-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-40-80-end" ;
+    s223:connectsThrough :pipe-40 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-80 .
+
+:pipe-42 a s223:Pipe ;
+    rdfs:label "EPANET pipe 42" ;
+    s223:connectsAt :pipe-42-140-end,
+        :pipe-42-150-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-42,
+        :length-42,
+        :roughness-42 ;
+    rdfs:comment "EPANET link 150 — 140." .
+
+:pipe-42-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-42-140-end" ;
+    s223:connectsThrough :pipe-42 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-42-150-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-42-150-end" ;
+    s223:connectsThrough :pipe-42 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-150 .
+
+:pipe-44 a s223:Pipe ;
+    rdfs:label "EPANET pipe 44" ;
+    s223:connectsAt :pipe-44-150-end,
+        :pipe-44-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-44,
+        :length-44,
+        :roughness-44 ;
+    rdfs:comment "EPANET link 150 — 160." .
+
+:pipe-44-150-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-44-150-end" ;
+    s223:connectsThrough :pipe-44 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-150 .
+
+:pipe-44-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-44-160-end" ;
+    s223:connectsThrough :pipe-44 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-46 a s223:Pipe ;
+    rdfs:label "EPANET pipe 46" ;
+    s223:connectsAt :pipe-46-100-end,
+        :pipe-46-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-46,
+        :length-46,
+        :roughness-46 ;
+    rdfs:comment "EPANET link 100 — 160." .
+
+:pipe-46-100-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-46-100-end" ;
+    s223:connectsThrough :pipe-46 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-100 .
+
+:pipe-46-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-46-160-end" ;
+    s223:connectsThrough :pipe-46 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-48 a s223:Pipe ;
+    rdfs:label "EPANET pipe 48" ;
+    s223:connectsAt :pipe-48-100-end,
+        :pipe-48-110-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-48,
+        :length-48,
+        :roughness-48 ;
+    rdfs:comment "EPANET link 100 — 110." .
+
+:pipe-48-100-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-48-100-end" ;
+    s223:connectsThrough :pipe-48 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-100 .
+
+:pipe-48-110-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-48-110-end" ;
+    s223:connectsThrough :pipe-48 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-110 .
+
+:pipe-50 a s223:Pipe ;
+    rdfs:label "EPANET pipe 50" ;
+    s223:connectsAt :pipe-50-110-end,
+        :pipe-50-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-50,
+        :length-50,
+        :roughness-50 ;
+    rdfs:comment "EPANET link 110 — 160." .
+
+:pipe-50-110-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-50-110-end" ;
+    s223:connectsThrough :pipe-50 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-110 .
+
+:pipe-50-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-50-160-end" ;
+    s223:connectsThrough :pipe-50 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-52 a s223:Pipe ;
+    rdfs:label "EPANET pipe 52" ;
+    s223:connectsAt :pipe-52-110-end,
+        :pipe-52-120-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-52,
+        :length-52,
+        :roughness-52 ;
+    rdfs:comment "EPANET link 110 — 120." .
+
+:pipe-52-110-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-52-110-end" ;
+    s223:connectsThrough :pipe-52 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-110 .
+
+:pipe-52-120-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-52-120-end" ;
+    s223:connectsThrough :pipe-52 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-120 .
+
+:pipe-54 a s223:Pipe ;
+    rdfs:label "EPANET pipe 54" ;
+    s223:connectsAt :pipe-54-120-end,
+        :pipe-54-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-54,
+        :length-54,
+        :roughness-54 ;
+    rdfs:comment "EPANET link 120 — 160." .
+
+:pipe-54-120-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-54-120-end" ;
+    s223:connectsThrough :pipe-54 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-120 .
+
+:pipe-54-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-54-160-end" ;
+    s223:connectsThrough :pipe-54 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-56 a s223:Pipe ;
+    rdfs:label "EPANET pipe 56" ;
+    s223:connectsAt :pipe-56-120-end,
+        :pipe-56-130-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-56,
+        :length-56,
+        :roughness-56 ;
+    rdfs:comment "EPANET link 120 — 130." .
+
+:pipe-56-120-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-56-120-end" ;
+    s223:connectsThrough :pipe-56 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-120 .
+
+:pipe-56-130-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-56-130-end" ;
+    s223:connectsThrough :pipe-56 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-130 .
+
+:pipe-58 a s223:Pipe ;
+    rdfs:label "EPANET pipe 58" ;
+    s223:connectsAt :pipe-58-130-end,
+        :pipe-58-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-58,
+        :length-58,
+        :roughness-58 ;
+    rdfs:comment "EPANET link 130 — 160." .
+
+:pipe-58-130-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-58-130-end" ;
+    s223:connectsThrough :pipe-58 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-130 .
+
+:pipe-58-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-58-160-end" ;
+    s223:connectsThrough :pipe-58 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-6 a s223:Pipe ;
+    rdfs:label "EPANET pipe 6" ;
+    s223:connectsAt :pipe-6-110-end,
+        :pipe-6-20-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-6,
+        :length-6,
+        :roughness-6 ;
+    rdfs:comment "EPANET link 20 — 110." .
+
+:pipe-6-110-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-6-110-end" ;
+    s223:connectsThrough :pipe-6 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-110 .
+
+:pipe-6-20-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-6-20-end" ;
+    s223:connectsThrough :pipe-6 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-20 .
+
+:pipe-60 a s223:Pipe ;
+    rdfs:label "EPANET pipe 60" ;
+    s223:connectsAt :pipe-60-130-end,
+        :pipe-60-170-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-60,
+        :length-60,
+        :roughness-60 ;
+    rdfs:comment "EPANET link 130 — 170." .
+
+:pipe-60-130-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-60-130-end" ;
+    s223:connectsThrough :pipe-60 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-130 .
+
+:pipe-60-170-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-60-170-end" ;
+    s223:connectsThrough :pipe-60 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-170 .
+
+:pipe-62 a s223:Pipe ;
+    rdfs:label "EPANET pipe 62" ;
+    s223:connectsAt :pipe-62-140-end,
+        :pipe-62-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-62,
+        :length-62,
+        :roughness-62 ;
+    rdfs:comment "EPANET link 160 — 140." .
+
+:pipe-62-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-62-140-end" ;
+    s223:connectsThrough :pipe-62 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-62-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-62-160-end" ;
+    s223:connectsThrough :pipe-62 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-64 a s223:Pipe ;
+    rdfs:label "EPANET pipe 64" ;
+    s223:connectsAt :pipe-64-140-end,
+        :pipe-64-170-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-64,
+        :length-64,
+        :roughness-64 ;
+    rdfs:comment "EPANET link 170 — 140." .
+
+:pipe-64-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-64-140-end" ;
+    s223:connectsThrough :pipe-64 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-64-170-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-64-170-end" ;
+    s223:connectsThrough :pipe-64 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-170 .
+
+:pipe-66 a s223:Pipe ;
+    rdfs:label "EPANET pipe 66" ;
+    s223:connectsAt :pipe-66-140-end,
+        :pipe-66-50-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-66,
+        :length-66,
+        :roughness-66 ;
+    rdfs:comment "EPANET link 50 — 140." .
+
+:pipe-66-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-66-140-end" ;
+    s223:connectsThrough :pipe-66 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-66-50-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-66-50-end" ;
+    s223:connectsThrough :pipe-66 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-50 .
+
+:pipe-68 a s223:Pipe ;
+    rdfs:label "EPANET pipe 68" ;
+    s223:connectsAt :pipe-68-115-end,
+        :pipe-68-140-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-68,
+        :length-68,
+        :roughness-68 ;
+    rdfs:comment "EPANET link 140 — 115." .
+
+:pipe-68-115-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-68-115-end" ;
+    s223:connectsThrough :pipe-68 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-115 .
+
+:pipe-68-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-68-140-end" ;
+    s223:connectsThrough :pipe-68 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-70 a s223:Pipe ;
+    rdfs:label "EPANET pipe 70" ;
+    s223:connectsAt :pipe-70-140-end,
+        :pipe-70-75-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-70,
+        :length-70,
+        :roughness-70 ;
+    rdfs:comment "EPANET link 140 — 75." .
+
+:pipe-70-140-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-70-140-end" ;
+    s223:connectsThrough :pipe-70 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-140 .
+
+:pipe-70-75-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-70-75-end" ;
+    s223:connectsThrough :pipe-70 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-75 .
+
+:pipe-72 a s223:Pipe ;
+    rdfs:label "EPANET pipe 72" ;
+    s223:connectsAt :pipe-72-115-end,
+        :pipe-72-75-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-72,
+        :length-72,
+        :roughness-72 ;
+    rdfs:comment "EPANET link 115 — 75." .
+
+:pipe-72-115-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-72-115-end" ;
+    s223:connectsThrough :pipe-72 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-115 .
+
+:pipe-72-75-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-72-75-end" ;
+    s223:connectsThrough :pipe-72 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-75 .
+
+:pipe-74 a s223:Pipe ;
+    rdfs:label "EPANET pipe 74" ;
+    s223:connectsAt :pipe-74-50-end,
+        :pipe-74-55-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-74,
+        :length-74,
+        :roughness-74 ;
+    rdfs:comment "EPANET link 50 — 55." .
+
+:pipe-74-50-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-74-50-end" ;
+    s223:connectsThrough :pipe-74 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-50 .
+
+:pipe-74-55-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-74-55-end" ;
+    s223:connectsThrough :pipe-74 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-55 .
+
+:pipe-76 a s223:Pipe ;
+    rdfs:label "EPANET pipe 76" ;
+    s223:connectsAt :pipe-76-55-end,
+        :pipe-76-75-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-76,
+        :length-76,
+        :roughness-76 ;
+    rdfs:comment "EPANET link 55 — 75." .
+
+:pipe-76-55-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-76-55-end" ;
+    s223:connectsThrough :pipe-76 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-55 .
+
+:pipe-76-75-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-76-75-end" ;
+    s223:connectsThrough :pipe-76 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-75 .
+
+:pipe-78 a s223:Pipe ;
+    rdfs:label "EPANET pipe 78" ;
+    s223:connectsAt :pipe-78-60-end,
+        :pipe-78-65-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-78,
+        :length-78,
+        :roughness-78 ;
+    rdfs:comment "EPANET link 60 — 65." .
+
+:pipe-78-60-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-78-60-end" ;
+    s223:connectsThrough :pipe-78 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-60 .
+
+:pipe-78-65-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-78-65-end" ;
+    s223:connectsThrough :pipe-78 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :reservoir-65 .
+
+:pipe-8 a s223:Pipe ;
+    rdfs:label "EPANET pipe 8" ;
+    s223:connectsAt :pipe-8-30-end,
+        :pipe-8-70-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-8,
+        :length-8,
+        :roughness-8 ;
+    rdfs:comment "EPANET link 70 — 30." .
+
+:pipe-8-30-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-8-30-end" ;
+    s223:connectsThrough :pipe-8 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-30 .
+
+:pipe-8-70-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-8-70-end" ;
+    s223:connectsThrough :pipe-8 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-70 .
+
+:pipe-80 a s223:Pipe ;
+    rdfs:label "EPANET pipe 80" ;
+    s223:connectsAt :pipe-80-160-end,
+        :pipe-80-165-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :diameter-80,
+        :length-80,
+        :roughness-80 ;
+    rdfs:comment "EPANET link 165 — 160." .
+
+:pipe-80-160-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-80-160-end" ;
+    s223:connectsThrough :pipe-80 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-160 .
+
+:pipe-80-165-end a s223:BidirectionalConnectionPoint ;
+    rdfs:label "pipe-80-165-end" ;
+    s223:connectsThrough :pipe-80 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :reservoir-165 .
+
+:pump-82 a watr:Pump ;
+    rdfs:label "EPANET pump 82" ;
+    s223:hasConnectionPoint :pump-discharge-82-pump-end,
+        :pump-suction-82-pump-end ;
+    rdfs:comment "HEAD 1" .
+
+:pump-discharge-82 a s223:Pipe ;
+    rdfs:label "pump-discharge-82" ;
+    s223:connectsAt :pump-discharge-82-20-end,
+        :pump-discharge-82-pump-end ;
+    s223:hasMedium s223:Fluid-Water .
+
+:pump-discharge-82-20-end a s223:InletConnectionPoint ;
+    rdfs:label "pump-discharge-82-20-end" ;
+    s223:connectsThrough :pump-discharge-82 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :junction-20 .
+
+:pump-discharge-82-pump-end a s223:OutletConnectionPoint ;
+    rdfs:label "pump-discharge-82-pump-end" ;
+    s223:connectsThrough :pump-discharge-82 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :pump-82 .
+
+:pump-suction-82 a s223:Pipe ;
+    rdfs:label "pump-suction-82" ;
+    s223:connectsAt :pump-suction-82-10-end,
+        :pump-suction-82-pump-end ;
+    s223:hasMedium s223:Fluid-Water .
+
+:pump-suction-82-10-end a s223:OutletConnectionPoint ;
+    rdfs:label "pump-suction-82-10-end" ;
+    s223:connectsThrough :pump-suction-82 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :reservoir-10 .
+
+:pump-suction-82-pump-end a s223:InletConnectionPoint ;
+    rdfs:label "pump-suction-82-pump-end" ;
+    s223:connectsThrough :pump-suction-82 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :pump-82 .
+
+:junction-120 a s223:Junction ;
+    rdfs:label "EPANET junction 120" ;
+    s223:hasConnectionPoint :pipe-52-120-end,
+        :pipe-54-120-end,
+        :pipe-56-120-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-120,
+        :elevation-120,
+        :observed-pressure-120 ;
+    rdfs:comment "EPANET ID: 120. EPANET coordinates: (3413.09, 3281.25). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-130 a s223:Junction ;
+    rdfs:label "EPANET junction 130" ;
+    s223:hasConnectionPoint :pipe-56-130-end,
+        :pipe-58-130-end,
+        :pipe-60-130-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-130,
+        :elevation-130,
+        :observed-pressure-130 ;
+    rdfs:comment "EPANET ID: 130. EPANET coordinates: (2055.66, 3896.48). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:reservoir-10 a watr:Reservoir ;
+    rdfs:label "EPANET reservoir 10" ;
+    s223:hasConnectionPoint :pump-suction-82-10-end ;
+    s223:hasProperty :hydraulic-head-10,
+        :observed-pressure-10,
+        :observed-temperature-10,
+        :observed-turbidity-10 ;
+    rdfs:comment "EPANET ID: 10. EPANET coordinates: (7241.21, 3750). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:reservoir-165 a watr:Reservoir ;
+    rdfs:label "EPANET reservoir 165" ;
+    s223:hasConnectionPoint :pipe-80-165-end ;
+    s223:hasProperty :hydraulic-head-165,
+        :observed-pressure-165,
+        :observed-temperature-165,
+        :observed-turbidity-165 ;
+    rdfs:comment "EPANET ID: 165. EPANET coordinates: (2377.93, 4892.58). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-110 a s223:Junction ;
+    rdfs:label "EPANET junction 110" ;
+    s223:hasConnectionPoint :pipe-48-110-end,
+        :pipe-50-110-end,
+        :pipe-52-110-end,
+        :pipe-6-110-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-110,
+        :elevation-110,
+        :observed-pressure-110 ;
+    rdfs:comment "EPANET ID: 110. EPANET coordinates: (4125.98, 3945.31). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-75 a s223:Junction ;
+    rdfs:label "EPANET junction 75" ;
+    s223:hasConnectionPoint :pipe-70-75-end,
+        :pipe-72-75-end,
+        :pipe-76-75-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :elevation-75,
+        :observed-flow-pipe-76,
+        :observed-pressure-75 ;
+    rdfs:comment "EPANET ID: 75. EPANET coordinates: (2270.51, 7089.84). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:reservoir-65 a watr:Reservoir ;
+    rdfs:label "EPANET reservoir 65" ;
+    s223:hasConnectionPoint :pipe-78-65-end ;
+    s223:hasProperty :hydraulic-head-65,
+        :observed-flow-pipe-78,
+        :observed-pressure-65,
+        :observed-temperature-65,
+        :observed-turbidity-65 ;
+    rdfs:comment "EPANET ID: 65. EPANET coordinates: (5297.85, 6367.19). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-150 a s223:Junction ;
+    rdfs:label "EPANET junction 150" ;
+    s223:hasConnectionPoint :pipe-22-150-end,
+        :pipe-26-150-end,
+        :pipe-28-150-end,
+        :pipe-42-150-end,
+        :pipe-44-150-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-150,
+        :elevation-150,
+        :observed-pressure-150 ;
+    rdfs:comment "EPANET ID: 150. EPANET coordinates: (3891.6, 5566.41). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-20 a s223:Junction ;
+    rdfs:label "EPANET junction 20" ;
+    s223:hasConnectionPoint :pipe-2-20-end,
+        :pipe-4-20-end,
+        :pipe-6-20-end,
+        :pump-discharge-82-20-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-20,
+        :elevation-20,
+        :observed-flow-pump-82,
+        :observed-pressure-20 ;
+    rdfs:comment "EPANET ID: 20. EPANET coordinates: (6391.6, 4257.81). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-50 a s223:Junction ;
+    rdfs:label "EPANET junction 50" ;
+    s223:hasConnectionPoint :pipe-34-50-end,
+        :pipe-36-50-end,
+        :pipe-38-50-end,
+        :pipe-66-50-end,
+        :pipe-74-50-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-50,
+        :elevation-50,
+        :observed-pressure-50 ;
+    rdfs:comment "EPANET ID: 50. EPANET coordinates: (3959.96, 7050.78). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-60 a s223:Junction ;
+    rdfs:label "EPANET junction 60" ;
+    s223:hasConnectionPoint :pipe-14-60-end,
+        :pipe-16-60-end,
+        :pipe-18-60-end,
+        :pipe-30-60-end,
+        :pipe-78-60-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-60,
+        :elevation-60,
+        :observed-pressure-60 ;
+    rdfs:comment "EPANET ID: 60. EPANET coordinates: (5366.21, 6044.92). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-80 a s223:Junction ;
+    rdfs:label "EPANET junction 80" ;
+    s223:hasConnectionPoint :pipe-18-80-end,
+        :pipe-20-80-end,
+        :pipe-28-80-end,
+        :pipe-38-80-end,
+        :pipe-40-80-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-80,
+        :elevation-80,
+        :observed-pressure-80 ;
+    rdfs:comment "EPANET ID: 80. EPANET coordinates: (4340.82, 6230.47). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-90 a s223:Junction ;
+    rdfs:label "EPANET junction 90" ;
+    s223:hasConnectionPoint :pipe-12-90-end,
+        :pipe-16-90-end,
+        :pipe-20-90-end,
+        :pipe-22-90-end,
+        :pipe-24-90-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-90,
+        :elevation-90,
+        :observed-pressure-90 ;
+    rdfs:comment "EPANET ID: 90. EPANET coordinates: (4838.87, 5410.16). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-30 a s223:Junction ;
+    rdfs:label "EPANET junction 30" ;
+    s223:hasConnectionPoint :pipe-30-30-end,
+        :pipe-32-30-end,
+        :pipe-34-30-end,
+        :pipe-4-30-end,
+        :pipe-8-30-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-30,
+        :elevation-30,
+        :observed-flow-pipe-8,
+        :observed-pressure-30 ;
+    rdfs:comment "EPANET ID: 30. EPANET coordinates: (6723.63, 6181.64). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-70 a s223:Junction ;
+    rdfs:label "EPANET junction 70" ;
+    s223:hasConnectionPoint :pipe-10-70-end,
+        :pipe-12-70-end,
+        :pipe-14-70-end,
+        :pipe-2-70-end,
+        :pipe-8-70-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-70,
+        :elevation-70,
+        :observed-flow-pipe-2,
+        :observed-pressure-70 ;
+    rdfs:comment "EPANET ID: 70. EPANET coordinates: (5473.63, 4931.64). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-100 a s223:Junction ;
+    rdfs:label "EPANET junction 100" ;
+    s223:hasConnectionPoint :pipe-10-100-end,
+        :pipe-24-100-end,
+        :pipe-26-100-end,
+        :pipe-46-100-end,
+        :pipe-48-100-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-100,
+        :elevation-100,
+        :observed-pressure-100,
+        :observed-temperature-100,
+        :observed-turbidity-100 ;
+    rdfs:comment "EPANET ID: 100. EPANET coordinates: (4428.71, 4765.63). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-140 a s223:Junction ;
+    rdfs:label "EPANET junction 140" ;
+    s223:hasConnectionPoint :pipe-40-140-end,
+        :pipe-42-140-end,
+        :pipe-62-140-end,
+        :pipe-64-140-end,
+        :pipe-66-140-end,
+        :pipe-68-140-end,
+        :pipe-70-140-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-140,
+        :elevation-140,
+        :observed-pressure-140,
+        :observed-temperature-140,
+        :observed-turbidity-140 ;
+    rdfs:comment "EPANET ID: 140. EPANET coordinates: (2124.02, 6015.63). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-160 a s223:Junction ;
+    rdfs:label "EPANET junction 160" ;
+    s223:hasConnectionPoint :pipe-44-160-end,
+        :pipe-46-160-end,
+        :pipe-50-160-end,
+        :pipe-54-160-end,
+        :pipe-58-160-end,
+        :pipe-62-160-end,
+        :pipe-80-160-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-160,
+        :elevation-160,
+        :observed-flow-pipe-80,
+        :observed-pressure-160,
+        :observed-temperature-160,
+        :observed-turbidity-160 ;
+    rdfs:comment "EPANET ID: 160. EPANET coordinates: (2895.51, 4765.63). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+

@@ -25,12 +25,16 @@ everything: completion, ontology definitions on hover, and type errors when a
 link's range doesn't fit.
 
 - Docs: [docs/index.md](docs/index.md)
+- Query existing RDF as typed objects: [docs/querying.md](docs/querying.md)
 - Z3 resolution and media hints: [docs/s223.md](docs/s223.md#giving-the-solver-media-hints)
 - Quantities, scalar values, and stream composition:
   [docs/quantities.md](docs/quantities.md)
 - Design rationale and roadmap: [DESIGN.md](DESIGN.md)
-- Example: [examples/brick_quickstart.py](examples/brick_quickstart.py)
-- WaTr example: [examples/watr_quickstart.py](examples/watr_quickstart.py)
+- Examples organized by ontology: [examples/](examples/)
+- Brick quickstart:
+  [examples/brick/quickstart/brick_quickstart.py](examples/brick/quickstart/brick_quickstart.py)
+- WaTr treatment example:
+  [examples/watr/treatment/watr_quickstart.py](examples/watr/treatment/watr_quickstart.py)
 
 ## Development
 

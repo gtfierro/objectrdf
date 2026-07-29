@@ -133,8 +133,8 @@ report = m.validate()        # shifty, errors mapped back to Python objects
 - `m.validate()` runs the ontology's shapes (via shifty, §9) and translates violation reports into messages
   referencing Python identifiers ("`vav1` (VAV): missing required `has_point` of type
   `Supply_Air_Flow_Sensor`"), not blank nodes and IRIs.
-- Round-tripping (loading an existing TTL into objects) is explicitly **out of scope for
-  v1** — authoring first — but the edge-store design shouldn't preclude it.
+- Graph-backed hydration supports querying and editing an existing graph as
+  generated objects while preserving RDF outside the generated projection.
 
 ## 5. Enumerations (223 EnumerationKind, QUDT units)
 
@@ -348,5 +348,6 @@ objectrdf/
 2. **223 + WATR**: enumeration namespaces, connection negotiation, `>>`/`connect()`,
    QUDT-backed properties, rule-based inference on save/validate.
 3. **Templates**: MOTIF template ingestion → generated subclasses; `as_template()` export.
-4. **Polish**: round-trip loading, error-message UX, docs site with side-by-side
+4. **Polish**: blank-node and refresh support for graph-backed objects,
+   error-message UX, docs site with side-by-side
    "Python you write / TTL you get" panes.

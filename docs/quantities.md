@@ -91,7 +91,7 @@ in an ontology extension with the appropriate S223/WaTr parent and regenerate
 the package. A Python-only ad hoc enum would have no portable RDF definition.
 
 See
-[`examples/watertap_seawater_ro_full.py`](../examples/watertap_seawater_ro_full.py)
+[`examples/watr/seawater_ro/watertap_seawater_ro_full.py`](../examples/watr/seawater_ro/watertap_seawater_ro_full.py)
 for inlet composition, equipment design properties, residence times,
 efficiencies, pressures, and UV parameters using these patterns.
 

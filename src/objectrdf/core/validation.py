@@ -92,9 +92,15 @@ def validate_model(
     import shifty
 
     shapes_graph = _resolve_shapes(model, shapes)
-    snapshot = model.resolve()
-    conforms, report, _text = shifty.validate(snapshot.graph(), shapes_graph, infer=infer)
-    issues = tuple(_issues_from_report(model, report, fallback=snapshot._model))
+    if model._loaded_graph is not None:
+        data_graph = model.graph()
+        fallback = None
+    else:
+        snapshot = model.resolve()
+        data_graph = snapshot.graph()
+        fallback = snapshot._model
+    conforms, report, _text = shifty.validate(data_graph, shapes_graph, infer=infer)
+    issues = tuple(_issues_from_report(model, report, fallback=fallback))
     ok = bool(conforms) or not any(i.severity == "violation" for i in issues)
     return ValidationReport(ok=ok, issues=issues)
 

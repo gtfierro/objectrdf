@@ -50,8 +50,9 @@ rather than constructing a class. Constituents such as
 `Constituent_Salt` and `Constituent_SuspendedSolids` can qualify stream
 properties through `stream_state(...).quantity(..., substance=...)`.
 
-See [`examples/watr_quickstart.py`](../examples/watr_quickstart.py) for a
-complete serializing example and [Authoring 223P](s223.md) for handles,
+See
+[`examples/watr/treatment/watr_quickstart.py`](../examples/watr/treatment/watr_quickstart.py)
+for a complete serializing example and [Authoring 223P](s223.md) for handles,
 snapshots, ambiguity, and validation behavior shared by both packages.
 See [Quantities and stream state](quantities.md) for compiled QUDT terms and
 the boundary between ontology semantics and convenience authoring.

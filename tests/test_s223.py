@@ -376,7 +376,13 @@ def test_quickstart_example_runs(tmp_path):
     import shutil
     from pathlib import Path
 
-    example = Path(__file__).parent.parent / "examples" / "s223_quickstart.py"
+    example = (
+        Path(__file__).parent.parent
+        / "examples"
+        / "s223"
+        / "ahu"
+        / "s223_quickstart.py"
+    )
     target = tmp_path / "s223_quickstart.py"
     shutil.copy(example, target)
     runpy.run_path(str(target))

@@ -2,9 +2,9 @@
   "nodes": [
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
+        "file": "/Users/gabe/src/objectrdf/./examples/brick/quickstart/bldg1.ttl"
       },
-      "name": "urn:example/treatment"
+      "name": "file:///Users/gabe/src/objectrdf/examples/brick/quickstart/bldg1.ttl"
     },
     {
       "location": {
@@ -14,45 +14,21 @@
     },
     {
       "location": {
-        "url": "http://www.w3.org/2004/02/skos/core"
-      },
-      "name": "http://www.w3.org/2004/02/skos/core"
-    },
-    {
-      "location": {
-        "url": "http://www.linkedmodel.org/schema/vaem"
-      },
-      "name": "http://www.linkedmodel.org/schema/vaem"
-    },
-    {
-      "location": {
         "file": "/Users/gabe/src/objectrdf/./src/objectrdf/brick/_shapes.ttl"
       },
       "name": "https://brickschema.org/schema/1.4/Brick.ttl"
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/bldg1.ttl"
+        "file": "/Users/gabe/src/objectrdf/./examples/s223/ahu/ahu.ttl"
       },
-      "name": "file:///Users/gabe/src/objectrdf/examples/bldg1.ttl"
+      "name": "file:///Users/gabe/src/objectrdf/examples/s223/ahu/ahu.ttl"
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_full.ttl"
+        "url": "http://www.linkedmodel.org/schema/vaem"
       },
-      "name": "urn:example/watertap/seawater-ro/full"
-    },
-    {
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
-      },
-      "name": "file:///Users/gabe/src/objectrdf/examples/seawater_ro_pretreatment.ttl"
-    },
-    {
-      "location": {
-        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
-      },
-      "name": "https://open223.info/223p.ttl"
+      "name": "http://www.linkedmodel.org/schema/vaem"
     },
     {
       "location": {
@@ -68,15 +44,15 @@
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/seawater_ro_pretreatment.ttl"
+        "file": "/Users/gabe/src/objectrdf/./examples/watr/seawater_ro/seawater_ro_full.ttl"
       },
-      "name": "urn:example/watertap/seawater-ro/pretreatment"
+      "name": "urn:example/watertap/seawater-ro/full"
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/ahu.ttl"
+        "url": "http://www.w3.org/2004/02/skos/core"
       },
-      "name": "file:///Users/gabe/src/objectrdf/examples/ahu.ttl"
+      "name": "http://www.w3.org/2004/02/skos/core"
     },
     {
       "location": {
@@ -86,42 +62,70 @@
     },
     {
       "location": {
-        "file": "/Users/gabe/src/objectrdf/./examples/treatment.ttl"
+        "file": "/Users/gabe/src/objectrdf/./src/objectrdf/watr/_shapes.ttl"
       },
-      "name": "file:///Users/gabe/src/objectrdf/examples/treatment.ttl"
+      "name": "https://open223.info/223p.ttl"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/watr/epanet_anytown/anytown_watr.ttl"
+      },
+      "name": "urn:example/epanet/anytown"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/watr/seawater_ro_pretreatment/seawater_ro_pretreatment.ttl"
+      },
+      "name": "urn:example/watertap/seawater-ro/pretreatment"
+    },
+    {
+      "location": {
+        "file": "/Users/gabe/src/objectrdf/./examples/watr/treatment/treatment.ttl"
+      },
+      "name": "urn:example/treatment"
     }
   ],
   "node_holes": [],
   "edge_property": "directed",
   "edges": [
     [
-      0,
-      10,
+      5,
+      8,
       null
     ],
     [
+      5,
+      4,
+      null
+    ],
+    [
+      7,
       6,
-      10,
       null
     ],
     [
-      6,
-      9,
-      null
-    ],
-    [
-      9,
-      2,
-      null
-    ],
-    [
-      9,
-      3,
+      7,
+      5,
       null
     ],
     [
       11,
-      10,
+      6,
+      null
+    ],
+    [
+      11,
+      5,
+      null
+    ],
+    [
+      12,
+      6,
+      null
+    ],
+    [
+      13,
+      6,
       null
     ]
   ]

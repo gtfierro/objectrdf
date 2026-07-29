@@ -20,6 +20,13 @@ def test_extension_terms_keep_public_names():
     assert issubclass(watr.Pump, watr.Pump_2)
 
 
+def test_latest_watr_terms_are_available():
+    assert watr.MediaFiltrationUnit.meta.iri.endswith("#MediaFiltrationUnit")
+    assert issubclass(watr.BeltFilterPress, watr.DewateringUnit)
+    assert issubclass(watr.Process_ThermalHydrolysis, watr.Process_Hydrolysis)
+    assert enums.ReducingAgent.iri.endswith("#ReducingAgent")
+
+
 def test_direct_watr_connection_point_shapes_are_compiled():
     slots = watr.Tank._classinfo.cp_slots
     assert {(slot.direction, slot.medium) for slot in slots} >= {
