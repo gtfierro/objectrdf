@@ -310,7 +310,7 @@ class Model:
         cls,
         source: rdflib.Graph | str | Path,
         *,
-        registries: Registry | Iterable[Registry],
+        registries: Registry | Iterable[Registry] | None = None,
         namespace: str | None = None,
         infer: bool = False,
         shapes: rdflib.Graph | str | Path | None = None,
@@ -318,8 +318,10 @@ class Model:
     ) -> Model:
         """Hydrate a mutable object model backed by an RDF graph.
 
-        ``registries`` tells the loader which generated ontology packages to
-        use, for example ``Fan.meta.registry``. When ``infer`` is true,
+        When ``registries`` is omitted, the loader selects installed ontology
+        packages from the graph's ``owl:imports`` declarations. Pass a registry
+        explicitly for graphs without those declarations or for custom
+        packages, for example ``Fan.meta.registry``. When ``infer`` is true,
         shifty applies SHACL-AF rules before objects and their relationships
         are materialized. Mutating generated attributes writes through to the
         graph; RDF outside the generated object projection is preserved.
@@ -390,6 +392,7 @@ class Model:
         g = rdflib.Graph()
         namespaces: dict[str, str] = {"": self.namespace, **self.prefixes}
         imports = set(self.imports)
+        ontology_versions: dict[str, str] = {}
         for entity in self.entities:
             subject = URIRef(entity._iri)
             info = entity._classinfo_effective()
@@ -397,6 +400,8 @@ class Model:
             dependency = ontology.iri or ontology.source
             if dependency:
                 imports.add(dependency)
+            if ontology.iri and ontology.version:
+                ontology_versions[ontology.iri] = ontology.version
             g.add((subject, RDF.type, URIRef(info.iri)))
             g.add((subject, RDFS.label, Literal(entity.label)))
             if entity.comment is not None:
@@ -432,6 +437,8 @@ class Model:
         for dependency in sorted(imports):
             if dependency != self.ontology_iri:
                 g.add((ontology_subject, OWL.imports, URIRef(dependency)))
+                if version := ontology_versions.get(dependency):
+                    g.add((URIRef(dependency), OWL.versionInfo, Literal(version)))
         for prefix, ns in namespaces.items():
             g.bind(prefix, ns, replace=True)
         g.bind("owl", OWL, replace=True)

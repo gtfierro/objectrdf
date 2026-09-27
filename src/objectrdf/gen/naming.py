@@ -6,8 +6,9 @@ Deterministic and documented, because generated names are user-facing API:
   (Brick's ``Air_Handling_Unit`` style survives unchanged);
 - properties are the local name converted camelCase -> snake_case
   (``hasPoint`` -> ``has_point``);
-- names colliding with reserved Entity API (``name``, ``label``, ``comment``,
-  ``meta``, ``model``, ``contains``) or Python keywords get a trailing ``_``;
+- names colliding with reserved Entity API (``name``, ``type``, ``label``,
+  ``comment``, ``meta``, ``model``, ``contains``) or Python keywords get a
+  trailing ``_``;
 - two terms mapping to the same Python name are disambiguated by suffixing
   ``_2``, ``_3``, ... in sorted-IRI order (stable across runs).
 """
@@ -19,7 +20,7 @@ import re
 
 #: Attribute/method names owned by the Entity base class.
 RESERVED = frozenset(
-    {"name", "label", "comment", "meta", "model", "contains"}
+    {"name", "type", "label", "comment", "meta", "model", "contains"}
 ) | frozenset(keyword.kwlist)
 
 _CAMEL_BOUNDARY = re.compile(r"(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])")

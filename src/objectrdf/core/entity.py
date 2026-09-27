@@ -141,8 +141,8 @@ class Entity:
     turns it into an IRI at serialization time. When omitted, a name is
     auto-generated per model as ``<class>_<n>`` (``vav_1``, ``vav_2``, ...).
 
-    Reserved attribute names (``name``, ``label``, ``comment``, ``meta``,
-    ``model``): ontology properties that would collide with these are renamed
+    Reserved attribute names (``name``, ``type``, ``label``, ``comment``,
+    ``meta``, ``model``): ontology properties that would collide are renamed
     by the generator's collision policy.
     """
 
@@ -235,6 +235,14 @@ class Entity:
     def name(self) -> str:
         """Local name; combined with the model namespace to mint the IRI."""
         return self._name
+
+    @property
+    def type(self) -> str:
+        """Python class name, such as ``"Duct"``.
+
+        Use :attr:`meta.iri <ClassMetaView.iri>` for the ontology class IRI.
+        """
+        return type(self).__name__
 
     @property
     def label(self) -> str:

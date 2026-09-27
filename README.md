@@ -46,6 +46,8 @@ Each example prints a short summary and writes its generated Turtle file next
 to the example script. See [examples/](examples/) for more scenarios.
 
 - Docs: [docs/index.md](docs/index.md)
+- Learning book: [docs/book/](docs/book/README.md) (tutorials, guides,
+  lifecycle explanation, generated API reference)
 - Query existing RDF as typed objects: [docs/querying.md](docs/querying.md)
 - Z3 resolution and media hints: [docs/s223.md](docs/s223.md#giving-the-solver-media-hints)
 - Quantities, scalar values, and stream composition:

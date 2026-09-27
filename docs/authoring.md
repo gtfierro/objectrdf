@@ -63,8 +63,9 @@ the same errors, at construction/assignment time, in Python vocabulary:
 RangeError: AHU.has_point expects Point, got VAV ('vav-101')
 ```
 
-Every entity also has `name` (the local name), `label` (defaults to name,
-serialized as `rdfs:label`), and `comment`.
+Every entity also has `name` (the local name), `type` (the generated Python
+class name), `label` (defaults to name, serialized as `rdfs:label`), and
+`comment`. The ontology class IRI is available as `entity.meta.iri`.
 
 ## Inverses
 
@@ -157,6 +158,9 @@ model = Model(
 and its recorded source URL otherwise. Compiled QUDT terms carry their
 provenance, so using a unit or quantity kind adds the QUDT import without
 additional authoring syntax.
+When a generated package declares a version, the graph also records
+`owl:versionInfo` on the imported ontology IRI. `Model.from_graph()` uses the
+imports to select built-in packages and checks these versions when present.
 
 ## Metadata: `.meta`
 
@@ -174,6 +178,6 @@ ahu.meta.instance_iri # urn:example/bldg1#ahu1
 ahu.meta.model        # the owning Model
 ```
 
-`name`, `label`, `comment`, `meta`, `model`, and `contains` are reserved:
+`name`, `type`, `label`, `comment`, `meta`, `model`, and `contains` are reserved:
 ontology properties that would collide are suffixed with `_` by the
 generator's naming policy.

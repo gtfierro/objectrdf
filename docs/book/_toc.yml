@@ -1,0 +1,18 @@
+format: jb-book
+root: index
+parts:
+  - caption: Tutorials
+    chapters:
+      - file: tutorials/s223-air-path
+      - file: tutorials/watr-treatment
+  - caption: How-to guides
+    chapters:
+      - file: how-to/diagnose-resolution
+      - file: how-to/validate-and-query
+  - caption: Explanation
+    chapters:
+      - file: explanation/lifecycle
+  - caption: Reference
+    chapters:
+      - file: reference/runtime
+      - file: reference/ontologies

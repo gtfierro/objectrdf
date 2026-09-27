@@ -3,21 +3,31 @@
 `Model.from_graph()` turns resources in an existing RDF graph into the same
 generated Python classes used for authoring:
 
+For graphs saved by objectrdf, `owl:imports` on the model ontology identifies
+the generated package. The loader discovers built-in packages and checks the
+recorded `owl:versionInfo` against the installed package when available:
+
 ```python
 from objectrdf import Model
-from objectrdf.brick import Equipment, Fan
 
-model = Model.from_graph(
-    "building.ttl",
-    registries=Equipment.meta.registry,
-)
+model = Model.from_graph("building.ttl")
+for entity in model:
+    print(entity.name, entity.type, entity.meta.ontology.version)
+```
+
+You can then import a class when you want typed filtering:
+
+```python
+from objectrdf.brick import Fan
 
 supply_fan = model.find(Fan, label="Supply fan")
 if supply_fan is not None:
     downstream = list(supply_fan.feeds)
 ```
 
-Pass one registry for each generated ontology package represented in the data:
+For RDF without a matching `owl:imports` declaration, or for a custom
+generated package, pass its registry explicitly. Multiple registries are
+accepted:
 
 ```python
 from objectrdf.brick import Equipment as BrickEquipment

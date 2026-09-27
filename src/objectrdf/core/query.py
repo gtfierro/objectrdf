@@ -4,12 +4,13 @@ from __future__ import annotations
 
 from collections import Counter
 from collections.abc import Callable, Iterable, Mapping
+from importlib import import_module
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 from urllib.parse import unquote
 
 import rdflib
-from rdflib import RDF, RDFS, Literal, URIRef
+from rdflib import RDF, RDFS, OWL, Literal, URIRef
 
 from .entity import Entity
 from .errors import ModelingError
@@ -25,7 +26,7 @@ def load_graph(
     model_type: type[Model],
     source: rdflib.Graph | str | Path,
     *,
-    registries: Registry | Iterable[Registry],
+    registries: Registry | Iterable[Registry] | None,
     namespace: str | None,
     infer: bool,
     shapes: rdflib.Graph | str | Path | None,
@@ -33,6 +34,13 @@ def load_graph(
 ) -> Model:
     """Build a Model whose generated objects write through to ``source``."""
     graph = _read_graph(source)
+    registry_list = (
+        _discover_registries(graph)
+        if registries is None
+        else (registries,) if isinstance(registries, Registry) else tuple(registries)
+    )
+    if not registry_list:
+        raise ValueError("at least one generated package registry is required")
     if infer:
         import shifty
 
@@ -41,12 +49,6 @@ def load_graph(
             graph += inferred
         else:
             graph = inferred
-
-    registry_list = (
-        (registries,) if isinstance(registries, Registry) else tuple(registries)
-    )
-    if not registry_list:
-        raise ValueError("at least one generated package registry is required")
 
     classes_by_iri: dict[str, list[type[Entity]]] = {}
     for registry in registry_list:
@@ -123,6 +125,48 @@ def load_graph(
                 )
 
     return model
+
+
+def _discover_registries(graph: rdflib.Graph) -> tuple[Registry, ...]:
+    """Select built-in packages from the model ontology's imports."""
+    imports = {
+        str(dependency)
+        for ontology in graph.subjects(RDF.type, OWL.Ontology)
+        for dependency in graph.objects(ontology, OWL.imports)
+    }
+    candidates: list[Registry] = []
+    for package in ("watr", "s223", "brick", "qudt"):
+        module = import_module(f"objectrdf.{package}")
+        registry: Registry = module._REGISTRY
+        identity = registry.ontology
+        ontology_iri = identity.iri or identity.source
+        if ontology_iri not in imports:
+            continue
+        declared_versions = (
+            {str(version) for version in graph.objects(URIRef(identity.iri), OWL.versionInfo)}
+            if identity.iri else set()
+        )
+        if declared_versions and identity.version not in declared_versions:
+            raise ValueError(
+                f"{identity.name} ontology version in graph is "
+                f"{', '.join(sorted(declared_versions))}, but the installed "
+                f"package has {identity.version or 'no version'}"
+            )
+        candidates.append(registry)
+    if not candidates:
+        raise ValueError(
+            "no installed ontology package matches this graph's owl:imports; "
+            "pass registries= explicitly"
+        )
+    return tuple(
+        registry
+        for registry in candidates
+        if not any(
+            registry is not other
+            and set(registry.by_iri) < set(other.by_iri)
+            for other in candidates
+        )
+    )
 
 
 def matches(entity: Entity, attributes: Mapping[str, object]) -> bool:

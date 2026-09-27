@@ -1,0 +1,12 @@
+title: ObjectRDF learning book
+author: ObjectRDF contributors
+only_build_toc_files: true
+execute:
+  execute_notebooks: auto
+  timeout: 120
+sphinx:
+  extra_extensions:
+    - sphinx.ext.autodoc
+  config:
+    autodoc_typehints: description
+    autodoc_member_order: bysource
