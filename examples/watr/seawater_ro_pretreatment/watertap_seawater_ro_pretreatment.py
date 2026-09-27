@@ -36,7 +36,7 @@ with Model("urn:example/watertap/seawater-ro/pretreatment#") as model:
     intake = Pump("intake", label="Seawater intake")
     InletConnectionPoint(
         "intake-seawater-in",
-        medium=enums.Water_Seawater,
+        medium=enums.values.Water_Seawater,
         owner=intake,
     )
 
@@ -136,7 +136,7 @@ with Model("urn:example/watertap/seawater-ro/pretreatment#") as model:
         backwash_handling,
         name="s06",
     )
-    backwash.has_role.add(enums.Role_Backwash)
+    backwash.has_role.add(enums.values.Role_Backwash)
 
 resolved = model.resolve()
 out = Path(__file__).with_name("seawater_ro_pretreatment.ttl")

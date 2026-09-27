@@ -307,7 +307,8 @@ def test_punned_enum_is_emitted_only_as_reference_instance():
     )
 
     assert "class Fluid_Air" not in modules["__init__.py"]
-    assert "Fluid_Air = _EnumValue(" in modules["enums.py"]
+    assert "_E_Fluid_Air = _EnumValue(" in modules["enums.py"]
+    assert "    Fluid_Air = _E_Fluid_Air" in modules["enums.py"]
 
 
 def test_multiple_inheritance_constructor_unions_parent_properties():

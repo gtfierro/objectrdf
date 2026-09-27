@@ -36,11 +36,18 @@ loaded = Model.from_graph(
 for entity in loaded:
     print(entity.name, entity.type, entity.meta.ontology.version)
 
+for cls, instances in loaded.by_class().items():
+    print(cls.__name__, len(instances), [item.name for item in instances])
+
 from objectrdf.watr import Pump
 
 pumps = loaded.find_all(Pump)
 one_pump = loaded.find(Pump, label="Transfer pump")
 ```
+
+`by_class()` groups by exact Python class. `find_all(Pump)` also includes
+instances of Pump subclasses. To discover class names before importing them,
+see the [class catalog](../reference/catalog.md).
 
 For graphs without matching imports, or for custom generated packages, pass
 `registries=Pump.meta.registry` explicitly.

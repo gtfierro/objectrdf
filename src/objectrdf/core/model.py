@@ -316,6 +316,18 @@ class Model:
     def __len__(self) -> int:
         return len(self.entities)
 
+    def by_class(self) -> dict[type[Entity], list[Entity]]:
+        """Group current entities by their exact generated Python class.
+
+        Keys are classes, so they can be imported and passed to ``find_all``.
+        Values follow model insertion order. Deferred connections and ports
+        appear only in a resolved snapshot, not in this authored inventory.
+        """
+        groups: dict[type[Entity], list[Entity]] = {}
+        for entity in self.entities:
+            groups.setdefault(type(entity), []).append(entity)
+        return groups
+
     @classmethod
     def from_graph(
         cls,

@@ -8,5 +8,5 @@ sphinx:
   extra_extensions:
     - sphinx.ext.autodoc
   config:
-    autodoc_typehints: description
+    autodoc_typehints: none
     autodoc_member_order: bysource

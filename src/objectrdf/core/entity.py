@@ -12,7 +12,15 @@ from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Self, overload
 
 from . import containment as _containment
 from .errors import ModelingError, RangeError
-from .meta import ClassInfo, OntologyInfo, PropertySpec, Registry
+from .meta import (
+    CPConstraint,
+    ClassInfo,
+    OntologyInfo,
+    PortContract,
+    PortSlot,
+    PropertySpec,
+    Registry,
+)
 from .relations import (
     EnumOne,
     EnumSet,
@@ -28,6 +36,7 @@ from .relations import (
 if TYPE_CHECKING:
     from .enums import EnumValue
     from .model import Model
+    from .resolution import PortHandle
 
 
 class ClassMetaView:
@@ -77,9 +86,90 @@ class ClassMetaView:
         )
 
     @property
+    def subclasses(self) -> tuple[type[Entity], ...]:
+        """Direct subclasses registered in this generated package."""
+        return self.registry.subclasses(self._cls)
+
+    @property
+    def children(self) -> tuple[type[Entity], ...]:
+        """Direct child classes; alias for :attr:`subclasses`."""
+        return self.subclasses
+
+    @property
+    def descendants(self) -> tuple[type[Entity], ...]:
+        """All registered subclasses at any depth, sorted by Python name."""
+        return self.registry.subclasses(self._cls, recursive=True)
+
+    def tree(self, *, max_depth: int | None = None) -> str:
+        """Render this class and its registered subclass hierarchy as text."""
+        return self.registry.tree(self._cls, max_depth=max_depth)
+
+    def __getitem__(self, name_or_iri: str) -> type[Entity]:
+        """Look up a descendant by Python name, short name, or class IRI.
+
+        ``Process.meta["ReverseOsmosis"]`` accepts the short name of a
+        generated ``Process_ReverseOsmosis`` class. Full Python names and IRIs
+        also work. A class outside this subtree raises ``KeyError``.
+        """
+        registry = self.registry
+        cls = registry.by_name.get(name_or_iri)
+        if cls is None:
+            cls = registry.by_name.get(f"{self._cls.__name__}_{name_or_iri}")
+        if cls is None:
+            cls = registry.by_iri.get(name_or_iri)
+        if cls is None or cls is self._cls or not issubclass(cls, self._cls):
+            raise KeyError(
+                f"{name_or_iri!r} is not a registered subclass of "
+                f"{self._cls.__name__}"
+            )
+        return cls
+
+    @property
     def properties(self) -> tuple[PropertySpec, ...]:
         """Effective property specs: inherited plus own, own winning."""
         return tuple(self._cls._effective_specs().values())
+
+    @property
+    def port_contract(self) -> PortContract:
+        """Inherited SHACL requirements for connection points on this class.
+
+        Slots describe unconditional count, direction, point class, and
+        allowed medium roots. Boolean alternatives remain in ``constraints``.
+        This describes possible points, not the named points on an instance.
+        """
+        registry = self.registry
+
+        def medium(iri: str | None) -> EnumValue | str | None:
+            if iri is None:
+                return None
+            return registry.enums_by_iri.get(iri, iri)
+
+        slots: list[PortSlot] = []
+        constraints: list[CPConstraint] = []
+        for base in self._cls.__mro__:
+            info = base.__dict__.get("_classinfo")
+            if info is None:
+                continue
+            for slot in info.cp_slots:
+                slots.append(
+                    PortSlot(
+                        point_class=registry.resolve(slot.cp_class),
+                        direction=slot.direction,
+                        medium=medium(slot.medium),
+                        medium_options=tuple(
+                            registry.enums_by_iri.get(iri, iri)
+                            for iri in slot.medium_options
+                        ),
+                        min_count=slot.min_count,
+                        max_count=slot.max_count,
+                    )
+                )
+            constraints.extend(info.cp_constraints)
+        return PortContract(tuple(slots), tuple(constraints))
+
+    def describe_ports(self) -> str:
+        """Render this class's inherited port requirements for authoring."""
+        return f"{self._cls.__name__} port requirements\n{self.port_contract.describe()}"
 
     @property
     def abstract(self) -> bool:
@@ -144,7 +234,8 @@ class Entity:
     auto-generated per model as ``<class>_<n>`` (``vav_1``, ``vav_2``, ...).
 
     Reserved attribute names (``name``, ``type``, ``label``, ``comment``,
-    ``meta``, ``model``): ontology properties that would collide are renamed
+    ``meta``, ``model``, ``ports``, ``describe_ports``): ontology properties
+    that would collide are renamed
     by the generator's collision policy.
     """
 
@@ -441,6 +532,30 @@ class Entity:
         return self._model._defer_port(
             self, name, direction, medium=medium
         )
+
+    @classmethod
+    def describe_ports(cls) -> str:
+        """Summarize the class's port directions and SHACL requirements.
+
+        This describes what the ontology permits or requires, rather than
+        the concrete and deferred points on a particular instance. Use
+        ``instance.ports`` to inspect those points.
+        """
+        return cls.meta.describe_ports()
+
+    @property
+    def ports(self) -> tuple[Entity | PortHandle, ...]:
+        """Concrete connection points and authored deferred ports on this entity.
+
+        The authored model can contain both generated ConnectionPoint entities
+        and PortHandle intentions. A resolved snapshot exposes concrete points
+        here after the solver has materialized the deferred ones.
+        """
+        concrete = tuple(getattr(self, "has_connection_point", ()))
+        deferred = tuple(
+            port for port in self._model._port_intents if port.owner is self
+        )
+        return concrete + deferred
 
     def __enter__(self) -> Self:
         """Open a containment scope: entities created inside attach here."""

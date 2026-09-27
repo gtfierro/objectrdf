@@ -120,8 +120,8 @@ when the model is resolved or serialized. Use the functional form when you
 need to provide or retain a medium constraint:
 
 ```python
-flow = connect(pump_a, pump_b, medium=enums.Fluid_Water)
-flow.medium = enums.Water_ChilledWater  # refine before resolution
+flow = connect(pump_a, pump_b, medium=enums.values.Fluid_Water)
+flow.medium = enums.values.Water_ChilledWater  # refine before resolution
 ```
 
 See [Authoring 223P](s223.md#how-z3-resolution-works) for solver lifecycle,
@@ -173,11 +173,14 @@ AHU.meta.definition   # the skos:definition text (also in AHU.__doc__)
 AHU.meta.ontology     # OntologyInfo(name='Brick', version=..., source=...)
 AHU.meta.parents      # (HVAC_Equipment,)
 AHU.meta.properties   # effective PropertySpecs (inherited + own)
+AHU.meta.port_contract  # compiled point requirements, if any
+AHU.describe_ports()     # readable directions, counts, media, constraints
 
 ahu.meta.instance_iri # urn:example/bldg1#ahu1
 ahu.meta.model        # the owning Model
 ```
 
-`name`, `type`, `label`, `comment`, `meta`, `model`, and `contains` are reserved:
+`name`, `type`, `label`, `comment`, `meta`, `model`, `contains`, `ports`, and
+`describe_ports` are reserved:
 ontology properties that would collide are suffixed with `_` by the
 generator's naming policy.

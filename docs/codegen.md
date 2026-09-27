@@ -18,9 +18,16 @@ objectrdf gen --iri https://brickschema.org/schema/1.4/Brick \
 objectrdf gen --file core.ttl --extra shapes.ttl --name My --out mypkg
 ```
 
-The output is a single `__init__.py` in the target directory. Regeneration
+The main output is `__init__.py` in the target directory. Regeneration
 from the same input is byte-identical (tested), so ontology upgrades show up
 as reviewable diffs.
+
+When the source has a punned enum hierarchy, generation also writes
+`enums.py`. Its top level exports the root and major branches for interactive
+completion, such as `enums.Substance.Medium`. Every generated value is also
+available under its flat Python name in `enums.values`, such as
+`enums.values.Fluid_Water`. Each hierarchy node exposes its direct children
+through attribute completion.
 
 ## What maps to what
 

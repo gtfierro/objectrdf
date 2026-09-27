@@ -175,7 +175,7 @@ def _static_quantity(
         quantity_kind,
         of=owner,
         label=label,
-        has_aspect=[enums.Aspect_Nominal],
+        has_aspect=[enums.values.Aspect_Nominal],
     )
 
 
@@ -192,7 +192,7 @@ def _observable(
         label=label,
         has_quantity_kind=quantity_kind,
         has_unit=unit,
-        of_medium=enums.Fluid_Water,
+        of_medium=enums.values.Fluid_Water,
     )
     location.has_property.add(observed)
     return observed
@@ -267,7 +267,7 @@ def build_watr_model(
                 _name("junction", epanet_id),
                 label=f"EPANET junction {epanet_id}",
                 comment=_location_comment(epanet_id, network, row),
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             nodes[epanet_id] = node
             row_by_node[epanet_id] = row
@@ -364,17 +364,17 @@ def build_watr_model(
             first_port = first.port(
                 _name(f"pipe-{link_id}", f"{node_1}-end"),
                 direction="bi",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             second_port = second.port(
                 _name(f"pipe-{link_id}", f"{node_2}-end"),
                 direction="bi",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             pipe = connect(
                 first_port,
                 second_port,
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
                 connection=Pipe,
                 name=_name("pipe", link_id),
             )
@@ -424,34 +424,34 @@ def build_watr_model(
             upstream_port = first.port(
                 _name("pump-suction", f"{link_id}-{node_1}-end"),
                 direction="out",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             pump_in = pump.port(
                 _name("pump-suction", f"{link_id}-pump-end"),
                 direction="in",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             pump_out = pump.port(
                 _name("pump-discharge", f"{link_id}-pump-end"),
                 direction="out",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             downstream_port = second.port(
                 _name("pump-discharge", f"{link_id}-{node_2}-end"),
                 direction="in",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             connect(
                 upstream_port,
                 pump_in,
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
                 connection=Pipe,
                 name=_name("pump-suction", link_id),
             )
             connect(
                 pump_out,
                 downstream_port,
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
                 connection=Pipe,
                 name=_name("pump-discharge", link_id),
             )
@@ -474,34 +474,34 @@ def build_watr_model(
             upstream_port = first.port(
                 _name("valve-upstream", f"{link_id}-{node_1}-end"),
                 direction="out",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             valve_in = valve.port(
                 _name("valve-upstream", f"{link_id}-valve-end"),
                 direction="in",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             valve_out = valve.port(
                 _name("valve-downstream", f"{link_id}-valve-end"),
                 direction="out",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             downstream_port = second.port(
                 _name("valve-downstream", f"{link_id}-{node_2}-end"),
                 direction="in",
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
             )
             connect(
                 upstream_port,
                 valve_in,
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
                 connection=Pipe,
                 name=_name("valve-upstream", link_id),
             )
             connect(
                 valve_out,
                 downstream_port,
-                medium=enums.Fluid_Water,
+                medium=enums.values.Fluid_Water,
                 connection=Pipe,
                 name=_name("valve-downstream", link_id),
             )

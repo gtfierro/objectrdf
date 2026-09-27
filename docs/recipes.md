@@ -16,13 +16,13 @@ class AirWaterCoil(ChilledWaterCoil):
     ontology_iri = "urn:example:recipes"
     air = ConnectionPoint.declare(
         count=2,
-        medium=fixed(enums.Fluid_Air),
+        medium=fixed(enums.values.Fluid_Air),
         direction=choose("in", "out"),
         label=default("Air connection"),
     )
     water = ConnectionPoint.declare(
         count=2,
-        medium=fixed(enums.Water_ChilledWater),
+        medium=fixed(enums.values.Water_ChilledWater),
         direction=choose("in", "out"),
     )
 
@@ -45,7 +45,7 @@ keyed by their canonical Python property name:
 class ChilledCoil(ChilledWaterCoil):
     class_iri = "urn:example:recipes#ChilledCoil"
     ontology_iri = "urn:example:recipes"
-    property_policies = {"has_role": default([enums.Role_Cooling])}
+    property_policies = {"has_role": default([enums.values.Role_Cooling])}
 ```
 
 This keeps policy declarations separate from generated property descriptors.

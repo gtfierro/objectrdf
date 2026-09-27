@@ -26,8 +26,8 @@ with Model(
     pump_to_product = connect(pump, product)
 
 resolved = model.resolve()
-assert resolved.connection(source_to_pump).medium is enums.Fluid_Water
-assert resolved.connection(pump_to_product).medium is enums.Fluid_Water
+assert resolved.connection(source_to_pump).medium is enums.values.Fluid_Water
+assert resolved.connection(pump_to_product).medium is enums.values.Fluid_Water
 out = Path(__file__).with_name("treatment.ttl")
 model.save(out)
 

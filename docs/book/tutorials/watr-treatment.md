@@ -44,8 +44,8 @@ for handle in (inlet, outlet):
     print(handle.name, connection.type, connection.medium)
     print("  reason:", explanation.medium_reason)
 
-assert resolved.connection(inlet).medium is enums.Fluid_Water
-assert resolved.connection(outlet).medium is enums.Fluid_Water
+assert resolved.connection(inlet).medium is enums.values.Fluid_Water
+assert resolved.connection(outlet).medium is enums.values.Fluid_Water
 ```
 
 ## 3. Add metadata before compiling
@@ -56,7 +56,7 @@ reflects the edit.
 
 ```{code-cell} python3
 inlet.label = "Water supply"
-inlet.has_role.add(enums.Role_Supply)
+inlet.has_role.add(enums.values.Role_Supply)
 updated = model.resolve()
 assert updated is not resolved
 print(updated.connection(inlet).label)

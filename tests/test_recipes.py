@@ -23,7 +23,7 @@ class RecipePump(Pump):
     property_policies = {"label": default("Recipe pump")}
     water = ConnectionPoint.declare(
         count=2,
-        medium=fixed(enums.Fluid_Water),
+        medium=fixed(enums.values.Fluid_Water),
         direction=choose("in", "out"),
         label=default("Water port"),
     )
@@ -72,12 +72,12 @@ def test_recipe_connects_by_declared_media_and_round_trips():
         class_iri = "urn:test:recipes#AirWaterCoolingCoil"
         ontology_iri = "urn:test:recipes"
         air = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Air),
+            medium=fixed(enums.values.Fluid_Air),
             direction=choose("in", "out"),
             label=fixed("recipe air"),
         )
         water = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Water),
+            medium=fixed(enums.values.Fluid_Water),
             direction=choose("in", "out"),
             label=fixed("recipe water"),
         )
@@ -93,8 +93,8 @@ def test_recipe_connects_by_declared_media_and_round_trips():
     resolved = model.resolve()
     air_point = resolved.point(coil.air)
     water_point = resolved.point(coil.water)
-    assert air_point.medium is enums.Fluid_Air
-    assert water_point.medium is enums.Fluid_Water
+    assert air_point.medium is enums.values.Fluid_Air
+    assert water_point.medium is enums.values.Fluid_Water
     assert resolved.explain(air_link).target_point == air_point.name
     assert resolved.explain(water_link).target_point == water_point.name
     from rdflib import Literal, URIRef
@@ -124,18 +124,18 @@ def test_unconnected_fixed_recipe_point_is_materialized():
         class_iri = "urn:test:recipes#FixedPointPump"
         ontology_iri = "urn:test:recipes"
         outlet = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Water), direction=fixed("out")
+            medium=fixed(enums.values.Fluid_Water), direction=fixed("out")
         )
 
     with Model("urn:test:model#") as model:
         pump = FixedPointPump("pump")
         with pytest.raises(ModelingError, match="medium is fixed"):
-            pump.outlet.medium = enums.Fluid_Air
+            pump.outlet.medium = enums.values.Fluid_Air
 
     resolved = model.resolve()
     point = resolved.point(pump.outlet)
     assert isinstance(point, OutletConnectionPoint)
-    assert point.medium is enums.Fluid_Water
+    assert point.medium is enums.values.Fluid_Water
 
     loaded = Model.from_graph(
         resolved.graph(), registries=Pump.meta.registry, strict=True
@@ -150,7 +150,7 @@ def test_unconnected_direction_choice_blocks_strict_resolution():
         class_iri = "urn:test:recipes#ChoicePointPump"
         ontology_iri = "urn:test:recipes"
         port = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Water), direction=choose("in", "out")
+            medium=fixed(enums.values.Fluid_Water), direction=choose("in", "out")
         )
 
     with Model("urn:test:model#") as model:
@@ -167,7 +167,7 @@ def test_interchangeable_group_points_resolve_as_one_choice():
         ontology_iri = "urn:test:recipes"
         inlets = ConnectionPoint.declare(
             count=2,
-            medium=fixed(enums.Fluid_Water),
+            medium=fixed(enums.values.Fluid_Water),
             direction=fixed("in"),
         )
 
@@ -184,10 +184,10 @@ def test_distinct_same_class_recipe_points_are_ambiguous():
         class_iri = "urn:test:recipes#TwoInletPump"
         ontology_iri = "urn:test:recipes"
         primary = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Water), direction=fixed("in")
+            medium=fixed(enums.values.Fluid_Water), direction=fixed("in")
         )
         secondary = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Water), direction=fixed("in")
+            medium=fixed(enums.values.Fluid_Water), direction=fixed("in")
         )
 
     with Model("urn:test:model#") as model:
@@ -204,7 +204,7 @@ def test_failed_recipe_construction_rolls_back_reserved_names_and_points():
         class_iri = "urn:test:recipes#RollbackPump"
         ontology_iri = "urn:test:recipes"
         outlet = ConnectionPoint.declare(
-            medium=fixed(enums.Fluid_Water), direction=fixed("out")
+            medium=fixed(enums.values.Fluid_Water), direction=fixed("out")
         )
 
     with Model("urn:test:model#") as model:
@@ -257,15 +257,15 @@ def test_mutable_defaults_are_copied_per_instance():
     class DefaultRolePump(Pump):
         class_iri = "urn:test:recipes#DefaultRolePump"
         ontology_iri = "urn:test:recipes"
-        property_policies = {"has_role": default([enums.Role_Cooling])}
+        property_policies = {"has_role": default([enums.values.Role_Cooling])}
 
     with Model("urn:test:model#"):
         first = DefaultRolePump("first")
         second = DefaultRolePump("second")
-        first.has_role.append(enums.Role_Heating)
+        first.has_role.append(enums.values.Role_Heating)
 
-    assert first.has_role == [enums.Role_Cooling, enums.Role_Heating]
-    assert second.has_role == [enums.Role_Cooling]
+    assert first.has_role == [enums.values.Role_Cooling, enums.values.Role_Heating]
+    assert second.has_role == [enums.values.Role_Cooling]
 
 
 def test_fixed_inherited_value_cannot_be_overridden():

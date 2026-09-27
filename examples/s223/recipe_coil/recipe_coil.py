@@ -15,12 +15,12 @@ class AirWaterCoolingCoil(CoolingCoil):
     ontology_iri = "urn:example:hvac-recipes"
     class_label = "Air and water cooling coil"
     air = ConnectionPoint.declare(
-        medium=fixed(enums.Fluid_Air),
+        medium=fixed(enums.values.Fluid_Air),
         direction=choose("in", "out"),
         label=fixed("Air connection"),
     )
     water = ConnectionPoint.declare(
-        medium=fixed(enums.Fluid_Water),
+        medium=fixed(enums.values.Fluid_Water),
         direction=choose("in", "out"),
         label=fixed("Water connection"),
     )

@@ -7,6 +7,9 @@ parts:
       - file: tutorials/watr-treatment
   - caption: How-to guides
     chapters:
+      - file: how-to/explore-classes
+      - file: how-to/explore-enums
+      - file: how-to/inspect-port-contracts
       - file: how-to/diagnose-resolution
       - file: how-to/validate-and-query
   - caption: Explanation
@@ -16,3 +19,4 @@ parts:
     chapters:
       - file: reference/runtime
       - file: reference/ontologies
+      - file: reference/catalog

@@ -13,7 +13,7 @@ coefficient = Property(
     "water-permeability",
     label="Water permeability coefficient [m/(Pa·s)]",
     has_value=4.2e-12,
-    has_aspect=[enums.Aspect_Nominal],
+    has_aspect=[enums.values.Aspect_Nominal],
 )
 membrane.has_property.add(coefficient)
 ```
@@ -45,7 +45,7 @@ pressure = quantity(
     units.PA,
     quantity_kinds.Pressure,
     of=pump,
-    has_aspect=[enums.Aspect_Nominal],
+    has_aspect=[enums.values.Aspect_Nominal],
 )
 ```
 
@@ -67,15 +67,15 @@ authored connection point or a deferred `ConnectionHandle`:
 ```python
 from objectrdf.qudt import stream_state
 
-state = stream_state(feed_out, medium=enums.Water_Seawater)
+state = stream_state(feed_out, medium=enums.values.Water_Seawater)
 tds = state.quantity(
     watr.QuantifiableProperty,
     "influent-tds",
     35.0,
     units.GM_PER_L,
     quantity_kinds.MassConcentration,
-    substance=enums.Constituent_Salt,
-    has_aspect=[enums.Aspect_Nominal],
+    substance=enums.values.Constituent_Salt,
+    has_aspect=[enums.values.Aspect_Nominal],
 )
 ```
 

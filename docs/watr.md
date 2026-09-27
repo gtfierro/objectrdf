@@ -33,8 +33,8 @@ component at creation time or later through its handle:
 from objectrdf.watr import enums
 
 flow = connect(source, target)
-flow.medium = enums.Fluid_Sludge
-flow.has_role.add(enums.Role_Backwash)
+flow.medium = enums.values.Fluid_Sludge
+flow.has_role.add(enums.values.Role_Backwash)
 ```
 
 You can also author a known WaTr/S223 ConnectionPoint with `medium`, or

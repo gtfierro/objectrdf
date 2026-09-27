@@ -18,7 +18,16 @@ from .errors import (
     UnsatisfiableModelError,
     ValidationError,
 )
-from .meta import CPConstraint, ClassInfo, CPSlot, OntologyInfo, PropertySpec, Registry
+from .meta import (
+    CPConstraint,
+    ClassInfo,
+    CPSlot,
+    OntologyInfo,
+    PortContract,
+    PortSlot,
+    PropertySpec,
+    Registry,
+)
 from .model import Model, current_model
 from .relations import (
     EnumOne,
@@ -65,6 +74,8 @@ __all__ = [
     "ModelingError",
     "ObjectRDFError",
     "OntologyInfo",
+    "PortContract",
+    "PortSlot",
     "PropertySpec",
     "PropertyAlias",
     "RangeError",

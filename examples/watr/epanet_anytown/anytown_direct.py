@@ -21,7 +21,7 @@ from objectrdf.watr import (
 )
 
 NAMESPACE = "urn:example/epanet/anytown-direct#"
-WATER = enums.Fluid_Water
+WATER = enums.values.Fluid_Water
 
 
 def build_model() -> Model:

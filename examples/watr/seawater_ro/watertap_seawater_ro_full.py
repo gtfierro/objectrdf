@@ -69,7 +69,7 @@ def nominal_quantity(
         quantity_kind,
         of=of,
         label=label,
-        has_aspect=[enums.Aspect_Nominal],
+        has_aspect=[enums.values.Aspect_Nominal],
     )
 
 
@@ -92,14 +92,14 @@ def build_model() -> Model:
         feed = Equipment(
             "feed",
             label="Seawater feed",
-            has_role=[enums.Role_Feed],
+            has_role=[enums.values.Role_Feed],
         )
         feed_out = OutletConnectionPoint(
             "feed-seawater-out",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             owner=feed,
         )
-        influent = stream_state(feed_out, medium=enums.Fluid_Water)
+        influent = stream_state(feed_out, medium=enums.values.Fluid_Water)
         influent.quantity(
             QuantifiableProperty,
             "influent-flow-rate",
@@ -107,7 +107,7 @@ def build_model() -> Model:
             units.GAL_US_PER_DAY,
             quantity_kinds.VolumeFlowRate,
             label="Influent flow rate",
-            has_aspect=[enums.Aspect_Nominal],
+            has_aspect=[enums.values.Aspect_Nominal],
         )
         influent.quantity(
             QuantifiableProperty,
@@ -115,9 +115,9 @@ def build_model() -> Model:
             35.0,
             units.GM_PER_L,
             quantity_kinds.MassConcentration,
-            substance=enums.Constituent_Salt,
+            substance=enums.values.Constituent_Salt,
             label="Influent total dissolved solids concentration",
-            has_aspect=[enums.Aspect_Nominal],
+            has_aspect=[enums.values.Aspect_Nominal],
         )
         influent.quantity(
             QuantifiableProperty,
@@ -125,9 +125,9 @@ def build_model() -> Model:
             0.03,
             units.GM_PER_L,
             quantity_kinds.MassConcentration,
-            substance=enums.Constituent_SuspendedSolids,
+            substance=enums.values.Constituent_SuspendedSolids,
             label="Influent total suspended solids concentration",
-            has_aspect=[enums.Aspect_Nominal],
+            has_aspect=[enums.values.Aspect_Nominal],
         )
         influent.quantity(
             QuantifiableProperty,
@@ -136,7 +136,7 @@ def build_model() -> Model:
             units.K,
             quantity_kinds.Temperature,
             label="Influent temperature",
-            has_aspect=[enums.Aspect_Nominal],
+            has_aspect=[enums.values.Aspect_Nominal],
         )
         influent.quantity(
             QuantifiableProperty,
@@ -145,22 +145,22 @@ def build_model() -> Model:
             units.PA,
             quantity_kinds.Pressure,
             label="Influent pressure",
-            has_aspect=[enums.Aspect_Nominal],
+            has_aspect=[enums.values.Aspect_Nominal],
         )
 
         # Pretreatment.
         intake = Pump(
             "intake",
             label="Seawater intake",
-            has_role=[enums.Role_Feed],
+            has_role=[enums.values.Role_Feed],
         )
         feed_connection = connect(
             feed,
             intake,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="feed--intake",
         )
-        feed_connection.has_role.add(enums.Role_Feed)
+        feed_connection.has_role.add(enums.values.Role_Feed)
         ferric_chloride_addition = CoagulationBasin(
             "ferric-chloride-addition",
             label="Ferric chloride addition",
@@ -193,7 +193,7 @@ def build_model() -> Model:
         storage_tank_1 = Tank(
             "storage-tank-1",
             label="Pretreatment storage tank",
-            has_role=[enums.Role_Storage],
+            has_role=[enums.values.Role_Storage],
         )
         nominal_quantity(
             "storage-tank-1-residence-time",
@@ -255,18 +255,18 @@ def build_model() -> Model:
                     ),
                 )
             ],
-            has_role=[enums.Role_SolidsHandling],
+            has_role=[enums.values.Role_SolidsHandling],
         )
         backwash_treated_out = OutletConnectionPoint(
             "backwash-handling-treated-out",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             owner=backwash_handling,
         )
         backwash_handling.has_optional_connection_point.add(backwash_treated_out)
         backwash_byproduct_out = backwash_handling.port(
             "backwash-handling-byproduct-out",
             direction="out",
-            medium=enums.Fluid_Sludge,
+            medium=enums.values.Fluid_Sludge,
         )
         landfill = UnitProcess(
             "landfill",
@@ -277,13 +277,13 @@ def build_model() -> Model:
                     definition="Dispose of the backwash solids by landfilling.",
                 )
             ],
-            has_role=[enums.Role_SolidsHandling],
+            has_role=[enums.values.Role_SolidsHandling],
         )
         # WaterTAP models landfill as pass-through; its outlet is an external
         # boundary of this reference flowsheet.
         landfill_out = OutletConnectionPoint(
             "landfill-out",
-            medium=enums.Fluid_Sludge,
+            medium=enums.values.Fluid_Sludge,
             owner=landfill,
         )
         landfill.has_optional_connection_point.add(landfill_out)
@@ -306,25 +306,25 @@ def build_model() -> Model:
         backwash = connect(
             media_backwash_out,
             backwash_handling,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="pretreatment-backwash",
         )
-        backwash.has_role.add(enums.Role_Backwash)
+        backwash.has_role.add(enums.values.Role_Backwash)
 
         landfill_waste = connect(
             backwash_byproduct_out,
             landfill,
-            medium=enums.Fluid_Sludge,
+            medium=enums.values.Fluid_Sludge,
             name="landfill-waste",
         )
-        landfill_waste.has_role.add(enums.Role_SolidsHandling)
+        landfill_waste.has_role.add(enums.values.Role_SolidsHandling)
 
         # This records a change in reference property-package assumptions.
         # It does not perform or claim a WaterTAP translation.
         pretreatment_to_desalination = Equipment(
             "pretreatment-to-desalination-boundary",
             label="Pretreatment-to-desalination semantic boundary",
-            has_role=[enums.Role_Pretreatment],
+            has_role=[enums.values.Role_Pretreatment],
         )
         cartridge_filtration >> pretreatment_to_desalination
 
@@ -378,7 +378,7 @@ def build_model() -> Model:
             "reverse-osmosis-water-permeability",
             label="Water permeability coefficient [m/(Pa·s)]",
             has_value=4.2e-12,
-            has_aspect=[enums.Aspect_Nominal],
+            has_aspect=[enums.values.Aspect_Nominal],
         )
         # QUDT has the exact unit, but no dimensionally compatible quantity
         # kind. Use a scalar Property until WaTr defines that missing kind.
@@ -414,13 +414,13 @@ def build_model() -> Model:
         disposal = Equipment(
             "disposal",
             label="Brine disposal",
-            has_role=[enums.Role_Discharge],
+            has_role=[enums.values.Role_Discharge],
         )
 
         separator = Junction(
             "separator-1",
             label="Feed separator S1",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             comment=(
                 "IDAES stream splitter; this junction does not perform a "
                 "water-treatment process."
@@ -429,17 +429,17 @@ def build_model() -> Model:
         separator_in = separator.port(
             "separator-1-in",
             direction="in",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
         )
         separator_pump_out = separator.port(
             "separator-1-pump-out",
             direction="out",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
         )
         separator_pxr_out = separator.port(
             "separator-1-pxr-out",
             direction="out",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
         )
         pressure_exchanger = PressureExchanger(
             "pressure-exchanger",
@@ -489,12 +489,12 @@ def build_model() -> Model:
         reverse_osmosis_concentrate_out = reverse_osmosis.port(
             "reverse-osmosis-concentrate-out",
             direction="out",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
         )
         reverse_osmosis_permeate_out = reverse_osmosis.port(
             "reverse-osmosis-permeate-out",
             direction="out",
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
         )
         # The shared broad water type keeps the S223 Filter constraint valid
         # across the seawater-to-permeate-and-brine transformation.
@@ -502,7 +502,7 @@ def build_model() -> Model:
         connect(
             pretreatment_to_desalination,
             separator_in,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="pretreatment-to-desalination-boundary--separator-1",
         )
         connect(
@@ -518,14 +518,14 @@ def build_model() -> Model:
         ro_feed = connect(
             mixer_out,
             reverse_osmosis,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="ro-feed",
         )
-        ro_feed.has_role.add(enums.Role_Feed)
+        ro_feed.has_role.add(enums.values.Role_Feed)
         connect(
             separator_pxr_out,
             pxr_feed_in,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="pxr-feed-connection-in",
         )
         connect(
@@ -541,7 +541,7 @@ def build_model() -> Model:
         connect(
             reverse_osmosis_concentrate_out,
             pxr_brine_in,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="ro-concentrate--pxr-brine-connection-in",
         )
         brine_disposal = connect(
@@ -549,21 +549,21 @@ def build_model() -> Model:
             disposal,
             name="pxr-brine-connection-out",
         )
-        brine_disposal.has_role.add(enums.Role_Discharge)
+        brine_disposal.has_role.add(enums.values.Role_Discharge)
 
         desalination_to_posttreatment = Equipment(
             "desalination-to-posttreatment-boundary",
             label="Desalination-to-posttreatment semantic boundary",
-            has_role=[enums.Role_Posttreatment],
+            has_role=[enums.values.Role_Posttreatment],
         )
         permeate = connect(
             reverse_osmosis_permeate_out,
             desalination_to_posttreatment,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="ro-permeate",
         )
-        permeate.has_role.add(enums.Role_Permeate)
-        permeate.has_role.add(enums.Role_Supply)
+        permeate.has_role.add(enums.values.Role_Permeate)
+        permeate.has_role.add(enums.values.Role_Supply)
         nominal_quantity(
             "reverse-osmosis-permeate-side-pressure",
             "Nominal permeate-side pressure",
@@ -577,7 +577,7 @@ def build_model() -> Model:
         storage_tank_2 = Tank(
             "storage-tank-2",
             label="Post-treatment storage tank 2",
-            has_role=[enums.Role_Storage],
+            has_role=[enums.values.Role_Storage],
         )
         nominal_quantity(
             "storage-tank-2-residence-time",
@@ -636,7 +636,7 @@ def build_model() -> Model:
         storage_tank_3 = Tank(
             "storage-tank-3",
             label="Municipal-water storage tank 3",
-            has_role=[enums.Role_Storage],
+            has_role=[enums.values.Role_Storage],
         )
         nominal_quantity(
             "storage-tank-3-residence-time",
@@ -649,23 +649,23 @@ def build_model() -> Model:
         municipal = Equipment(
             "municipal",
             label="Municipal distribution",
-            has_role=[enums.Role_Supply],
+            has_role=[enums.values.Role_Supply],
         )
 
         connect(
             desalination_to_posttreatment,
             storage_tank_2,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="desalination-to-posttreatment-boundary--storage-tank-2",
         )
         storage_tank_2 >> uv_aop >> co2_addition >> lime_addition >> storage_tank_3
         municipal_supply = connect(
             storage_tank_3,
             municipal,
-            medium=enums.Fluid_Water,
+            medium=enums.values.Fluid_Water,
             name="municipal-supply",
         )
-        municipal_supply.has_role.add(enums.Role_Supply)
+        municipal_supply.has_role.add(enums.values.Role_Supply)
 
     return model
 

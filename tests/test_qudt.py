@@ -80,7 +80,7 @@ def test_quantifiable_property_accepts_simple_fixed_value():
 def test_stream_state_stages_medium_qualified_property_on_connection():
     with Model("urn:test/stream#") as model:
         handle = connect(s223.Chiller("source"), s223.Pump("pump"))
-        state = stream_state(handle, medium=enums.Fluid_Water)
+        state = stream_state(handle, medium=enums.values.Fluid_Water)
         flow = state.quantity(
             s223.QuantifiableProperty,
             "design-flow",
@@ -90,5 +90,5 @@ def test_stream_state_stages_medium_qualified_property_on_connection():
         )
 
     connection = model.resolve().connection(handle)
-    assert flow.of_medium is enums.Fluid_Water
+    assert flow.of_medium is enums.values.Fluid_Water
     assert {prop.name for prop in connection.has_property} == {"design-flow"}

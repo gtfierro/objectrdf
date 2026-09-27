@@ -31,7 +31,7 @@ from objectrdf.watr import (
 )
 
 NAMESPACE = "urn:example/distribution-network#"
-WATER = enums.Fluid_Water
+WATER = enums.values.Fluid_Water
 
 
 def build_model() -> Model:

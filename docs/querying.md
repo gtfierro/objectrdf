@@ -25,6 +25,63 @@ if supply_fan is not None:
     downstream = list(supply_fan.feeds)
 ```
 
+## Discovering classes and instances
+
+Each generated package has a registry. Start from any class in the package to
+list its generated classes, inspect one class's direct parents or children,
+or find every descendant in its branch. User-defined recipe subclasses also
+appear once they have been registered:
+
+```python
+from objectrdf.s223 import Equipment as S223Equipment
+from objectrdf.watr import Equipment as WatrEquipment, Process
+
+all_s223_classes = S223Equipment.meta.registry.classes
+direct_equipment_types = S223Equipment.meta.children
+all_equipment_types = WatrEquipment.meta.descendants
+all_process_types = Process.meta.descendants
+print(Process.meta.tree(max_depth=3))
+
+for cls in all_process_types:
+    print(cls.__name__, cls.meta.iri)
+```
+
+These are Python classes, so `issubclass`, `__mro__`, and `isinstance` work as
+usual. `meta.children` (also available as `meta.subclasses`) lists direct
+children; `meta.descendants` includes
+all depths. Multiple inheritance can give a class more than one direct parent.
+The [book catalog](book/reference/catalog.md) lists every S223 and WaTr class.
+
+Classes are exported directly from the package, regardless of hierarchy depth:
+
+```python
+from objectrdf.watr import Process_ReverseOsmosis
+
+by_name = Process.meta["ReverseOsmosis"]
+by_iri = Process.meta[
+    "https://watermetadata.org/ontology/watr#Process-ReverseOsmosis"
+]
+assert by_name is by_iri is Process_ReverseOsmosis
+```
+
+This lookup is scoped to descendants of `Process`; it raises `KeyError` for
+unrelated classes. Direct imports remain useful for editor completion and
+static typing.
+
+For a loaded or newly authored model, `by_class()` groups current objects by
+their **exact** Python class and preserves their order in the model:
+
+```python
+inventory = model.by_class()
+for cls, objects in inventory.items():
+    print(cls.__name__, len(objects), [obj.name for obj in objects])
+```
+
+The keys are actual classes, so `inventory.get(Fan, [])` works after importing
+`Fan`. Use `find_all(Fan)` when you want fans *and subclasses* of `Fan`.
+`by_class()` describes the model's current concrete entities. Deferred ports
+and connections appear in a resolved snapshot after `model.resolve()`.
+
 For RDF without a matching `owl:imports` declaration, or for a custom
 generated package, pass its registry explicitly. Multiple registries are
 accepted:

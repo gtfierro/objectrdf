@@ -13,7 +13,7 @@ cells in order. This page runs during the book build.
 ## 1. Create equipment in a model
 
 A model owns entity names and mints IRIs in its namespace. S223 classes come
-from generated Python code. `enums.Fluid_Air` is an ontology individual, not
+from generated Python code. `enums.values.Fluid_Air` is an ontology individual, not
 a class to instantiate.
 
 ```{code-cell} python3
@@ -50,7 +50,7 @@ connection = resolved.connection(air_link)
 explanation = resolved.explain(air_link)
 print(connection.type, connection.medium)
 print(explanation.source_point, "->", explanation.target_point)
-assert connection.medium is enums.Fluid_Air
+assert connection.medium is enums.values.Fluid_Air
 ```
 
 The connection is a `Duct` because the selected medium is air. The snapshot
@@ -59,6 +59,8 @@ Compare the authored and resolved counts:
 
 ```{code-cell} python3
 print("authored:", len(model), "resolved:", len(resolved))
+print("fan ports before resolution:", [point.name for point in fan.ports])
+print("fan ports in snapshot:", [point.name for point in resolved[fan.name].ports])
 ```
 
 ## 3. Inspect RDF and validate

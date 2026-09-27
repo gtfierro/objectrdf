@@ -18,13 +18,13 @@ class AirWaterCoil(ChilledWaterCoil):
     ontology_iri = "urn:example:recipes"
     air = ConnectionPoint.declare(
         count=2,
-        medium=fixed(enums.Fluid_Air),
+        medium=fixed(enums.values.Fluid_Air),
         direction=choose("in", "out"),
         label=default("Air connection"),
     )
     water = ConnectionPoint.declare(
         count=2,
-        medium=fixed(enums.Water_ChilledWater),
+        medium=fixed(enums.values.Water_ChilledWater),
         direction=choose("in", "out"),
     )
 
@@ -79,7 +79,7 @@ topology as fully conforming.
    Keep the original predicate in `PropertySpec`/`.meta`. Do not globally strip
    `has_` or maintain two independent stores under old/new names. A separate
    friendly `media.Air` vocabulary is optional later; this work may use the
-   existing typed `enums.Fluid_Air` constants.
+   existing typed `enums.values.Fluid_Air` constants.
 
 ## Declaration semantics and public objects
 

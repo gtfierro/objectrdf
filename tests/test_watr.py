@@ -27,7 +27,7 @@ def test_latest_watr_terms_are_available():
     assert watr.MediaFiltrationUnit.meta.iri.endswith("#MediaFiltrationUnit")
     assert issubclass(watr.BeltFilterPress, watr.DewateringUnit)
     assert issubclass(watr.Process_ThermalHydrolysis, watr.Process_Hydrolysis)
-    assert enums.ReducingAgent.iri.endswith("#ReducingAgent")
+    assert enums.values.ReducingAgent.iri.endswith("#ReducingAgent")
 
 
 def test_direct_watr_connection_point_shapes_are_compiled():
@@ -54,8 +54,8 @@ def test_watr_domains_prefer_coherent_medium_assignment(m):
 
     assert isinstance(inlet_pipe, watr.Pipe)
     assert isinstance(outlet_pipe, watr.Pipe)
-    assert inlet_pipe.medium is enums.Fluid_Water
-    assert outlet_pipe.medium is enums.Fluid_Water
+    assert inlet_pipe.medium is enums.values.Fluid_Water
+    assert outlet_pipe.medium is enums.values.Fluid_Water
     assert list(pump.has_connection_point) == []
     assert len(list(resolved[pump.name].has_connection_point)) == 2
 
@@ -63,23 +63,23 @@ def test_watr_domains_prefer_coherent_medium_assignment(m):
 def test_broad_watr_fluid_domain_can_be_narrowed_explicitly(m):
     source = watr.Tank("source")
     target = watr.Tank("target")
-    handle = connect(source, target, medium=enums.Fluid_Sludge)
+    handle = connect(source, target, medium=enums.values.Fluid_Sludge)
 
     connection = m.resolve().connection(handle)
     assert isinstance(connection, watr.Pipe)
-    assert connection.medium is enums.Fluid_Sludge
+    assert connection.medium is enums.values.Fluid_Sludge
 
 
 def test_watr_connection_handle_stages_role_with_collection_api(m):
     handle = connect(
         watr.Tank("filter"),
         watr.Tank("backwash"),
-        medium=enums.Fluid_Water,
+        medium=enums.values.Fluid_Water,
     )
-    handle.has_role.add(enums.Role_Backwash)
+    handle.has_role.add(enums.values.Role_Backwash)
 
-    assert enums.Role_Backwash in handle.has_role
-    assert m.resolve().connection(handle).has_role == [enums.Role_Backwash]
+    assert enums.values.Role_Backwash in handle.has_role
+    assert m.resolve().connection(handle).has_role == [enums.values.Role_Backwash]
 
 
 def test_named_paired_ports_propagate_medium_through_solver(m):
@@ -94,8 +94,8 @@ def test_named_paired_ports_propagate_medium_through_solver(m):
     outlet = connect(feed_out, target)
 
     resolved = m.resolve()
-    assert resolved.connection(inlet).medium is enums.Fluid_Water
-    assert resolved.connection(outlet).medium is enums.Fluid_Water
+    assert resolved.connection(inlet).medium is enums.values.Fluid_Water
+    assert resolved.connection(outlet).medium is enums.values.Fluid_Water
     resolved_in = resolved["pxr-feed-in"]
     resolved_out = resolved["pxr-feed-out"]
     assert resolved_in.paired_with is resolved_out
@@ -108,7 +108,7 @@ def test_resolution_explains_paired_port_medium_propagation(m):
     feed_in = exchanger.port(
         "pxr-feed-in",
         direction="in",
-        medium=enums.Fluid_Sludge,
+        medium=enums.values.Fluid_Sludge,
     )
     feed_out = exchanger.port("pxr-feed-out", direction="out")
     feed_in.pair(feed_out)
@@ -116,6 +116,6 @@ def test_resolution_explains_paired_port_medium_propagation(m):
 
     explanation = m.resolve().explain(handle)
 
-    assert explanation.medium is enums.Fluid_Sludge
+    assert explanation.medium is enums.values.Fluid_Sludge
     assert explanation.medium_reason == "paired port"
     assert "paired with pxr-feed-in" in explanation.evidence[-1]

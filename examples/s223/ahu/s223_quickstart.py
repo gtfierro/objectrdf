@@ -27,12 +27,12 @@ class AHUCoolingCoil(CoolingCoil):
     ontology_iri = "urn:example:ahu-recipes"
     class_label = "AHU cooling coil"
     air = ConnectionPoint.declare(
-        medium=fixed(enums.Fluid_Air),
+        medium=fixed(enums.values.Fluid_Air),
         direction=choose("in", "out"),
         label=fixed("Air connection"),
     )
     water = ConnectionPoint.declare(
-        medium=fixed(enums.Fluid_Water),
+        medium=fixed(enums.values.Fluid_Water),
         direction=choose("in", "out"),
         label=fixed("Water connection"),
     )
@@ -52,9 +52,9 @@ with Model("urn:example/ahu#") as model:
 resolved = model.resolve()
 air_point = resolved.point(coil.air)
 water_point = resolved.point(coil.water)
-assert air_point.medium is enums.Fluid_Air
-assert water_point.medium is enums.Fluid_Water
-assert resolved.connection(air_duct).medium is enums.Fluid_Air
+assert air_point.medium is enums.values.Fluid_Air
+assert water_point.medium is enums.values.Fluid_Water
+assert resolved.connection(air_duct).medium is enums.values.Fluid_Air
 
 print(f"air point: {air_point.name} ({air_point.medium})")
 print(f"water point: {water_point.name} ({water_point.medium})")

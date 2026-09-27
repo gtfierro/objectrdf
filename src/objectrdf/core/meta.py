@@ -134,6 +134,108 @@ class CPConstraint:
     children: tuple[CPConstraint, ...] = ()
 
 
+@dataclass(frozen=True)
+class PortSlot:
+    """One unconditional connection-point requirement, resolved for inspection.
+
+    ``medium`` and ``medium_options`` are allowed hierarchy roots, not
+    necessarily exact media. Unregistered enum IRIs remain strings.
+    """
+
+    point_class: type[Entity]
+    direction: Literal["in", "out", "bi"]
+    medium: EnumValue | str | None
+    medium_options: tuple[EnumValue | str, ...]
+    min_count: int
+    max_count: int | None
+
+
+@dataclass(frozen=True)
+class PortContract:
+    """Inherited requirements for points a solver may place on an entity.
+
+    ``slots`` are unconditional requirements. ``constraints`` preserve
+    ``and``/``or``/``xone`` alternatives from compiled SHACL shapes. Neither
+    structure assigns names to points that have not been authored or resolved.
+    """
+
+    slots: tuple[PortSlot, ...]
+    constraints: tuple[CPConstraint, ...]
+
+    def describe(self) -> str:
+        """Summarize directions, counts, media, and nested shape constraints."""
+
+        def short_name(value: EnumValue | str) -> str:
+            iri = value if isinstance(value, str) else value.iri
+            return iri.rsplit("#", 1)[-1].rsplit("/", 1)[-1]
+
+        def line(
+            direction: str,
+            point_class: str,
+            minimum: int,
+            maximum: int | None,
+            medium: EnumValue | str | None,
+            medium_options: tuple[EnumValue | str, ...],
+        ) -> str:
+            count = f"{minimum}..{maximum if maximum is not None else 'any'}"
+            allowed = medium_options or ((medium,) if medium is not None else ())
+            media = (
+                f"; medium roots: {', '.join(short_name(item) for item in allowed)}"
+                if allowed
+                else ""
+            )
+            return (
+                f'direction="{direction}" -> {point_class} '
+                f"(count {count}){media}"
+            )
+
+        def constraint_lines(node: CPConstraint, indent: str) -> list[str]:
+            if node.operator == "slot" and node.slot is not None:
+                slot = node.slot
+                return [
+                    f"{indent}- "
+                    + line(
+                        slot.direction,
+                        short_name(slot.cp_class),
+                        slot.min_count,
+                        slot.max_count,
+                        slot.medium,
+                        slot.medium_options,
+                    )
+                ]
+            if node.operator == "opaque":
+                return [f"{indent}- validation-only constraint"]
+            heading = {"and": "all of", "or": "any of", "xone": "exactly one of"}
+            lines = [f"{indent}- {heading[node.operator]}:"]
+            for child in node.children:
+                lines.extend(constraint_lines(child, indent + "  "))
+            return lines
+
+        if not self.slots and not self.constraints:
+            return "No port requirements declared."
+
+        lines: list[str] = []
+        if self.slots:
+            lines.append("Unconditional ports:")
+            for slot in self.slots:
+                lines.append(
+                    "  - "
+                    + line(
+                        slot.direction,
+                        slot.point_class.__name__,
+                        slot.min_count,
+                        slot.max_count,
+                        slot.medium,
+                        slot.medium_options,
+                    )
+                )
+        if self.constraints:
+            lines.append("Shape constraints:")
+            for node in self.constraints:
+                lines.extend(constraint_lines(node, "  "))
+        return "\n".join(lines)
+
+
 class Registry:
     """Per-generated-package index of classes and UX negotiation tables.
 
@@ -171,6 +273,46 @@ class Registry:
             raise KeyError(
                 f"class {name!r} is not registered in the {self.ontology.name} package"
             ) from None
+
+    @property
+    def classes(self) -> tuple[type[Entity], ...]:
+        """All currently registered classes, sorted by Python name."""
+        return tuple(self.by_name[name] for name in sorted(self.by_name))
+
+    def subclasses(
+        self, base: type[Entity], *, recursive: bool = False
+    ) -> tuple[type[Entity], ...]:
+        """Registered subclasses of ``base``, directly or at any depth."""
+        if recursive:
+            return tuple(cls for cls in self.classes if cls is not base and issubclass(cls, base))
+        return tuple(cls for cls in self.classes if base in cls.__bases__)
+
+    def tree(self, base: type[Entity], *, max_depth: int | None = None) -> str:
+        """Render the registered subclass tree rooted at ``base``.
+
+        ``max_depth=0`` shows only the root. With multiple inheritance, a
+        class appears beneath each of its direct parents.
+        """
+        if max_depth is not None and max_depth < 0:
+            raise ValueError("max_depth must be non-negative")
+        children: dict[type, list[type[Entity]]] = {}
+        for cls in self.classes:
+            for parent in cls.__bases__:
+                children.setdefault(parent, []).append(cls)
+
+        lines = [base.__name__]
+
+        def visit(parent: type[Entity], prefix: str, depth: int) -> None:
+            if max_depth is not None and depth >= max_depth:
+                return
+            siblings = children.get(parent, ())
+            for index, child in enumerate(siblings):
+                last = index == len(siblings) - 1
+                lines.append(f"{prefix}{'└── ' if last else '├── '}{child.__name__}")
+                visit(child, prefix + ("    " if last else "│   "), depth + 1)
+
+        visit(base, "", 0)
+        return "\n".join(lines)
 
     def register_enums(self, module: object) -> None:
         """Index every EnumValue constant in a generated enums module."""
