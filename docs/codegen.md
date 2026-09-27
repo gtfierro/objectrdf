@@ -71,6 +71,14 @@ requirements from ranking evidence.
 
 - Classes keep their IRI local name (`Air_Handling_Unit` stays as-is).
 - Properties snake_case their local name (`hasPoint` → `has_point`).
+- S223 point predicates have canonical Python names: `hasMedium` → `medium`,
+  `isConnectionPointOf` → `owner`, `connectsThrough` → `connection`, and
+  `pairedConnectionPoint` → `paired_with`. The mapping is scoped to the S223
+  IRIs; equivalent local names in Brick and other ontologies keep their normal
+  snake_case names. `PropertySpec.predicate` always retains the RDF predicate.
+- Generated classes expose the previous S223 spellings as descriptors that
+  delegate to the canonical property, so both spellings share one value and
+  serialize as one predicate. New code should use the canonical spelling.
 - Collisions with reserved Entity API (`name`, `label`, `comment`, `meta`,
   `model`, `contains`) or keywords get a trailing `_`.
 - Distinct IRIs mapping to one name are suffixed `_2`, `_3`, ... in sorted-IRI
@@ -105,16 +113,16 @@ uv run objectrdf gen --file Brick.ttl --name Brick --out src/objectrdf/brick
 uv run pytest tests/test_brick.py
 ```
 
-WaTr is compiled from its extension graph plus the S223 imports closure. The
-WaTr overlay gives extension terms priority when names collide and installs
-the same deferred connection solver:
+WaTr 0.2 is compiled from the merged WaTr, S223, and QUDT source graph saved in
+the generated package's `_shapes.ttl`. The WaTr overlay gives extension terms
+priority when names collide and installs the same deferred connection solver:
 
 ```bash
-uv run objectrdf gen --file water.ttl --extra 223p.ttl \
+uv run objectrdf gen --file src/objectrdf/watr/_shapes.ttl \
   --name WATR --out src/objectrdf/watr \
-  --source https://watermetadata.org/water.ttl
+  --source https://watermetadata.org/watr.ttl
 uv run pytest tests/test_watr.py
 ```
 
-A committed lockfile of the imports closure (via ontoenv) is planned; see
-DESIGN.md §9.
+The source is WaTr 0.2 (`https://watermetadata.org/ontology/watr`), published
+at `https://watermetadata.org/watr.ttl`.

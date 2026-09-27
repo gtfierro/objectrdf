@@ -35,13 +35,14 @@ from .core import (
     ValidationReport,
     current_model,
 )
+from .core.recipes import PointGroupRef, PointRef, Policy, choose, default, fixed
 
 __version__ = "0.1.0"
 
 
 def connect(
-    a: Entity | PortHandle,
-    b: Entity | PortHandle,
+    a: Entity | PortHandle | PointRef | PointGroupRef,
+    b: Entity | PortHandle | PointRef | PointGroupRef,
     *,
     medium: EnumValue | None = None,
     connection: type[Entity] | None = None,
@@ -60,7 +61,11 @@ def connect(
     For Brick-style packages it adds the flow property edge (``feeds``) and
     returns None (there is no intermediate resource to return).
     """
-    a_owner = a.owner if isinstance(a, PortHandle) else a
+    if isinstance(a, PointRef):
+        a = a._port
+    if isinstance(b, PointRef):
+        b = b._port
+    a_owner = a.owner if isinstance(a, (PortHandle, PointGroupRef)) else a
     if a_owner._CONNECTOR is not None:
         return a_owner._CONNECTOR.connect(
             a, b, medium=medium, connection=connection, name=name
@@ -75,6 +80,9 @@ __all__ = [
     "AmbiguousModelError",
     "ConnectionHandle",
     "PortHandle",
+    "PointGroupRef",
+    "PointRef",
+    "Policy",
     "ResolutionExplanation",
     "Entity",
     "EnumValue",
@@ -89,6 +97,9 @@ __all__ = [
     "ValidationReport",
     "ValidationError",
     "connect",
+    "choose",
     "current_model",
+    "default",
+    "fixed",
     "__version__",
 ]

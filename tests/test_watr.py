@@ -14,8 +14,11 @@ def m():
 
 
 def test_extension_terms_keep_public_names():
-    assert watr.ONTOLOGY.iri == "urn:nawi-water-ontology"
-    assert watr.Pump.meta.iri == "urn:nawi-water-ontology#Pump"
+    assert watr.ONTOLOGY.iri == "https://watermetadata.org/ontology/watr"
+    assert (
+        watr.Pump.meta.iri
+        == "https://watermetadata.org/ontology/watr#Pump"
+    )
     assert watr.Pump_2.meta.iri == "http://data.ashrae.org/standard223#Pump"
     assert issubclass(watr.Pump, watr.Pump_2)
 
@@ -51,8 +54,8 @@ def test_watr_domains_prefer_coherent_medium_assignment(m):
 
     assert isinstance(inlet_pipe, watr.Pipe)
     assert isinstance(outlet_pipe, watr.Pipe)
-    assert inlet_pipe.has_medium is enums.Fluid_Water
-    assert outlet_pipe.has_medium is enums.Fluid_Water
+    assert inlet_pipe.medium is enums.Fluid_Water
+    assert outlet_pipe.medium is enums.Fluid_Water
     assert list(pump.has_connection_point) == []
     assert len(list(resolved[pump.name].has_connection_point)) == 2
 
@@ -64,7 +67,7 @@ def test_broad_watr_fluid_domain_can_be_narrowed_explicitly(m):
 
     connection = m.resolve().connection(handle)
     assert isinstance(connection, watr.Pipe)
-    assert connection.has_medium is enums.Fluid_Sludge
+    assert connection.medium is enums.Fluid_Sludge
 
 
 def test_watr_connection_handle_stages_role_with_collection_api(m):
@@ -91,12 +94,12 @@ def test_named_paired_ports_propagate_medium_through_solver(m):
     outlet = connect(feed_out, target)
 
     resolved = m.resolve()
-    assert resolved.connection(inlet).has_medium is enums.Fluid_Water
-    assert resolved.connection(outlet).has_medium is enums.Fluid_Water
+    assert resolved.connection(inlet).medium is enums.Fluid_Water
+    assert resolved.connection(outlet).medium is enums.Fluid_Water
     resolved_in = resolved["pxr-feed-in"]
     resolved_out = resolved["pxr-feed-out"]
-    assert resolved_in.paired_connection_point is resolved_out
-    assert resolved_out.paired_connection_point is resolved_in
+    assert resolved_in.paired_with is resolved_out
+    assert resolved_out.paired_with is resolved_in
 
 
 def test_resolution_explains_paired_port_medium_propagation(m):

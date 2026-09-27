@@ -23,6 +23,7 @@ from .core.relations import RelSet
 if TYPE_CHECKING:
     from .connect223 import S223Connector
     from .core import ConnectionHandle, Entity, EnumValue, Model
+    from .core.recipes import PointGroupRef
 
 
 @dataclass
@@ -69,7 +70,10 @@ class _ComponentResult:
 
 def check_model(model: Model) -> ResolutionReport:
     """Check all deferred components without constructing a snapshot."""
-    reports = [_solve_cached(model, handles).report for handles in _components(model)]
+    reports = [
+        _solve_cached(model, handles, standalone).report
+        for handles, standalone in _components(model)
+    ]
     if any(report.status == "unsatisfiable" for report in reports):
         issues = tuple(issue for report in reports for issue in report.issues)
         return ResolutionReport("unsatisfiable", issues)
@@ -82,8 +86,8 @@ def check_model(model: Model) -> ResolutionReport:
 def resolve_model(model: Model) -> ResolvedModel:
     """Solve all components and build a frozen concrete snapshot."""
     plans: list[_Plan] = []
-    for handles in _components(model):
-        result = _solve_cached(model, handles)
+    for handles, standalone in _components(model):
+        result = _solve_cached(model, handles, standalone)
         if result.report.status == "unsatisfiable":
             labels = tuple(
                 label for issue in result.report.issues for label in issue.labels
@@ -104,13 +108,16 @@ def resolve_model(model: Model) -> ResolvedModel:
     return _materialize(model, plans)
 
 
-def _solve_cached(model: Model, handles: list[ConnectionHandle]) -> _ComponentResult:
+def _solve_cached(
+    model: Model, handles: list[ConnectionHandle], standalone: set[Entity] | None = None
+) -> _ComponentResult:
     """Reuse plans for unchanged sparse components across authored edits."""
-    key = _component_key(handles)
+    standalone = standalone or set()
+    key = _component_key(handles, standalone)
     cached = model._component_cache.get(key)
     if cached is not None:
         return cached
-    result = _solve_component(handles, materialize=True)
+    result = _solve_component(handles, materialize=True, standalone=standalone)
     # Bound stale plans retained during long interactive authoring sessions.
     if len(model._component_cache) >= 256:
         model._component_cache.pop(next(iter(model._component_cache)))
@@ -118,19 +125,22 @@ def _solve_cached(model: Model, handles: list[ConnectionHandle]) -> _ComponentRe
     return result
 
 
-def _component_key(handles: list[ConnectionHandle]) -> tuple[Any, ...]:
+def _component_key(
+    handles: list[ConnectionHandle], standalone: set[Entity] | None = None
+) -> tuple[Any, ...]:
     """Fingerprint the authored facts that affect one solver component."""
     endpoints = {
         endpoint
         for handle in handles
         for endpoint in (_owner(handle.source), _owner(handle.target))
     }
+    endpoints.update(standalone or ())
     endpoint_facts: list[tuple[Any, ...]] = []
     for endpoint in sorted(endpoints, key=lambda entity: entity.name):
         points = []
         for point in getattr(endpoint, "has_connection_point"):
-            medium = getattr(point, "has_medium")
-            bound = getattr(point, "connects_through")
+            medium = getattr(point, "medium")
+            bound = getattr(point, "connection")
             points.append(
                 (
                     point.name,
@@ -146,6 +156,7 @@ def _component_key(handles: list[ConnectionHandle]) -> tuple[Any, ...]:
                         port.name,
                         f"deferred-{port.direction}",
                         port.medium.iri if port.medium is not None else None,
+                        tuple(value.iri for value in port.medium_options),
                         port.paired_with.name if port.paired_with is not None else None,
                     )
                 )
@@ -167,11 +178,11 @@ def _component_key(handles: list[ConnectionHandle]) -> tuple[Any, ...]:
     return (intent_facts, tuple(endpoint_facts))
 
 
-def _components(model: Model) -> list[list[ConnectionHandle]]:
+def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]]:
     """Partition intentions by shared endpoint for sparse-model scaling."""
     handles = list(model._connection_intents)
     if not handles:
-        return []
+        return [([], {entity}) for entity in model.entities if _has_recipe_work(entity)]
     parent: dict[Entity, Entity] = {}
 
     def find(entity: Entity) -> Entity:
@@ -191,18 +202,60 @@ def _components(model: Model) -> list[list[ConnectionHandle]]:
     groups: dict[Entity, list[ConnectionHandle]] = {}
     for handle in handles:
         groups.setdefault(find(_owner(handle.source)), []).append(handle)
-    return list(groups.values())
+    result = [(component, set()) for component in groups.values()]
+    connected = set(parent)
+    result.extend(
+        ([], {entity})
+        for entity in model.entities
+        if entity not in connected and _has_recipe_work(entity)
+    )
+    return result
+
+
+def _has_recipe_work(entity: Entity) -> bool:
+    return bool(
+        getattr(type(entity), "_point_declarations", {})
+        or any(
+            policy.kind == "choose" and len(policy.values) > 1
+            for policy in getattr(type(entity), "_property_policies", {}).values()
+        )
+    )
 
 
 def _solve_component(
-    handles: list[ConnectionHandle], *, materialize: bool
+    handles: list[ConnectionHandle], *, materialize: bool,
+    standalone: set[Entity] | None = None,
 ) -> _ComponentResult:
     entities = {
         _owner(endpoint)
         for h in handles
         for endpoint in (h.source, h.target)
     }
-    connector = _owner(handles[0].source)._CONNECTOR
+    entities.update(standalone or ())
+    unresolved: list[str] = []
+    for entity in entities:
+        for name, policy in type(entity)._property_policies.items():
+            if policy.kind != "choose":
+                continue
+            value = getattr(entity, name, None)
+            if value is None or value == [] or value == ():
+                unresolved.append(f"{entity.name}.{name}={policy.values!r}")
+    if unresolved:
+        return _ComponentResult(
+            ResolutionReport(
+                "underconstrained",
+                (ResolutionIssue(
+                    "choose a value for recipe properties: " + ", ".join(unresolved),
+                    tuple(unresolved),
+                ),),
+            ),
+            None,
+        )
+    connector = (
+        _owner(handles[0].source)._CONNECTOR
+        if handles
+        else next(iter(entities))._CONNECTOR
+    )
     assert connector is not None
     enum_values = _relevant_media(entities, handles)
     enum_ids = {value.iri: index for index, value in enumerate(enum_values)}
@@ -226,6 +279,13 @@ def _solve_component(
     for entity in sorted(entities, key=lambda item: item.name):
         entity_points = _make_points(entity, incident[entity], enum_values)
         points.extend(entity_points)
+        authored_groups: dict[PortHandle, list[z3.BoolRef]] = {}
+        for point in entity_points:
+            if point.authored is not None and isinstance(point.active, z3.BoolRef):
+                authored_groups.setdefault(point.authored, []).append(point.active)
+        for authored, alternatives in authored_groups.items():
+            if len(alternatives) > 1:
+                solver.add(z3.PbEq([(alternative, 1) for alternative in alternatives], 1))
         for point in entity_points:
             solver.add(point.medium >= 0, point.medium < len(enum_values))
             roots = _point_roots(point)
@@ -240,11 +300,18 @@ def _solve_component(
                 )
             if point.existing is not None:
                 solver.add(point.active)
-                existing_medium = getattr(point.existing, "has_medium")
+                existing_medium = getattr(point.existing, "medium")
                 if existing_medium is not None and existing_medium.iri in enum_ids:
                     solver.add(point.medium == enum_ids[existing_medium.iri])
             if point.authored is not None and point.authored.medium is not None:
                 solver.add(point.medium == enum_ids[point.authored.medium.iri])
+            if point.authored is not None and point.authored.medium_options:
+                allowed = [
+                    point.medium == enum_ids[value.iri]
+                    for value in point.authored.medium_options
+                    if value.iri in enum_ids
+                ]
+                solver.add(z3.Or(allowed))
         for slot_index, slot in enumerate(_all_slots(type(entity))):
             tracked(
                 _slot_expr(entity_points, slot, enum_values, enum_ids),
@@ -276,7 +343,7 @@ def _solve_component(
             paired = point.authored.paired_with
             other = by_authored.get(paired)
         elif point.existing is not None:
-            paired = getattr(point.existing, "paired_connection_point", None)
+            paired = getattr(point.existing, "paired_with", None)
             other = by_existing.get(paired)
         else:
             other = None
@@ -322,7 +389,7 @@ def _solve_component(
         ]
         bound = (
             point.existing is not None
-            and getattr(point.existing, "connects_through") is not None
+            and getattr(point.existing, "connection") is not None
         )
         if uses:
             solver.add(z3.PbLe([(use, 1) for use in uses], 0 if bound else 1))
@@ -364,13 +431,17 @@ def _solve_component(
         )
     solver.pop()
     if ambiguous:
-        names = ", ".join(handle.name for handle in handles)
+        names = ", ".join(handle.name for handle in handles) or ", ".join(
+            sorted(entity.name for entity in entities)
+        )
         return _ComponentResult(
             ResolutionReport(
                 "underconstrained",
                 (
                     ResolutionIssue(
-                        f"connection component is ambiguous: {names}",
+                        f"connection or recipe point choices remain ambiguous: {names}; "
+                        "fix a point direction or medium, or connect it to equipment "
+                        "that determines the choice",
                         differences,
                     ),
                 ),
@@ -403,12 +474,14 @@ def _relevant_media(
         for slot in _all_slots(type(entity)) + _constraint_slots(type(entity)):
             roots.update(_slot_roots(slot))
         for cp in getattr(entity, "has_connection_point"):
-            medium = getattr(cp, "has_medium")
+            medium = getattr(cp, "medium")
             if medium is not None:
                 values[medium.iri] = medium
         for port in entity.meta.model._port_intents:
             if port.owner is entity and port.medium is not None:
                 values[port.medium.iri] = port.medium
+            if port.owner is entity:
+                values.update({value.iri: value for value in port.medium_options})
     for handle in handles:
         if handle.medium is not None:
             values[handle.medium.iri] = handle.medium
@@ -443,21 +516,25 @@ def _make_points(
     for port in entity.meta.model._port_intents:
         if port.owner is not entity:
             continue
-        cls_name = {
-            "in": "InletConnectionPoint",
-            "out": "OutletConnectionPoint",
-            "bi": "BidirectionalConnectionPoint",
-        }[port.direction]
-        points.append(
-            _Point(
-                entity,
-                registry.resolve(cls_name),
-                port.name,
-                z3.BoolVal(True),
-                z3.Int(f"authored_{_safe(port.name)}_medium"),
-                authored=port,
+        directions = (port.direction,) if isinstance(port.direction, str) else port.direction
+        for direction_index, direction in enumerate(directions):
+            cls_name = {
+                "in": "InletConnectionPoint",
+                "out": "OutletConnectionPoint",
+                "bi": "BidirectionalConnectionPoint",
+            }[direction]
+            points.append(
+                _Point(
+                    entity,
+                    registry.resolve(cls_name),
+                    port.name,
+                    z3.BoolVal(True) if len(directions) == 1 else z3.Bool(
+                        f"authored_{_safe(port.name)}_{direction_index}_active"
+                    ),
+                    z3.Int(f"authored_{_safe(port.name)}_medium"),
+                    authored=port,
+                )
             )
-        )
     slots = _all_slots(type(entity)) + _constraint_slots(type(entity))
     classes: dict[type[Entity], int] = {}
     for slot in slots:
@@ -557,8 +634,10 @@ def _medium_allowed(
 
 
 def _eligible(
-    points: list[_Point], endpoint: Entity | PortHandle, direction: str
+    points: list[_Point], endpoint: Entity | PortHandle | PointGroupRef, direction: str
 ) -> list[_Point]:
+    from .core.recipes import PointGroupRef
+
     names = {
         "out": {"OutletConnectionPoint", "BidirectionalConnectionPoint"},
         "in": {"InletConnectionPoint", "BidirectionalConnectionPoint"},
@@ -568,7 +647,11 @@ def _eligible(
         for point in points
         if point.owner is _owner(endpoint)
         and (
-            not hasattr(endpoint, "owner")
+            not isinstance(endpoint, PointGroupRef)
+            or point.authored in {reference._port for reference in endpoint.points}
+        )
+        and (
+            not isinstance(endpoint, PortHandle)
             or point.authored is endpoint
         )
         and any(base.__name__ in names for base in point.cls.__mro__)
@@ -685,6 +768,9 @@ def _observable_expressions(
     intent_mediums: dict[int, z3.ArithRef],
 ) -> list[z3.ArithRef]:
     expressions: list[z3.ArithRef] = list(intent_mediums.values())
+    for point in points:
+        if point.authored is not None:
+            expressions.append(z3.If(point.active, point.medium, -1))
     for entity in sorted(entities, key=lambda item: item.name):
         classes = sorted(
             {point.cls for point in points if point.owner is entity},
@@ -699,25 +785,36 @@ def _observable_expressions(
                         if point.owner is entity and point.cls is cls
                     ]
                 )
-            )
+                )
     for handle in handles:
         for side_endpoint in (handle.source, handle.target):
             side_owner = _owner(side_endpoint)
-            classes = sorted(
-                {point.cls for point in points if point.owner is side_owner},
-                key=lambda cls: cls.__name__,
-            )
-            for cls in classes:
+            groups: dict[tuple[str, str], list[int]] = {}
+            for index, point in enumerate(points):
+                if point.owner is not side_owner:
+                    continue
+                key = _selection_group(point)
+                groups.setdefault(key, []).append(index)
+            for indexes in groups.values():
                 expressions.append(
                     z3.Sum(
                         [
                             z3.If(selections.get((handle.identifier, index), z3.BoolVal(False)), 1, 0)
-                            for index, point in enumerate(points)
-                            if point.owner is side_owner and point.cls is cls
+                            for index in indexes
                         ]
                     )
                 )
     return expressions
+
+
+def _selection_group(point: _Point) -> tuple[str, str]:
+    """Group truly interchangeable points while preserving named choices."""
+    if point.authored is not None:
+        key = point.authored.symmetry_key or point.authored.name
+        return ("authored", key)
+    if point.existing is not None:
+        return ("existing", point.existing.name)
+    return ("generated", point.cls.__name__)
 
 
 def _extract_plan(
@@ -805,8 +902,9 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
             owner = mapping[point.owner]
             point_entities[key] = point.cls(
                 point.name,
-                has_medium=point.medium,
-                is_connection_point_of=owner,
+                medium=point.medium,
+                owner=owner,
+                label=(point.authored.label if point.authored and point.authored.label else None),
                 model=snapshot,
             )
             if point.authored is not None:
@@ -817,7 +915,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
             connection = intent.connection_class(
                 intent.handle.name,
                 connects_at=[source, target],
-                has_medium=intent.medium,
+                medium=intent.medium,
                 label=intent.handle.label,
                 comment=intent.handle.comment,
                 model=snapshot,
@@ -832,7 +930,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
         if handle.paired_with is not None and handle.paired_with in authored_points:
             setattr(
                 point,
-                "paired_connection_point",
+                "paired_with",
                 authored_points[handle.paired_with],
             )
     for authored_system, authored_members in model._system_intents:
@@ -853,6 +951,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
         connection_entities,
         explanations,
         model._revision,
+        authored_model=model,
     )
 
 
@@ -901,9 +1000,9 @@ def _point_medium_evidence(point: _PointResult) -> str | None:
     if point.authored is not None and point.authored.medium is not None:
         return f"{point.authored.name}.medium = {point.authored.medium.iri}"
     if point.existing is not None:
-        medium = getattr(point.existing, "has_medium", None)
+        medium = getattr(point.existing, "medium", None)
         if medium is not None:
-            return f"{point.existing.name}.has_medium = {medium.iri}"
+            return f"{point.existing.name}.medium = {medium.iri}"
     return None
 
 
@@ -916,8 +1015,8 @@ def _paired_medium_evidence(point: _PointResult) -> str | None:
                 f"whose medium is {paired.medium.iri}"
             )
     if point.existing is not None:
-        paired = getattr(point.existing, "paired_connection_point", None)
-        medium = getattr(paired, "has_medium", None) if paired is not None else None
+        paired = getattr(point.existing, "paired_with", None)
+        medium = getattr(paired, "medium", None) if paired is not None else None
         if medium is not None:
             assert paired is not None
             return (
@@ -953,8 +1052,10 @@ def _result_roots(point: _PointResult) -> set[str]:
     }
 
 
-def _owner(endpoint: Entity | PortHandle) -> Entity:
-    return endpoint.owner if isinstance(endpoint, PortHandle) else endpoint
+def _owner(endpoint: Entity | PortHandle | PointGroupRef) -> Entity:
+    from .core.recipes import PointGroupRef
+
+    return endpoint.owner if isinstance(endpoint, (PortHandle, PointGroupRef)) else endpoint
 
 
 def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:

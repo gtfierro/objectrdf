@@ -5,12 +5,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Iterator, Literal
 
+from .errors import ModelingError
+
 if TYPE_CHECKING:
     import rdflib
 
     from .entity import Entity
     from .enums import EnumValue
     from .model import Model
+    from .recipes import PointGroupRef
 
 
 class PortHandle:
@@ -21,17 +24,29 @@ class PortHandle:
         model: Model,
         owner: Entity,
         name: str,
-        direction: Literal["in", "out", "bi"],
+        direction: str | tuple[str, ...],
         *,
         medium: EnumValue | None = None,
+        label: str | None = None,
+        fixed_medium: bool = False,
+        medium_options: tuple[EnumValue, ...] = (),
     ) -> None:
         self._model = model
         self.owner = owner
         self.name = name
-        self.direction = direction
+        self._direction = direction
         self._medium = medium
+        self.label = label
+        self._fixed_medium = fixed_medium
+        self.medium_options = medium_options
+        self.symmetry_key: str | None = None
         self._paired_with: PortHandle | None = None
         self.roles: list[EnumValue] = []
+
+    @property
+    def direction(self) -> str | tuple[str, ...]:
+        """The fixed direction or direction domain authored for this port."""
+        return self._direction
 
     @property
     def medium(self) -> EnumValue | None:
@@ -40,6 +55,8 @@ class PortHandle:
     @medium.setter
     def medium(self, value: EnumValue | None) -> None:
         self._model._assert_mutable()
+        if self._fixed_medium and value != self._medium:
+            raise ModelingError(f"{self.owner.name}.{self.name} medium is fixed")
         self._medium = value
         self._model._touch(self.owner)
 
@@ -86,8 +103,8 @@ class ConnectionHandle:
         self,
         model: Model,
         identifier: int,
-        source: Entity | PortHandle,
-        target: Entity | PortHandle,
+        source: Entity | PortHandle | PointGroupRef,
+        target: Entity | PortHandle | PointGroupRef,
         *,
         medium: EnumValue | None,
         connection: type[Entity] | None,
@@ -196,9 +213,11 @@ class ConnectionHandle:
     def _connection_descriptor(self, name: str) -> object | None:
         connection_cls = self._connection_class
         if connection_cls is None:
+            from .recipes import PointGroupRef
+
             source = (
                 self.source.owner
-                if isinstance(self.source, PortHandle)
+                if isinstance(self.source, (PortHandle, PointGroupRef))
                 else self.source
             )
             connection_cls = source.meta.registry.resolve("Connection")
@@ -319,8 +338,10 @@ class ResolvedModel:
         connections: dict[int, Entity],
         explanations: dict[int, ResolutionExplanation],
         source_revision: int,
+        authored_model: Model | None = None,
     ) -> None:
         self._model = model
+        self._authored_model = authored_model or model
         self._connections = connections
         self._explanations = explanations
         self.source_revision = source_revision
@@ -346,8 +367,60 @@ class ResolvedModel:
         except KeyError:
             raise KeyError("connection handle does not belong to this snapshot") from None
 
-    def explain(self, handle: ConnectionHandle) -> ResolutionExplanation:
-        """Explain the solver choices made for one authored connection."""
+    def point(self, reference: Any) -> Any:
+        """Resolve a recipe point reference to its concrete snapshot point."""
+        from .recipes import PointGroupRef, PointRef
+        from .entity import Entity
+
+        if isinstance(reference, PointGroupRef):
+            return tuple(self.point(item) for item in reference.points)
+        if not isinstance(reference, PointRef):
+            raise TypeError("point() expects a PointRef or PointGroupRef")
+        owner = self._model[reference.owner.name]
+        if isinstance(reference._port, Entity):
+            return self._model[reference._port.name]
+        for point in getattr(owner, "has_connection_point"):
+            if point.name == reference._port.name:
+                return point
+        raise KeyError(f"point {reference.owner.name}.{reference.name} was not resolved")
+
+    def explain(
+        self,
+        handle: ConnectionHandle | Entity | PortHandle,
+        target: Entity | PortHandle | Any | None = None,
+    ) -> ResolutionExplanation:
+        """Explain a connection by handle or by its authored endpoints.
+
+        Passing both endpoints also works for links authored with ``>>``,
+        whose operator result does not expose the internal connection handle.
+        """
+        if not isinstance(handle, ConnectionHandle):
+            if target is None:
+                raise TypeError("explain() needs a handle or both connection endpoints")
+            from .recipes import PointGroupRef, PointRef
+
+            source = handle._port if isinstance(handle, PointRef) else handle
+            destination = target._port if isinstance(target, PointRef) else target
+            source_owner = (
+                source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+            )
+            target_owner = (
+                destination.owner
+                if isinstance(destination, (PortHandle, PointGroupRef))
+                else destination
+            )
+            matches = [
+                candidate
+                for candidate in self._authored_model._connection_intents
+                if _endpoint_owner(candidate.source) is source_owner
+                and _endpoint_owner(candidate.target) is target_owner
+            ]
+            if len(matches) != 1:
+                raise KeyError(
+                    f"expected one authored connection from {source_owner.name} "
+                    f"to {target_owner.name}, found {len(matches)}"
+                )
+            handle = matches[0]
         try:
             return self._explanations[handle.identifier]
         except KeyError:
@@ -355,3 +428,11 @@ class ResolvedModel:
 
     def graph(self) -> rdflib.Graph:
         return self._model._graph_unresolved()
+
+
+def _endpoint_owner(endpoint: Any) -> Any:
+    from .recipes import PointGroupRef
+
+    if isinstance(endpoint, (PortHandle, PointGroupRef)):
+        return endpoint.owner
+    return endpoint

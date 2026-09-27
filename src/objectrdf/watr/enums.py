@@ -68,31 +68,31 @@ Aspect_Setpoint = _EnumValue('http://data.ashrae.org/standard223#Aspect-Setpoint
 """The property value is a target value for a control algorithm."""
 Aspect_Threshold = _EnumValue('http://data.ashrae.org/standard223#Aspect-Threshold', label='Threshold', definition='The property value is a threshold used in a control algorithm.', parent=EnumerationKind_Aspect)
 """The property value is a threshold used in a control algorithm."""
-EnumerationKind_Aggregation = _EnumValue('urn:nawi-water-ontology#EnumerationKind-Aggregation', label='Aggregation', definition='EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum.', parent=EnumerationKind_Aspect)
+EnumerationKind_Aggregation = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Aggregation', label='Aggregation', definition='EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum.', parent=EnumerationKind_Aspect)
 """EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum."""
-Aggregation_Count = _EnumValue('urn:nawi-water-ontology#Aggregation-Count', label='Count', definition='The associated property represents a count over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Count = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Count', label='Count', definition='The associated property represents a count over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents a count over an aggregation scope."""
-Aggregation_Max = _EnumValue('urn:nawi-water-ontology#Aggregation-Max', label='Maximum', definition='The associated property represents the maximum value over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Max = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Max', label='Maximum', definition='The associated property represents the maximum value over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the maximum value over an aggregation scope."""
-Aggregation_Mean = _EnumValue('urn:nawi-water-ontology#Aggregation-Mean', label='Mean', definition='The associated property represents the arithmetic mean over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Mean = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Mean', label='Mean', definition='The associated property represents the arithmetic mean over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the arithmetic mean over an aggregation scope."""
-Aggregation_Median = _EnumValue('urn:nawi-water-ontology#Aggregation-Median', label='Median', definition='The associated property represents the median value over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Median = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Median', label='Median', definition='The associated property represents the median value over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the median value over an aggregation scope."""
-Aggregation_Min = _EnumValue('urn:nawi-water-ontology#Aggregation-Min', label='Minimum', definition='The associated property represents the minimum value over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Min = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Min', label='Minimum', definition='The associated property represents the minimum value over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the minimum value over an aggregation scope."""
-Aggregation_Mode = _EnumValue('urn:nawi-water-ontology#Aggregation-Mode', label='Mode', definition='The associated property represents the most frequently occurring value over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Mode = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Mode', label='Mode', definition='The associated property represents the most frequently occurring value over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the most frequently occurring value over an aggregation scope."""
-Aggregation_Percentile = _EnumValue('urn:nawi-water-ontology#Aggregation-Percentile', label='Percentile', definition='The associated property represents the percentile value over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Percentile = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Percentile', label='Percentile', definition='The associated property represents the percentile value over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the percentile value over an aggregation scope."""
-Aggregation_Range = _EnumValue('urn:nawi-water-ontology#Aggregation-Range', label='Range', definition='The associated property represents the difference between maximum and minimum over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Range = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Range', label='Range', definition='The associated property represents the difference between maximum and minimum over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the difference between maximum and minimum over an aggregation scope."""
-Aggregation_StandardDeviation = _EnumValue('urn:nawi-water-ontology#Aggregation-StandardDeviation', label='Standard Deviation', definition='The associated property represents the standard deviation over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_StandardDeviation = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-StandardDeviation', label='Standard Deviation', definition='The associated property represents the standard deviation over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the standard deviation over an aggregation scope."""
-Aggregation_Sum = _EnumValue('urn:nawi-water-ontology#Aggregation-Sum', label='Sum', definition='The associated property represents the sum over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Sum = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Sum', label='Sum', definition='The associated property represents the sum over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the sum over an aggregation scope."""
-Aggregation_Total = _EnumValue('urn:nawi-water-ontology#Aggregation-Total', label='Total', definition='The associated property represents the total amount of the characterized quantity or substance.', parent=EnumerationKind_Aggregation)
+Aggregation_Total = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Total', label='Total', definition='The associated property represents the total amount of the characterized quantity or substance.', parent=EnumerationKind_Aggregation)
 """The associated property represents the total amount of the characterized quantity or substance."""
-Aggregation_Variance = _EnumValue('urn:nawi-water-ontology#Aggregation-Variance', label='Variance', definition='The associated property represents the variance over an aggregation scope.', parent=EnumerationKind_Aggregation)
+Aggregation_Variance = _EnumValue('https://watermetadata.org/ontology/watr#Aggregation-Variance', label='Variance', definition='The associated property represents the variance over an aggregation scope.', parent=EnumerationKind_Aggregation)
 """The associated property represents the variance over an aggregation scope."""
 EnumerationKind_Binary = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Binary', label='Binary', definition='This class and its enumerated subclasses represent common binary values.\n\n: EnumerationKind-Binary Enumerations\n\n| Enumeration |\n|:-----------|\n| `Binary-Logical` |\n| `Binary-OnOff` |\n| `Binary-Position` |', parent=EnumerationKind)
 """This class and its enumerated subclasses represent common binary values.
@@ -509,8 +509,8 @@ Role_Dehumidifying = _EnumValue('http://data.ashrae.org/standard223#Role-Dehumid
 """`Role-Dehumidifying`"""
 Role_Discharge = _EnumValue('http://data.ashrae.org/standard223#Role-Discharge', label='Discharge role', definition='`Role-Discharge`', parent=EnumerationKind_Role)
 """`Role-Discharge`"""
-Role_Drain = _EnumValue('urn:nawi-water-ontology#Role-Drain', label='Role-Drain', parent=Role_Discharge)
-"""Role-Drain"""
+Role_Drain = _EnumValue('https://watermetadata.org/ontology/watr#Role-Drain', label='Role-Drain', definition='A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance.', parent=Role_Discharge)
+"""A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance."""
 Role_Economizer = _EnumValue('http://data.ashrae.org/standard223#Role-Economizer', label='Economizer role', definition='`Role-Economizer`', parent=EnumerationKind_Role)
 """`Role-Economizer`"""
 Role_Evaporator = _EnumValue('http://data.ashrae.org/standard223#Role-Evaporator', label='Evaporator role', definition='`Role-Evaporator`', parent=EnumerationKind_Role)
@@ -545,50 +545,50 @@ Role_Supply = _EnumValue('http://data.ashrae.org/standard223#Role-Supply', label
 """`Role-Supply`"""
 Role_Ventilating = _EnumValue('http://data.ashrae.org/standard223#Role-Ventilating', label='Ventilating role', definition='`Role-Ventilating`', parent=EnumerationKind_Role)
 """`Role-Ventilating`"""
-Role_Aerobic = _EnumValue('urn:nawi-water-ontology#Role-Aerobic', label='Aerobic', parent=EnumerationKind_Role)
-"""Aerobic"""
-Role_Anaerobic = _EnumValue('urn:nawi-water-ontology#Role-Anaerobic', label='Anaerobic', parent=EnumerationKind_Role)
-"""Anaerobic"""
-Role_Anoxic = _EnumValue('urn:nawi-water-ontology#Role-Anoxic', label='Anoxic', parent=EnumerationKind_Role)
-"""Anoxic"""
-Role_Backwash = _EnumValue('urn:nawi-water-ontology#Role-Backwash', label='Role-Backwash', parent=EnumerationKind_Role)
-"""Role-Backwash"""
-Role_Containment = _EnumValue('urn:nawi-water-ontology#Role-Containment', label='Containment', parent=EnumerationKind_Role)
-"""Containment"""
-Role_Detention = _EnumValue('urn:nawi-water-ontology#Role-Detention', label='Detention', parent=EnumerationKind_Role)
-"""Detention"""
-Role_Equalization = _EnumValue('urn:nawi-water-ontology#Role-Equalization', label='Equalization', parent=EnumerationKind_Role)
-"""Equalization"""
-Role_Extended = _EnumValue('urn:nawi-water-ontology#Role-Extended', label='Extended', parent=EnumerationKind_Role)
-"""Extended"""
-Role_Feed = _EnumValue('urn:nawi-water-ontology#Role-Feed', label='Feed', parent=EnumerationKind_Role)
-"""Feed"""
-Role_MakeUp = _EnumValue('urn:nawi-water-ontology#Role-MakeUp', label='MakeUp', parent=EnumerationKind_Role)
-"""MakeUp"""
-Role_NutrientRemoval = _EnumValue('urn:nawi-water-ontology#Role-NutrientRemoval', label='Role-NutrientRemoval', parent=EnumerationKind_Role)
-"""Role-NutrientRemoval"""
-Role_Permeate = _EnumValue('urn:nawi-water-ontology#Role-Permeate', label='Permeate', parent=EnumerationKind_Role)
-"""Permeate"""
-Role_Posttreatment = _EnumValue('urn:nawi-water-ontology#Role-Posttreatment', label='Posttreatment', parent=EnumerationKind_Role)
-"""Posttreatment"""
-Role_Pretreatment = _EnumValue('urn:nawi-water-ontology#Role-Pretreatment', label='Pretreatment', parent=EnumerationKind_Role)
-"""Pretreatment"""
-Role_Primary = _EnumValue('urn:nawi-water-ontology#Role-Primary', label='Primary', parent=EnumerationKind_Role)
-"""Primary"""
-Role_Retention = _EnumValue('urn:nawi-water-ontology#Role-Retention', label='Retention', parent=EnumerationKind_Role)
-"""Retention"""
-Role_Secondary = _EnumValue('urn:nawi-water-ontology#Role-Secondary', label='Secondary', parent=EnumerationKind_Role)
-"""Secondary"""
-Role_SolidsHandling = _EnumValue('urn:nawi-water-ontology#Role-SolidsHandling', label='Solids handling (e.g., biosolids disposal)', parent=EnumerationKind_Role)
-"""Solids handling (e.g., biosolids disposal)"""
-Role_Stabilization = _EnumValue('urn:nawi-water-ontology#Role-Stabilization', label='Stabilization', parent=EnumerationKind_Role)
-"""Stabilization"""
-Role_Stepfeed = _EnumValue('urn:nawi-water-ontology#Role-Stepfeed', label='Stepfeed', parent=EnumerationKind_Role)
-"""Stepfeed"""
-Role_Storage = _EnumValue('urn:nawi-water-ontology#Role-Storage', label='Storage', parent=EnumerationKind_Role)
-"""Storage"""
-Role_Tertiary = _EnumValue('urn:nawi-water-ontology#Role-Tertiary', label='Tertiary', parent=EnumerationKind_Role)
-"""Tertiary"""
+Role_Aerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Aerobic', label='Aerobic', definition='A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism.', parent=EnumerationKind_Role)
+"""A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism."""
+Role_Anaerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anaerobic', label='Anaerobic', definition='A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism.', parent=EnumerationKind_Role)
+"""A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism."""
+Role_Anoxic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anoxic', label='Anoxic', definition='A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification.', parent=EnumerationKind_Role)
+"""A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification."""
+Role_Backwash = _EnumValue('https://watermetadata.org/ontology/watr#Role-Backwash', label='Role-Backwash', definition='A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids.', parent=EnumerationKind_Role)
+"""A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids."""
+Role_Containment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Containment', label='Containment', definition='A role for a vessel or structure that holds material to prevent its release to the environment.', parent=EnumerationKind_Role)
+"""A role for a vessel or structure that holds material to prevent its release to the environment."""
+Role_Detention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Detention', label='Detention', definition='A role for a vessel that holds water for a defined period so that a treatment process can take place.', parent=EnumerationKind_Role)
+"""A role for a vessel that holds water for a defined period so that a treatment process can take place."""
+Role_Equalization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Equalization', label='Equalization', definition='A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input.', parent=EnumerationKind_Role)
+"""A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input."""
+Role_Extended = _EnumValue('https://watermetadata.org/ontology/watr#Role-Extended', label='Extended', definition='A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration.', parent=EnumerationKind_Role)
+"""A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration."""
+Role_Feed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Feed', label='Feed', definition='A role for a stream or vessel that supplies influent to a process.', parent=EnumerationKind_Role)
+"""A role for a stream or vessel that supplies influent to a process."""
+Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='MakeUp', definition='A role for a stream that adds water or chemical to replace losses and maintain volume or concentration.', parent=EnumerationKind_Role)
+"""A role for a stream that adds water or chemical to replace losses and maintain volume or concentration."""
+Role_NutrientRemoval = _EnumValue('https://watermetadata.org/ontology/watr#Role-NutrientRemoval', label='Role-NutrientRemoval', definition='A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus.', parent=EnumerationKind_Role)
+"""A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus."""
+Role_Permeate = _EnumValue('https://watermetadata.org/ontology/watr#Role-Permeate', label='Permeate', definition='A role for the stream that has passed through a membrane, as opposed to the retained concentrate.', parent=EnumerationKind_Role)
+"""A role for the stream that has passed through a membrane, as opposed to the retained concentrate."""
+Role_Posttreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Posttreatment', label='Posttreatment', definition='A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse.', parent=EnumerationKind_Role)
+"""A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse."""
+Role_Pretreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Pretreatment', label='Pretreatment', definition='A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them.', parent=EnumerationKind_Role)
+"""A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them."""
+Role_Primary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Primary', label='Primary', definition='A role for the first major treatment stage, typically removing settleable and floatable solids.', parent=EnumerationKind_Role)
+"""A role for the first major treatment stage, typically removing settleable and floatable solids."""
+Role_Retention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Retention', label='Retention', definition='A role for a vessel that holds water or solids for storage or continued settling.', parent=EnumerationKind_Role)
+"""A role for a vessel that holds water or solids for storage or continued settling."""
+Role_Secondary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Secondary', label='Secondary', definition='A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics.', parent=EnumerationKind_Role)
+"""A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics."""
+Role_SolidsHandling = _EnumValue('https://watermetadata.org/ontology/watr#Role-SolidsHandling', label='Solids handling (e.g., biosolids disposal)', definition='A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream.', parent=EnumerationKind_Role)
+"""A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream."""
+Role_Stabilization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stabilization', label='Stabilization', definition='A role for a process that reduces the biodegradability, odor, or pathogen content of solids.', parent=EnumerationKind_Role)
+"""A role for a process that reduces the biodegradability, odor, or pathogen content of solids."""
+Role_Stepfeed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stepfeed', label='Stepfeed', definition='A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor.', parent=EnumerationKind_Role)
+"""A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor."""
+Role_Storage = _EnumValue('https://watermetadata.org/ontology/watr#Role-Storage', label='Storage', definition='A role for a vessel that holds water or material for later use.', parent=EnumerationKind_Role)
+"""A role for a vessel that holds water or material for later use."""
+Role_Tertiary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Tertiary', label='Tertiary', definition='A role for treatment applied after secondary treatment to further improve effluent quality.', parent=EnumerationKind_Role)
+"""A role for treatment applied after secondary treatment to further improve effluent quality."""
 EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=EnumerationKind)
 """
 This class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.
@@ -1505,83 +1505,83 @@ Constituent_SO2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-SO2
 """Sulfur dioxide"""
 Constituent_VolatileOrganicCompounds = _EnumValue('http://data.ashrae.org/standard223#Constituent-VolatileOrganicCompounds', label='Volatile organic compounds', definition='`Constituent-VolatileOrganicCompounds`', parent=Medium_Constituent)
 """`Constituent-VolatileOrganicCompounds`"""
-Constituent_Ammonia = _EnumValue('urn:nawi-water-ontology#Constituent-Ammonia', label='Ammonia', definition='Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium.', parent=Medium_Constituent)
+Constituent_Ammonia = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Ammonia', label='Ammonia', definition='Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium.', parent=Medium_Constituent)
 """Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium."""
-Constituent_Bacteria = _EnumValue('urn:nawi-water-ontology#Constituent-Bacteria', label='Constituent Bacteria', definition='Bacteria: Microscopic single-celled organisms that can be found in water', parent=Medium_Constituent)
+Constituent_Bacteria = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Bacteria', label='Constituent Bacteria', definition='Bacteria: Microscopic single-celled organisms that can be found in water', parent=Medium_Constituent)
 """Bacteria: Microscopic single-celled organisms that can be found in water"""
-Constituent_Cyanide = _EnumValue('urn:nawi-water-ontology#Constituent-Cyanide', label='Constituent Cyanide', definition='Cyanide: A highly toxic chemical compound that can be harmful to aquatic life', parent=Medium_Constituent)
+Constituent_Cyanide = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Cyanide', label='Constituent Cyanide', definition='Cyanide: A highly toxic chemical compound that can be harmful to aquatic life', parent=Medium_Constituent)
 """Cyanide: A highly toxic chemical compound that can be harmful to aquatic life"""
-Constituent_DissolvedOxygen = _EnumValue('urn:nawi-water-ontology#Constituent-DissolvedOxygen', label='Dissolved Oxygen', definition='Molecular oxygen dissolved in a treatment medium.', parent=Medium_Constituent)
+Constituent_DissolvedOxygen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedOxygen', label='Dissolved Oxygen', definition='Molecular oxygen dissolved in a treatment medium.', parent=Medium_Constituent)
 """Molecular oxygen dissolved in a treatment medium."""
-Constituent_InorganicCarbon = _EnumValue('urn:nawi-water-ontology#Constituent-InorganicCarbon', label='Inorganic Carbon', definition='Inorganic carbon species present as constituents of a treatment medium.', parent=Medium_Constituent)
+Constituent_InorganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-InorganicCarbon', label='Inorganic Carbon', definition='Inorganic carbon species present as constituents of a treatment medium.', parent=Medium_Constituent)
 """Inorganic carbon species present as constituents of a treatment medium."""
-Constituent_Inorganics = _EnumValue('urn:nawi-water-ontology#Constituent-Inorganics', label='Constituent-Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=Medium_Constituent)
+Constituent_Inorganics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Inorganics', label='Constituent-Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=Medium_Constituent)
 """Inorganic chemical matter present as a constituent of a treatment medium."""
-Constituent_Metals = _EnumValue('urn:nawi-water-ontology#Constituent-Metals', label='Constituent-Metals', definition='Constituent-Metals', parent=Medium_Constituent)
+Constituent_Metals = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Metals', label='Constituent-Metals', definition='Constituent-Metals', parent=Medium_Constituent)
 """Constituent-Metals"""
-Constituent_Nitrate = _EnumValue('urn:nawi-water-ontology#Constituent-Nitrate', label='Nitrate', definition='Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium.', parent=Medium_Constituent)
+Constituent_Nitrate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrate', label='Nitrate', definition='Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium.', parent=Medium_Constituent)
 """Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium."""
-Constituent_Nitrite = _EnumValue('urn:nawi-water-ontology#Constituent-Nitrite', label='Nitrite', definition='Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium.', parent=Medium_Constituent)
+Constituent_Nitrite = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrite', label='Nitrite', definition='Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium.', parent=Medium_Constituent)
 """Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium."""
-Constituent_NitrogenOxides = _EnumValue('urn:nawi-water-ontology#Constituent-NitrogenOxides', label='Nitrogen Oxides', definition='Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms.', parent=Medium_Constituent)
+Constituent_NitrogenOxides = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-NitrogenOxides', label='Nitrogen Oxides', definition='Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms.', parent=Medium_Constituent)
 """Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms."""
-Constituent_Organics = _EnumValue('urn:nawi-water-ontology#Constituent-Organics', label='Constituent-Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=Medium_Constituent)
+Constituent_Organics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Organics', label='Constituent-Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=Medium_Constituent)
 """Organic chemical matter present as a constituent of a treatment medium."""
-Constituent_OrganicCarbon = _EnumValue('urn:nawi-water-ontology#Constituent-OrganicCarbon', label='Organic Carbon', definition='Organic carbon present as a constituent of a treatment medium.', parent=Constituent_Organics)
+Constituent_OrganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-OrganicCarbon', label='Organic Carbon', definition='Organic carbon present as a constituent of a treatment medium.', parent=Constituent_Organics)
 """Organic carbon present as a constituent of a treatment medium."""
-Constituent_Particles = _EnumValue('urn:nawi-water-ontology#Constituent-Particles', label='Constituent-Particles', definition='Particulate matter present as a constituent of a medium.', parent=Medium_Constituent)
+Constituent_Particles = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Particles', label='Constituent-Particles', definition='Particulate matter present as a constituent of a medium.', parent=Medium_Constituent)
 """Particulate matter present as a constituent of a medium."""
-Constituent_Solids = _EnumValue('urn:nawi-water-ontology#Constituent-Solids', label='Constituent-Solids', definition='Solid material present as a constituent of a treatment medium.', parent=Constituent_Particles)
+Constituent_Solids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Solids', label='Constituent-Solids', definition='Solid material present as a constituent of a treatment medium.', parent=Constituent_Particles)
 """Solid material present as a constituent of a treatment medium."""
-Constituent_SuspendedSolids = _EnumValue('urn:nawi-water-ontology#Constituent-SuspendedSolids', label='Constituent-SuspendedSolids', definition='Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid.', parent=Constituent_Solids)
+Constituent_SuspendedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-SuspendedSolids', label='Constituent-SuspendedSolids', definition='Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid.', parent=Constituent_Solids)
 """Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid."""
-Constituent_Salt = _EnumValue('urn:nawi-water-ontology#Constituent-Salt', label='Constituent-Salt', definition='Constituent-Salt', parent=Medium_Constituent)
+Constituent_Salt = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Salt', label='Constituent-Salt', definition='Constituent-Salt', parent=Medium_Constituent)
 """Constituent-Salt"""
-Salt_NaCl = _EnumValue('urn:nawi-water-ontology#Salt-NaCl', label='Salt-NaCl', definition='Salt-NaCl', parent=Constituent_Salt)
+Salt_NaCl = _EnumValue('https://watermetadata.org/ontology/watr#Salt-NaCl', label='Salt-NaCl', definition='Salt-NaCl', parent=Constituent_Salt)
 """Salt-NaCl"""
-WastewaterTreatmentChemical = _EnumValue('urn:nawi-water-ontology#WastewaterTreatmentChemical', label='Wastewater Treatment Chemical', definition='Base class for all chemicals used in wastewater treatment', parent=Medium_Constituent)
+WastewaterTreatmentChemical = _EnumValue('https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical', label='Wastewater Treatment Chemical', definition='Base class for all chemicals used in wastewater treatment', parent=Medium_Constituent)
 """Base class for all chemicals used in wastewater treatment"""
-Coagulant = _EnumValue('urn:nawi-water-ontology#Coagulant', label='Coagulant', definition='Class for coagulants used in wastewater treatment', parent=WastewaterTreatmentChemical)
+Coagulant = _EnumValue('https://watermetadata.org/ontology/watr#Coagulant', label='Coagulant', definition='Class for coagulants used in wastewater treatment', parent=WastewaterTreatmentChemical)
 """Class for coagulants used in wastewater treatment"""
-Coagulant_Alum = _EnumValue('urn:nawi-water-ontology#Coagulant-Alum', label='Alum', definition='Aluminum sulfate (alum), a common coagulant', parent=Coagulant)
+Coagulant_Alum = _EnumValue('https://watermetadata.org/ontology/watr#Coagulant-Alum', label='Alum', definition='Aluminum sulfate (alum), a common coagulant', parent=Coagulant)
 """Aluminum sulfate (alum), a common coagulant"""
-Coagulant_FerricChloride = _EnumValue('urn:nawi-water-ontology#Coagulant-FerricChloride', label='Ferric Chloride', definition='Ferric chloride, a coagulant for wastewater treatment', parent=Coagulant)
+Coagulant_FerricChloride = _EnumValue('https://watermetadata.org/ontology/watr#Coagulant-FerricChloride', label='Ferric Chloride', definition='Ferric chloride, a coagulant for wastewater treatment', parent=Coagulant)
 """Ferric chloride, a coagulant for wastewater treatment"""
-Coagulant_PolyaluminumChloride = _EnumValue('urn:nawi-water-ontology#Coagulant-PolyaluminumChloride', label='Polyaluminum Chloride', definition='Polyaluminum chloride (PAC), a coagulant', parent=Coagulant)
+Coagulant_PolyaluminumChloride = _EnumValue('https://watermetadata.org/ontology/watr#Coagulant-PolyaluminumChloride', label='Polyaluminum Chloride', definition='Polyaluminum chloride (PAC), a coagulant', parent=Coagulant)
 """Polyaluminum chloride (PAC), a coagulant"""
-Disinfectant = _EnumValue('urn:nawi-water-ontology#Disinfectant', label='Disinfectant', definition='Class for disinfectants used in wastewater treatment', parent=WastewaterTreatmentChemical)
+Disinfectant = _EnumValue('https://watermetadata.org/ontology/watr#Disinfectant', label='Disinfectant', definition='Class for disinfectants used in wastewater treatment', parent=WastewaterTreatmentChemical)
 """Class for disinfectants used in wastewater treatment"""
-Disinfectant_Chlorine = _EnumValue('urn:nawi-water-ontology#Disinfectant-Chlorine', label='Chlorine', definition='Chlorine, a common disinfectant', parent=Disinfectant)
+Disinfectant_Chlorine = _EnumValue('https://watermetadata.org/ontology/watr#Disinfectant-Chlorine', label='Chlorine', definition='Chlorine, a common disinfectant', parent=Disinfectant)
 """Chlorine, a common disinfectant"""
-Disinfectant_Ozone = _EnumValue('urn:nawi-water-ontology#Disinfectant-Ozone', label='Ozone', definition='Ozone, an advanced disinfectant', parent=Disinfectant)
+Disinfectant_Ozone = _EnumValue('https://watermetadata.org/ontology/watr#Disinfectant-Ozone', label='Ozone', definition='Ozone, an advanced disinfectant', parent=Disinfectant)
 """Ozone, an advanced disinfectant"""
-Flocculant = _EnumValue('urn:nawi-water-ontology#Flocculant', label='Flocculant', definition='Class for flocculants used in wastewater treatment', parent=WastewaterTreatmentChemical)
+Flocculant = _EnumValue('https://watermetadata.org/ontology/watr#Flocculant', label='Flocculant', definition='Class for flocculants used in wastewater treatment', parent=WastewaterTreatmentChemical)
 """Class for flocculants used in wastewater treatment"""
-Flocculant_Polymer = _EnumValue('urn:nawi-water-ontology#Flocculant-Polymer', label='Polymer Flocculant', definition='Flocculant that is a type of polymer', parent=Flocculant)
+Flocculant_Polymer = _EnumValue('https://watermetadata.org/ontology/watr#Flocculant-Polymer', label='Polymer Flocculant', definition='Flocculant that is a type of polymer', parent=Flocculant)
 """Flocculant that is a type of polymer"""
-Flocculant_Polyacrylamide = _EnumValue('urn:nawi-water-ontology#Flocculant-Polyacrylamide', label='Polyacrylamide', definition='Polyacrylamide, a common flocculant', parent=Flocculant_Polymer)
+Flocculant_Polyacrylamide = _EnumValue('https://watermetadata.org/ontology/watr#Flocculant-Polyacrylamide', label='Polyacrylamide', definition='Polyacrylamide, a common flocculant', parent=Flocculant_Polymer)
 """Polyacrylamide, a common flocculant"""
-HeavyMetalRemovalAgent = _EnumValue('urn:nawi-water-ontology#HeavyMetalRemovalAgent', label='Heavy Metal Removal Agent', definition='Class for chemicals used to remove heavy metals', parent=WastewaterTreatmentChemical)
+HeavyMetalRemovalAgent = _EnumValue('https://watermetadata.org/ontology/watr#HeavyMetalRemovalAgent', label='Heavy Metal Removal Agent', definition='Class for chemicals used to remove heavy metals', parent=WastewaterTreatmentChemical)
 """Class for chemicals used to remove heavy metals"""
-HeavyMetalRemovalAgent_SodiumSulfide = _EnumValue('urn:nawi-water-ontology#HeavyMetalRemovalAgent-SodiumSulfide', label='Sodium Sulfide', definition='Sodium sulfide, used to precipitate heavy metals', parent=HeavyMetalRemovalAgent)
+HeavyMetalRemovalAgent_SodiumSulfide = _EnumValue('https://watermetadata.org/ontology/watr#HeavyMetalRemovalAgent-SodiumSulfide', label='Sodium Sulfide', definition='Sodium sulfide, used to precipitate heavy metals', parent=HeavyMetalRemovalAgent)
 """Sodium sulfide, used to precipitate heavy metals"""
-HighPurityOxygen = _EnumValue('urn:nawi-water-ontology#HighPurityOxygen', label='High Purity Oxygen', definition='Class for high purity oxygen used in wastewater treatment', parent=WastewaterTreatmentChemical)
+HighPurityOxygen = _EnumValue('https://watermetadata.org/ontology/watr#HighPurityOxygen', label='High Purity Oxygen', definition='Class for high purity oxygen used in wastewater treatment', parent=WastewaterTreatmentChemical)
 """Class for high purity oxygen used in wastewater treatment"""
-OdorControlAgent = _EnumValue('urn:nawi-water-ontology#OdorControlAgent', label='Odor Control Agent', definition='Class for chemicals used for odor control', parent=WastewaterTreatmentChemical)
+OdorControlAgent = _EnumValue('https://watermetadata.org/ontology/watr#OdorControlAgent', label='Odor Control Agent', definition='Class for chemicals used for odor control', parent=WastewaterTreatmentChemical)
 """Class for chemicals used for odor control"""
-OdorControlAgent_ActivatedCarbon = _EnumValue('urn:nawi-water-ontology#OdorControlAgent-ActivatedCarbon', label='Activated Carbon', definition='Activated carbon, used to absorb odors', parent=OdorControlAgent)
+OdorControlAgent_ActivatedCarbon = _EnumValue('https://watermetadata.org/ontology/watr#OdorControlAgent-ActivatedCarbon', label='Activated Carbon', definition='Activated carbon, used to absorb odors', parent=OdorControlAgent)
 """Activated carbon, used to absorb odors"""
-OxidizingAgent = _EnumValue('urn:nawi-water-ontology#OxidizingAgent', label='Oxidizing Agent', definition='Class for oxidizing agents used in water treatment', parent=WastewaterTreatmentChemical)
+OxidizingAgent = _EnumValue('https://watermetadata.org/ontology/watr#OxidizingAgent', label='Oxidizing Agent', definition='Class for oxidizing agents used in water treatment', parent=WastewaterTreatmentChemical)
 """Class for oxidizing agents used in water treatment"""
-OxidizingAgent_HydrogenPeroxide = _EnumValue('urn:nawi-water-ontology#OxidizingAgent-HydrogenPeroxide', label='Hydrogen Peroxide', definition='Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes', parent=OxidizingAgent)
+OxidizingAgent_HydrogenPeroxide = _EnumValue('https://watermetadata.org/ontology/watr#OxidizingAgent-HydrogenPeroxide', label='Hydrogen Peroxide', definition='Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes', parent=OxidizingAgent)
 """Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes"""
-ReducingAgent = _EnumValue('urn:nawi-water-ontology#ReducingAgent', label='Reducing Agent', definition='Class for reducing agents used in water treatment', parent=WastewaterTreatmentChemical)
+ReducingAgent = _EnumValue('https://watermetadata.org/ontology/watr#ReducingAgent', label='Reducing Agent', definition='Class for reducing agents used in water treatment', parent=WastewaterTreatmentChemical)
 """Class for reducing agents used in water treatment"""
-pHAdjuster = _EnumValue('urn:nawi-water-ontology#pHAdjuster', label='pH Adjuster', definition='Class for pH adjusters used in wastewater treatment', parent=WastewaterTreatmentChemical)
+pHAdjuster = _EnumValue('https://watermetadata.org/ontology/watr#pHAdjuster', label='pH Adjuster', definition='Class for pH adjusters used in wastewater treatment', parent=WastewaterTreatmentChemical)
 """Class for pH adjusters used in wastewater treatment"""
-pHAdjuster_Lime = _EnumValue('urn:nawi-water-ontology#pHAdjuster-Lime', label='Lime', definition='Calcium hydroxide (lime), used to increase pH', parent=pHAdjuster)
+pHAdjuster_Lime = _EnumValue('https://watermetadata.org/ontology/watr#pHAdjuster-Lime', label='Lime', definition='Calcium hydroxide (lime), used to increase pH', parent=pHAdjuster)
 """Calcium hydroxide (lime), used to increase pH"""
-pHAdjuster_SulfuricAcid = _EnumValue('urn:nawi-water-ontology#pHAdjuster-SulfuricAcid', label='Sulfuric Acid', definition='Sulfuric acid, used to decrease pH', parent=pHAdjuster)
+pHAdjuster_SulfuricAcid = _EnumValue('https://watermetadata.org/ontology/watr#pHAdjuster-SulfuricAcid', label='Sulfuric Acid', definition='Sulfuric acid, used to decrease pH', parent=pHAdjuster)
 """Sulfuric acid, used to decrease pH"""
 Medium_MechanicalLinkage = _EnumValue('http://data.ashrae.org/standard223#Medium-MechanicalLinkage', label='Mechanical linkage', definition='This class supports the transfer of mechanical power at `ConnectionPoint`s or through `Connection`s.', parent=Substance_Medium)
 """This class supports the transfer of mechanical power at `ConnectionPoint`s or through `Connection`s."""
@@ -1658,17 +1658,17 @@ Water_HotWater = _EnumValue('http://data.ashrae.org/standard223#Water-HotWater',
 """Water-Hot water"""
 Water_Steam = _EnumValue('http://data.ashrae.org/standard223#Water-Steam', label='Steam', definition='Water-Steam', parent=Fluid_Water)
 """Water-Steam"""
-Water_Brackish = _EnumValue('urn:nawi-water-ontology#Water-Brackish', label='Water-Brackish', definition='Water-Brackish', parent=Fluid_Water)
+Water_Brackish = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brackish', label='Water-Brackish', definition='Water-Brackish', parent=Fluid_Water)
 """Water-Brackish"""
-Water_Brine = _EnumValue('urn:nawi-water-ontology#Water-Brine', label='Water-Brine', definition='Water-Brine', parent=Fluid_Water)
+Water_Brine = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brine', label='Water-Brine', definition='Water-Brine', parent=Fluid_Water)
 """Water-Brine"""
-Water_Freshwater = _EnumValue('urn:nawi-water-ontology#Water-Freshwater', label='Water-Freshwater', definition='Water-Freshwater', parent=Fluid_Water)
+Water_Freshwater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Freshwater', label='Water-Freshwater', definition='Water-Freshwater', parent=Fluid_Water)
 """Water-Freshwater"""
-Water_Seawater = _EnumValue('urn:nawi-water-ontology#Water-Seawater', label='Water-Seawater', definition='Water-Seawater', parent=Fluid_Water)
+Water_Seawater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Seawater', label='Water-Seawater', definition='Water-Seawater', parent=Fluid_Water)
 """Water-Seawater"""
-Fluid_Sludge = _EnumValue('urn:nawi-water-ontology#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry composed of water and solids.', parent=Mix_Fluid)
+Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry composed of water and solids.', parent=Mix_Fluid)
 """A semi-solid slurry composed of water and solids."""
-Sludge_MixedLiquor = _EnumValue('urn:nawi-water-ontology#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=Fluid_Sludge)
+Sludge_MixedLiquor = _EnumValue('https://watermetadata.org/ontology/watr#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=Fluid_Sludge)
 """Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water."""
 Mix_PowerAndSignal = _EnumValue('http://data.ashrae.org/standard223#Mix-PowerAndSignal', label='Power and signal mixture', definition='This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.\n\n: Mix-PowerAndSignal Enumerations\n\n| Enumeration |\n|:-----------|\n| `PowerAndSignal-PoE` |', parent=Medium_Mix)
 """This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.
@@ -1762,10 +1762,10 @@ ThermodynamicPhase_Solid = _EnumValue('http://data.ashrae.org/standard223#Thermo
 """`ThermodynamicPhase-Solid`"""
 ThermodynamicPhase_Vapor = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Vapor', label='Vapor phase', definition='`ThermodynamicPhase-Vapor`', parent=EnumerationKind_ThermodynamicPhase)
 """`ThermodynamicPhase-Vapor`"""
-EnumerationKind_DataProcessing = _EnumValue('urn:nawi-water-ontology#EnumerationKind-DataProcessing', label='DataQuality', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=EnumerationKind)
+EnumerationKind_DataProcessing = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-DataProcessing', label='DataQuality', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=EnumerationKind)
 """This EnumerationKind describes methods of data processing, aggregation, or imputation"""
-EnumerationKind_Runtime = _EnumValue('urn:nawi-water-ontology#EnumerationKind-Runtime', label='Runtime', parent=EnumerationKind)
-"""Runtime"""
+EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', definition='An enumeration kind describing the accumulated operating time of a piece of equipment.', parent=EnumerationKind)
+"""An enumeration kind describing the accumulated operating time of a piece of equipment."""
 
 __all__ = [
     'EnumerationKind',

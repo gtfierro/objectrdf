@@ -30,6 +30,21 @@ T = TypeVar("T", bound="Entity")
 V = TypeVar("V")
 
 
+class PropertyAlias:
+    """A compatibility descriptor that delegates to one canonical property."""
+
+    def __init__(self, target: str) -> None:
+        self.target = target
+
+    def __get__(self, obj: Entity | None, owner: type | None = None) -> object:
+        if obj is None:
+            return self
+        return getattr(obj, self.target)
+
+    def __set__(self, obj: Entity, value: object) -> None:
+        setattr(obj, self.target, value)
+
+
 class RelSet(Generic[T]):
     """Live, ordered, duplicate-free set of links from one entity.
 

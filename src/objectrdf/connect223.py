@@ -12,6 +12,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .core import CPSlot, ConnectionHandle, EnumValue, PortHandle
+from .core.recipes import PointGroupRef, PointRef
 from .core import containment as _containment
 
 if TYPE_CHECKING:
@@ -65,29 +66,33 @@ class S223Connector:
                     1
                     for cp in existing
                     if isinstance(cp, slot_cls)
-                    and getattr(cp, "has_medium") is not None
-                    and getattr(cp, "has_medium").is_a(medium)
+                    and getattr(cp, "medium") is not None
+                    and getattr(cp, "medium").is_a(medium)
                 )
                 for _ in range(max(slot.min_count - already, 0)):
                     cp = slot_cls(
                         self._free_name(entity, f"{entity.name}-{slot.direction}"),
-                        has_medium=medium,
-                        is_connection_point_of=entity,
+                        medium=medium,
+                        owner=entity,
                         model=entity.meta.model,
                     )
                     existing.append(cp)
 
     def connect(
         self,
-        a: Entity | PortHandle,
-        b: Entity | PortHandle,
+        a: Entity | PortHandle | PointRef | PointGroupRef,
+        b: Entity | PortHandle | PointRef | PointGroupRef,
         *,
         medium: EnumValue | None = None,
         connection: type[Entity] | None = None,
         name: str | None = None,
     ) -> ConnectionHandle:
         """Record a deferred connection intention and return its handle."""
-        a_owner = a.owner if isinstance(a, PortHandle) else a
+        if isinstance(a, PointRef):
+            a = a._port
+        if isinstance(b, PointRef):
+            b = b._port
+        a_owner = a.owner if isinstance(a, (PortHandle, PointGroupRef)) else a
         return a_owner.meta.model._defer_connection(
             a,
             b,

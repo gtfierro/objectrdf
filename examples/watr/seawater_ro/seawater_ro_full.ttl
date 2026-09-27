@@ -4,13 +4,13 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/watertap/seawater-ro/full> a owl:Ontology ;
     rdfs:label "WaTr seawater RO reference" ;
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
-        <urn:nawi-water-ontology> .
+        <https://watermetadata.org/ontology/watr> .
 
 :antiscalant-addition-process a watr:Process-ChemicalAddition ;
     rdfs:label "antiscalant-addition-process" ;
@@ -906,4 +906,3 @@
         :pxr-feed-in,
         :pxr-feed-out ;
     s223:hasProperty :pressure-exchanger-efficiency .
-

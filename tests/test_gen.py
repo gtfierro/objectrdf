@@ -9,6 +9,7 @@ import rdflib
 
 from objectrdf import Model, ModelingError
 from objectrdf.gen import compile_modules, compile_source, extract, generate
+from objectrdf.gen import naming
 from objectrdf.gen.overlays import Overlay
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini.ttl"
@@ -184,6 +185,37 @@ def test_property_names_are_snake_cased(mini, m):
     assert hasattr(fan, "rated_power")
 
 
+def test_s223_point_property_names_are_canonical_and_iri_scoped():
+    assert naming.property_name(
+        "http://data.ashrae.org/standard223#hasMedium"
+    ) == "medium"
+    assert naming.property_name(
+        "http://data.ashrae.org/standard223#isConnectionPointOf"
+    ) == "owner"
+    assert naming.property_name(
+        "http://data.ashrae.org/standard223#connectsThrough"
+    ) == "connection"
+    assert naming.property_name(
+        "http://data.ashrae.org/standard223#pairedConnectionPoint"
+    ) == "paired_with"
+    assert naming.property_name("https://example.test/Brick#hasMedium") == "has_medium"
+
+
+def test_emitter_keeps_one_canonical_descriptor_with_a_legacy_alias():
+    graph = rdflib.Graph()
+    s223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
+    graph.add((s223.ConnectionPoint, rdflib.RDF.type, rdflib.OWL.Class))
+    graph.add((s223.hasMedium, rdflib.RDF.type, rdflib.OWL.ObjectProperty))
+    graph.add((s223.hasMedium, rdflib.RDFS.domain, s223.ConnectionPoint))
+
+    source = compile_source(graph, name="S223", overlay=None)
+
+    assert "name='medium'" in source
+    assert "predicate='http://data.ashrae.org/standard223#hasMedium'" in source
+    assert "medium: _Rel[_EntityBase]" in source
+    assert "medium: _PropertyAlias = _PropertyAlias('medium')" in source
+
+
 def test_shacl_min_count_becomes_required(mini, m):
     # The generated signature itself rejects the omission (this is what the
     # IDE/type checker sees too)...
@@ -252,7 +284,9 @@ def test_generation_is_deterministic():
     graph = rdflib.Graph()
     graph.parse(FIXTURE)
     one = compile_source(graph, name="Mini", source="x", overlay=MINI_OVERLAY)
-    two = compile_source(graph, name="Mini", source="x", overlay=MINI_OVERLAY)
+    reparsed = rdflib.Graph()
+    reparsed.parse(FIXTURE)
+    two = compile_source(reparsed, name="Mini", source="x", overlay=MINI_OVERLAY)
     assert one == two
 
 

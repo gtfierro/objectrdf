@@ -7,6 +7,7 @@ the model's serializer. User code should never need an import from ``rdflib``.
 
 from __future__ import annotations
 
+from functools import wraps
 from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Self, overload
 
 from . import containment as _containment
@@ -16,6 +17,7 @@ from .relations import (
     EnumOne,
     EnumSet,
     Lit,
+    PropertyAlias,
     Rel,
     RelOne,
     RelSet,
@@ -159,11 +161,57 @@ class Entity:
     _CONNECTOR: ClassVar[Any | None] = None
 
     meta = _MetaDescriptor()
+    _point_declarations: ClassVar[dict[str, Any]] = {}
+    _property_policies: ClassVar[dict[str, Any]] = {}
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
+        recipe_metadata = {"class_iri", "ontology_iri", "class_label"}
+        if recipe_metadata.intersection(cls.__dict__):
+            from .recipes import register_recipe_class
+
+            register_recipe_class(cls)
+            return
         info = cls.__dict__.get("_classinfo")
         if info is not None:
+            aliases: dict[str, str] = {}
+            canonical_names = {
+                "http://data.ashrae.org/standard223#hasMedium": "medium",
+                "http://data.ashrae.org/standard223#isConnectionPointOf": "owner",
+                "http://data.ashrae.org/standard223#connectsThrough": "connection",
+                "http://data.ashrae.org/standard223#pairedConnectionPoint": (
+                    "paired_with"
+                ),
+            }
+            for prop in cls._effective_specs().values():
+                canonical = canonical_names.get(prop.predicate)
+                if (
+                    canonical is None
+                    or prop.name == canonical
+                    or canonical in cls.__dict__
+                ):
+                    continue
+                if not hasattr(cls, prop.name):
+                    continue
+                aliases[canonical] = prop.name
+                setattr(cls, canonical, PropertyAlias(prop.name))
+
+            original_init = cls.__dict__.get("__init__")
+            if aliases and original_init is not None:
+                @wraps(original_init)
+                def canonical_init(
+                    self: Entity, *args: Any, **props: Any
+                ) -> None:
+                    for canonical, legacy in aliases.items():
+                        if canonical in props:
+                            if legacy in props:
+                                raise TypeError(
+                                    f"{canonical!r} and {legacy!r} name the same property"
+                                )
+                            props[legacy] = props.pop(canonical)
+                    original_init(self, *args, **props)
+
+                setattr(cls, "__init__", canonical_init)
             info.registry.register(cls)
 
     def __init__(
@@ -199,12 +247,33 @@ class Entity:
         self._rels: dict[str, RelSet[Any]] = {}
         self._iri: str = ""  # minted by Model._bind below
         self._model: Model = m
+        original_entities = set(m.entities)
+        original_ports = set(m._port_intents)
+        original_connections = set(m._connection_intents)
+        original_reserved = set(m._reserved_names)
+        original_auto_counters = dict(m._auto_counters)
+        original_data = {item: dict(item._data) for item in m.entities}
+        original_rels = {
+            item: {key: list(value) for key, value in item._rels.items()}
+            for item in m.entities
+        }
+        original_rel_keys = {item: set(item._rels) for item in m.entities}
         m._bind(self)
 
         # From here on the entity is registered in the model, so any failure
         # must unbind it — otherwise a raised constructor leaves a ghost
         # entity occupying the name.
         try:
+            self._recipe_points: dict[str, Any] = {}
+            for prop, policy in type(self)._property_policies.items():
+                if policy.kind == "default":
+                    from .recipes import copy_default
+
+                    setattr(self, prop, copy_default(policy.value))
+                elif policy.kind == "fixed":
+                    setattr(self, prop, policy.value)
+                elif policy.kind == "choose" and len(policy.values) == 1:
+                    setattr(self, prop, policy.values[0])
             for key, value in props.items():
                 descriptor = getattr(type(self), key, None)
                 if not isinstance(
@@ -218,6 +287,57 @@ class Entity:
                     continue
                 setattr(self, key, value)
 
+            declarations = type(self)._point_declarations
+            if declarations:
+                from .recipes import PointGroupRef, PointRef, Policy
+
+                for point_name, declaration in declarations.items():
+                    medium_policy = declaration.medium
+                    medium_options = ()
+                    if isinstance(medium_policy, Policy):
+                        if medium_policy.kind in {"fixed", "default"}:
+                            medium = medium_policy.value
+                        elif len(medium_policy.values) == 1:
+                            medium = medium_policy.values[0]
+                        else:
+                            medium = None
+                            medium_options = tuple(medium_policy.values)
+                    else:
+                        medium = medium_policy
+                    direction = declaration.direction
+                    if isinstance(direction, Policy):
+                        if direction.kind == "fixed":
+                            direction = direction.value
+                        else:
+                            direction = tuple(direction.values)
+                    refs = []
+                    label_policy = declaration.label
+                    point_label = (
+                        label_policy.value
+                        if isinstance(label_policy, Policy)
+                        and label_policy.kind in {"fixed", "default"}
+                        else label_policy
+                        if not isinstance(label_policy, Policy)
+                        else None
+                    )
+                    for index in range(declaration.count):
+                        local = point_name if declaration.count == 1 else f"{point_name}-{index + 1}"
+                        port_name = f"{self.name}-{local}"
+                        port = m._defer_port(
+                            self, port_name, direction, medium=medium,
+                            label=point_label,
+                            fixed_medium=(
+                                isinstance(medium_policy, Policy)
+                                and medium_policy.kind == "fixed"
+                            ),
+                            medium_options=medium_options,
+                        )
+                        port.symmetry_key = point_name
+                        refs.append(PointRef(self, local, port))
+                    self._recipe_points[point_name] = (
+                        refs[0] if len(refs) == 1 else PointGroupRef(self, point_name, tuple(refs))
+                    )
+
             self._check_required()
             if not m._resolving:
                 _containment.attach(self)
@@ -226,10 +346,40 @@ class Entity:
                 # require, so a fresh Fan already has its air inlet/outlet.
                 self._CONNECTOR.on_create(self)
         except BaseException:
-            m._unbind(self)
+            for item in list(m.entities):
+                if item not in original_entities:
+                    m._unbind(item)
+            m._port_intents[:] = [p for p in m._port_intents if p in original_ports]
+            m._connection_intents[:] = [
+                h for h in m._connection_intents if h in original_connections
+            ]
+            m._reserved_names = original_reserved
+            m._auto_counters = original_auto_counters
+            for item, data in original_data.items():
+                item._data = data
+                for key in set(item._rels) - original_rel_keys[item]:
+                    del item._rels[key]
+                for key, values in original_rels[item].items():
+                    store = item._rels.get(key)
+                    if store is not None:
+                        store._items[:] = values
             raise
 
     # -- identity ---------------------------------------------------------
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        policies = getattr(type(self), "_property_policies", {})
+        policy = policies.get(name)
+        if policy is not None:
+            if policy.kind == "fixed" and value != policy.value:
+                raise ModelingError(
+                    f"{type(self).__name__}.{name} is fixed to {policy.value!r}"
+                )
+            if policy.kind == "choose" and value not in policy.values:
+                raise ModelingError(
+                    f"{type(self).__name__}.{name} must be one of {policy.values!r}"
+                )
+        object.__setattr__(self, name, value)
 
     @property
     def name(self) -> str:
@@ -416,7 +566,10 @@ class Entity:
             if spec.kind == "object" and spec.max_count != 1:
                 if len(self._store_for(spec)) == 0:
                     missing.append(spec.name)
-            elif not self._data.get(spec.name):
+            elif spec.kind == "enum" and spec.max_count != 1:
+                if not self._data.get(spec.name):
+                    missing.append(spec.name)
+            elif self._data.get(spec.name) is None:
                 missing.append(spec.name)
         if missing:
             raise ModelingError(

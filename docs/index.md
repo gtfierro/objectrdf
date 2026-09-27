@@ -46,6 +46,8 @@ oad >> Fan("supply-fan")    # media negotiated, Duct created, inverses set
 - [DESIGN.md](../DESIGN.md) — the full design rationale and roadmap
 - [Quantities and nominal stream state](quantities.md)
 - [Current implementation roadmap](roadmap.md)
+- [Portable recipe implementation plan](recipe-implementation-plan.md)
+- [Portable recipe classes](recipes.md)
 
 ## Status
 

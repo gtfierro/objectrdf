@@ -1,87 +1,73 @@
-"""Quickstart: author a small ASHRAE 223P model with no RDF in sight.
+"""Quickstart: define reusable S223 equipment and connect it without RDF.
 
-The point of the 223 layer: one ``>>`` replaces the whole
-Connectable/ConnectionPoint/Connection/medium ceremony — connection points
-required by the shapes exist the moment equipment is created, and
-connections negotiate media and pick Duct/Pipe automatically.
+The coil recipe declares its two connection points once. Each model instance
+gets its own points, and the solver chooses their directions and the Duct/Pipe
+classes from the connected equipment.
 
 Run with:  uv run python examples/s223/ahu/s223_quickstart.py
-Produces:  ahu.ttl (Turtle) next to this script.
+Produces:  ahu.ttl and ahu_schema.ttl next to this script.
 """
 
 from pathlib import Path
 
-from objectrdf import Model, connect
+from objectrdf import Model, choose, connect, fixed
 from objectrdf.s223 import (
-    Chiller,
-    Damper,
-    DomainSpace,
-    ChilledWaterCoil,
-    Fan,
-    InletConnectionPoint,
-    OutletConnectionPoint,
-    PhysicalSpace,
-    Pump,
-    enums,
-    Thermostat,
     AirHandlingUnit,
+    Chiller,
+    ConnectionPoint,
+    CoolingCoil,
+    Damper,
+    Fan,
+    enums,
 )
 
-with Model("urn:example/ahu#") as model:
-    # The AHU is a container for the equipment that lives inside it.
-    with AirHandlingUnit("ahu-1"):
-        # Equipment created in the AHU's scope gets hasPhysicalLocation.
-        oad = Damper("oa-damper")
-        sf = Fan("supply-fan")
-        # Air path: shapes constrain both sides to Fluid-Air, so the medium,
-        # the connection points, and the Duct are all worked out automatically.
-        duct = connect(oad, sf)
-        duct.label = "supply duct"
 
-        chw_coil = ChilledWaterCoil()  # this will get a made-up name
-    # A Coil has three valid xone layouts. Declare the intended two-fluid
-    # layout; connections and media can still be authored in any order.
-    for name, cls, medium in (
-        ("coil-air-in", InletConnectionPoint, enums.Fluid_Air),
-        ("coil-water-in", InletConnectionPoint, enums.Fluid_Water),
-        ("coil-air-out", OutletConnectionPoint, enums.Fluid_Air),
-        ("coil-water-out", OutletConnectionPoint, enums.Fluid_Water),
-    ):
-        cls(name, has_medium=medium, is_connection_point_of=chw_coil)
-
-    # Spaces nest like the building does; the HVAC zone lives in the room.
-    with PhysicalSpace("mech-room"):
-        zone = DomainSpace("zone-1", has_domain=enums.Domain_HVAC)
-
-        # Equipment created in the room's scope gets hasPhysicalLocation.
-        tsta = Thermostat("tsta-1")
-
-    # Water side: the chiller's shape says Fluid-Water. Water is permitted at
-    # both pump ports, so the optimizer prefers that coherent assignment while
-    # satisfying the coil layout selected from its SHACL xone alternatives.
-    pump = Pump("chw-pump2")
-    chiller = Chiller("chiller1")
-    chw2 = connect(chiller, pump)
-    pump_to_coil = connect(pump, chw_coil)
-    chw_coil >> chiller
-
-    # When neither side constrains the medium (pump to pump), say it:
-    connect(
-        Pump("primary-pump"),
-        Pump("standby-pump"),
-        medium=enums.Water_ChilledWater,
+class AHUCoolingCoil(CoolingCoil):
+    class_iri = "urn:example:ahu-recipes#AHUCoolingCoil"
+    ontology_iri = "urn:example:ahu-recipes"
+    class_label = "AHU cooling coil"
+    air = ConnectionPoint.declare(
+        medium=fixed(enums.Fluid_Air),
+        direction=choose("in", "out"),
+        label=fixed("Air connection"),
+    )
+    water = ConnectionPoint.declare(
+        medium=fixed(enums.Fluid_Water),
+        direction=choose("in", "out"),
+        label=fixed("Water connection"),
     )
 
-out = Path(__file__).parent / "ahu.ttl"
-resolved = model.resolve()
-model.save(out)
-print(f"wrote {out}: {len(resolved)} resolved entities")
 
-# The full 223 plumbing came from two statements:
-resolved_sf = resolved[sf.name]
-for cp in resolved_sf.has_connection_point:
-    print(f"  {sf.name} has {type(cp).__name__} {cp.name} ({cp.has_medium})")
-print(f"  water medium: {resolved.connection(chw2).has_medium}")
-print(f"  preferred medium: {resolved.connection(pump_to_coil).has_medium}")
-resolved_duct = resolved.connection(duct)
-print(f"  duct medium: {resolved_duct.has_medium} / {resolved_duct.label}")
+with Model("urn:example/ahu#") as model:
+    with AirHandlingUnit("ahu-1"):
+        outdoor_air_damper = Damper("oa-damper")
+        supply_fan = Fan("supply-fan")
+        coil = AHUCoolingCoil("cooling-coil")
+        chiller = Chiller("chiller")
+
+        air_duct = connect(outdoor_air_damper, supply_fan)
+        air_to_coil = connect(supply_fan, coil.air)
+        water_to_coil = connect(chiller, coil.water)
+
+resolved = model.resolve()
+air_point = resolved.point(coil.air)
+water_point = resolved.point(coil.water)
+assert air_point.medium is enums.Fluid_Air
+assert water_point.medium is enums.Fluid_Water
+assert resolved.connection(air_duct).medium is enums.Fluid_Air
+
+print(f"air point: {air_point.name} ({air_point.medium})")
+print(f"water point: {water_point.name} ({water_point.medium})")
+for name, handle in (("air", air_to_coil), ("water", water_to_coil)):
+    explanation = resolved.explain(handle)
+    print(
+        f"{name} connection: {explanation.source_point} -> "
+        f"{explanation.target_point} ({explanation.medium_reason})"
+    )
+
+out_dir = Path(__file__).parent
+instance_path = out_dir / "ahu.ttl"
+schema_path = out_dir / "ahu_schema.ttl"
+model.save(instance_path)
+model.export_ontology(schema_path)
+print(f"wrote {instance_path} and {schema_path}: {len(resolved)} entities")

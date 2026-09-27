@@ -1,8 +1,11 @@
 # Authoring WaTr models
 
-`objectrdf.watr` is generated from the published WaTr ontology and its S223
-imports closure. It exposes WaTr treatment equipment, processes, substances,
-and roles while reusing S223 connection points and deferred Z3 resolution.
+`objectrdf.watr` is generated from WaTr 0.2 at
+[`https://watermetadata.org/watr.ttl`](https://watermetadata.org/watr.ttl),
+with its S223 and QUDT imports closure. Its ontology namespace is
+`https://watermetadata.org/ontology/watr#`. It exposes WaTr treatment
+equipment, processes, substances, and roles while reusing S223 connection
+points and deferred Z3 resolution.
 
 ```python
 from objectrdf import Model, connect
@@ -16,7 +19,7 @@ with Model("urn:example/treatment#") as model:
     outlet = connect(pump, product)
 
 resolved = model.resolve()
-assert resolved.connection(inlet).has_medium is resolved.connection(outlet).has_medium
+assert resolved.connection(inlet).medium is resolved.connection(outlet).medium
 ```
 
 The source establishes `Fluid-Water`. Water is permitted by both pump ports
@@ -34,7 +37,7 @@ flow.medium = enums.Fluid_Sludge
 flow.has_role.add(enums.Role_Backwash)
 ```
 
-You can also author a known WaTr/S223 ConnectionPoint with `has_medium`, or
+You can also author a known WaTr/S223 ConnectionPoint with `medium`, or
 connect broad-domain equipment to a device that already establishes a medium.
 Connection handles expose multi-valued generated properties as staged
 collections, so roles can be added before the concrete Connection exists.

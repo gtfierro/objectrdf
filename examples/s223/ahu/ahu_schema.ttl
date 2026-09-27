@@ -1,0 +1,68 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:example:ahu-recipes> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape> a sh:NodeShape ;
+    sh:property <urn:example:ahu-recipes#AHUCoolingCoilShape/air>,
+        <urn:example:ahu-recipes#AHUCoolingCoilShape/water> ;
+    sh:targetClass <urn:example:ahu-recipes#AHUCoolingCoil> .
+
+<urn:example:ahu-recipes#AHUCoolingCoil> a owl:Class ;
+    rdfs:label "AHU cooling coil" ;
+    rdfs:subClassOf <http://data.ashrae.org/standard223#CoolingCoil> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air> sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape <urn:example:ahu-recipes#AHUCoolingCoilShape/air/value> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/direction/0> sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/direction/1> sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/directions/0> rdf:first <urn:example:ahu-recipes#AHUCoolingCoilShape/air/direction/0> ;
+    rdf:rest <urn:example:ahu-recipes#AHUCoolingCoilShape/air/directions/1> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/directions/1> rdf:first <urn:example:ahu-recipes#AHUCoolingCoilShape/air/direction/1> ;
+    rdf:rest () .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/label> sh:hasValue "Air connection" ;
+    sh:path rdfs:label .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/medium> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Air> ;
+    sh:path <http://data.ashrae.org/standard223#hasMedium> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/air/value> sh:or <urn:example:ahu-recipes#AHUCoolingCoilShape/air/directions/0> ;
+    sh:property <urn:example:ahu-recipes#AHUCoolingCoilShape/air/label>,
+        <urn:example:ahu-recipes#AHUCoolingCoilShape/air/medium> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water> sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape <urn:example:ahu-recipes#AHUCoolingCoilShape/water/value> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/direction/0> sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/direction/1> sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/directions/0> rdf:first <urn:example:ahu-recipes#AHUCoolingCoilShape/water/direction/0> ;
+    rdf:rest <urn:example:ahu-recipes#AHUCoolingCoilShape/water/directions/1> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/directions/1> rdf:first <urn:example:ahu-recipes#AHUCoolingCoilShape/water/direction/1> ;
+    rdf:rest () .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/label> sh:hasValue "Water connection" ;
+    sh:path rdfs:label .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/medium> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Water> ;
+    sh:path <http://data.ashrae.org/standard223#hasMedium> .
+
+<urn:example:ahu-recipes#AHUCoolingCoilShape/water/value> sh:or <urn:example:ahu-recipes#AHUCoolingCoilShape/water/directions/0> ;
+    sh:property <urn:example:ahu-recipes#AHUCoolingCoilShape/water/label>,
+        <urn:example:ahu-recipes#AHUCoolingCoilShape/water/medium> .
+

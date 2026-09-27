@@ -27,6 +27,7 @@ if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
     from .meta import Registry
+    from .recipes import PointGroupRef
     from .resolution import ConnectionHandle, PortHandle, ResolutionReport, ResolvedModel
     from .validation import ValidationReport
 
@@ -191,8 +192,8 @@ class Model:
 
     def _defer_connection(
         self,
-        source: Entity | PortHandle,
-        target: Entity | PortHandle,
+        source: Entity | PortHandle | PointGroupRef,
+        target: Entity | PortHandle | PointGroupRef,
         *,
         medium: EnumValue | None,
         connection: type[Entity] | None,
@@ -208,8 +209,10 @@ class Model:
                 "graph-backed model; edit its concrete Connection and "
                 "ConnectionPoint objects instead"
             )
-        source_owner = source.owner if isinstance(source, PortHandle) else source
-        target_owner = target.owner if isinstance(target, PortHandle) else target
+        from .recipes import PointGroupRef
+
+        source_owner = source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+        target_owner = target.owner if isinstance(target, (PortHandle, PointGroupRef)) else target
         if source_owner.meta.model is not self or target_owner.meta.model is not self:
             raise ModelingError("connection endpoints must belong to the same Model")
         base = name or f"{source.name}--{target.name}"
@@ -239,9 +242,12 @@ class Model:
         self,
         owner: Entity,
         name: str,
-        direction: str,
+        direction: str | tuple[str, ...],
         *,
         medium: EnumValue | None,
+        label: str | None = None,
+        fixed_medium: bool = False,
+        medium_options: tuple[EnumValue, ...] = (),
     ) -> PortHandle:
         """Record a named connection point without choosing its medium."""
         from .resolution import PortHandle
@@ -252,13 +258,18 @@ class Model:
                 "deferred S223/WaTr ports cannot yet be added to a "
                 "graph-backed model; create a concrete ConnectionPoint instead"
             )
-        if direction not in {"in", "out", "bi"}:
-            raise ValueError("port direction must be 'in', 'out', or 'bi'")
+        directions = (direction,) if isinstance(direction, str) else direction
+        if not directions or not set(directions).issubset({"in", "out", "bi"}):
+            raise ValueError("port direction must be 'in', 'out', 'bi', or a non-empty tuple thereof")
         if owner.meta.model is not self:
             raise ModelingError("port owner must belong to this Model")
         if name in self._by_name or name in self._reserved_names:
             raise ModelingError(f"an entity, port, or connection named {name!r} exists")
-        port = PortHandle(self, owner, name, direction, medium=medium)
+        port = PortHandle(
+            self, owner, name, direction, medium=medium, label=label,
+            fixed_medium=fixed_medium,
+            medium_options=medium_options,
+        )
         self._port_intents.append(port)
         self._reserved_names.add(name)
         self._touch(owner)
@@ -402,6 +413,14 @@ class Model:
                 imports.add(dependency)
             if ontology.iri and ontology.version:
                 ontology_versions[ontology.iri] = ontology.version
+            for base in type(entity).__mro__:
+                base_info = base.__dict__.get("_classinfo")
+                if base_info is not None and base_info.ontology.iri:
+                    imports.add(base_info.ontology.iri)
+                    if base_info.ontology.version:
+                        ontology_versions[base_info.ontology.iri] = (
+                            base_info.ontology.version
+                        )
             g.add((subject, RDF.type, URIRef(info.iri)))
             g.add((subject, RDFS.label, Literal(entity.label)))
             if entity.comment is not None:
@@ -443,6 +462,27 @@ class Model:
             g.bind(prefix, ns, replace=True)
         g.bind("owl", OWL, replace=True)
         return g
+
+    def export_ontology(self, destination: str | Path | None = None) -> rdflib.Graph:
+        """Return the portable schema graph for recipe classes in this model.
+
+        The extension ontology graph is stored with the generated registry and
+        includes class identities, parent links, and imports. When ``destination``
+        is supplied it is serialized as Turtle and the graph is also returned.
+        """
+        graph = rdflib.Graph()
+        registries = {
+            entity.meta.registry for entity in self.entities
+            if getattr(entity.meta.registry, "schema_graph", None) is not None
+        }
+        for registry in registries:
+            schema = registry.schema_graph
+            if schema is not None:
+                for triple in schema:
+                    graph.add(triple)
+        if destination is not None:
+            graph.serialize(destination=str(destination), format="turtle")
+        return graph
 
     def check(self) -> ResolutionReport:
         """Check deferred S223 constraints without materializing a snapshot."""

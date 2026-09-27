@@ -129,21 +129,33 @@ def _package_shapes(model: Model) -> rdflib.Graph:
     package_files: set[Path] = set()
     sources: set[str] = set()
     for entity in model.entities:
-        module = sys.modules.get(type(entity).__module__)
-        module_file = getattr(module, "__file__", None)
-        bundled = Path(module_file).with_name("_shapes.ttl") if module_file else None
-        if bundled is not None and bundled.exists():
-            package_files.add(bundled)
-            continue
-        source = entity._classinfo_effective().ontology.source
-        if source is not None:
-            sources.add(source)
-    if not package_files and not sources:
+        for cls in type(entity).__mro__:
+            if "_classinfo" not in cls.__dict__:
+                continue
+            module = sys.modules.get(cls.__module__)
+            module_file = getattr(module, "__file__", None)
+            bundled = Path(module_file).with_name("_shapes.ttl") if module_file else None
+            if bundled is not None and bundled.exists():
+                package_files.add(bundled)
+            source = cls.__dict__["_classinfo"].ontology.source
+            if source is not None:
+                sources.add(source)
+    g = rdflib.Graph()
+    registries = {
+        entity.meta.registry
+        for entity in model.entities
+        if getattr(entity.meta.registry, "schema_graph", None) is not None
+    }
+    if not package_files and not sources and not registries:
         raise ValueError(
             "no shapes given and no generated package in this model "
             "records an ontology source; pass shapes= explicitly"
         )
-    g = rdflib.Graph()
+    for registry in registries:
+        schema = registry.schema_graph
+        if schema is not None:
+            for triple in schema:
+                g.add(triple)
     for package_file in package_files:
         g.parse(package_file)
     for source in sources:

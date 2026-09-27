@@ -76,6 +76,7 @@ def load_graph(
         entity._comment = str(comment_node) if comment_node is not None else None
         entity._data = {}
         entity._rels = {}
+        entity._recipe_points = {}
         name = _local_name(str(subject))
         if entity._label is None:
             entity._label = name
@@ -124,6 +125,10 @@ def load_graph(
                     (subject, URIRef(predicate), value)
                 )
 
+    for entity in model.entities:
+        declarations = getattr(type(entity), "_point_declarations", {})
+        if declarations:
+            _restore_recipe_points(entity, declarations, strict=strict)
     return model
 
 
@@ -167,6 +172,64 @@ def _discover_registries(graph: rdflib.Graph) -> tuple[Registry, ...]:
             for other in candidates
         )
     )
+
+
+def _restore_recipe_points(
+    entity: Entity, declarations: Mapping[str, Any], *, strict: bool
+) -> None:
+    """Rebuild recipe references from RDF-observable point facts."""
+    from .recipes import PointGroupRef, PointRef, Policy
+
+    candidates = list(getattr(entity, "has_connection_point"))
+    used: set[Entity] = set()
+    direction_classes = {
+        "in": "InletConnectionPoint",
+        "out": "OutletConnectionPoint",
+        "bi": "BidirectionalConnectionPoint",
+    }
+    for name, declaration in declarations.items():
+        direction = declaration.direction
+        directions = direction.values if isinstance(direction, Policy) else (direction,)
+        medium = declaration.medium
+        media = (
+            medium.values
+            if isinstance(medium, Policy) and medium.kind == "fixed"
+            else () if isinstance(medium, Policy) else (medium,)
+        )
+        expected_media = {
+            value.iri for value in media if hasattr(value, "iri")
+        }
+        label = declaration.label
+        labels = (
+            label.values
+            if isinstance(label, Policy) and label.kind == "fixed"
+            else () if isinstance(label, Policy) else (label,)
+        )
+        expected_labels = {value for value in labels if isinstance(value, str)}
+        matching = [
+            point
+            for point in candidates
+            if point not in used
+            and type(point).__name__ in {direction_classes[item] for item in directions}
+            and (
+                not expected_media
+                or getattr(point, "medium", None) is not None
+                and getattr(point, "medium").iri in expected_media
+            )
+            and (not expected_labels or point.label in expected_labels)
+        ]
+        if len(matching) != declaration.count:
+            if strict and (matching or declaration.count):
+                raise ModelingError(
+                    f"cannot identify recipe point {entity.name}.{name} uniquely "
+                    f"from RDF facts (expected {declaration.count}, found {len(matching)})"
+                )
+            continue
+        used.update(matching)
+        refs = tuple(PointRef(entity, name, point) for point in matching)
+        entity._recipe_points[name] = refs[0] if len(refs) == 1 else PointGroupRef(
+            entity, name, refs
+        )
 
 
 def matches(entity: Entity, attributes: Mapping[str, object]) -> bool:

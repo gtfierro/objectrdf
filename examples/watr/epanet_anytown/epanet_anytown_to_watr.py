@@ -248,7 +248,7 @@ def build_watr_model(
         name="EPANET Anytown WaTr network",
         prefixes={
             "s223": "http://data.ashrae.org/standard223#",
-            "watr": "urn:nawi-water-ontology#",
+            "watr": "https://watermetadata.org/ontology/watr#",
         },
     )
     nodes: dict[str, Any] = {}
@@ -267,7 +267,7 @@ def build_watr_model(
                 _name("junction", epanet_id),
                 label=f"EPANET junction {epanet_id}",
                 comment=_location_comment(epanet_id, network, row),
-                has_medium=enums.Fluid_Water,
+                medium=enums.Fluid_Water,
             )
             nodes[epanet_id] = node
             row_by_node[epanet_id] = row

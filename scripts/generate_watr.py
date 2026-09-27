@@ -1,11 +1,11 @@
-"""Regenerate WaTr with its S223 import closure through ontoenv."""
+"""Regenerate WaTr 0.2 with its S223 and QUDT import closure through ontoenv."""
 
 from ontoenv import OntoEnv
 from rdflib import Graph
 
 from objectrdf.gen import generate
 
-WATR_SOURCE = "https://watermetadata.org/water.ttl"
+WATR_SOURCE = "https://watermetadata.org/watr.ttl"
 S223_SOURCE = "https://open223.info/223p.ttl"
 
 

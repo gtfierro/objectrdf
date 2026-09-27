@@ -148,6 +148,7 @@ class Registry:
         self.by_name: dict[str, type[Entity]] = {}
         self.by_iri: dict[str, type[Entity]] = {}
         self.enums_by_iri: dict[str, EnumValue] = {}
+        self.schema_graph = None
         # Imported lazily to avoid a module cycle (containment needs Entity).
         from .containment import ContainmentTable
 

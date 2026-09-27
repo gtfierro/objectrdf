@@ -81,7 +81,7 @@ def build_model() -> Model:
         prefixes={
             "qudt": "http://qudt.org/schema/qudt/",
             "s223": "http://data.ashrae.org/standard223#",
-            "watr": "urn:nawi-water-ontology#",
+            "watr": "https://watermetadata.org/ontology/watr#",
         },
     )
 
@@ -96,8 +96,8 @@ def build_model() -> Model:
         )
         feed_out = OutletConnectionPoint(
             "feed-seawater-out",
-            has_medium=enums.Fluid_Water,
-            is_connection_point_of=feed,
+            medium=enums.Fluid_Water,
+            owner=feed,
         )
         influent = stream_state(feed_out, medium=enums.Fluid_Water)
         influent.quantity(
@@ -259,8 +259,8 @@ def build_model() -> Model:
         )
         backwash_treated_out = OutletConnectionPoint(
             "backwash-handling-treated-out",
-            has_medium=enums.Fluid_Water,
-            is_connection_point_of=backwash_handling,
+            medium=enums.Fluid_Water,
+            owner=backwash_handling,
         )
         backwash_handling.has_optional_connection_point.add(backwash_treated_out)
         backwash_byproduct_out = backwash_handling.port(
@@ -283,8 +283,8 @@ def build_model() -> Model:
         # boundary of this reference flowsheet.
         landfill_out = OutletConnectionPoint(
             "landfill-out",
-            has_medium=enums.Fluid_Sludge,
-            is_connection_point_of=landfill,
+            medium=enums.Fluid_Sludge,
+            owner=landfill,
         )
         landfill.has_optional_connection_point.add(landfill_out)
 
@@ -420,7 +420,7 @@ def build_model() -> Model:
         separator = Junction(
             "separator-1",
             label="Feed separator S1",
-            has_medium=enums.Fluid_Water,
+            medium=enums.Fluid_Water,
             comment=(
                 "IDAES stream splitter; this junction does not perform a "
                 "water-treatment process."
@@ -689,7 +689,7 @@ def resolved_topology(resolved: ResolvedModel) -> str:
             ),
         )
         path = " -> ".join(point.name for point in points)
-        medium = connection.has_medium
+        medium = connection.medium
         medium_name = medium.iri.rsplit("#", 1)[-1] if medium else "unresolved"
         lines.append(
             f"  {connection.name}: {type(connection).__name__}"
@@ -701,15 +701,15 @@ def resolved_topology(resolved: ResolvedModel) -> str:
             entity
             for entity in resolved
             if isinstance(entity, OutletConnectionPoint)
-            and entity.paired_connection_point is not None
+            and entity.paired_with is not None
         ),
         key=lambda entity: entity.name,
     )
     if paired:
         lines.append("paired connection points:")
         for point in paired:
-            mate = point.paired_connection_point
-            medium = point.has_medium
+            mate = point.paired_with
+            medium = point.medium
             medium_name = medium.iri.rsplit("#", 1)[-1] if medium else "unresolved"
             lines.append(f"  {mate.name} <-> {point.name} [{medium_name}]")
     return "\n".join(lines)

@@ -48,6 +48,9 @@ class Overlay:
     """medium enum IRI (or ancestor) -> Connection subclass name, used by
     the negotiator to pick Duct/Pipe/... from the resolved medium."""
 
+    point_declaration_class: str | None = None
+    """Generated class exposing the typed recipe point declaration API."""
+
 BRICK = Overlay(
     rshift={"Equipment": "feeds"},
     containment=(
@@ -67,6 +70,7 @@ BRICK = Overlay(
 _S223_NS = "http://data.ashrae.org/standard223#"
 
 S223 = Overlay(
+    point_declaration_class="ConnectionPoint",
     containment=(
         # Spatial hierarchy: physical spaces nest via s223:contains. (The
         # attribute is `contains_` — the trailing underscore avoids the
@@ -91,13 +95,14 @@ S223 = Overlay(
     },
 )
 
-_WATR_NS = "urn:nawi-water-ontology#"
+_WATR_NS = "https://watermetadata.org/ontology/watr#"
 
 WATR = Overlay(
     containment=S223.containment,
     enum_root=S223.enum_root,
-    ontology_iri="urn:nawi-water-ontology",
+    ontology_iri="https://watermetadata.org/ontology/watr",
     primary_namespace=_WATR_NS,
+    point_declaration_class="ConnectionPoint",
     connector=True,
     connection_classes={
         **S223.connection_classes,

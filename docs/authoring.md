@@ -38,7 +38,7 @@ model = Model(
     "urn:example/treatment#",
     prefixes={
         "qudt": "http://qudt.org/schema/qudt/",
-        "watr": "urn:nawi-water-ontology#",
+        "watr": "https://watermetadata.org/ontology/watr#",
     },
 )
 ```

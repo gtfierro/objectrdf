@@ -1,0 +1,83 @@
+@prefix : <urn:example:hvac#> .
+@prefix airwatercoolingcoil: <urn:example:hvac-recipes#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+
+<urn:example:hvac> a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all>,
+        <urn:example:hvac-recipes> .
+
+:chiller-in a s223:InletConnectionPoint ;
+    rdfs:label "chiller-in" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chiller .
+
+:cooling-coil-out a s223:OutletConnectionPoint ;
+    rdfs:label "cooling-coil-out" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :cooling-coil .
+
+:cooling-coil-out_2 a s223:OutletConnectionPoint ;
+    rdfs:label "cooling-coil-out_2" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :cooling-coil .
+
+:supply-fan-in a s223:InletConnectionPoint ;
+    rdfs:label "supply-fan-in" ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :supply-fan .
+
+:chiller a s223:Chiller ;
+    rdfs:label "chiller" ;
+    s223:hasConnectionPoint :chiller-in,
+        :chiller-out .
+
+:chiller--cooling-coil-water a s223:Pipe ;
+    rdfs:label "chiller--cooling-coil-water" ;
+    s223:connectsAt :chiller-out,
+        :cooling-coil-water ;
+    s223:hasMedium s223:Fluid-Water .
+
+:chiller-out a s223:OutletConnectionPoint ;
+    rdfs:label "chiller-out" ;
+    s223:connectsThrough :chiller--cooling-coil-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :chiller .
+
+:cooling-coil-air a s223:InletConnectionPoint ;
+    rdfs:label "Air connection" ;
+    s223:connectsThrough :supply-fan--cooling-coil-air ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :cooling-coil .
+
+:cooling-coil-water a s223:InletConnectionPoint ;
+    rdfs:label "Water connection" ;
+    s223:connectsThrough :chiller--cooling-coil-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :cooling-coil .
+
+:supply-fan a s223:Fan ;
+    rdfs:label "supply-fan" ;
+    s223:hasConnectionPoint :supply-fan-in,
+        :supply-fan-out .
+
+:supply-fan--cooling-coil-air a s223:Duct ;
+    rdfs:label "supply-fan--cooling-coil-air" ;
+    s223:connectsAt :cooling-coil-air,
+        :supply-fan-out ;
+    s223:hasMedium s223:Fluid-Air .
+
+:supply-fan-out a s223:OutletConnectionPoint ;
+    rdfs:label "supply-fan-out" ;
+    s223:connectsThrough :supply-fan--cooling-coil-air ;
+    s223:hasMedium s223:Fluid-Air ;
+    s223:isConnectionPointOf :supply-fan .
+
+:cooling-coil a airwatercoolingcoil:AirWaterCoolingCoil ;
+    rdfs:label "cooling-coil" ;
+    s223:hasConnectionPoint :cooling-coil-air,
+        :cooling-coil-out,
+        :cooling-coil-out_2,
+        :cooling-coil-water .
+

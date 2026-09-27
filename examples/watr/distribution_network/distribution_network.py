@@ -41,7 +41,7 @@ def build_model() -> Model:
         name="Example municipal water distribution network",
         prefixes={
             "s223": "http://data.ashrae.org/standard223#",
-            "watr": "urn:nawi-water-ontology#",
+            "watr": "https://watermetadata.org/ontology/watr#",
         },
     )
 
@@ -57,10 +57,10 @@ def build_model() -> Model:
             label="Neighborhood delivery point",
         )
 
-        header = Junction("header", label="Pump station header", has_medium=WATER)
-        north = Junction("north", label="North branch junction", has_medium=WATER)
-        south = Junction("south", label="South branch junction", has_medium=WATER)
-        east = Junction("east", label="East merge junction", has_medium=WATER)
+        header = Junction("header", label="Pump station header", medium=WATER)
+        north = Junction("north", label="North branch junction", medium=WATER)
+        south = Junction("south", label="South branch junction", medium=WATER)
+        east = Junction("east", label="East merge junction", medium=WATER)
 
         # ------------------------------------------------------------------
         # 2. Topology

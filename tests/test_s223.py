@@ -38,6 +38,19 @@ def test_enum_hierarchical_access():
     assert enums.Substance_Medium.Mix.Fluid.Air is enums.Fluid_Air
 
 
+def test_legacy_generated_package_exposes_canonical_point_properties():
+    with Model("urn:test/s223-names#"):
+        fan = s223.Fan("fan")
+        point = next(
+            cp for cp in fan.has_connection_point if isinstance(cp, s223.InletConnectionPoint)
+        )
+
+    assert point.medium is point.has_medium is enums.Fluid_Air
+    assert point.owner is point.is_connection_point_of is fan
+    point.has_medium = enums.Fluid_Water
+    assert point.medium is enums.Fluid_Water
+
+
 def test_enum_tree_prints_all_descendants(capsys):
     result = enums.Substance_Medium.tree()
 
@@ -81,7 +94,7 @@ def test_scale_and_abstractness(m):
 
 
 def test_connection_point_requires_medium(m):
-    with pytest.raises(TypeError, match="has_medium"):
+    with pytest.raises(TypeError, match="medium"):
         s223.InletConnectionPoint("cp")
 
 
@@ -103,27 +116,27 @@ def test_rshift_negotiates_air_connection(m):
     resolved = m.resolve()
     duct = resolved["oad--sf"]
     assert isinstance(duct, s223.Duct)
-    assert duct.has_medium is enums.Fluid_Air
+    assert duct.medium is enums.Fluid_Air
     out_cp = resolved["oad-out"]
     in_cp = resolved["sf-in"]
     assert isinstance(out_cp, s223.OutletConnectionPoint)
-    assert out_cp.has_medium is enums.Fluid_Air
+    assert out_cp.medium is enums.Fluid_Air
     # full 223 plumbing, both directions, from one statement:
     resolved_damper = resolved[damper.name]
     resolved_fan = resolved[fan.name]
     assert out_cp in resolved_damper.has_connection_point
-    assert out_cp.is_connection_point_of is resolved_damper
-    assert out_cp.connects_through is duct
+    assert out_cp.owner is resolved_damper
+    assert out_cp.connection is duct
     assert out_cp in duct.connects_at
     assert in_cp in duct.connects_at
-    assert in_cp.is_connection_point_of is resolved_fan
+    assert in_cp.owner is resolved_fan
 
 
 def test_connect_handle_resolves_connection_and_medium(m):
     handle = connect(s223.Chiller("ch"), s223.Pump("p"))
     conn = m.resolve().connection(handle)
     assert isinstance(conn, s223.Pipe)  # inferred from Fluid-Water
-    assert conn.has_medium is enums.Fluid_Water  # chiller side constrains it
+    assert conn.medium is enums.Fluid_Water  # chiller side constrains it
 
 
 def test_boolean_layout_supplies_coil_connection_candidates(m):
@@ -134,15 +147,15 @@ def test_boolean_layout_supplies_coil_connection_candidates(m):
         ("coil-air-out", s223.OutletConnectionPoint, enums.Fluid_Air),
         ("coil-water-out", s223.OutletConnectionPoint, enums.Fluid_Water),
     ):
-        cls(name, has_medium=medium, is_connection_point_of=coil)
+        cls(name, medium=medium, owner=coil)
     handle = connect(s223.Chiller("ch"), coil)
     conn = m.resolve().connection(handle)
 
     assert isinstance(conn, s223.Pipe)
-    assert conn.has_medium is enums.Fluid_Water
+    assert conn.medium is enums.Fluid_Water
     inlet = m.resolve()["coil-water-in"]
     assert isinstance(inlet, s223.InletConnectionPoint)
-    assert inlet.has_medium is enums.Fluid_Water
+    assert inlet.medium is enums.Fluid_Water
 
 
 def test_incomplete_coil_layout_is_deferred_as_ambiguous(m):
@@ -166,7 +179,7 @@ def test_explicit_medium_and_connection_class(m):
     a, b = s223.Pump("a"), s223.Pump("b")
     handle = connect(a, b, medium=enums.Water_ChilledWater)
     conn = m.resolve().connection(handle)
-    assert conn.has_medium is enums.Water_ChilledWater
+    assert conn.medium is enums.Water_ChilledWater
     assert isinstance(conn, s223.Pipe)  # ChilledWater is_a Fluid-Water
 
 
@@ -176,17 +189,17 @@ def test_medium_affinity_is_a_preference_not_hard_preservation(m):
     oil_side = s223.Pump("oil-side")
     s223.InletConnectionPoint(
         "oil-in",
-        has_medium=enums.Fluid_Oil,
-        is_connection_point_of=oil_side,
+        medium=enums.Fluid_Oil,
+        owner=oil_side,
     )
     water = connect(source, pump)
     oil = connect(pump, oil_side)
 
     assert m.check().complete
     resolved = m.resolve()
-    assert resolved.connection(water).has_medium is enums.Fluid_Water
-    assert resolved.connection(oil).has_medium is enums.Fluid_Oil
-    assert {cp.has_medium for cp in resolved[pump.name].has_connection_point} == {
+    assert resolved.connection(water).medium is enums.Fluid_Water
+    assert resolved.connection(oil).medium is enums.Fluid_Oil
+    assert {cp.medium for cp in resolved[pump.name].has_connection_point} == {
         enums.Fluid_Water,
         enums.Fluid_Oil,
     }
@@ -203,10 +216,10 @@ def test_mutually_required_cycle_is_constructible(m):
     # 223 deadlock case: Junction requires a ConnectionPoint, which requires
     # its Connectable. The compiler demotes the container side to
     # validate-time, so a Junction is constructible and connectable.
-    j = s223.Junction("j1", has_medium=enums.Fluid_Water)
+    j = s223.Junction("j1", medium=enums.Fluid_Water)
     handle = connect(s223.Chiller("ch"), j)
     conn = m.resolve().connection(handle)
-    assert conn.has_medium is enums.Fluid_Water
+    assert conn.medium is enums.Fluid_Water
 
 
 def test_incompatible_media_rejected(m):
@@ -236,7 +249,7 @@ def test_construction_materializes_required_cps(m):
         "InletConnectionPoint",
         "OutletConnectionPoint",
     }
-    assert all(cp.has_medium is enums.Fluid_Air for cp in cps)
+    assert all(cp.medium is enums.Fluid_Air for cp in cps)
 
 
 def test_existing_cps_reused_not_duplicated(m):
@@ -245,8 +258,8 @@ def test_existing_cps_reused_not_duplicated(m):
     # negotiation binds the construction-time CPs; nothing extra appears
     assert len(list(fan.has_connection_point)) == 2
     resolved = m.resolve()
-    assert resolved["f-out"].connects_through is resolved.connection(handle)
-    assert m["f-out"].connects_through is None
+    assert resolved["f-out"].connection is resolved.connection(handle)
+    assert m["f-out"].connection is None
 
 
 def test_handle_assignments_transfer_to_frozen_snapshot(m):
@@ -345,7 +358,7 @@ def test_serialization_produces_223_triples(m):
 def test_cp_cannot_belong_to_two_connectables(m):
     f1, f2 = s223.Fan("f1"), s223.Fan("f2")
     cp = s223.OutletConnectionPoint(
-        "cp", has_medium=enums.Fluid_Air, is_connection_point_of=f1
+        "cp", medium=enums.Fluid_Air, owner=f1
     )
     with pytest.raises(ModelingError, match="already"):
         f2.has_connection_point.add(cp)
@@ -404,6 +417,6 @@ def test_system_scope_collects_members_and_resolved_boundaries(m):
     assert scope.entity is not None
     assert {member.name for member in system.has_member} == {"pump-1", "pump-2"}
     assert {
-        point.is_connection_point_of.name
+        point.owner.name
         for point in system.has_boundary_connection_point
     } == {"pump-1", "pump-2"}

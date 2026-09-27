@@ -36,8 +36,8 @@ with Model("urn:example/watertap/seawater-ro/pretreatment#") as model:
     intake = Pump("intake", label="Seawater intake")
     InletConnectionPoint(
         "intake-seawater-in",
-        has_medium=enums.Water_Seawater,
-        is_connection_point_of=intake,
+        medium=enums.Water_Seawater,
+        owner=intake,
     )
 
     ferric_chloride_process = Process_Coagulation(
@@ -143,4 +143,4 @@ out = Path(__file__).with_name("seawater_ro_pretreatment.ttl")
 model.save(out)
 
 print(f"wrote {out}: {len(resolved)} resolved entities")
-print(f"  treatment medium: {resolved.connection(backwash).has_medium}")
+print(f"  treatment medium: {resolved.connection(backwash).medium}")

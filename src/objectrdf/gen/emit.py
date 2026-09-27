@@ -15,6 +15,7 @@ carry the property's definition and predicate.
 from __future__ import annotations
 
 from .overlays import Overlay
+from .naming import legacy_property_name
 from .schema import CPConstraintIR, ClassIR, PropIR, SchemaIR
 
 _HEADER = '''\
@@ -43,6 +44,7 @@ from objectrdf.core import (
     Model as _Model,
     OntologyInfo as _OntologyInfo,
     PropertySpec as _PropertySpec,
+    PropertyAlias as _PropertyAlias,
     Registry as _Registry,
     Rel as _Rel,
     RelOne as _RelOne,
@@ -78,10 +80,29 @@ def emit_module(ir: SchemaIR, overlay: Overlay | None = None) -> str:
         parts.append(
             "from . import enums as enums\n\n_REGISTRY.register_enums(enums)\n"
         )
+    if (
+        overlay is not None
+        and overlay.point_declaration_class
+        and any(c.name == overlay.point_declaration_class for c in ir.classes)
+    ):
+        parts.append(
+            "from objectrdf.core.recipes import "
+            "RecipeConnectionPoint as _RecipeConnectionPoint\n"
+        )
     by_name = {c.name: c for c in ir.classes}
     emitted: set[str] = set()
     for cls in ir.classes:
-        parts.append(_emit_class(cls, by_name, emitted, ir))
+        parts.append(
+            _emit_class(
+                cls,
+                by_name,
+                emitted,
+                ir,
+                point_declaration_class=(
+                    overlay.point_declaration_class if overlay else None
+                ),
+            )
+        )
         emitted.add(cls.name)
     if overlay is not None:
         parts.append(_emit_overlay(overlay, ir))
@@ -95,10 +116,14 @@ def _emit_class(
     by_name: dict[str, ClassIR],
     emitted: set[str],
     ir: SchemaIR,
+    *,
+    point_declaration_class: str | None = None,
 ) -> str:
     # Only inherit from parents already emitted; a dropped link (cycle) still
     # leaves the class rooted at the runtime Entity base.
     bases = [p for p in cls.parents if p in emitted] or ["_EntityBase"]
+    if cls.name == point_declaration_class:
+        bases.append("_RecipeConnectionPoint")
 
     lines: list[str] = []
     for prop in cls.own_props:
@@ -140,6 +165,12 @@ def _emit_class(
         lines.append(f"    {_emit_descriptor(cls, prop)}")
         doc = prop.definition or prop.label or prop.name
         lines.append(_docstring(f"{doc} ({prop.predicate})", indent="    "))
+        legacy_name = legacy_property_name(prop.predicate)
+        if legacy_name is not None:
+            lines.append("")
+            lines.append(
+                f"    {legacy_name}: _PropertyAlias = _PropertyAlias({prop.name!r})"
+            )
 
     init = _emit_init(cls, by_name)
     if init:

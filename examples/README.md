@@ -10,8 +10,10 @@ directory contains its runnable Python and related inputs or generated RDF.
 
 ## ASHRAE 223P
 
-- [`s223/ahu/`](s223/ahu/) — an air handler with air and chilled-water
-  connection topology.
+- [`s223/ahu/`](s223/ahu/) — an air handler that uses a portable coil recipe
+  and exports both its instance graph and recipe schema.
+- [`s223/recipe_coil/`](s223/recipe_coil/) — a portable air/water coil class
+  with declared points, fixed media, and exported ontology schema.
 
 ## WaTr
 

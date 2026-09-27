@@ -31,7 +31,7 @@ def build_model() -> Model:
         name="Directly authored Anytown distribution network",
         prefixes={
             "s223": "http://data.ashrae.org/standard223#",
-            "watr": "urn:nawi-water-ontology#",
+            "watr": "https://watermetadata.org/ontology/watr#",
         },
     )
 
@@ -47,25 +47,25 @@ def build_model() -> Model:
         # ------------------------------------------------------------------
         # 2. Distribution junctions
         # ------------------------------------------------------------------
-        j20 = Junction("junction-20", label="Junction 20", has_medium=WATER)
-        j30 = Junction("junction-30", label="Junction 30", has_medium=WATER)
-        j40 = Junction("junction-40", label="Junction 40", has_medium=WATER)
-        j50 = Junction("junction-50", label="Junction 50", has_medium=WATER)
-        j55 = Junction("junction-55", label="Junction 55", has_medium=WATER)
-        j60 = Junction("junction-60", label="Junction 60", has_medium=WATER)
-        j70 = Junction("junction-70", label="Junction 70", has_medium=WATER)
-        j75 = Junction("junction-75", label="Junction 75", has_medium=WATER)
-        j80 = Junction("junction-80", label="Junction 80", has_medium=WATER)
-        j90 = Junction("junction-90", label="Junction 90", has_medium=WATER)
-        j100 = Junction("junction-100", label="Junction 100", has_medium=WATER)
-        j110 = Junction("junction-110", label="Junction 110", has_medium=WATER)
-        j115 = Junction("junction-115", label="Junction 115", has_medium=WATER)
-        j120 = Junction("junction-120", label="Junction 120", has_medium=WATER)
-        j130 = Junction("junction-130", label="Junction 130", has_medium=WATER)
-        j140 = Junction("junction-140", label="Junction 140", has_medium=WATER)
-        j150 = Junction("junction-150", label="Junction 150", has_medium=WATER)
-        j160 = Junction("junction-160", label="Junction 160", has_medium=WATER)
-        j170 = Junction("junction-170", label="Junction 170", has_medium=WATER)
+        j20 = Junction("junction-20", label="Junction 20", medium=WATER)
+        j30 = Junction("junction-30", label="Junction 30", medium=WATER)
+        j40 = Junction("junction-40", label="Junction 40", medium=WATER)
+        j50 = Junction("junction-50", label="Junction 50", medium=WATER)
+        j55 = Junction("junction-55", label="Junction 55", medium=WATER)
+        j60 = Junction("junction-60", label="Junction 60", medium=WATER)
+        j70 = Junction("junction-70", label="Junction 70", medium=WATER)
+        j75 = Junction("junction-75", label="Junction 75", medium=WATER)
+        j80 = Junction("junction-80", label="Junction 80", medium=WATER)
+        j90 = Junction("junction-90", label="Junction 90", medium=WATER)
+        j100 = Junction("junction-100", label="Junction 100", medium=WATER)
+        j110 = Junction("junction-110", label="Junction 110", medium=WATER)
+        j115 = Junction("junction-115", label="Junction 115", medium=WATER)
+        j120 = Junction("junction-120", label="Junction 120", medium=WATER)
+        j130 = Junction("junction-130", label="Junction 130", medium=WATER)
+        j140 = Junction("junction-140", label="Junction 140", medium=WATER)
+        j150 = Junction("junction-150", label="Junction 150", medium=WATER)
+        j160 = Junction("junction-160", label="Junction 160", medium=WATER)
+        j170 = Junction("junction-170", label="Junction 170", medium=WATER)
 
         # ------------------------------------------------------------------
         # 3. Topology

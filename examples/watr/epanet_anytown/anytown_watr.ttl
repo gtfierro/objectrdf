@@ -3,13 +3,13 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix watr: <urn:nawi-water-ontology#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/epanet/anytown> a owl:Ontology ;
     rdfs:label "EPANET Anytown WaTr network" ;
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
-        <urn:nawi-water-ontology> .
+        <https://watermetadata.org/ontology/watr> .
 
 :flow-sensor-pipe-2 a watr:FlowSensor ;
     rdfs:label "Flow at pipe-2 sensor" ;
@@ -2733,4 +2733,3 @@
         :observed-temperature-160,
         :observed-turbidity-160 ;
     rdfs:comment "EPANET ID: 160. EPANET coordinates: (2895.51, 4765.63). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
-
