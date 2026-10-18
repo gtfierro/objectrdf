@@ -15,6 +15,33 @@ Model
 
 .. autoattribute:: objectrdf.core.Entity.ports
 
+.. automethod:: objectrdf.core.Entity.apply_property_block
+
+.. automethod:: objectrdf.PortHandle.apply_property_block
+
+Property schemas
+----------------
+
+.. autoclass:: objectrdf.PropertySchema
+   :members: describe
+
+.. autoclass:: objectrdf.qudt.QuantityAmount
+   :members:
+
+.. autoclass:: objectrdf.PropertySet
+   :members:
+
+.. automethod:: objectrdf.core.Entity.apply_properties
+
+.. automethod:: objectrdf.PortHandle.apply_properties
+
+Property bundles
+----------------
+
+.. autoclass:: objectrdf.PropertyBundle
+   :members: quantity, property, apply, describe, parameters
+   :special-members: __call__
+
 Class discovery
 ---------------
 
@@ -28,7 +55,7 @@ The lookup also accepts the full Python name or ontology class IRI.
    :members: classes, subclasses, tree, resolve
 
 .. autoclass:: objectrdf.core.EnumValue
-   :members: iri, label, definition, parent, children, descendants, tree, tree_text, is_a
+   :members: iri, label, definition, parent, parents, children, descendants, tree, tree_text, is_a
 
 .. autoclass:: objectrdf.core.PortContract
    :members:

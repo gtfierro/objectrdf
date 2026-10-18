@@ -1,4 +1,4 @@
-"""Define a portable air/water coil recipe and author one instance.
+"""Import a portable air/water coil generated from ontology/hvac.ttl.
 
 Run with:  uv run python examples/s223/recipe_coil/recipe_coil.py
 Produces: recipe_coil.ttl and recipe_coil_schema.ttl next to this script.
@@ -6,37 +6,21 @@ Produces: recipe_coil.ttl and recipe_coil_schema.ttl next to this script.
 
 from pathlib import Path
 
-from objectrdf import Model, choose, connect, fixed
-from objectrdf.s223 import Chiller, ConnectionPoint, CoolingCoil, Fan, enums
-
-
-class AirWaterCoolingCoil(CoolingCoil):
-    class_iri = "urn:example:hvac-recipes#AirWaterCoolingCoil"
-    ontology_iri = "urn:example:hvac-recipes"
-    class_label = "Air and water cooling coil"
-    air = ConnectionPoint.declare(
-        medium=fixed(enums.values.Fluid_Air),
-        direction=choose("in", "out"),
-        label=fixed("Air connection"),
-    )
-    water = ConnectionPoint.declare(
-        medium=fixed(enums.values.Fluid_Water),
-        direction=choose("in", "out"),
-        label=fixed("Water connection"),
-    )
-
+from objectrdf import Model, connect
+from objectrdf.s223 import Chiller, Fan
+from objectrdf.s223.hvac import AirWaterCoolingCoil
 
 with Model("urn:example:hvac#") as model:
     supply_fan = Fan("supply-fan")
     coil = AirWaterCoolingCoil("cooling-coil")
     chiller = Chiller("chiller")
 
-    air_connection = connect(supply_fan, coil.air)
-    water_connection = connect(chiller, coil.water)
+    air_connection = connect(supply_fan, coil.air_inlet)
+    water_connection = connect(chiller, coil.water_inlet)
 
 resolved = model.resolve()
-air_point = resolved.point(coil.air)
-water_point = resolved.point(coil.water)
+air_point = resolved.point(coil.air_inlet)
+water_point = resolved.point(coil.water_inlet)
 
 print(f"air: {air_point.name} ({air_point.medium})")
 print(f"water: {water_point.name} ({water_point.medium})")

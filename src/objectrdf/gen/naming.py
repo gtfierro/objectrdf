@@ -24,6 +24,7 @@ RESERVED = frozenset(
     {
         "name", "type", "label", "comment", "meta", "model", "contains",
         "ports", "describe_ports",
+        "apply_properties", "quantity", "apply_property_block", "boundary", "port",
     }
 ) | frozenset(keyword.kwlist)
 

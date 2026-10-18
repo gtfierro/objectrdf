@@ -1,8 +1,10 @@
 """Regenerate the pinned QUDT reference vocabularies through ontoenv."""
 
 from pathlib import Path
+import argparse
 
 from ontoenv import OntoEnv
+from rdflib import Graph
 
 from objectrdf.gen.vocabulary import emit_vocabulary_module
 
@@ -14,12 +16,19 @@ OUT = ROOT / "src" / "objectrdf" / "qudt"
 
 
 def main() -> None:
-    env = OntoEnv(temporary=True)
-    try:
-        env.add(QUDT_ALL)
-        graph, _closure = env.get_closure(QUDT_ALL)
-    finally:
-        env.close()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--file", type=Path, help="use a bundled RDF closure offline")
+    args = parser.parse_args()
+    if args.file is not None:
+        graph = Graph().parse(args.file)
+    else:
+        env = OntoEnv(temporary=True)
+        try:
+            env.add(QUDT_ALL)
+            graph, _closure = env.get_closure(QUDT_ALL)
+        finally:
+            env.close()
+    graph.parse(ROOT / "ontology" / "qudt-catalog-extras.ttl")
     modules = {
         "units.py": (
             "QUDT units",

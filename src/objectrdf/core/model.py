@@ -13,6 +13,7 @@ the runtime that touches rdflib. Users interact with it three ways:
 from __future__ import annotations
 
 import re
+from contextlib import contextmanager
 from contextvars import ContextVar, Token
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Iterable, Iterator, Mapping, TypeVar
@@ -27,7 +28,7 @@ if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
     from .meta import Registry
-    from .recipes import PointGroupRef
+    from .recipes import PointGroupRef, PointRef
     from .resolution import ConnectionHandle, PortHandle, ResolutionReport, ResolvedModel
     from .validation import ValidationReport
 
@@ -89,6 +90,52 @@ class Model:
 
     # -- ambient binding --------------------------------------------------
 
+    @contextmanager
+    def _atomic(self) -> Iterator[None]:
+        """Roll back a compound authoring operation, including existing links."""
+        from .recipes import copy_default
+
+        self._assert_mutable()
+        loaded_triples = set(self._loaded_graph) if self._loaded_graph is not None else None
+        attributes = {
+            key: copy_default(value)
+            for key, value in self.__dict__.items()
+        }
+        entities = {
+            item: (copy_default(item._data), dict(item._rels),
+                   {key: list(store._items) for key, store in item._rels.items()},
+                   item.label, item.comment)
+            for item in self.entities
+        }
+        ports = {
+            port: copy_default(port.__dict__)
+            for port in self._port_intents
+        }
+        assignments = {
+            handle: copy_default(handle.__dict__)
+            for handle in self._connection_intents
+        }
+        try:
+            yield
+        except BaseException:
+            self.__dict__.update(attributes)
+            if loaded_triples is not None and self._loaded_graph is not None:
+                self._loaded_graph.remove((None, None, None))
+                for triple in loaded_triples:
+                    self._loaded_graph.add(triple)
+            for item, (data, relations, values, label, comment) in entities.items():
+                item._data = data
+                item._rels = relations
+                item._label = label
+                item._comment = comment
+                for key, items in values.items():
+                    item._rels[key]._items[:] = items
+            for port, values in ports.items():
+                port.__dict__.update(values)
+            for handle, values in assignments.items():
+                handle.__dict__.update(values)
+            raise
+
     def __enter__(self) -> Model:
         self._tokens.append(_current.set(self))
         return self
@@ -102,7 +149,7 @@ class Model:
         if entity.name in self._by_name or entity.name in self._reserved_names:
             raise ModelingError(
                 f"an entity named {entity.name!r} already exists in this "
-                f"model ({self._by_name[entity.name]!r}); names must be "
+                f"model ({self._by_name.get(entity.name, 'reserved')!r}); names must be "
                 f"unique within a model"
             )
         entity._iri = self.namespace + quote(entity.name, safe="")
@@ -175,7 +222,9 @@ class Model:
         if entity.comment is not None:
             yield subject, RDFS.comment, Literal(entity.comment)
         for spec, value in entity._property_values():
-            if spec.kind == "object":
+            if spec.kind == "class":
+                obj = URIRef(value.meta.iri)
+            elif spec.kind == "object":
                 obj = URIRef(value.iri if hasattr(value, "iri") else value._iri)
             elif spec.kind in {"enum", "term"}:
                 obj = URIRef(value.iri)
@@ -200,6 +249,7 @@ class Model:
         name: str | None,
     ) -> ConnectionHandle:
         """Record an S223 connection intention without materializing it."""
+        from .entity import Entity
         from .resolution import ConnectionHandle, PortHandle
 
         self._assert_mutable()
@@ -213,6 +263,14 @@ class Model:
 
         source_owner = source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
         target_owner = target.owner if isinstance(target, (PortHandle, PointGroupRef)) else target
+        if isinstance(source_owner, Entity):
+            point_owner = getattr(source_owner, "owner", None)
+            if isinstance(point_owner, Entity):
+                source_owner = point_owner
+        if isinstance(target_owner, Entity):
+            point_owner = getattr(target_owner, "owner", None)
+            if isinstance(point_owner, Entity):
+                target_owner = point_owner
         if source_owner.meta.model is not self or target_owner.meta.model is not self:
             raise ModelingError("connection endpoints must belong to the same Model")
         base = name or f"{source.name}--{target.name}"
@@ -441,7 +499,9 @@ class Model:
                 dependency = getattr(value, "ontology_iri", None)
                 if dependency:
                     imports.add(dependency)
-                if spec.kind == "object":
+                if spec.kind == "class":
+                    obj = URIRef(value.meta.iri)
+                elif spec.kind == "object":
                     obj = URIRef(
                         value.iri if hasattr(value, "iri") else value._iri
                     )
@@ -602,19 +662,39 @@ class _SystemScope:
         self.label = label
         self._start = 0
         self.entity: Entity | None = None
+        self._boundaries: list[Any] = []
+        self._transaction: Any = None
 
     def __enter__(self) -> _SystemScope:
+        self._transaction = self.model._atomic()
+        self._transaction.__enter__()
         self._start = len(self.model.entities)
+        return self
+
+    def boundary(self, *points: Entity | PortHandle | PointRef) -> _SystemScope:
+        """Stage explicit boundary points while collecting system members."""
+        self._boundaries.extend(points)
         return self
 
     def __exit__(self, *exc_info: object) -> None:
         if exc_info[0] is not None:
+            self._transaction.__exit__(*exc_info)
             return
+        try:
+            self._finish()
+        except BaseException:
+            import sys
+
+            self._transaction.__exit__(*sys.exc_info())
+            raise
+        self._transaction.__exit__(None, None, None)
+
+    def _finish(self) -> None:
         candidates = self.model.entities[self._start :]
         if not candidates:
             raise ModelingError(f"system {self.name!r} has no members")
         registry = candidates[0].meta.registry
-        equipment_cls = registry.resolve("Equipment")
+        equipment_cls = registry.resolve("Connectable")
         system_cls = registry.resolve("System")
         members = tuple(
             entity
@@ -630,6 +710,7 @@ class _SystemScope:
             model=self.model,
         )
         self.model._system_intents.append((self.entity, members))
+        self.entity.boundary(*self._boundaries)
 
 
 def _split_namespace(class_iri: str) -> str | None:

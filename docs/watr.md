@@ -1,7 +1,7 @@
 # Authoring WaTr models
 
-`objectrdf.watr` is generated from WaTr 0.2 at
-[`https://watermetadata.org/watr.ttl`](https://watermetadata.org/watr.ttl),
+`objectrdf.watr` is generated from the
+[local WaTr snapshot](../ontology/README.md) combining upstream PRs 39 and 46,
 with its S223 and QUDT imports closure. Its ontology namespace is
 `https://watermetadata.org/ontology/watr#`. It exposes WaTr treatment
 equipment, processes, substances, and roles while reusing S223 connection
@@ -44,6 +44,37 @@ collections, so roles can be added before the concrete Connection exists.
 See [Giving the solver media hints](s223.md#giving-the-solver-media-hints) for
 all supported patterns and diagnostics.
 
+## Describe treatment intent
+
+WaTr separates the process a unit performs from the treatment objective it
+achieves. Both are punned ontology class terms: pass the generated classes
+directly to equipment or a system. An installation-specific role is an enum
+value:
+
+```python
+from objectrdf.watr import (
+    Process_Sedimentation,
+    SedimentationTank,
+    TreatmentObjective_Clarification,
+    enums,
+)
+
+with Model("urn:example:clarifier#") as treatment:
+    clarifier = SedimentationTank(
+        "clarifier",
+        has_process=[Process_Sedimentation],
+        has_treatment_objective=[TreatmentObjective_Clarification],
+        has_role=[enums.values.Role_Primary],
+    )
+
+print([item.__name__ for item in clarifier.has_treatment_objective])
+```
+
+Explore available process and objective subclasses through `Process.meta.tree()`
+and `TreatmentObjective.meta.tree()`. The
+[book guide](book/how-to/watr-processes.md) gives an executable example and
+explains how ontology class defaults relate to authored properties.
+
 When WaTr and S223 define the same local name, the WaTr class keeps the public
 name (`Pump`) and the imported S223 class receives a deterministic suffix
 (`Pump_2`). WaTr enumeration additions, such as `Fluid_Sludge` and
@@ -59,3 +90,7 @@ for a complete serializing example and [Authoring 223P](s223.md) for handles,
 snapshots, ambiguity, and validation behavior shared by both packages.
 See [Quantities and stream state](quantities.md) for compiled QUDT terms and
 the boundary between ontology semantics and convenience authoring.
+
+The [ASM2d example](../examples/watr/asm2d/README.md) writes a larger WaTr/S223
+Turtle graph with seven biological reactors, a secondary clarifier, recycle
+loops, process and objective metadata, and selected WaterTAP design values.

@@ -8,7 +8,7 @@ the model's serializer. User code should never need an import from ``rdflib``.
 from __future__ import annotations
 
 from functools import wraps
-from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Self, overload
+from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Literal, Mapping, Self, overload
 
 from . import containment as _containment
 from .errors import ModelingError, RangeError
@@ -32,10 +32,14 @@ from .relations import (
     TermOne,
     ValueOne,
 )
+from .terms import TermValue
 
 if TYPE_CHECKING:
     from .enums import EnumValue
     from .model import Model
+    from .property_bundle import PropertyBundle
+    from .property_schema import PropertySchema, PropertySet, QuantityAmount
+    from .recipes import PointRef
     from .resolution import PortHandle
 
 
@@ -135,7 +139,8 @@ class ClassMetaView:
 
         Slots describe unconditional count, direction, point class, and
         allowed medium roots. Boolean alternatives remain in ``constraints``.
-        This describes possible points, not the named points on an instance.
+        Named shape slots are included where compiled; inspect ``instance.ports``
+        for the concrete and authored points on a particular instance.
         """
         registry = self.registry
 
@@ -162,6 +167,8 @@ class ClassMetaView:
                         ),
                         min_count=slot.min_count,
                         max_count=slot.max_count,
+                        name=slot.name,
+                        label=slot.label,
                     )
                 )
             constraints.extend(info.cp_constraints)
@@ -254,6 +261,8 @@ class Entity:
     meta = _MetaDescriptor()
     _point_declarations: ClassVar[dict[str, Any]] = {}
     _property_policies: ClassVar[dict[str, Any]] = {}
+    _shape_constraints: ClassVar[tuple[Any, ...]] = ()
+    _shape_max_ports: ClassVar[int | None] = None
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
@@ -356,6 +365,10 @@ class Entity:
         # entity occupying the name.
         try:
             self._recipe_points: dict[str, Any] = {}
+            if self._shape_constraints:
+                from .shape_constraints import initial_values
+
+                props = initial_values(self, props)
             for prop, policy in type(self)._property_policies.items():
                 if policy.kind == "default":
                     from .recipes import copy_default
@@ -459,6 +472,10 @@ class Entity:
     # -- identity ---------------------------------------------------------
 
     def __setattr__(self, name: str, value: Any) -> None:
+        if not name.startswith("_") and getattr(type(self), "_shape_constraints", ()):
+            from .shape_constraints import check_values
+
+            check_values(self, name, value)
         policies = getattr(type(self), "_property_policies", {})
         policy = policies.get(name)
         if policy is not None:
@@ -521,16 +538,88 @@ class Entity:
             table.apply(self, child, via=via)
         return self
 
+    def quantity(
+        self,
+        name: str,
+        value: float | QuantityAmount,
+        *,
+        unit: TermValue | None = None,
+        kind: TermValue,
+        capability: Literal["static", "observable", "actuatable"] = "static",
+        mode: Literal["nominal", "observable", "actuatable"] | None = None,
+        label: str | None = None,
+        **properties: Any,
+    ) -> Entity:
+        """Create and attach a named S223 quantifiable property to this object.
+
+        ``capability`` selects a static, observable, or actuatable property.
+        Measurement aspects are independent; pass ``has_aspect`` explicitly.
+        The legacy ``mode="nominal"`` adds ``Aspect-Nominal`` to a static
+        property. A ``QuantityAmount`` supplies its own unit.
+        The returned property is an ordinary model entity. Use the free
+        ``objectrdf.qudt.quantity`` helper when choosing a different property
+        class.
+        """
+        if not hasattr(self, "has_property"):
+            raise TypeError(f"{type(self).__name__} does not support has_property")
+        from objectrdf.qudt import _attached_quantity
+
+        return _attached_quantity(
+            self, name, value, unit=unit, kind=kind,
+            capability=capability, mode=mode, label=label, **properties,
+        )
+
+    def apply_property_block(
+        self,
+        block: PropertyBundle,
+        *,
+        prefix: str | None = None,
+        values: Mapping[str, float] | None = None,
+    ) -> dict[str, Entity]:
+        """Attach fresh properties from a reusable bundle to this entity."""
+        return block.apply(self, prefix=prefix, values=values)
+
+    def apply_properties(
+        self, schema: PropertySchema, *, prefix: str | None = None
+    ) -> PropertySet:
+        """Attach fresh properties from a generated RDF/SHACL value schema."""
+        from .property_schema import apply_properties
+
+        return apply_properties(self, schema, prefix=prefix)
+
+    def boundary(self, *points: Entity | PortHandle | PointRef) -> Self:
+        """Mark concrete or deferred connection points as system boundaries."""
+        if not hasattr(self, "has_boundary_connection_point"):
+            raise TypeError(f"{type(self).__name__} has no boundary connection points")
+        from .resolution import PortHandle
+        from .recipes import PointRef
+
+        self._model._assert_mutable()
+        boundary_points = getattr(self, "has_boundary_connection_point")
+        for point in points:
+            if isinstance(point, PointRef):
+                point = point._port
+            if isinstance(point, PortHandle):
+                if point._model is not self._model:
+                    raise ValueError("boundary port must belong to the same Model")
+                if self not in point._boundary_systems:
+                    point._boundary_systems.append(self)
+                    self._model._touch(self, point.owner)
+            else:
+                boundary_points.add(point)
+        return self
+
     def port(
         self,
         name: str,
         *,
         direction: str,
         medium: EnumValue | None = None,
-    ):
+        label: str | None = None,
+    ) -> PortHandle:
         """Declare a named deferred connection point for solver negotiation."""
         return self._model._defer_port(
-            self, name, direction, medium=medium
+            self, name, direction, medium=medium, label=label
         )
 
     @classmethod
@@ -650,6 +739,19 @@ class Entity:
         registry = self.meta.registry
         allowed = tuple(registry.resolve(rng) for rng in spec.ranges)
         allowed_iris = {cls.meta.iri for cls in allowed}
+        if spec.kind == "class":
+            if not isinstance(value, type) or not issubclass(value, Entity):
+                raise RangeError(
+                    f"{type(self).__name__}.{spec.name} expects an ontology "
+                    f"class, got {value!r}"
+                )
+            if not spec.ranges or issubclass(value, allowed):
+                return
+            names = " | ".join(spec.ranges)
+            raise RangeError(
+                f"{type(self).__name__}.{spec.name} expects a subclass of "
+                f"{names}, got {value.__name__}"
+            )
         if isinstance(value, TermValue):
             if not spec.ranges or allowed_iris.intersection(value.types):
                 return
@@ -678,7 +780,7 @@ class Entity:
         for spec in self._effective_specs().values():
             if not spec.required:
                 continue
-            if spec.kind == "object" and spec.max_count != 1:
+            if spec.kind in {"object", "class"} and spec.max_count != 1:
                 if len(self._store_for(spec)) == 0:
                     missing.append(spec.name)
             elif spec.kind == "enum" and spec.max_count != 1:
@@ -694,10 +796,9 @@ class Entity:
             )
 
     def _property_values(self) -> Iterator[tuple[PropertySpec, Any]]:
-        """Yield (spec, value) pairs for serialization: entities for object
-        properties, EnumValues for enum properties, literals otherwise."""
+        """Yield (spec, value) pairs for serialization of generated properties."""
         for spec in self._effective_specs().values():
-            if spec.kind == "object" and spec.max_count != 1:
+            if spec.kind in {"object", "class"} and spec.max_count != 1:
                 for target in self._store_for(spec):
                     yield spec, target
             elif spec.kind == "enum" and spec.max_count != 1:

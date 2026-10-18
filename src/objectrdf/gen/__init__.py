@@ -48,6 +48,17 @@ def compile_modules(
     Always contains ``__init__.py``; ontologies with a punned enumeration
     hierarchy (the overlay's ``enum_root``) also get an ``enums.py``.
     """
+    from .configurations import CODEGEN, compile_configurations
+
+    if any(graph.objects(None, CODEGEN.baseModule)):
+        from rdflib.compare import to_canonical_graph
+
+        canonical = to_canonical_graph(graph)
+        modules = compile_configurations(canonical, name=name, source=source)
+        modules["_shapes.ttl"] = "\n".join(sorted(
+            canonical.serialize(format="nt").splitlines()
+        )) + "\n"
+        return modules
     resolved = _resolve_overlay(name, overlay)
     ir = extract(
         graph,
@@ -56,6 +67,7 @@ def compile_modules(
         enum_root=resolved.enum_root if resolved else None,
         ontology_iri=resolved.ontology_iri if resolved else None,
         primary_namespace=resolved.primary_namespace if resolved else None,
+        class_properties=resolved.class_properties if resolved else (),
     )
     modules = {"__init__.py": emit_module(ir, resolved)}
     # Keep validation reproducible: generated packages carry the exact graph

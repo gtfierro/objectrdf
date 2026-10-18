@@ -11,221 +11,69 @@
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
         <https://watermetadata.org/ontology/watr> .
 
-:flow-sensor-pipe-2 a watr:FlowSensor ;
-    rdfs:label "Flow at pipe-2 sensor" ;
-    s223:hasObservationLocation :junction-70 ;
-    s223:observes :observed-flow-pipe-2 ;
-    rdfs:comment "Flow meter assigned to EPANET link pipe-2." .
+:anytown-system a s223:System ;
+    rdfs:label "anytown-system" ;
+    s223:hasMember :flow-sensor-pipe-2,
+        :flow-sensor-pipe-76,
+        :flow-sensor-pipe-78,
+        :flow-sensor-pipe-8,
+        :flow-sensor-pipe-80,
+        :flow-sensor-pump-82,
+        :junction-100,
+        :junction-110,
+        :junction-115,
+        :junction-120,
+        :junction-130,
+        :junction-140,
+        :junction-150,
+        :junction-160,
+        :junction-170,
+        :junction-20,
+        :junction-30,
+        :junction-40,
+        :junction-50,
+        :junction-55,
+        :junction-60,
+        :junction-70,
+        :junction-75,
+        :junction-80,
+        :junction-90,
+        :pressure-sensor-10,
+        :pressure-sensor-100,
+        :pressure-sensor-110,
+        :pressure-sensor-120,
+        :pressure-sensor-130,
+        :pressure-sensor-140,
+        :pressure-sensor-150,
+        :pressure-sensor-160,
+        :pressure-sensor-165,
+        :pressure-sensor-20,
+        :pressure-sensor-30,
+        :pressure-sensor-50,
+        :pressure-sensor-60,
+        :pressure-sensor-65,
+        :pressure-sensor-70,
+        :pressure-sensor-75,
+        :pressure-sensor-80,
+        :pressure-sensor-90,
+        :pump-82,
+        :reservoir-10,
+        :reservoir-165,
+        :reservoir-65,
+        :temperature-sensor-10,
+        :temperature-sensor-100,
+        :temperature-sensor-140,
+        :temperature-sensor-160,
+        :temperature-sensor-165,
+        :temperature-sensor-65,
+        :turbidity-meter-10,
+        :turbidity-meter-100,
+        :turbidity-meter-140,
+        :turbidity-meter-160,
+        :turbidity-meter-165,
+        :turbidity-meter-65 .
 
-:flow-sensor-pipe-76 a watr:FlowSensor ;
-    rdfs:label "Flow at pipe-76 sensor" ;
-    s223:hasObservationLocation :junction-75 ;
-    s223:observes :observed-flow-pipe-76 ;
-    rdfs:comment "Flow meter assigned to EPANET link pipe-76." .
-
-:flow-sensor-pipe-78 a watr:FlowSensor ;
-    rdfs:label "Flow at pipe-78 sensor" ;
-    s223:hasObservationLocation :reservoir-65 ;
-    s223:observes :observed-flow-pipe-78 ;
-    rdfs:comment "Flow meter assigned to EPANET link pipe-78." .
-
-:flow-sensor-pipe-8 a watr:FlowSensor ;
-    rdfs:label "Flow at pipe-8 sensor" ;
-    s223:hasObservationLocation :junction-30 ;
-    s223:observes :observed-flow-pipe-8 ;
-    rdfs:comment "Flow meter assigned to EPANET link pipe-8." .
-
-:flow-sensor-pipe-80 a watr:FlowSensor ;
-    rdfs:label "Flow at pipe-80 sensor" ;
-    s223:hasObservationLocation :junction-160 ;
-    s223:observes :observed-flow-pipe-80 ;
-    rdfs:comment "Flow meter assigned to EPANET link pipe-80." .
-
-:flow-sensor-pump-82 a watr:FlowSensor ;
-    rdfs:label "Flow at pump-82 sensor" ;
-    s223:hasObservationLocation :junction-20 ;
-    s223:observes :observed-flow-pump-82 ;
-    rdfs:comment "Flow meter assigned to EPANET link pump-82." .
-
-:pressure-sensor-10 a watr:PressureSensor ;
-    rdfs:label "Pressure at 10 sensor" ;
-    s223:hasObservationLocation :reservoir-10 ;
-    s223:observes :observed-pressure-10 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-100 a watr:PressureSensor ;
-    rdfs:label "Pressure at 100 sensor" ;
-    s223:hasObservationLocation :junction-100 ;
-    s223:observes :observed-pressure-100 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-110 a watr:PressureSensor ;
-    rdfs:label "Pressure at 110 sensor" ;
-    s223:hasObservationLocation :junction-110 ;
-    s223:observes :observed-pressure-110 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-120 a watr:PressureSensor ;
-    rdfs:label "Pressure at 120 sensor" ;
-    s223:hasObservationLocation :junction-120 ;
-    s223:observes :observed-pressure-120 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-130 a watr:PressureSensor ;
-    rdfs:label "Pressure at 130 sensor" ;
-    s223:hasObservationLocation :junction-130 ;
-    s223:observes :observed-pressure-130 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-140 a watr:PressureSensor ;
-    rdfs:label "Pressure at 140 sensor" ;
-    s223:hasObservationLocation :junction-140 ;
-    s223:observes :observed-pressure-140 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-150 a watr:PressureSensor ;
-    rdfs:label "Pressure at 150 sensor" ;
-    s223:hasObservationLocation :junction-150 ;
-    s223:observes :observed-pressure-150 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-160 a watr:PressureSensor ;
-    rdfs:label "Pressure at 160 sensor" ;
-    s223:hasObservationLocation :junction-160 ;
-    s223:observes :observed-pressure-160 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-165 a watr:PressureSensor ;
-    rdfs:label "Pressure at 165 sensor" ;
-    s223:hasObservationLocation :reservoir-165 ;
-    s223:observes :observed-pressure-165 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-20 a watr:PressureSensor ;
-    rdfs:label "Pressure at 20 sensor" ;
-    s223:hasObservationLocation :junction-20 ;
-    s223:observes :observed-pressure-20 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-30 a watr:PressureSensor ;
-    rdfs:label "Pressure at 30 sensor" ;
-    s223:hasObservationLocation :junction-30 ;
-    s223:observes :observed-pressure-30 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-50 a watr:PressureSensor ;
-    rdfs:label "Pressure at 50 sensor" ;
-    s223:hasObservationLocation :junction-50 ;
-    s223:observes :observed-pressure-50 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-60 a watr:PressureSensor ;
-    rdfs:label "Pressure at 60 sensor" ;
-    s223:hasObservationLocation :junction-60 ;
-    s223:observes :observed-pressure-60 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-65 a watr:PressureSensor ;
-    rdfs:label "Pressure at 65 sensor" ;
-    s223:hasObservationLocation :reservoir-65 ;
-    s223:observes :observed-pressure-65 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-70 a watr:PressureSensor ;
-    rdfs:label "Pressure at 70 sensor" ;
-    s223:hasObservationLocation :junction-70 ;
-    s223:observes :observed-pressure-70 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-75 a watr:PressureSensor ;
-    rdfs:label "Pressure at 75 sensor" ;
-    s223:hasObservationLocation :junction-75 ;
-    s223:observes :observed-pressure-75 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-80 a watr:PressureSensor ;
-    rdfs:label "Pressure at 80 sensor" ;
-    s223:hasObservationLocation :junction-80 ;
-    s223:observes :observed-pressure-80 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:pressure-sensor-90 a watr:PressureSensor ;
-    rdfs:label "Pressure at 90 sensor" ;
-    s223:hasObservationLocation :junction-90 ;
-    s223:observes :observed-pressure-90 ;
-    rdfs:comment "Pressure monitoring point selected from network topology." .
-
-:temperature-sensor-10 a watr:TemperatureSensor ;
-    rdfs:label "Water temperature at 10 sensor" ;
-    s223:hasObservationLocation :reservoir-10 ;
-    s223:observes :observed-temperature-10 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:temperature-sensor-100 a watr:TemperatureSensor ;
-    rdfs:label "Water temperature at 100 sensor" ;
-    s223:hasObservationLocation :junction-100 ;
-    s223:observes :observed-temperature-100 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:temperature-sensor-140 a watr:TemperatureSensor ;
-    rdfs:label "Water temperature at 140 sensor" ;
-    s223:hasObservationLocation :junction-140 ;
-    s223:observes :observed-temperature-140 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:temperature-sensor-160 a watr:TemperatureSensor ;
-    rdfs:label "Water temperature at 160 sensor" ;
-    s223:hasObservationLocation :junction-160 ;
-    s223:observes :observed-temperature-160 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:temperature-sensor-165 a watr:TemperatureSensor ;
-    rdfs:label "Water temperature at 165 sensor" ;
-    s223:hasObservationLocation :reservoir-165 ;
-    s223:observes :observed-temperature-165 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:temperature-sensor-65 a watr:TemperatureSensor ;
-    rdfs:label "Water temperature at 65 sensor" ;
-    s223:hasObservationLocation :reservoir-65 ;
-    s223:observes :observed-temperature-65 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:turbidity-meter-10 a watr:TurbidityMeter ;
-    rdfs:label "Turbidity at 10 sensor" ;
-    s223:hasObservationLocation :reservoir-10 ;
-    s223:observes :observed-turbidity-10 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:turbidity-meter-100 a watr:TurbidityMeter ;
-    rdfs:label "Turbidity at 100 sensor" ;
-    s223:hasObservationLocation :junction-100 ;
-    s223:observes :observed-turbidity-100 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:turbidity-meter-140 a watr:TurbidityMeter ;
-    rdfs:label "Turbidity at 140 sensor" ;
-    s223:hasObservationLocation :junction-140 ;
-    s223:observes :observed-turbidity-140 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:turbidity-meter-160 a watr:TurbidityMeter ;
-    rdfs:label "Turbidity at 160 sensor" ;
-    s223:hasObservationLocation :junction-160 ;
-    s223:observes :observed-turbidity-160 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:turbidity-meter-165 a watr:TurbidityMeter ;
-    rdfs:label "Turbidity at 165 sensor" ;
-    s223:hasObservationLocation :reservoir-165 ;
-    s223:observes :observed-turbidity-165 ;
-    rdfs:comment "Water-quality monitoring suite." .
-
-:turbidity-meter-65 a watr:TurbidityMeter ;
-    rdfs:label "Turbidity at 65 sensor" ;
-    s223:hasObservationLocation :reservoir-65 ;
-    s223:observes :observed-turbidity-65 ;
-    rdfs:comment "Water-quality monitoring suite." .
+<https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
 
 :base-demand-100 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
@@ -752,6 +600,42 @@
     ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
     ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
 
+:flow-sensor-pipe-2 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-2 sensor" ;
+    s223:hasObservationLocation :junction-70 ;
+    s223:observes :observed-flow-pipe-2 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-2." .
+
+:flow-sensor-pipe-76 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-76 sensor" ;
+    s223:hasObservationLocation :junction-75 ;
+    s223:observes :observed-flow-pipe-76 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-76." .
+
+:flow-sensor-pipe-78 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-78 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-flow-pipe-78 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-78." .
+
+:flow-sensor-pipe-8 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-8 sensor" ;
+    s223:hasObservationLocation :junction-30 ;
+    s223:observes :observed-flow-pipe-8 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-8." .
+
+:flow-sensor-pipe-80 a watr:FlowSensor ;
+    rdfs:label "Flow at pipe-80 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-flow-pipe-80 ;
+    rdfs:comment "Flow meter assigned to EPANET link pipe-80." .
+
+:flow-sensor-pump-82 a watr:FlowSensor ;
+    rdfs:label "Flow at pump-82 sensor" ;
+    s223:hasObservationLocation :junction-20 ;
+    s223:observes :observed-flow-pump-82 ;
+    rdfs:comment "Flow meter assigned to EPANET link pump-82." .
+
 :hydraulic-head-10 a s223:QuantifiableProperty ;
     rdfs:label "Hydraulic head" ;
     s223:hasAspect s223:Aspect-Nominal ;
@@ -1053,6 +937,114 @@
     ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
     ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
 
+:pressure-sensor-10 a watr:PressureSensor ;
+    rdfs:label "Pressure at 10 sensor" ;
+    s223:hasObservationLocation :reservoir-10 ;
+    s223:observes :observed-pressure-10 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-100 a watr:PressureSensor ;
+    rdfs:label "Pressure at 100 sensor" ;
+    s223:hasObservationLocation :junction-100 ;
+    s223:observes :observed-pressure-100 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-110 a watr:PressureSensor ;
+    rdfs:label "Pressure at 110 sensor" ;
+    s223:hasObservationLocation :junction-110 ;
+    s223:observes :observed-pressure-110 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-120 a watr:PressureSensor ;
+    rdfs:label "Pressure at 120 sensor" ;
+    s223:hasObservationLocation :junction-120 ;
+    s223:observes :observed-pressure-120 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-130 a watr:PressureSensor ;
+    rdfs:label "Pressure at 130 sensor" ;
+    s223:hasObservationLocation :junction-130 ;
+    s223:observes :observed-pressure-130 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-140 a watr:PressureSensor ;
+    rdfs:label "Pressure at 140 sensor" ;
+    s223:hasObservationLocation :junction-140 ;
+    s223:observes :observed-pressure-140 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-150 a watr:PressureSensor ;
+    rdfs:label "Pressure at 150 sensor" ;
+    s223:hasObservationLocation :junction-150 ;
+    s223:observes :observed-pressure-150 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-160 a watr:PressureSensor ;
+    rdfs:label "Pressure at 160 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-pressure-160 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-165 a watr:PressureSensor ;
+    rdfs:label "Pressure at 165 sensor" ;
+    s223:hasObservationLocation :reservoir-165 ;
+    s223:observes :observed-pressure-165 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-20 a watr:PressureSensor ;
+    rdfs:label "Pressure at 20 sensor" ;
+    s223:hasObservationLocation :junction-20 ;
+    s223:observes :observed-pressure-20 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-30 a watr:PressureSensor ;
+    rdfs:label "Pressure at 30 sensor" ;
+    s223:hasObservationLocation :junction-30 ;
+    s223:observes :observed-pressure-30 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-50 a watr:PressureSensor ;
+    rdfs:label "Pressure at 50 sensor" ;
+    s223:hasObservationLocation :junction-50 ;
+    s223:observes :observed-pressure-50 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-60 a watr:PressureSensor ;
+    rdfs:label "Pressure at 60 sensor" ;
+    s223:hasObservationLocation :junction-60 ;
+    s223:observes :observed-pressure-60 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-65 a watr:PressureSensor ;
+    rdfs:label "Pressure at 65 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-pressure-65 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-70 a watr:PressureSensor ;
+    rdfs:label "Pressure at 70 sensor" ;
+    s223:hasObservationLocation :junction-70 ;
+    s223:observes :observed-pressure-70 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-75 a watr:PressureSensor ;
+    rdfs:label "Pressure at 75 sensor" ;
+    s223:hasObservationLocation :junction-75 ;
+    s223:observes :observed-pressure-75 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-80 a watr:PressureSensor ;
+    rdfs:label "Pressure at 80 sensor" ;
+    s223:hasObservationLocation :junction-80 ;
+    s223:observes :observed-pressure-80 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
+:pressure-sensor-90 a watr:PressureSensor ;
+    rdfs:label "Pressure at 90 sensor" ;
+    s223:hasObservationLocation :junction-90 ;
+    s223:observes :observed-pressure-90 ;
+    rdfs:comment "Pressure monitoring point selected from network topology." .
+
 :roughness-10 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
@@ -1333,39 +1325,77 @@
     ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
     ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
 
-:junction-115 a s223:Junction ;
-    rdfs:label "EPANET junction 115" ;
-    s223:hasConnectionPoint :pipe-68-115-end,
-        :pipe-72-115-end ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:hasProperty :elevation-115 ;
-    rdfs:comment "EPANET ID: 115. EPANET coordinates: (1655.27, 6787.11). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+:temperature-sensor-10 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 10 sensor" ;
+    s223:hasObservationLocation :reservoir-10 ;
+    s223:observes :observed-temperature-10 ;
+    rdfs:comment "Water-quality monitoring suite." .
 
-:junction-170 a s223:Junction ;
-    rdfs:label "EPANET junction 170" ;
-    s223:hasConnectionPoint :pipe-60-170-end,
-        :pipe-64-170-end ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:hasProperty :base-demand-170,
-        :elevation-170 ;
-    rdfs:comment "EPANET ID: 170. EPANET coordinates: (825.2, 5126.95). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+:temperature-sensor-100 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 100 sensor" ;
+    s223:hasObservationLocation :junction-100 ;
+    s223:observes :observed-temperature-100 ;
+    rdfs:comment "Water-quality monitoring suite." .
 
-:junction-40 a s223:Junction ;
-    rdfs:label "EPANET junction 40" ;
-    s223:hasConnectionPoint :pipe-32-40-end,
-        :pipe-36-40-end ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:hasProperty :base-demand-40,
-        :elevation-40 ;
-    rdfs:comment "EPANET ID: 40. EPANET coordinates: (5327.15, 7500). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+:temperature-sensor-140 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 140 sensor" ;
+    s223:hasObservationLocation :junction-140 ;
+    s223:observes :observed-temperature-140 ;
+    rdfs:comment "Water-quality monitoring suite." .
 
-:junction-55 a s223:Junction ;
-    rdfs:label "EPANET junction 55" ;
-    s223:hasConnectionPoint :pipe-74-55-end,
-        :pipe-76-55-end ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:hasProperty :elevation-55 ;
-    rdfs:comment "EPANET ID: 55. EPANET coordinates: (3081.05, 7431.64). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+:temperature-sensor-160 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 160 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-temperature-160 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-165 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 165 sensor" ;
+    s223:hasObservationLocation :reservoir-165 ;
+    s223:observes :observed-temperature-165 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:temperature-sensor-65 a watr:TemperatureSensor ;
+    rdfs:label "Water temperature at 65 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-temperature-65 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-10 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 10 sensor" ;
+    s223:hasObservationLocation :reservoir-10 ;
+    s223:observes :observed-turbidity-10 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-100 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 100 sensor" ;
+    s223:hasObservationLocation :junction-100 ;
+    s223:observes :observed-turbidity-100 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-140 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 140 sensor" ;
+    s223:hasObservationLocation :junction-140 ;
+    s223:observes :observed-turbidity-140 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-160 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 160 sensor" ;
+    s223:hasObservationLocation :junction-160 ;
+    s223:observes :observed-turbidity-160 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-165 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 165 sensor" ;
+    s223:hasObservationLocation :reservoir-165 ;
+    s223:observes :observed-turbidity-165 ;
+    rdfs:comment "Water-quality monitoring suite." .
+
+:turbidity-meter-65 a watr:TurbidityMeter ;
+    rdfs:label "Turbidity at 65 sensor" ;
+    s223:hasObservationLocation :reservoir-65 ;
+    s223:observes :observed-turbidity-65 ;
+    rdfs:comment "Water-quality monitoring suite." .
 
 :observed-flow-pipe-2 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pipe-2" ;
@@ -2463,12 +2493,6 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :reservoir-165 .
 
-:pump-82 a watr:Pump ;
-    rdfs:label "EPANET pump 82" ;
-    s223:hasConnectionPoint :pump-discharge-82-pump-end,
-        :pump-suction-82-pump-end ;
-    rdfs:comment "HEAD 1" .
-
 :pump-discharge-82 a s223:Pipe ;
     rdfs:label "pump-discharge-82" ;
     s223:connectsAt :pump-discharge-82-20-end,
@@ -2504,6 +2528,46 @@
     s223:connectsThrough :pump-suction-82 ;
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :pump-82 .
+
+:junction-115 a s223:Junction ;
+    rdfs:label "EPANET junction 115" ;
+    s223:hasConnectionPoint :pipe-68-115-end,
+        :pipe-72-115-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :elevation-115 ;
+    rdfs:comment "EPANET ID: 115. EPANET coordinates: (1655.27, 6787.11). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-170 a s223:Junction ;
+    rdfs:label "EPANET junction 170" ;
+    s223:hasConnectionPoint :pipe-60-170-end,
+        :pipe-64-170-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-170,
+        :elevation-170 ;
+    rdfs:comment "EPANET ID: 170. EPANET coordinates: (825.2, 5126.95). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-40 a s223:Junction ;
+    rdfs:label "EPANET junction 40" ;
+    s223:hasConnectionPoint :pipe-32-40-end,
+        :pipe-36-40-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :base-demand-40,
+        :elevation-40 ;
+    rdfs:comment "EPANET ID: 40. EPANET coordinates: (5327.15, 7500). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:junction-55 a s223:Junction ;
+    rdfs:label "EPANET junction 55" ;
+    s223:hasConnectionPoint :pipe-74-55-end,
+        :pipe-76-55-end ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :elevation-55 ;
+    rdfs:comment "EPANET ID: 55. EPANET coordinates: (3081.05, 7431.64). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+
+:pump-82 a watr:Pump ;
+    rdfs:label "EPANET pump 82" ;
+    s223:hasConnectionPoint :pump-discharge-82-pump-end,
+        :pump-suction-82-pump-end ;
+    rdfs:comment "HEAD 1" .
 
 :junction-120 a s223:Junction ;
     rdfs:label "EPANET junction 120" ;
@@ -2733,3 +2797,4 @@
         :observed-temperature-160,
         :observed-turbidity-160 ;
     rdfs:comment "EPANET ID: 160. EPANET coordinates: (2895.51, 4765.63). Source: Walski (2016), https://uknowledge.uky.edu/wdst_models/1/ (CC BY-NC 4.0)." .
+

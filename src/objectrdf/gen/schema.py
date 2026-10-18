@@ -76,7 +76,7 @@ class PropIR:
 
     name: str
     predicate: str
-    kind: str  # "object" | "literal" | "enum" | "term" | "value"
+    kind: str  # "object" | "class" | "literal" | "enum" | "term" | "value"
     label: str | None = None
     definition: str | None = None
     ranges: tuple[str, ...] = ()  # python class names (object props)
@@ -132,6 +132,7 @@ class EnumIR:
     label: str | None = None
     definition: str | None = None
     parent: str | None = None  # python name of the parent member
+    parents: tuple[str, ...] = ()  # all direct parents, including the primary
 
 
 @dataclass
@@ -157,6 +158,7 @@ def extract(
     enum_root: str | None = None,
     ontology_iri: str | None = None,
     primary_namespace: str | None = None,
+    class_properties: tuple[str, ...] = (),
 ) -> SchemaIR:
     """Build the IR from an ontology graph (with its imports merged in).
 
@@ -196,6 +198,10 @@ def extract(
 
     _attach_domain_properties(graph, classes, names, canonical)
     _attach_shape_properties(graph, classes, names, canonical, enum_iris)
+    for cls in classes.values():
+        for prop in cls.own_props:
+            if prop.predicate in class_properties:
+                prop.kind = "class"
 
     ordered = _topo_sort(list(classes.values()))
     _resolve_mro(ordered)
@@ -331,6 +337,14 @@ def _enum_ir(
 
     assert enum_root is not None
     visit(enum_root, None)
+    for member in ordered:
+        member.parents = tuple(
+            sorted(
+                names[str(parent)]
+                for parent in graph.objects(URIRef(member.iri), RDFS.subClassOf)
+                if str(parent) in enum_iris
+            )
+        )
     return ordered
 
 

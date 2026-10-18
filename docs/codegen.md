@@ -31,6 +31,24 @@ through attribute completion.
 
 ## What maps to what
 
+### Domain configurations and property schemas
+
+An extension ontology can identify an installed base package using
+`codegen:baseModule`. Its SHACL shapes then compile into typed equipment
+configurations with named ports, required values, replaceable defaults, and
+immutable quantity schemas. The same CLI accepts these extensions:
+
+```bash
+objectrdf gen --file ontology/asm2d.ttl --name ASM2d \
+    --source ontology/asm2d.ttl --out src/objectrdf/watr/asm2d
+```
+
+See [SHACL configurations](shacl-configurations.md) for source annotations,
+supported constructive constraints, and regeneration. Domain authors maintain
+RDF and SHACL; model authors import the generated classes.
+
+### Ontology classes and properties
+
 | Ontology | Generated Python |
 |---|---|
 | `owl:Class` / `rdfs:Class` | class (subclassing `Entity`) |
@@ -120,16 +138,15 @@ uv run objectrdf gen --file Brick.ttl --name Brick --out src/objectrdf/brick
 uv run pytest tests/test_brick.py
 ```
 
-WaTr 0.2 is compiled from the merged WaTr, S223, and QUDT source graph saved in
-the generated package's `_shapes.ttl`. The WaTr overlay gives extension terms
-priority when names collide and installs the same deferred connection solver:
+WaTr is compiled from the checked-in
+[local PR 39 and 46 snapshot](../ontology/README.md) plus its S223 and QUDT
+imports. The complete graph is saved in the generated package's `_shapes.ttl`.
+The WaTr overlay gives extension terms priority when names collide and
+installs the same deferred connection solver:
 
 ```bash
-uv run objectrdf gen --file src/objectrdf/watr/_shapes.ttl \
-  --name WATR --out src/objectrdf/watr \
-  --source https://watermetadata.org/watr.ttl
-uv run pytest tests/test_watr.py
+uv run python scripts/generate_watr.py
 ```
 
-The source is WaTr 0.2 (`https://watermetadata.org/ontology/watr`), published
-at `https://watermetadata.org/watr.ttl`.
+The snapshot carries WaTr's 0.2 ontology IRI and version metadata. The
+combined PR content is local and is not a published release.

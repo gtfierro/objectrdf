@@ -25,7 +25,7 @@ from .meta import PropertySpec
 if TYPE_CHECKING:
     from .entity import Entity
 
-T = TypeVar("T", bound="Entity")
+T = TypeVar("T")
 #: Literal values are plain Python objects, not entities.
 V = TypeVar("V")
 
@@ -63,6 +63,10 @@ class RelSet(Generic[T]):
     def add(self, *items: T) -> None:
         """Link one or more target entities. Duplicates are ignored."""
         self._owner._model._assert_mutable()
+        if self._owner._shape_constraints:
+            from .shape_constraints import check_values
+
+            check_values(self._owner, self._spec.name, list(dict.fromkeys([*self._items, *items])))
         changed = False
         changed_items: list[T] = []
         for item in items:
@@ -70,7 +74,8 @@ class RelSet(Generic[T]):
             if item in self._items:
                 continue
             self._items.append(item)
-            _link_inverse(self._owner, self._spec, item)
+            if self._spec.kind == "object":
+                _link_inverse(self._owner, self._spec, item)
             changed = True
             changed_items.append(item)
         if changed:
@@ -79,8 +84,13 @@ class RelSet(Generic[T]):
     def remove(self, item: T) -> None:
         """Unlink a target entity (and the mirrored inverse edge)."""
         self._owner._model._assert_mutable()
+        if self._owner._shape_constraints:
+            from .shape_constraints import check_values
+
+            check_values(self._owner, self._spec.name, [value for value in self._items if value != item])
         self._items.remove(item)
-        _unlink_inverse(self._owner, self._spec, item)
+        if self._spec.kind == "object":
+            _unlink_inverse(self._owner, self._spec, item)
         self._owner._model._touch(self._owner, item)
 
     def clear(self) -> None:
@@ -131,6 +141,19 @@ class Rel(Generic[T]):
     def __set__(self, obj: Entity, value: Iterable[T]) -> None:
         """Replace the full contents (used by constructor kwargs)."""
         store: RelSet[T] = obj._store_for(self.spec)
+        if obj._shape_constraints:
+            values = list(value)
+            for item in values:
+                obj._check_range(self.spec, item)
+            from .shape_constraints import check_values
+
+            check_values(obj, self.spec.name, values)
+            with obj._model._atomic():
+                for item in list(store._items):
+                    if item not in values:
+                        store.remove(item)
+                store.add(*values)
+            return
         store.clear()
         store.add(*value)
 
@@ -238,7 +261,10 @@ class ValueOne(Generic[V]):
     def __get__(self, obj: Entity | None, owner: type) -> ValueOne[V] | V | None:
         if obj is None:
             return self
-        return obj._data.get(self.spec.name)
+        from rdflib import Literal
+
+        value = obj._data.get(self.spec.name)
+        return value.toPython() if isinstance(value, Literal) else value
 
     def __set__(self, obj: Entity, value: V | None) -> None:
         obj._model._assert_mutable()
@@ -388,7 +414,7 @@ def _literal_ok(datatype: type | None, value: object) -> bool:
     return isinstance(value, datatype)
 
 
-def _link_inverse(owner: Entity, spec: PropertySpec, target: Entity) -> None:
+def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
     """Mirror ``owner --spec--> target`` onto the target's inverse property.
 
     Writes into the target's store directly (not via ``add``/``__set__``) to
@@ -397,6 +423,10 @@ def _link_inverse(owner: Entity, spec: PropertySpec, target: Entity) -> None:
     overwrite (e.g. a ConnectionPoint can only belong to one Connectable).
     """
     if spec.inverse is None:
+        return
+    from .entity import Entity
+
+    if not isinstance(target, Entity):
         return
     desc = getattr(type(target), spec.inverse, None)
     if isinstance(desc, Rel):
@@ -417,9 +447,13 @@ def _link_inverse(owner: Entity, spec: PropertySpec, target: Entity) -> None:
             )
 
 
-def _unlink_inverse(owner: Entity, spec: PropertySpec, target: Entity) -> None:
+def _unlink_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:
     """Remove the mirrored inverse edge, if present."""
     if spec.inverse is None:
+        return
+    from .entity import Entity
+
+    if not isinstance(target, Entity):
         return
     desc = getattr(type(target), spec.inverse, None)
     if isinstance(desc, Rel):

@@ -19,6 +19,7 @@ class VocabularyTerm:
     label: str | None
     definition: str | None
     types: tuple[str, ...]
+    dimension_vector: str | None = None
 
 
 def _text(
@@ -26,8 +27,15 @@ def _text(
     subject: URIRef,
     predicate: URIRef,
 ) -> str | None:
-    values = sorted(str(value) for value in graph.objects(subject, predicate))
-    return values[0] if values else None
+    values = sorted(
+        graph.objects(subject, predicate),
+        key=lambda value: (
+            0 if (getattr(value, "language", None) or "").startswith("en")
+            else 1 if getattr(value, "language", None) is None else 2,
+            str(value),
+        ),
+    )
+    return str(values[0]) if values else None
 
 
 def extract_vocabulary(
@@ -66,6 +74,10 @@ def extract_vocabulary(
                 label=_text(graph, subject, RDFS.label),
                 definition=_text(graph, subject, SKOS.definition),
                 types=types,
+                dimension_vector=_text(
+                    graph, subject,
+                    URIRef("http://qudt.org/schema/qudt/hasDimensionVector"),
+                ),
             )
         )
     return terms
@@ -102,6 +114,8 @@ def emit_vocabulary_module(
             args.append(f"types={term.types!r}")
         if ontology_iri is not None:
             args.append(f"ontology_iri={ontology_iri!r}")
+        if term.dimension_vector is not None:
+            args.append(f"dimension_vector={term.dimension_vector!r}")
         lines.append(f"{term.name} = _TermValue({', '.join(args)})")
     names = ",\n    ".join(repr(term.name) for term in terms)
     lines.append(f"\n__all__ = [\n    {names},\n]")

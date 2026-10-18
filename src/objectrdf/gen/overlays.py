@@ -34,6 +34,9 @@ class Overlay:
     becomes EnumValue constants in a generated ``enums`` module instead of
     entity classes."""
 
+    class_properties: tuple[str, ...] = ()
+    """Predicates whose values are punned ontology class terms."""
+
     ontology_iri: str | None = None
     """Ontology node to use for package identity when an imports closure
     contains several ``owl:Ontology`` declarations."""
@@ -102,6 +105,10 @@ WATR = Overlay(
     enum_root=S223.enum_root,
     ontology_iri="https://watermetadata.org/ontology/watr",
     primary_namespace=_WATR_NS,
+    class_properties=(
+        f"{_WATR_NS}hasProcess",
+        f"{_WATR_NS}hasTreatmentObjective",
+    ),
     point_declaration_class="ConnectionPoint",
     connector=True,
     connection_classes={

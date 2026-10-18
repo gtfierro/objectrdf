@@ -138,7 +138,7 @@ def _package_shapes(model: Model) -> rdflib.Graph:
             if bundled is not None and bundled.exists():
                 package_files.add(bundled)
             source = cls.__dict__["_classinfo"].ontology.source
-            if source is not None:
+            if source is not None and (bundled is None or not bundled.exists()):
                 sources.add(source)
     g = rdflib.Graph()
     registries = {

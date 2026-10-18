@@ -5,6 +5,7 @@ from __future__ import annotations
 from collections import Counter
 from collections.abc import Callable, Iterable, Mapping
 from importlib import import_module
+from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 from urllib.parse import unquote
@@ -304,6 +305,9 @@ def _convert_value(
         if isinstance(value, URIRef):
             if value in by_node:
                 return by_node[value]
+            compiled = _reference_terms().get(str(value))
+            if compiled is not None:
+                return compiled
             return _bad_value(
                 value,
                 spec,
@@ -317,6 +321,13 @@ def _convert_value(
             strict=strict,
         )
 
+    if spec.kind == "class":
+        if isinstance(value, URIRef):
+            generated_class = registry.by_iri.get(str(value))
+            if generated_class is not None:
+                return generated_class
+        return _bad_value(value, spec, "a registered ontology class", strict=strict)
+
     if spec.kind == "enum":
         if isinstance(value, URIRef):
             try:
@@ -329,11 +340,14 @@ def _convert_value(
 
     if spec.kind == "term":
         if isinstance(value, URIRef):
+            known = registry.terms_by_iri.get(str(value)) or _reference_terms().get(str(value))
+            if known is not None:
+                return known
             return _term(graph, value)
         return _bad_value(value, spec, "a named RDF resource", strict=strict)
 
     if isinstance(value, Literal):
-        return value.toPython()
+        return value
     if isinstance(value, URIRef):
         if value in by_node:
             return by_node[value]
@@ -364,9 +378,9 @@ def _store_values(
 ) -> int:
     if not values:
         return 0
-    many = spec.max_count != 1 and spec.kind in {"object", "enum"}
+    many = spec.max_count != 1 and spec.kind in {"object", "class", "enum"}
     if many:
-        if spec.kind == "object":
+        if spec.kind in {"object", "class"}:
             entity._store_for(spec)._items.extend(values)
         else:
             entity._data[spec.name] = values
@@ -380,7 +394,23 @@ def _store_values(
     return 1
 
 
+@lru_cache(maxsize=1)
+def _reference_terms() -> dict[str, TermValue]:
+    """Installed external named individuals, shared rather than hydrated locally."""
+    from objectrdf.qudt import units, quantity_kinds
+
+    return {
+        term.iri: term
+        for module in (units, quantity_kinds)
+        for term in vars(module).values()
+        if isinstance(term, TermValue)
+    }
+
+
 def _term(graph: rdflib.Graph, value: URIRef) -> TermValue:
+    known = _reference_terms().get(str(value))
+    if known is not None:
+        return known
     return TermValue(
         str(value),
         label=_first_text(graph.objects(value, RDFS.label)),

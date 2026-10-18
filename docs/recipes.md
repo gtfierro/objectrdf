@@ -1,5 +1,10 @@
 # Portable recipe classes
 
+For new domain packages, define configurations in RDF and SHACL and
+[generate their Python API](shacl-configurations.md). The Python declarations
+below remain available for compatibility and advanced authoring. The
+[ASM2d example](asm2d-proposed-example.md) uses generated configurations.
+
 An extension package can register a named recipe subclass with an RDF class
 identity. Class level declarations describe shared equipment facts; each model
 instance still receives its own entity and point references.
@@ -73,3 +78,5 @@ for full model validation.
 
 See [`examples/s223/recipe_coil/`](../examples/s223/recipe_coil/) for a runnable
 example that exports both an instance graph and the portable recipe schema.
+It now imports the configuration generated from `ontology/hvac.ttl`; model
+authors do not write the Python declarations shown above.

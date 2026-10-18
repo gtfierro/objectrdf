@@ -37,6 +37,7 @@ from objectrdf.core import (
     CPConstraint as _CPConstraint,
     CPSlot as _CPSlot,
     Entity as _EntityBase,
+    TermValue as _TermValue,
     EnumOne as _EnumOne,
     EnumSet as _EnumSet,
     EnumValue as _EnumValue,
@@ -215,7 +216,7 @@ def _emit_spec(cls: ClassIR, prop: PropIR) -> str:
         args.append(f"label={prop.label!r}")
     if prop.definition is not None:
         args.append(f"definition={prop.definition!r}")
-    if prop.kind == "object" and prop.ranges:
+    if prop.kind in {"object", "class"} and prop.ranges:
         args.append(f"ranges={prop.ranges!r}")
     if prop.kind == "literal":
         args.append(f"datatype={prop.datatype}")
@@ -246,13 +247,21 @@ def _emit_descriptor(cls: ClassIR, prop: PropIR) -> str:
             return f"{prop.name}: _EnumOne[_EnumValue] = _EnumOne({var})"
         return f"{prop.name}: _EnumSet[_EnumValue] = _EnumSet({var})"
     target = _range_union(prop)
+    if prop.kind == "class":
+        target = f"type[{target}]"
     if prop.max_count == 1:
         return f"{prop.name}: _RelOne[{target}] = _RelOne({var})"
     return f"{prop.name}: _Rel[{target}] = _Rel({var})"
 
 
 def _range_union(prop: PropIR) -> str:
-    return " | ".join(prop.ranges) if prop.ranges else "_EntityBase"
+    union = " | ".join(prop.ranges) if prop.ranges else "_EntityBase"
+    if prop.predicate in {
+        "http://qudt.org/schema/qudt/hasUnit",
+        "http://qudt.org/schema/qudt/hasQuantityKind",
+    }:
+        union += " | _TermValue"
+    return union
 
 
 def _effective_props(cls: ClassIR, by_name: dict[str, ClassIR]) -> dict[str, PropIR]:
@@ -331,6 +340,8 @@ def _param_annotation(prop: PropIR) -> str:
         annotation = "_Iterable[_EnumValue]"
         return annotation if prop.required else f"{annotation} = ()"
     union = _range_union(prop)
+    if prop.kind == "class":
+        union = f"type[{union}]"
     if prop.max_count == 1:
         annotation = f"{union} | None"
         return annotation if prop.required else f"{annotation} = None"
@@ -391,6 +402,11 @@ def emit_enums_module(ir: SchemaIR) -> str:
         doc = member.definition or member.label
         if doc:
             lines.append(_docstring(doc, indent=""))
+
+    for member in ir.enums:
+        for parent in member.parents:
+            if parent != member.parent:
+                lines.append(f"_E_{member.name}._add_parent(_E_{parent})")
 
     roots = [member for member in ir.enums if member.parent is None]
     public: list[str] = []

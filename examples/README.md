@@ -10,17 +10,19 @@ directory contains its runnable Python and related inputs or generated RDF.
 
 ## ASHRAE 223P
 
-- [`s223/ahu/`](s223/ahu/) — an air handler that uses a portable coil recipe
-  and exports both its instance graph and recipe schema.
-- [`s223/recipe_coil/`](s223/recipe_coil/) — a portable air/water coil class
-  with declared points, fixed media, and exported ontology schema.
+- [`s223/ahu/`](s223/ahu/) — an air handler using a SHACL-generated coil
+  configuration, exporting its instance graph and ontology schema.
+- [`s223/recipe_coil/`](s223/recipe_coil/) — an imported air/water coil
+  configuration with four named ports and fixed media.
 
 ## WaTr
 
 - [`watr/treatment/`](watr/treatment/) — a compact chiller, pump, and tank
   treatment path.
+- [`watr/asm2d/`](watr/asm2d/) — the ASM2d treatment train with generated
+  equipment configurations and typed feed/design schemas.
 - [`watr/seawater_ro/`](watr/seawater_ro/) — a full seawater reverse-osmosis
-  system with nominal stream and equipment properties.
+  system using generated configurations and immutable quantity schemas.
 - [`watr/seawater_ro_pretreatment/`](watr/seawater_ro_pretreatment/) —
   seawater pretreatment stages.
 - [`watr/epanet_anytown/`](watr/epanet_anytown/) — the Anytown EPANET input,
@@ -28,3 +30,16 @@ directory contains its runnable Python and related inputs or generated RDF.
 - [`watr/distribution_network/`](watr/distribution_network/) — a small,
   directly authored distribution loop with hydraulic and water-quality
   sensors.
+
+Reusable configurations and value schemas come from RDF and SHACL in
+[`ontology/`](../ontology/). Model authors import them from
+`objectrdf.s223.hvac`, `objectrdf.watr.asm2d`, or `objectrdf.watr.seawater_ro`.
+Regenerate all three packages after editing their sources:
+
+```bash
+uv run python scripts/generate_example_domains.py
+```
+
+The EPANET converter supplies explicit units with `QuantityAmount` for source
+values. Monitoring examples describe observable properties without inventing
+sample readings. Brick's `feeds` examples retain their ontology's direct edges.

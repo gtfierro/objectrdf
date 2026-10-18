@@ -32,6 +32,24 @@ WaTr equipment
 .. autoclass:: objectrdf.watr.Chiller
    :members:
 
+WaTr process and objective vocabulary
+-------------------------------------
+
+.. autoclass:: objectrdf.watr.Process
+   :members:
+
+.. autoclass:: objectrdf.watr.Process_Sedimentation
+   :members:
+
+.. autoclass:: objectrdf.watr.TreatmentObjective
+   :members:
+
+.. autoclass:: objectrdf.watr.TreatmentObjective_Clarification
+   :members:
+
+.. autoclass:: objectrdf.watr.SedimentationTank
+   :members:
+
 Common entity API and recipe declarations
 -----------------------------------------
 

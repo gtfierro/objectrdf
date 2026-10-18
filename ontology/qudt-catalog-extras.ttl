@@ -1,0 +1,63 @@
+# QUDT 3.4 reference individuals retained from the previously generated catalog.
+# These are absent from the bundled WaTr closure used for offline regeneration.
+@prefix qk: <http://qudt.org/vocab/quantitykind/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+
+qk:CurrencyPerTime a <http://qudt.org/schema/qudt/QuantityKind> ;
+    rdfs:label "Currency per Time" .
+
+qk:InverseArea a <http://qudt.org/schema/qudt/QuantityKind> ;
+    rdfs:label "Inverse Area" .
+
+qk:LinearNumberDensity a <http://qudt.org/schema/qudt/QuantityKind> ;
+    rdfs:label "Linear Number Density" .
+
+qk:RateOfChangeOfFrequency a <http://qudt.org/schema/qudt/QuantityKind> ;
+    rdfs:label "Rate of Change of Frequency" .
+
+unit:EQ-PER-L a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Equivalent per Liter" .
+
+unit:FT-LB_F_Energy a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Foot Pound Force (Energy)" .
+
+unit:FT-LB_F_Torque a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Foot Pound Force (Torque)" .
+
+unit:HZ-PER-SEC a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Herc na Sekunda" .
+
+unit:MicroEQ a <http://qudt.org/schema/qudt/ContextualUnit>,
+        <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Microequivalent" .
+
+unit:MicroEQ-PER-L a <http://qudt.org/schema/qudt/ContextualUnit>,
+        <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Microequivalent per Liter" .
+
+unit:MicroEQ-PER-MilliL a <http://qudt.org/schema/qudt/ContextualUnit>,
+        <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Microequivalent per Milliliter" .
+
+unit:MilliEQ-PER-DeciL a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Milliequivalent per Deciliter" .
+
+unit:MilliEQ-PER-L a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Milliequivalent per Liter" .
+
+unit:MilliEQ-PER-MilliL a <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Milliequivalent per Milliliter" .
+
+unit:NanoEQ a <http://qudt.org/schema/qudt/ContextualUnit>,
+        <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Nanoequivalent" .
+
+unit:NanoEQ-PER-L a <http://qudt.org/schema/qudt/ContextualUnit>,
+        <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Nanoequivalent per Liter" .
+
+unit:NanoEQ-PER-MilliL a <http://qudt.org/schema/qudt/ContextualUnit>,
+        <http://qudt.org/schema/qudt/Unit> ;
+    rdfs:label "Nanoequivalent per Milliliter" .
+

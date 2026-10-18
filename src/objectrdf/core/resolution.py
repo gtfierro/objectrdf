@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Iterator, Literal
+from typing import TYPE_CHECKING, Any, Iterator, Literal, Mapping
 
 from .errors import ModelingError
+from .terms import TermValue
 
 if TYPE_CHECKING:
     import rdflib
@@ -13,6 +14,8 @@ if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
     from .model import Model
+    from .property_bundle import PropertyBundle
+    from .property_schema import PropertySchema, PropertySet, QuantityAmount
     from .recipes import PointGroupRef
 
 
@@ -42,6 +45,8 @@ class PortHandle:
         self.symmetry_key: str | None = None
         self._paired_with: PortHandle | None = None
         self.roles: list[EnumValue] = []
+        self._properties: list[Entity] = []
+        self._boundary_systems: list[Entity] = []
 
     @property
     def direction(self) -> str | tuple[str, ...]:
@@ -73,6 +78,44 @@ class PortHandle:
         other._paired_with = self
         self._model._touch(self.owner, other.owner)
         return self
+
+    def quantity(
+        self,
+        name: str,
+        value: float | QuantityAmount,
+        *,
+        unit: TermValue | None = None,
+        kind: TermValue,
+        capability: Literal["static", "observable", "actuatable"] = "static",
+        mode: Literal["nominal", "observable", "actuatable"] | None = None,
+        label: str | None = None,
+        **properties: Any,
+    ) -> Entity:
+        """Attach a quantity to the connection point created for this port."""
+        from objectrdf.qudt import _attached_quantity
+
+        return _attached_quantity(
+            self, name, value, unit=unit, kind=kind,
+            capability=capability, mode=mode, label=label, **properties,
+        )
+
+    def apply_property_block(
+        self,
+        block: PropertyBundle,
+        *,
+        prefix: str | None = None,
+        values: Mapping[str, float] | None = None,
+    ) -> dict[str, Entity]:
+        """Stage fresh bundle properties on this port's eventual point."""
+        return block.apply(self, prefix=prefix, values=values)
+
+    def apply_properties(
+        self, schema: PropertySchema, *, prefix: str | None = None
+    ) -> PropertySet:
+        """Attach a generated property schema to this port's concrete point."""
+        from .property_schema import apply_properties
+
+        return apply_properties(self, schema, prefix=prefix)
 
     def __repr__(self) -> str:
         return f"<PortHandle {self.owner.name}.{self.name}>"
@@ -177,6 +220,38 @@ class ConnectionHandle:
             return _StagedCollection(self, name)
         return self._assignments.get(name)
 
+    def apply_properties(
+        self, schema: PropertySchema, *, prefix: str | None = None
+    ) -> PropertySet:
+        """Attach a generated schema to the eventual connection."""
+        from .property_schema import apply_properties
+
+        return apply_properties(self, schema, prefix=prefix)
+
+    def quantity(
+        self, name: str, value: float | QuantityAmount, *,
+        kind: TermValue, unit: TermValue | None = None,
+        capability: Literal["static", "observable", "actuatable"] = "static",
+        mode: Literal["nominal", "observable", "actuatable"] | None = None,
+        label: str | None = None, **properties: Any,
+    ) -> Entity:
+        """Create a scalar property on the eventual connection."""
+        from objectrdf.qudt import _attached_quantity
+
+        return _attached_quantity(
+            self, name, value, unit=unit, kind=kind,
+            capability=capability, mode=mode, label=label, **properties,
+        )
+
+    def _connection_type(self) -> type[Entity]:
+        if self._connection_class is not None:
+            return self._connection_class
+        from .recipes import PointGroupRef
+
+        source = self.source
+        owner = source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+        return owner.meta.registry.resolve("Connection")
+
     def __setattr__(self, name: str, value: Any) -> None:
         """Stage assignment to a generated Connection property."""
         if (
@@ -191,6 +266,10 @@ class ConnectionHandle:
             object.__setattr__(self, name, value)
             return
         if _is_many_descriptor(descriptor):
+            from .enums import EnumValue
+            from .entity import Entity
+            if isinstance(value, (EnumValue, Entity, TermValue, str, bytes)):
+                raise TypeError(f"{name} is multi-valued; assign an iterable")
             try:
                 value = list(value)
             except TypeError:

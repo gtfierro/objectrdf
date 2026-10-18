@@ -6,9 +6,11 @@ kernelspec:
 
 # Complete class catalog
 
-Generated package classes are ordinary Python classes. Each package's registry
-lists all classes available for import. The tables below are built from the
-installed S223 and WaTr packages every time the book is built.
+Generated package classes are ordinary Python classes. Browse the ontology
+hierarchy below, or use the alphabetical class index to find a class directly.
+Each name in the hierarchy links to its index entry, which shows its direct
+parents and ontology IRI. Both views are built from the installed S223 and
+WaTr packages every time the book is built.
 
 ```python
 from objectrdf.s223 import Equipment as S223Equipment
@@ -58,41 +60,108 @@ of a class. A class can have multiple parents, so the catalog lists all direct
 parents. `meta.iri` distinguishes
 same named ontology concepts that were given different Python names such as
 `Damper` and `Damper_2`. A multiply inherited class appears under each parent
-in `meta.tree()`.
+in `meta.tree()` and in the hierarchy below.
 
-## S223
+## Browse the class hierarchy
+
+Expand a branch to step through its subclasses. A class with multiple direct
+parents appears under each parent. Select any class name to jump to its entry
+in the alphabetical index.
 
 ```{code-cell} python3
 :tags: [hide-input]
 from html import escape
 from IPython.display import HTML, display
 from objectrdf.s223 import Equipment as S223Equipment
+from objectrdf.watr import Equipment as WatrEquipment
 
-def class_table(registry):
+def class_anchor(package, cls):
+    return f"{package}-class-{cls.__name__}"
+
+def class_hierarchy(package, registry):
+    classes = registry.classes
+    children = {cls: [] for cls in classes}
+    roots = []
+    for cls in classes:
+        parents = [parent for parent in cls.meta.parents if parent in children]
+        if parents:
+            for parent in parents:
+                children[parent].append(cls)
+        else:
+            roots.append(cls)
+
+    def branch(cls):
+        link = (
+            f'<a href="#{class_anchor(package, cls)}">'
+            f'<code>{escape(cls.__name__)}</code></a>'
+        )
+        if not children[cls]:
+            return f"<li>{link}</li>"
+        descendants = "".join(branch(child) for child in children[cls])
+        return f"<li><details><summary>{link}</summary><ul>{descendants}</ul></details></li>"
+
+    return '<ul class="class-hierarchy">' + "".join(branch(cls) for cls in roots) + "</ul>"
+
+display(HTML("""
+<style>
+.class-hierarchy, .class-hierarchy ul { list-style: none; padding-left: 1.3em; }
+.class-hierarchy li { margin: 0.15em 0; }
+.class-hierarchy summary { cursor: pointer; }
+</style>
+"""))
+```
+
+### S223 hierarchy
+
+```{code-cell} python3
+:tags: [hide-input]
+display(HTML(class_hierarchy("s223", S223Equipment.meta.registry)))
+```
+
+### WaTr hierarchy
+
+```{code-cell} python3
+:tags: [hide-input]
+display(HTML(class_hierarchy("watr", WatrEquipment.meta.registry)))
+```
+
+## Alphabetical class index
+
+Every class is listed once here, including classes reachable through multiple
+branches above. Use its Python name for a direct import from the package.
+
+### S223
+
+```{code-cell} python3
+:tags: [hide-input]
+def class_table(package, registry):
     rows = [
         "<table><thead><tr><th>Python class</th><th>Direct parents</th>"
         "<th>Ontology class IRI</th></tr></thead><tbody>"
     ]
     for cls in registry.classes:
-        parents = ", ".join(parent.__name__ for parent in cls.meta.parents) or "—"
+        parents = ", ".join(
+            f'<a href="#{class_anchor(package, parent)}">'
+            f'{escape(parent.__name__)}</a>'
+            for parent in cls.meta.parents
+        ) or "—"
         rows.append(
-            f"<tr><td><code>{escape(cls.__name__)}</code></td>"
-            f"<td>{escape(parents)}</td>"
+            f'<tr id="{class_anchor(package, cls)}">'
+            f"<td><code>{escape(cls.__name__)}</code></td>"
+            f"<td>{parents}</td>"
             f"<td><code>{escape(cls.meta.iri)}</code></td></tr>"
         )
     rows.append("</tbody></table>")
     return "".join(rows)
 
-display(HTML(class_table(S223Equipment.meta.registry)))
+display(HTML(class_table("s223", S223Equipment.meta.registry)))
 ```
 
-## WaTr
+### WaTr
 
 ```{code-cell} python3
 :tags: [hide-input]
-from objectrdf.watr import Equipment as WatrEquipment
-
-display(HTML(class_table(WatrEquipment.meta.registry)))
+display(HTML(class_table("watr", WatrEquipment.meta.registry)))
 ```
 
 ## Enumeration values

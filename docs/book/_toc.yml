@@ -9,12 +9,14 @@ parts:
     chapters:
       - file: how-to/explore-classes
       - file: how-to/explore-enums
+      - file: how-to/watr-processes
       - file: how-to/inspect-port-contracts
       - file: how-to/diagnose-resolution
       - file: how-to/validate-and-query
   - caption: Explanation
     chapters:
       - file: explanation/lifecycle
+      - file: explanation/watr-vocabulary
   - caption: Reference
     chapters:
       - file: reference/runtime

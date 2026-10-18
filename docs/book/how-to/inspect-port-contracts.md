@@ -34,6 +34,23 @@ flow arriving at it uses `"in"`; flow leaving it uses `"out"`. When you
 connect whole entities, `connect(source, pump)` chooses a compatible inlet on
 the pump, while `connect(pump, tank)` chooses a compatible outlet.
 
+Named and unnamed connections use the same port matching. When a stream needs
+additional points, request them explicitly:
+
+```python
+connect(source, pump, name="feed", medium=enums.values.Fluid_Water, ports="new")
+```
+
+For bare equipment endpoints this allocates a new directed point on each,
+subject to their port constraints. Port names derive from the equipment,
+independently of the connection name. An explicit port passed to `connect` is
+used as given, so you can attach quantities or mark a system boundary on that
+exact point. Without `ports="new"`, the resolver chooses compatible points.
+
+RDF/SHACL-generated configurations can also expose named references such as
+`stage.outlet`. Their `describe_ports()` summaries include these names. See
+[SHACL configurations](../../shacl-configurations.md).
+
 The count applies to points satisfying that row, not to the number of named
 handles you must create. The summary labels unconditional slots separately
 from `all of`, `any of`, and `exactly one of` shape constraints. Medium roots

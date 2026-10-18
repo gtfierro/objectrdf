@@ -23,8 +23,10 @@ hierarchy. For a known value, `enums.values.Fluid_Water` offers a flat lookup.
 
 ## See a branch
 
-Use `children` for the next level, `descendants` for all levels, and `parent`
-to move upward. These are values, so there is no `.meta` step.
+Use `children` for the next level and `descendants` for all levels. `parent`
+is the primary browsing path; `parents` includes every direct ontology parent
+when a value belongs to more than one branch. These are values, so there is no
+`.meta` step.
 
 ```{code-cell} python3
 water = enums.Substance.Medium.Mix.Fluid.Water
@@ -32,6 +34,11 @@ assert water is enums.values.Fluid_Water
 print([value.label for value in water.children])
 print([value.iri for value in water.descendants])
 print(water.parent.iri)
+
+sludge = enums.values.Fluid_Sludge
+print([value.iri for value in sludge.parents])
+assert sludge.is_a(enums.values.Fluid_Water)
+assert sludge.is_a(enums.values.Mix_Fluid)
 ```
 
 `tree()` prints a subtree. Use `tree_text()` when you want the text to store,

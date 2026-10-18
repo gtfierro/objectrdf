@@ -1,241 +1,256 @@
 @prefix : <urn:example/watertap/seawater-ro/pretreatment#> .
-@prefix ns1: <http://data.ashrae.org/standard223#> .
+@prefix ns1: <https://watermetadata.org/ontology/watr#> .
+@prefix ns2: <http://qudt.org/schema/qudt/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix seawaterro: <https://w3id.org/objectrdf/seawater-ro#> .
+@prefix watr: <http://data.ashrae.org/standard223#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/watertap/seawater-ro/pretreatment> a owl:Ontology ;
-    owl:imports <https://watermetadata.org/ontology/watr> .
+    owl:imports <http://qudt.org/3.4.0/qudt-all>,
+        seawaterro:,
+        <https://watermetadata.org/ontology/watr> .
 
-:antiscalant-addition-process a watr:Process-ChemicalAddition ;
-    rdfs:label "antiscalant-addition-process" ;
-    skos:definition "Add antiscalant before cartridge filtration." .
+:pretreatment-system a watr:System ;
+    rdfs:label "pretreatment-system" ;
+    watr:hasBoundaryConnectionPoint :backwash-out,
+        :cartridge-product-out,
+        :intake-seawater-in ;
+    watr:hasMember :antiscalant-addition,
+        :backwash-handling,
+        :cartridge-filtration,
+        :chlorination,
+        :ferric-chloride-addition,
+        :intake,
+        :media-filtration,
+        :static-mixer,
+        :storage-tank-1 .
 
-:backwash-handling a watr:UnitProcess ;
-    rdfs:label "Media-filter backwash handling" ;
-    ns1:hasConnectionPoint :backwash-handling-in ;
-    watr:hasProcess :backwash-handling-process .
+<https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
 
-:backwash-handling-process a watr:Process-Backwashing ;
-    rdfs:label "backwash-handling-process" ;
-    skos:definition "Collect and handle backwash from media filtration." .
+:storage-tank-1-residence-time a watr:QuantifiableProperty ;
+    rdfs:label "Nominal residence time" ;
+    watr:hasAspect watr:Aspect-Nominal ;
+    watr:hasValue 2e+00 ;
+    ns2:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
+    ns2:hasUnit <http://qudt.org/vocab/unit/HR> .
 
-:cartridge-filtration a watr:UnitProcess ;
-    rdfs:label "Cartridge filtration" ;
-    ns1:hasConnectionPoint :cartridge-filtration-in ;
-    rdfs:comment "WaterTAP cartridge filtration zero-order unit model." ;
-    watr:hasProcess :cartridge-filtration-process .
-
-:cartridge-filtration-process a watr:Process-Filtration ;
-    rdfs:label "cartridge-filtration-process" ;
-    skos:definition "Polish the pretreated seawater by cartridge filtration." .
-
-:chlorination-process a watr:Process-Chlorination ;
-    rdfs:label "chlorination-process" ;
-    skos:definition "Disinfect the seawater by chlorination." .
-
-:ferric-chloride-addition-process a watr:Process-Coagulation ;
-    rdfs:label "ferric-chloride-addition-process" ;
-    skos:definition "Add 20 mg/L ferric chloride to promote coagulation." .
-
-:intake-seawater-in a ns1:InletConnectionPoint ;
-    rdfs:label "intake-seawater-in" ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :intake .
-
-:media-filtration-process a watr:Process-MediaFiltration ;
-    rdfs:label "media-filtration-process" ;
-    skos:definition "Remove suspended matter by filtration through media." .
-
-:static-mixing-process a watr:Process-Mixing ;
-    rdfs:label "static-mixing-process" ;
-    skos:definition "Mix added treatment chemicals into the seawater." .
-
-:antiscalant-addition a watr:Reactor ;
-    rdfs:label "Antiscalant addition" ;
-    ns1:hasConnectionPoint :antiscalant-addition-in,
-        :antiscalant-addition-out ;
-    watr:hasProcess :antiscalant-addition-process .
-
-:antiscalant-addition--cartridge-filtration a ns1:Pipe ;
+:antiscalant-addition--cartridge-filtration a watr:Pipe ;
     rdfs:label "antiscalant-addition--cartridge-filtration" ;
-    ns1:connectsAt :antiscalant-addition-out,
+    watr:connectsAt :antiscalant-addition-out,
         :cartridge-filtration-in ;
-    ns1:hasMedium watr:Water-Seawater .
+    watr:hasMedium ns1:Water-Seawater .
 
-:antiscalant-addition-in a ns1:InletConnectionPoint ;
+:antiscalant-addition-in a watr:InletConnectionPoint ;
     rdfs:label "antiscalant-addition-in" ;
-    ns1:connectsThrough :media-filtration--antiscalant-addition ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :antiscalant-addition .
+    watr:connectsThrough :media-product-out--antiscalant-addition ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :antiscalant-addition .
 
-:antiscalant-addition-out a ns1:OutletConnectionPoint ;
+:antiscalant-addition-out a watr:OutletConnectionPoint ;
     rdfs:label "antiscalant-addition-out" ;
-    ns1:connectsThrough :antiscalant-addition--cartridge-filtration ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :antiscalant-addition .
+    watr:connectsThrough :antiscalant-addition--cartridge-filtration ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :antiscalant-addition .
 
-:backwash-handling-in a ns1:InletConnectionPoint ;
+:backwash-handling-in a watr:InletConnectionPoint ;
     rdfs:label "backwash-handling-in" ;
-    ns1:connectsThrough :s06 ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :backwash-handling .
+    watr:connectsThrough :s06 ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :backwash-handling .
 
-:cartridge-filtration-in a ns1:InletConnectionPoint ;
+:backwash-out a watr:OutletConnectionPoint ;
+    rdfs:label "backwash-out" ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :backwash-handling .
+
+:cartridge-filtration-in a watr:InletConnectionPoint ;
     rdfs:label "cartridge-filtration-in" ;
-    ns1:connectsThrough :antiscalant-addition--cartridge-filtration ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :cartridge-filtration .
+    watr:connectsThrough :antiscalant-addition--cartridge-filtration ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :cartridge-filtration .
 
-:chlorination a watr:ChlorinationUnit ;
-    rdfs:label "chlorination" ;
-    ns1:hasConnectionPoint :chlorination-in,
-        :chlorination-out ;
-    watr:hasProcess :chlorination-process .
+:cartridge-product-out a watr:OutletConnectionPoint ;
+    rdfs:label "cartridge-product-out" ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :cartridge-filtration .
 
-:chlorination--static-mixer a ns1:Pipe ;
+:chlorination--static-mixer a watr:Pipe ;
     rdfs:label "chlorination--static-mixer" ;
-    ns1:connectsAt :chlorination-out,
+    watr:connectsAt :chlorination-out,
         :static-mixer-in ;
-    ns1:hasMedium watr:Water-Seawater .
+    watr:hasMedium ns1:Water-Seawater .
 
-:chlorination-in a ns1:InletConnectionPoint ;
+:chlorination-in a watr:InletConnectionPoint ;
     rdfs:label "chlorination-in" ;
-    ns1:connectsThrough :ferric-chloride-addition--chlorination ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :chlorination .
+    watr:connectsThrough :ferric-chloride-addition--chlorination ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :chlorination .
 
-:chlorination-out a ns1:OutletConnectionPoint ;
+:chlorination-out a watr:OutletConnectionPoint ;
     rdfs:label "chlorination-out" ;
-    ns1:connectsThrough :chlorination--static-mixer ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :chlorination .
+    watr:connectsThrough :chlorination--static-mixer ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :chlorination .
 
-:ferric-chloride-addition a watr:Reactor ;
-    rdfs:label "Ferric chloride addition" ;
-    ns1:hasConnectionPoint :ferric-chloride-addition-in,
-        :ferric-chloride-addition-out ;
-    watr:hasProcess :ferric-chloride-addition-process .
-
-:ferric-chloride-addition--chlorination a ns1:Pipe ;
+:ferric-chloride-addition--chlorination a watr:Pipe ;
     rdfs:label "ferric-chloride-addition--chlorination" ;
-    ns1:connectsAt :chlorination-in,
+    watr:connectsAt :chlorination-in,
         :ferric-chloride-addition-out ;
-    ns1:hasMedium watr:Water-Seawater .
+    watr:hasMedium ns1:Water-Seawater .
 
-:ferric-chloride-addition-in a ns1:InletConnectionPoint ;
+:ferric-chloride-addition-in a watr:InletConnectionPoint ;
     rdfs:label "ferric-chloride-addition-in" ;
-    ns1:connectsThrough :intake--ferric-chloride-addition ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :ferric-chloride-addition .
+    watr:connectsThrough :intake--ferric-chloride-addition ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :ferric-chloride-addition .
 
-:ferric-chloride-addition-out a ns1:OutletConnectionPoint ;
+:ferric-chloride-addition-out a watr:OutletConnectionPoint ;
     rdfs:label "ferric-chloride-addition-out" ;
-    ns1:connectsThrough :ferric-chloride-addition--chlorination ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :ferric-chloride-addition .
+    watr:connectsThrough :ferric-chloride-addition--chlorination ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :ferric-chloride-addition .
 
-:intake a watr:Pump ;
-    rdfs:label "Seawater intake" ;
-    ns1:hasConnectionPoint :intake-out,
-        :intake-seawater-in .
-
-:intake--ferric-chloride-addition a ns1:Pipe ;
+:intake--ferric-chloride-addition a watr:Pipe ;
     rdfs:label "intake--ferric-chloride-addition" ;
-    ns1:connectsAt :ferric-chloride-addition-in,
+    watr:connectsAt :ferric-chloride-addition-in,
         :intake-out ;
-    ns1:hasMedium watr:Water-Seawater .
+    watr:hasMedium ns1:Water-Seawater .
 
-:intake-out a ns1:OutletConnectionPoint ;
+:intake-out a watr:OutletConnectionPoint ;
     rdfs:label "intake-out" ;
-    ns1:connectsThrough :intake--ferric-chloride-addition ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :intake .
+    watr:connectsThrough :intake--ferric-chloride-addition ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :intake .
 
-:media-filtration--antiscalant-addition a ns1:Pipe ;
-    rdfs:label "media-filtration--antiscalant-addition" ;
-    ns1:connectsAt :antiscalant-addition-in,
-        :media-filtration-out ;
-    ns1:hasMedium watr:Water-Seawater .
+:intake-seawater-in a watr:InletConnectionPoint ;
+    rdfs:label "intake-seawater-in" ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :intake .
 
-:media-filtration-in a ns1:InletConnectionPoint ;
+:media-backwash-out a watr:OutletConnectionPoint ;
+    rdfs:label "media-backwash-out" ;
+    watr:connectsThrough :s06 ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :media-filtration .
+
+:media-filtration-in a watr:InletConnectionPoint ;
     rdfs:label "media-filtration-in" ;
-    ns1:connectsThrough :storage-tank-1--media-filtration ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :media-filtration .
+    watr:connectsThrough :storage-tank-1--media-filtration ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :media-filtration .
 
-:media-filtration-out a ns1:OutletConnectionPoint ;
-    rdfs:label "media-filtration-out" ;
-    ns1:connectsThrough :media-filtration--antiscalant-addition ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :media-filtration .
+:media-product-out a watr:OutletConnectionPoint ;
+    rdfs:label "media-product-out" ;
+    watr:connectsThrough :media-product-out--antiscalant-addition ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :media-filtration .
 
-:media-filtration-out_2 a ns1:OutletConnectionPoint ;
-    rdfs:label "media-filtration-out_2" ;
-    ns1:connectsThrough :s06 ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :media-filtration .
+:media-product-out--antiscalant-addition a watr:Pipe ;
+    rdfs:label "media-product-out--antiscalant-addition" ;
+    watr:connectsAt :antiscalant-addition-in,
+        :media-product-out ;
+    watr:hasMedium ns1:Water-Seawater .
 
-:s06 a ns1:Pipe ;
+:s06 a watr:Pipe ;
     rdfs:label "s06" ;
-    ns1:connectsAt :backwash-handling-in,
-        :media-filtration-out_2 ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:hasRole watr:Role-Backwash .
+    watr:connectsAt :backwash-handling-in,
+        :media-backwash-out ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:hasRole ns1:Role-Backwash .
 
-:static-mixer a watr:StaticMixer ;
-    rdfs:label "Static mixer" ;
-    ns1:hasConnectionPoint :static-mixer-in,
-        :static-mixer-out ;
-    watr:hasProcess :static-mixing-process .
-
-:static-mixer--storage-tank-1 a ns1:Pipe ;
+:static-mixer--storage-tank-1 a watr:Pipe ;
     rdfs:label "static-mixer--storage-tank-1" ;
-    ns1:connectsAt :static-mixer-out,
+    watr:connectsAt :static-mixer-out,
         :storage-tank-1-in ;
-    ns1:hasMedium watr:Water-Seawater .
+    watr:hasMedium ns1:Water-Seawater .
 
-:static-mixer-in a ns1:InletConnectionPoint ;
+:static-mixer-in a watr:InletConnectionPoint ;
     rdfs:label "static-mixer-in" ;
-    ns1:connectsThrough :chlorination--static-mixer ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :static-mixer .
+    watr:connectsThrough :chlorination--static-mixer ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :static-mixer .
 
-:static-mixer-out a ns1:OutletConnectionPoint ;
+:static-mixer-out a watr:OutletConnectionPoint ;
     rdfs:label "static-mixer-out" ;
-    ns1:connectsThrough :static-mixer--storage-tank-1 ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :static-mixer .
+    watr:connectsThrough :static-mixer--storage-tank-1 ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :static-mixer .
 
-:storage-tank-1 a watr:Tank ;
-    rdfs:label "Pretreatment storage tank" ;
-    ns1:hasConnectionPoint :storage-tank-1-in,
-        :storage-tank-1-out ;
-    rdfs:comment "WaterTAP storage time: 2 hr." .
-
-:storage-tank-1--media-filtration a ns1:Pipe ;
+:storage-tank-1--media-filtration a watr:Pipe ;
     rdfs:label "storage-tank-1--media-filtration" ;
-    ns1:connectsAt :media-filtration-in,
+    watr:connectsAt :media-filtration-in,
         :storage-tank-1-out ;
-    ns1:hasMedium watr:Water-Seawater .
+    watr:hasMedium ns1:Water-Seawater .
 
-:storage-tank-1-in a ns1:InletConnectionPoint ;
+:storage-tank-1-in a watr:InletConnectionPoint ;
     rdfs:label "storage-tank-1-in" ;
-    ns1:connectsThrough :static-mixer--storage-tank-1 ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :storage-tank-1 .
+    watr:connectsThrough :static-mixer--storage-tank-1 ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :storage-tank-1 .
 
-:storage-tank-1-out a ns1:OutletConnectionPoint ;
+:storage-tank-1-out a watr:OutletConnectionPoint ;
     rdfs:label "storage-tank-1-out" ;
-    ns1:connectsThrough :storage-tank-1--media-filtration ;
-    ns1:hasMedium watr:Water-Seawater ;
-    ns1:isConnectionPointOf :storage-tank-1 .
+    watr:connectsThrough :storage-tank-1--media-filtration ;
+    watr:hasMedium ns1:Water-Seawater ;
+    watr:isConnectionPointOf :storage-tank-1 .
 
-:media-filtration a watr:UnitProcess ;
+:antiscalant-addition a seawaterro:DosingStage ;
+    rdfs:label "Antiscalant addition" ;
+    watr:hasConnectionPoint :antiscalant-addition-in,
+        :antiscalant-addition-out ;
+    ns1:hasProcess ns1:Process-Dosing .
+
+:backwash-handling a seawaterro:BackwashStage ;
+    rdfs:label "Media-filter backwash handling" ;
+    watr:hasConnectionPoint :backwash-handling-in,
+        :backwash-out ;
+    ns1:hasProcess ns1:Process-Backwashing .
+
+:cartridge-filtration a seawaterro:CartridgeFiltrationStage ;
+    rdfs:label "Cartridge filtration" ;
+    watr:hasConnectionPoint :cartridge-filtration-in,
+        :cartridge-product-out ;
+    rdfs:comment "WaterTAP cartridge filtration zero-order unit model." ;
+    ns1:hasProcess ns1:Process-Filtration .
+
+:chlorination a seawaterro:ChlorinationStage ;
+    rdfs:label "chlorination" ;
+    watr:hasConnectionPoint :chlorination-in,
+        :chlorination-out ;
+    ns1:hasProcess ns1:Process-ChlorineDosing .
+
+:ferric-chloride-addition a seawaterro:CoagulationStage ;
+    rdfs:label "Ferric chloride addition" ;
+    watr:hasConnectionPoint :ferric-chloride-addition-in,
+        :ferric-chloride-addition-out ;
+    ns1:hasProcess ns1:Process-Coagulation .
+
+:intake a seawaterro:IntakePump ;
+    rdfs:label "Seawater intake" ;
+    watr:hasConnectionPoint :intake-out,
+        :intake-seawater-in ;
+    watr:hasRole ns1:Role-Feed .
+
+:static-mixer a seawaterro:MixingStage ;
+    rdfs:label "Static mixer" ;
+    watr:hasConnectionPoint :static-mixer-in,
+        :static-mixer-out ;
+    ns1:hasProcess ns1:Process-Mixing .
+
+:storage-tank-1 a seawaterro:StorageTank ;
+    rdfs:label "Pretreatment storage tank" ;
+    watr:hasConnectionPoint :storage-tank-1-in,
+        :storage-tank-1-out ;
+    watr:hasProperty :storage-tank-1-residence-time ;
+    watr:hasRole ns1:Role-Storage .
+
+:media-filtration a seawaterro:MediaFiltrationStage ;
     rdfs:label "Media filtration" ;
-    ns1:hasConnectionPoint :media-filtration-in,
-        :media-filtration-out,
-        :media-filtration-out_2 ;
+    watr:hasConnectionPoint :media-backwash-out,
+        :media-filtration-in,
+        :media-product-out ;
     rdfs:comment "WaterTAP media filtration zero-order unit model." ;
-    watr:hasProcess :media-filtration-process .
+    ns1:hasProcess ns1:Process-MediaFiltration .
+

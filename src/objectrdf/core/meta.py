@@ -52,8 +52,8 @@ class PropertySpec:
     predicate: str
     """IRI of the RDF property this attribute serializes to."""
 
-    kind: Literal["object", "literal", "enum", "term", "value"]
-    """Object, literal, enum/term reference, or unconstrained RDF value."""
+    kind: Literal["object", "class", "literal", "enum", "term", "value"]
+    """Entity link, punned class term, literal, enum/term, or RDF value."""
 
     label: str | None = None
     """``rdfs:label`` of the property."""
@@ -62,7 +62,7 @@ class PropertySpec:
     """``skos:definition`` / ``rdfs:comment`` text for the property."""
 
     ranges: tuple[str, ...] = ()
-    """Python class names of allowed targets (object properties only).
+    """Python class names of allowed entity or punned class targets.
 
     Stored as names, not types, so generated modules can reference classes
     defined later in the file; resolved lazily through the :class:`Registry`.
@@ -118,6 +118,9 @@ class CPSlot:
     max_count: int | None = None
     """``sh:qualifiedMaxCount``; ``None`` means unbounded."""
 
+    name: str | None = None
+    label: str | None = None
+
 
 @dataclass(frozen=True)
 class CPConstraint:
@@ -148,6 +151,8 @@ class PortSlot:
     medium_options: tuple[EnumValue | str, ...]
     min_count: int
     max_count: int | None
+    name: str | None = None
+    label: str | None = None
 
 
 @dataclass(frozen=True)
@@ -219,7 +224,7 @@ class PortContract:
             lines.append("Unconditional ports:")
             for slot in self.slots:
                 lines.append(
-                    "  - "
+                    "  - " + (f"{slot.name}: " if slot.name else "")
                     + line(
                         slot.direction,
                         slot.point_class.__name__,
@@ -250,6 +255,7 @@ class Registry:
         self.by_name: dict[str, type[Entity]] = {}
         self.by_iri: dict[str, type[Entity]] = {}
         self.enums_by_iri: dict[str, EnumValue] = {}
+        self.terms_by_iri: dict[str, object] = {}
         self.schema_graph = None
         # Imported lazily to avoid a module cycle (containment needs Entity).
         from .containment import ContainmentTable

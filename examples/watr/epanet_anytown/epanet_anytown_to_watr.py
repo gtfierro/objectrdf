@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 from objectrdf import Model, connect
-from objectrdf.qudt import quantity, quantity_kinds, units
+from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
 from objectrdf.watr import (
     FlowSensor,
     Junction,
@@ -36,7 +36,6 @@ from objectrdf.watr import (
     PressureSensor,
     Pump,
     QuantifiableObservableProperty,
-    QuantifiableProperty,
     Reservoir,
     Tank,
     TemperatureSensor,
@@ -159,45 +158,6 @@ def _flow_unit(flow_units: str) -> tuple[Any, float]:
     return mappings[flow_units]
 
 
-def _static_quantity(
-    owner: Any,
-    name: str,
-    value: float,
-    unit: Any,
-    quantity_kind: Any,
-    label: str,
-) -> QuantifiableProperty:
-    return quantity(
-        QuantifiableProperty,
-        name,
-        value,
-        unit,
-        quantity_kind,
-        of=owner,
-        label=label,
-        has_aspect=[enums.values.Aspect_Nominal],
-    )
-
-
-def _observable(
-    location: Any,
-    *,
-    name: str,
-    label: str,
-    quantity_kind: Any,
-    unit: Any,
-) -> QuantifiableObservableProperty:
-    observed = QuantifiableObservableProperty(
-        name,
-        label=label,
-        has_quantity_kind=quantity_kind,
-        has_unit=unit,
-        of_medium=enums.values.Fluid_Water,
-    )
-    location.has_property.add(observed)
-    return observed
-
-
 def _add_sensor(
     sensor_class: type[Any],
     location: Any,
@@ -209,13 +169,14 @@ def _add_sensor(
     unit: Any,
     comment: str,
 ) -> Any:
-    observed = _observable(
-        location,
-        name=property_name,
+    observed = QuantifiableObservableProperty(
+        property_name,
         label=label,
-        quantity_kind=quantity_kind,
-        unit=unit,
+        has_quantity_kind=quantity_kind,
+        has_unit=unit,
+        of_medium=enums.values.Fluid_Water,
     )
+    location.has_property.add(observed)
     return sensor_class(
         sensor_name,
         label=f"{label} sensor",
@@ -259,352 +220,344 @@ def build_watr_model(
     sensor_count: dict[str, int] = defaultdict(int)
 
     with model:
-        for row in network.sections.get("JUNCTIONS", []):
-            if len(row.values) < 2:
-                continue
-            epanet_id = row.values[0]
-            node = Junction(
-                _name("junction", epanet_id),
-                label=f"EPANET junction {epanet_id}",
-                comment=_location_comment(epanet_id, network, row),
-                medium=enums.values.Fluid_Water,
-            )
-            nodes[epanet_id] = node
-            row_by_node[epanet_id] = row
-            _static_quantity(
-                node,
-                _name("elevation", epanet_id),
-                _number(row.values[1], "junction elevation"),
-                length_unit,
-                quantity_kinds.Length,
-                "Junction elevation",
-            )
-            if len(row.values) >= 3:
-                demand = _number(row.values[2], "junction demand")
-                if demand:
-                    _static_quantity(
-                        node,
-                        _name("base-demand", epanet_id),
-                        demand * flow_scale,
-                        flow_unit,
-                        quantity_kinds.VolumeFlowRate,
-                        "Base demand",
+        with model.system("anytown-system"):
+            for row in network.sections.get("JUNCTIONS", []):
+                if len(row.values) < 2:
+                    continue
+                epanet_id = row.values[0]
+                node = Junction(
+                    _name("junction", epanet_id),
+                    label=f"EPANET junction {epanet_id}",
+                    comment=_location_comment(epanet_id, network, row),
+                    medium=enums.values.Fluid_Water,
+                )
+                nodes[epanet_id] = node
+                row_by_node[epanet_id] = row
+                node.quantity(
+                    _name("elevation", epanet_id),
+                    Q(_number(row.values[1], "junction elevation"), length_unit),
+                    kind=quantity_kinds.Length,
+                    label="Junction elevation",
+                    has_aspect=[enums.values.Aspect_Nominal],
+                )
+                if len(row.values) >= 3:
+                    demand = _number(row.values[2], "junction demand")
+                    if demand:
+                        node.quantity(
+                            _name("base-demand", epanet_id),
+                            Q(demand * flow_scale, flow_unit),
+                            kind=quantity_kinds.VolumeFlowRate,
+                            label="Base demand",
+                            has_aspect=[enums.values.Aspect_Nominal],
+                        )
+
+            for row in network.sections.get("RESERVOIRS", []):
+                if len(row.values) < 2:
+                    continue
+                epanet_id = row.values[0]
+                node = Reservoir(
+                    _name("reservoir", epanet_id),
+                    label=f"EPANET reservoir {epanet_id}",
+                    comment=_location_comment(epanet_id, network, row),
+                )
+                nodes[epanet_id] = node
+                row_by_node[epanet_id] = row
+                node.quantity(
+                    _name("hydraulic-head", epanet_id),
+                    Q(_number(row.values[1], "reservoir head"), length_unit),
+                    kind=quantity_kinds.Length,
+                    label="Hydraulic head",
+                    has_aspect=[enums.values.Aspect_Nominal],
+                )
+
+            for row in network.sections.get("TANKS", []):
+                if len(row.values) < 7:
+                    continue
+                epanet_id = row.values[0]
+                node = Tank(
+                    _name("tank", epanet_id),
+                    label=f"EPANET tank {epanet_id}",
+                    comment=_location_comment(epanet_id, network, row),
+                )
+                nodes[epanet_id] = node
+                row_by_node[epanet_id] = row
+                tank_fields = (
+                    ("elevation", 1, "Tank elevation"),
+                    ("initial-level", 2, "Initial water level"),
+                    ("minimum-level", 3, "Minimum water level"),
+                    ("maximum-level", 4, "Maximum water level"),
+                )
+                for field_name, index, label in tank_fields:
+                    node.quantity(
+                        _name(field_name, epanet_id),
+                        Q(_number(row.values[index], label.lower()), length_unit),
+                        kind=quantity_kinds.Length,
+                        label=label,
+                        has_aspect=[enums.values.Aspect_Nominal],
                     )
-
-        for row in network.sections.get("RESERVOIRS", []):
-            if len(row.values) < 2:
-                continue
-            epanet_id = row.values[0]
-            node = Reservoir(
-                _name("reservoir", epanet_id),
-                label=f"EPANET reservoir {epanet_id}",
-                comment=_location_comment(epanet_id, network, row),
-            )
-            nodes[epanet_id] = node
-            row_by_node[epanet_id] = row
-            _static_quantity(
-                node,
-                _name("hydraulic-head", epanet_id),
-                _number(row.values[1], "reservoir head"),
-                length_unit,
-                quantity_kinds.Length,
-                "Hydraulic head",
-            )
-
-        for row in network.sections.get("TANKS", []):
-            if len(row.values) < 7:
-                continue
-            epanet_id = row.values[0]
-            node = Tank(
-                _name("tank", epanet_id),
-                label=f"EPANET tank {epanet_id}",
-                comment=_location_comment(epanet_id, network, row),
-            )
-            nodes[epanet_id] = node
-            row_by_node[epanet_id] = row
-            tank_fields = (
-                ("elevation", 1, "Tank elevation"),
-                ("initial-level", 2, "Initial water level"),
-                ("minimum-level", 3, "Minimum water level"),
-                ("maximum-level", 4, "Maximum water level"),
-            )
-            for field_name, index, label in tank_fields:
-                _static_quantity(
-                    node,
-                    _name(field_name, epanet_id),
-                    _number(row.values[index], label.lower()),
-                    length_unit,
-                    quantity_kinds.Length,
-                    label,
+                node.quantity(
+                    _name("diameter", epanet_id),
+                    Q(_number(row.values[5], "tank diameter"), length_unit),
+                    kind=quantity_kinds.Length,
+                    label="Tank diameter",
+                    has_aspect=[enums.values.Aspect_Nominal],
                 )
-            _static_quantity(
-                node,
-                _name("diameter", epanet_id),
-                _number(row.values[5], "tank diameter"),
-                length_unit,
-                quantity_kinds.Length,
-                "Tank diameter",
-            )
 
-        def require_node(epanet_id: str, link_id: str) -> Any:
-            if epanet_id not in nodes:
-                raise ValueError(
-                    f"EPANET link {link_id!r} references unknown node {epanet_id!r}"
+            def require_node(epanet_id: str, link_id: str) -> Any:
+                if epanet_id not in nodes:
+                    raise ValueError(
+                        f"EPANET link {link_id!r} references unknown node {epanet_id!r}"
+                    )
+                return nodes[epanet_id]
+
+            for row in network.sections.get("PIPES", []):
+                if len(row.values) < 6:
+                    continue
+                link_id, node_1, node_2 = row.values[:3]
+                first = require_node(node_1, link_id)
+                second = require_node(node_2, link_id)
+                degree[node_1] += 1
+                degree[node_2] += 1
+                first_port = first.port(
+                    _name(f"pipe-{link_id}", f"{node_1}-end"),
+                    direction="bi",
+                    medium=enums.values.Fluid_Water,
                 )
-            return nodes[epanet_id]
+                second_port = second.port(
+                    _name(f"pipe-{link_id}", f"{node_2}-end"),
+                    direction="bi",
+                    medium=enums.values.Fluid_Water,
+                )
+                pipe = connect(
+                    first_port,
+                    second_port,
+                    medium=enums.values.Fluid_Water,
+                    connection=Pipe,
+                    name=_name("pipe", link_id),
+                )
+                pipe.label = f"EPANET pipe {link_id}"
+                pipe.comment = row.comment or f"EPANET link {node_1} — {node_2}."
+                length = _number(row.values[3], "pipe length")
+                diameter = _number(row.values[4], "pipe diameter")
+                pipe_candidates.append((diameter, link_id, node_2))
+                pipe.quantity(
+                    _name("length", link_id),
+                    Q(length, length_unit),
+                    kind=quantity_kinds.Length,
+                    label="Pipe length",
+                    has_aspect=[enums.values.Aspect_Nominal],
+                )
+                pipe.quantity(
+                    _name("diameter", link_id),
+                    Q(diameter, diameter_unit),
+                    kind=quantity_kinds.Length,
+                    label="Pipe diameter",
+                    has_aspect=[enums.values.Aspect_Nominal],
+                )
+                pipe.quantity(
+                    _name("roughness", link_id),
+                    Q(_number(row.values[5], "pipe roughness"), units.UNITLESS),
+                    kind=quantity_kinds.Dimensionless,
+                    label="EPANET roughness coefficient",
+                    has_aspect=[enums.values.Aspect_Nominal],
+                )
 
-        for row in network.sections.get("PIPES", []):
-            if len(row.values) < 6:
-                continue
-            link_id, node_1, node_2 = row.values[:3]
-            first = require_node(node_1, link_id)
-            second = require_node(node_2, link_id)
-            degree[node_1] += 1
-            degree[node_2] += 1
-            first_port = first.port(
-                _name(f"pipe-{link_id}", f"{node_1}-end"),
-                direction="bi",
-                medium=enums.values.Fluid_Water,
-            )
-            second_port = second.port(
-                _name(f"pipe-{link_id}", f"{node_2}-end"),
-                direction="bi",
-                medium=enums.values.Fluid_Water,
-            )
-            pipe = connect(
-                first_port,
-                second_port,
-                medium=enums.values.Fluid_Water,
-                connection=Pipe,
-                name=_name("pipe", link_id),
-            )
-            pipe.label = f"EPANET pipe {link_id}"
-            pipe.comment = row.comment or f"EPANET link {node_1} — {node_2}."
-            length = _number(row.values[3], "pipe length")
-            diameter = _number(row.values[4], "pipe diameter")
-            pipe_candidates.append((diameter, link_id, node_2))
-            _static_quantity(
-                pipe,
-                _name("length", link_id),
-                length,
-                length_unit,
-                quantity_kinds.Length,
-                "Pipe length",
-            )
-            _static_quantity(
-                pipe,
-                _name("diameter", link_id),
-                diameter,
-                diameter_unit,
-                quantity_kinds.Length,
-                "Pipe diameter",
-            )
-            _static_quantity(
-                pipe,
-                _name("roughness", link_id),
-                _number(row.values[5], "pipe roughness"),
-                units.UNITLESS,
-                quantity_kinds.Dimensionless,
-                "EPANET roughness coefficient",
-            )
+            for row in network.sections.get("PUMPS", []):
+                if len(row.values) < 3:
+                    continue
+                link_id, node_1, node_2 = row.values[:3]
+                first = require_node(node_1, link_id)
+                second = require_node(node_2, link_id)
+                degree[node_1] += 1
+                degree[node_2] += 1
+                pump = Pump(
+                    _name("pump", link_id),
+                    label=f"EPANET pump {link_id}",
+                    comment=" ".join(row.values[3:]) or "EPANET pump.",
+                )
+                upstream_port = first.port(
+                    _name("pump-suction", f"{link_id}-{node_1}-end"),
+                    direction="out",
+                    medium=enums.values.Fluid_Water,
+                )
+                pump_in = pump.port(
+                    _name("pump-suction", f"{link_id}-pump-end"),
+                    direction="in",
+                    medium=enums.values.Fluid_Water,
+                )
+                pump_out = pump.port(
+                    _name("pump-discharge", f"{link_id}-pump-end"),
+                    direction="out",
+                    medium=enums.values.Fluid_Water,
+                )
+                downstream_port = second.port(
+                    _name("pump-discharge", f"{link_id}-{node_2}-end"),
+                    direction="in",
+                    medium=enums.values.Fluid_Water,
+                )
+                connect(
+                    upstream_port,
+                    pump_in,
+                    medium=enums.values.Fluid_Water,
+                    connection=Pipe,
+                    name=_name("pump-suction", link_id),
+                )
+                connect(
+                    pump_out,
+                    downstream_port,
+                    medium=enums.values.Fluid_Water,
+                    connection=Pipe,
+                    name=_name("pump-discharge", link_id),
+                )
+                downstream_by_pump.append((link_id, node_2))
 
-        for row in network.sections.get("PUMPS", []):
-            if len(row.values) < 3:
-                continue
-            link_id, node_1, node_2 = row.values[:3]
-            first = require_node(node_1, link_id)
-            second = require_node(node_2, link_id)
-            degree[node_1] += 1
-            degree[node_2] += 1
-            pump = Pump(
-                _name("pump", link_id),
-                label=f"EPANET pump {link_id}",
-                comment=" ".join(row.values[3:]) or "EPANET pump.",
-            )
-            upstream_port = first.port(
-                _name("pump-suction", f"{link_id}-{node_1}-end"),
-                direction="out",
-                medium=enums.values.Fluid_Water,
-            )
-            pump_in = pump.port(
-                _name("pump-suction", f"{link_id}-pump-end"),
-                direction="in",
-                medium=enums.values.Fluid_Water,
-            )
-            pump_out = pump.port(
-                _name("pump-discharge", f"{link_id}-pump-end"),
-                direction="out",
-                medium=enums.values.Fluid_Water,
-            )
-            downstream_port = second.port(
-                _name("pump-discharge", f"{link_id}-{node_2}-end"),
-                direction="in",
-                medium=enums.values.Fluid_Water,
-            )
-            connect(
-                upstream_port,
-                pump_in,
-                medium=enums.values.Fluid_Water,
-                connection=Pipe,
-                name=_name("pump-suction", link_id),
-            )
-            connect(
-                pump_out,
-                downstream_port,
-                medium=enums.values.Fluid_Water,
-                connection=Pipe,
-                name=_name("pump-discharge", link_id),
-            )
-            downstream_by_pump.append((link_id, node_2))
+            for row in network.sections.get("VALVES", []):
+                if len(row.values) < 3:
+                    continue
+                link_id, node_1, node_2 = row.values[:3]
+                first = require_node(node_1, link_id)
+                second = require_node(node_2, link_id)
+                degree[node_1] += 1
+                degree[node_2] += 1
+                valve = Valve(
+                    _name("valve", link_id),
+                    label=f"EPANET {row.values[4] if len(row.values) > 4 else ''} "
+                    f"valve {link_id}".strip(),
+                    comment=" ".join(row.values[3:]),
+                )
+                upstream_port = first.port(
+                    _name("valve-upstream", f"{link_id}-{node_1}-end"),
+                    direction="out",
+                    medium=enums.values.Fluid_Water,
+                )
+                valve_in = valve.port(
+                    _name("valve-upstream", f"{link_id}-valve-end"),
+                    direction="in",
+                    medium=enums.values.Fluid_Water,
+                )
+                valve_out = valve.port(
+                    _name("valve-downstream", f"{link_id}-valve-end"),
+                    direction="out",
+                    medium=enums.values.Fluid_Water,
+                )
+                downstream_port = second.port(
+                    _name("valve-downstream", f"{link_id}-{node_2}-end"),
+                    direction="in",
+                    medium=enums.values.Fluid_Water,
+                )
+                connect(
+                    upstream_port,
+                    valve_in,
+                    medium=enums.values.Fluid_Water,
+                    connection=Pipe,
+                    name=_name("valve-upstream", link_id),
+                )
+                connect(
+                    valve_out,
+                    downstream_port,
+                    medium=enums.values.Fluid_Water,
+                    connection=Pipe,
+                    name=_name("valve-downstream", link_id),
+                )
 
-        for row in network.sections.get("VALVES", []):
-            if len(row.values) < 3:
-                continue
-            link_id, node_1, node_2 = row.values[:3]
-            first = require_node(node_1, link_id)
-            second = require_node(node_2, link_id)
-            degree[node_1] += 1
-            degree[node_2] += 1
-            valve = Valve(
-                _name("valve", link_id),
-                label=f"EPANET {row.values[4] if len(row.values) > 4 else ''} "
-                f"valve {link_id}".strip(),
-                comment=" ".join(row.values[3:]),
+            junction_ids = sorted(
+                row.values[0] for row in network.sections.get("JUNCTIONS", [])
             )
-            upstream_port = first.port(
-                _name("valve-upstream", f"{link_id}-{node_1}-end"),
-                direction="out",
-                medium=enums.values.Fluid_Water,
-            )
-            valve_in = valve.port(
-                _name("valve-upstream", f"{link_id}-valve-end"),
-                direction="in",
-                medium=enums.values.Fluid_Water,
-            )
-            valve_out = valve.port(
-                _name("valve-downstream", f"{link_id}-valve-end"),
-                direction="out",
-                medium=enums.values.Fluid_Water,
-            )
-            downstream_port = second.port(
-                _name("valve-downstream", f"{link_id}-{node_2}-end"),
-                direction="in",
-                medium=enums.values.Fluid_Water,
-            )
-            connect(
-                upstream_port,
-                valve_in,
-                medium=enums.values.Fluid_Water,
-                connection=Pipe,
-                name=_name("valve-upstream", link_id),
-            )
-            connect(
-                valve_out,
-                downstream_port,
-                medium=enums.values.Fluid_Water,
-                connection=Pipe,
-                name=_name("valve-downstream", link_id),
-            )
-
-        junction_ids = sorted(
-            row.values[0] for row in network.sections.get("JUNCTIONS", [])
-        )
-        selected_junctions = {
-            epanet_id for epanet_id in junction_ids if degree[epanet_id] >= 3
-        }
-        target_count = round(len(junction_ids) * sensor_density)
-        if target_count and junction_ids:
-            step = max(1, len(junction_ids) // target_count)
-            selected_junctions.update(junction_ids[::step][:target_count])
-
-        pressure_locations = (
-            set(selected_junctions)
-            | {row.values[0] for row in network.sections.get("RESERVOIRS", [])}
-            | {row.values[0] for row in network.sections.get("TANKS", [])}
-            | {node_id for _, node_id in downstream_by_pump}
-        )
-        for epanet_id in sorted(pressure_locations):
-            location = nodes[epanet_id]
-            _add_sensor(
-                PressureSensor,
-                location,
-                sensor_name=_name("pressure-sensor", epanet_id),
-                property_name=_name("observed-pressure", epanet_id),
-                label=f"Pressure at {epanet_id}",
-                quantity_kind=quantity_kinds.Pressure,
-                unit=pressure_unit,
-                comment="Pressure monitoring point selected from network topology.",
-            )
-            sensor_count["pressure"] += 1
-
-        for row in network.sections.get("TANKS", []):
-            epanet_id = row.values[0]
-            _add_sensor(
-                LevelSensor,
-                nodes[epanet_id],
-                sensor_name=_name("level-sensor", epanet_id),
-                property_name=_name("observed-level", epanet_id),
-                label=f"Water level at {epanet_id}",
-                quantity_kind=quantity_kinds.Length,
-                unit=length_unit,
-                comment="Tank level instrumentation.",
-            )
-            sensor_count["level"] += 1
-
-        flow_locations = {
-            (f"pump-{link_id}", node_id)
-            for link_id, node_id in downstream_by_pump
-        }
-        trunk_count = max(1, round(len(pipe_candidates) * sensor_density / 2))
-        for _, link_id, node_id in sorted(pipe_candidates, reverse=True)[
-            :trunk_count
-        ]:
-            flow_locations.add((f"pipe-{link_id}", node_id))
-        for link_name, node_id in sorted(flow_locations):
-            _add_sensor(
-                FlowSensor,
-                nodes[node_id],
-                sensor_name=_name("flow-sensor", link_name),
-                property_name=_name("observed-flow", link_name),
-                label=f"Flow at {link_name}",
-                quantity_kind=quantity_kinds.VolumeFlowRate,
-                unit=flow_unit,
-                comment=f"Flow meter assigned to EPANET link {link_name}.",
-            )
-            sensor_count["flow"] += 1
-
-        if quality_sensors:
-            quality_locations = {
-                row.values[0]
-                for section in ("RESERVOIRS", "TANKS")
-                for row in network.sections.get(section, [])
+            selected_junctions = {
+                epanet_id for epanet_id in junction_ids if degree[epanet_id] >= 3
             }
-            quality_locations.update(
-                sorted(junction_ids, key=lambda item: (-degree[item], item))[:3]
+            target_count = round(len(junction_ids) * sensor_density)
+            if target_count and junction_ids:
+                step = max(1, len(junction_ids) // target_count)
+                selected_junctions.update(junction_ids[::step][:target_count])
+
+            pressure_locations = (
+                set(selected_junctions)
+                | {row.values[0] for row in network.sections.get("RESERVOIRS", [])}
+                | {row.values[0] for row in network.sections.get("TANKS", [])}
+                | {node_id for _, node_id in downstream_by_pump}
             )
-            for epanet_id in sorted(quality_locations):
+            for epanet_id in sorted(pressure_locations):
                 location = nodes[epanet_id]
                 _add_sensor(
-                    TurbidityMeter,
+                    PressureSensor,
                     location,
-                    sensor_name=_name("turbidity-meter", epanet_id),
-                    property_name=_name("observed-turbidity", epanet_id),
-                    label=f"Turbidity at {epanet_id}",
-                    quantity_kind=quantity_kinds.Turbidity,
-                    unit=units.NTU,
-                    comment="Water-quality monitoring suite.",
+                    sensor_name=_name("pressure-sensor", epanet_id),
+                    property_name=_name("observed-pressure", epanet_id),
+                    label=f"Pressure at {epanet_id}",
+                    quantity_kind=quantity_kinds.Pressure,
+                    unit=pressure_unit,
+                    comment="Pressure monitoring point selected from network topology.",
                 )
+                sensor_count["pressure"] += 1
+
+            for row in network.sections.get("TANKS", []):
+                epanet_id = row.values[0]
                 _add_sensor(
-                    TemperatureSensor,
-                    location,
-                    sensor_name=_name("temperature-sensor", epanet_id),
-                    property_name=_name("observed-temperature", epanet_id),
-                    label=f"Water temperature at {epanet_id}",
-                    quantity_kind=quantity_kinds.Temperature,
-                    unit=units.DEG_C,
-                    comment="Water-quality monitoring suite.",
+                    LevelSensor,
+                    nodes[epanet_id],
+                    sensor_name=_name("level-sensor", epanet_id),
+                    property_name=_name("observed-level", epanet_id),
+                    label=f"Water level at {epanet_id}",
+                    quantity_kind=quantity_kinds.Length,
+                    unit=length_unit,
+                    comment="Tank level instrumentation.",
                 )
-                sensor_count["quality"] += 2
+                sensor_count["level"] += 1
+
+            flow_locations = {
+                (f"pump-{link_id}", node_id) for link_id, node_id in downstream_by_pump
+            }
+            trunk_count = max(1, round(len(pipe_candidates) * sensor_density / 2))
+            for _, link_id, node_id in sorted(pipe_candidates, reverse=True)[
+                :trunk_count
+            ]:
+                flow_locations.add((f"pipe-{link_id}", node_id))
+            for link_name, node_id in sorted(flow_locations):
+                _add_sensor(
+                    FlowSensor,
+                    nodes[node_id],
+                    sensor_name=_name("flow-sensor", link_name),
+                    property_name=_name("observed-flow", link_name),
+                    label=f"Flow at {link_name}",
+                    quantity_kind=quantity_kinds.VolumeFlowRate,
+                    unit=flow_unit,
+                    comment=f"Flow meter assigned to EPANET link {link_name}.",
+                )
+                sensor_count["flow"] += 1
+
+            if quality_sensors:
+                quality_locations = {
+                    row.values[0]
+                    for section in ("RESERVOIRS", "TANKS")
+                    for row in network.sections.get(section, [])
+                }
+                quality_locations.update(
+                    sorted(junction_ids, key=lambda item: (-degree[item], item))[:3]
+                )
+                for epanet_id in sorted(quality_locations):
+                    location = nodes[epanet_id]
+                    _add_sensor(
+                        TurbidityMeter,
+                        location,
+                        sensor_name=_name("turbidity-meter", epanet_id),
+                        property_name=_name("observed-turbidity", epanet_id),
+                        label=f"Turbidity at {epanet_id}",
+                        quantity_kind=quantity_kinds.Turbidity,
+                        unit=units.NTU,
+                        comment="Water-quality monitoring suite.",
+                    )
+                    _add_sensor(
+                        TemperatureSensor,
+                        location,
+                        sensor_name=_name("temperature-sensor", epanet_id),
+                        property_name=_name("observed-temperature", epanet_id),
+                        label=f"Water temperature at {epanet_id}",
+                        quantity_kind=quantity_kinds.Temperature,
+                        unit=units.DEG_C,
+                        comment="Water-quality monitoring suite.",
+                    )
+                    sensor_count["quality"] += 2
 
     counts = {
         "nodes": len(nodes),

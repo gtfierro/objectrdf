@@ -7,6 +7,12 @@
 <urn:example/treatment> a owl:Ontology ;
     owl:imports <https://watermetadata.org/ontology/watr> .
 
+:treatment-system a s223:System ;
+    rdfs:label "treatment-system" ;
+    s223:hasMember :product-tank,
+        :transfer-pump,
+        :water-source .
+
 <https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
 
 :product-tank-out a s223:OutletConnectionPoint ;
@@ -19,21 +25,11 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :water-source .
 
-:product-tank a watr:Tank ;
-    rdfs:label "product-tank" ;
-    s223:hasConnectionPoint :product-tank-in,
-        :product-tank-out .
-
 :product-tank-in a s223:InletConnectionPoint ;
     rdfs:label "product-tank-in" ;
     s223:connectsThrough :transfer-pump--product-tank ;
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :product-tank .
-
-:transfer-pump a watr:Pump ;
-    rdfs:label "transfer-pump" ;
-    s223:hasConnectionPoint :transfer-pump-in,
-        :transfer-pump-out .
 
 :transfer-pump--product-tank a s223:Pipe ;
     rdfs:label "transfer-pump--product-tank" ;
@@ -53,11 +49,6 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :transfer-pump .
 
-:water-source a s223:Chiller ;
-    rdfs:label "water-source" ;
-    s223:hasConnectionPoint :water-source-in,
-        :water-source-out .
-
 :water-source--transfer-pump a s223:Pipe ;
     rdfs:label "water-source--transfer-pump" ;
     s223:connectsAt :transfer-pump-in,
@@ -69,4 +60,19 @@
     s223:connectsThrough :water-source--transfer-pump ;
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :water-source .
+
+:product-tank a watr:Tank ;
+    rdfs:label "product-tank" ;
+    s223:hasConnectionPoint :product-tank-in,
+        :product-tank-out .
+
+:transfer-pump a watr:Pump ;
+    rdfs:label "transfer-pump" ;
+    s223:hasConnectionPoint :transfer-pump-in,
+        :transfer-pump-out .
+
+:water-source a s223:Chiller ;
+    rdfs:label "water-source" ;
+    s223:hasConnectionPoint :water-source-in,
+        :water-source-out .
 

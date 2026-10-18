@@ -17,6 +17,7 @@ from objectrdf.core import (
     CPConstraint as _CPConstraint,
     CPSlot as _CPSlot,
     Entity as _EntityBase,
+    TermValue as _TermValue,
     EnumOne as _EnumOne,
     EnumSet as _EnumSet,
     EnumValue as _EnumValue,
@@ -5552,13 +5553,13 @@ class QuantifiableProperty(Property):
         properties=(_P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_value, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_quantity_value,),
     )
 
-    has_unit: _RelOne[_EntityBase] = _RelOne(_P_QuantifiableProperty_has_unit)
+    has_unit: _RelOne[_EntityBase | _TermValue] = _RelOne(_P_QuantifiableProperty_has_unit)
     """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
 
     has_deadband: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_deadband)
     """This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed. (http://data.ashrae.org/standard223#hasDeadband)"""
 
-    has_quantity_kind: _RelOne[_EntityBase] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
+    has_quantity_kind: _RelOne[_EntityBase | _TermValue] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
     """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
 
     has_threshold: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_threshold)
@@ -5583,7 +5584,7 @@ class QuantifiableProperty(Property):
         self,
         name: str | None = None,
         *,
-        has_quantity_kind: _EntityBase | None,
+        has_quantity_kind: _EntityBase | _TermValue | None,
         has_alarm_status: _Iterable[EnumerableProperty] = (),
         has_aspect: _Iterable[_EnumValue] = (),
         has_deadband: _Iterable[QuantifiableProperty] = (),
@@ -5592,7 +5593,7 @@ class QuantifiableProperty(Property):
         has_property: _Iterable[Property] = (),
         has_setpoint: _Iterable[QuantifiableProperty] = (),
         has_threshold: _Iterable[QuantifiableProperty] = (),
-        has_unit: _EntityBase | None = None,
+        has_unit: _EntityBase | _TermValue | None = None,
         has_value: object | None = None,
         is_delta_quantity: bool | None = None,
         is_internal_reference_of: Property | None = None,

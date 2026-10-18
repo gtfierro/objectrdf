@@ -318,6 +318,12 @@ def _solve_component(
                 entity.name,
                 f"required connection-point slot {slot_index}",
             )
+        maximum_ports = type(entity)._shape_max_ports
+        if maximum_ports is not None:
+            tracked(
+                z3.Sum([z3.If(point.active, 1, 0) for point in entity_points]) <= maximum_ports,
+                entity.name, "shape maximum connection-point count",
+            )
         for constraint_index, constraint in enumerate(
             _all_constraints(type(entity))
         ):
@@ -586,6 +592,11 @@ def _slot_expr(
         z3.And(point.active, _medium_allowed(point.medium, slot, media, enum_ids))
         for point in points
         if issubclass(point.cls, slot_cls)
+        and (
+            slot.label is None
+            or point.authored is not None and point.authored.label == slot.label
+            or point.existing is not None and point.existing.label == slot.label
+        )
     ]
     count = z3.Sum([z3.If(item, 1, 0) for item in matching]) if matching else z3.IntVal(0)
     terms = [count >= slot.min_count]
@@ -653,6 +664,11 @@ def _eligible(
         and (
             not isinstance(endpoint, PortHandle)
             or point.authored is endpoint
+        )
+        and (
+            isinstance(endpoint, (PortHandle, PointGroupRef))
+            or getattr(endpoint, "owner", None) is None
+            or point.existing is endpoint
         )
         and any(base.__name__ in names for base in point.cls.__mro__)
     ]
@@ -927,6 +943,11 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
     for handle, point in authored_points.items():
         if handle.roles:
             setattr(point, "has_role", handle.roles)
+        for prop in handle._properties:
+            getattr(point, "has_property").add(mapping[prop])
+        for authored_system in handle._boundary_systems:
+            system = mapping[authored_system]
+            getattr(system, "has_boundary_connection_point").add(point)
         if handle.paired_with is not None and handle.paired_with in authored_points:
             setattr(
                 point,
@@ -946,6 +967,11 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 point = point_entities[(id(boundary.owner), boundary.name)]
                 getattr(system, "has_boundary_connection_point").add(point)
     snapshot._resolving = False
+    from .core.query import _restore_recipe_points
+
+    for entity in snapshot.entities:
+        if type(entity)._point_declarations:
+            _restore_recipe_points(entity, type(entity)._point_declarations, strict=True)
     return ResolvedModel(
         snapshot,
         connection_entities,
@@ -1053,9 +1079,13 @@ def _result_roots(point: _PointResult) -> set[str]:
 
 
 def _owner(endpoint: Entity | PortHandle | PointGroupRef) -> Entity:
+    from .core.entity import Entity
     from .core.recipes import PointGroupRef
 
-    return endpoint.owner if isinstance(endpoint, (PortHandle, PointGroupRef)) else endpoint
+    if isinstance(endpoint, (PortHandle, PointGroupRef)):
+        return endpoint.owner
+    point_owner = getattr(endpoint, "owner", None)
+    return point_owner if isinstance(point_owner, Entity) else endpoint
 
 
 def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
@@ -1077,6 +1107,7 @@ def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
         copied._comment = entity.comment
         copied._data = {}
         copied._rels = {}
+        copied._recipe_points = {}
         copied._iri = ""
         copied._model = clone
         clone._bind(copied)
@@ -1087,7 +1118,7 @@ def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
         }
         for name, store in entity._rels.items():
             new_store = RelSet(copied, store._spec)
-            new_store._items = [mapping[item] for item in store._items]
+            new_store._items = [_map_value(item, mapping) for item in store._items]
             copied._rels[name] = new_store
     clone._resolving = False
     return clone, mapping

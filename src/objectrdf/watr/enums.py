@@ -508,8 +508,10 @@ _E_Role_Dehumidifying = _EnumValue('http://data.ashrae.org/standard223#Role-Dehu
 """`Role-Dehumidifying`"""
 _E_Role_Discharge = _EnumValue('http://data.ashrae.org/standard223#Role-Discharge', label='Discharge role', definition='`Role-Discharge`', parent=_E_EnumerationKind_Role)
 """`Role-Discharge`"""
-_E_Role_Drain = _EnumValue('https://watermetadata.org/ontology/watr#Role-Drain', label='Role-Drain', definition='A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance.', parent=_E_Role_Discharge)
-"""A role for a connection or stream that removes liquid from equipment, typically for emptying or maintenance."""
+_E_Role_Drain = _EnumValue('https://watermetadata.org/ontology/watr#Role-Drain', label='Role-Drain', definition='A connection point that empties a vessel below its working level, for maintenance or solids removal.', parent=_E_Role_Discharge)
+"""A connection point that empties a vessel below its working level, for maintenance or solids removal."""
+_E_Role_Overflow = _EnumValue('https://watermetadata.org/ontology/watr#Role-Overflow', label='Role-Overflow', definition="A connection point that discharges liquid above a tank's working level.", parent=_E_Role_Discharge)
+"""A connection point that discharges liquid above a tank's working level."""
 _E_Role_Economizer = _EnumValue('http://data.ashrae.org/standard223#Role-Economizer', label='Economizer role', definition='`Role-Economizer`', parent=_E_EnumerationKind_Role)
 """`Role-Economizer`"""
 _E_Role_Evaporator = _EnumValue('http://data.ashrae.org/standard223#Role-Evaporator', label='Evaporator role', definition='`Role-Evaporator`', parent=_E_EnumerationKind_Role)
@@ -544,50 +546,44 @@ _E_Role_Supply = _EnumValue('http://data.ashrae.org/standard223#Role-Supply', la
 """`Role-Supply`"""
 _E_Role_Ventilating = _EnumValue('http://data.ashrae.org/standard223#Role-Ventilating', label='Ventilating role', definition='`Role-Ventilating`', parent=_E_EnumerationKind_Role)
 """`Role-Ventilating`"""
-_E_Role_Aerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Aerobic', label='Aerobic', definition='A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism.', parent=_E_EnumerationKind_Role)
-"""A role for a process or vessel operated in the presence of dissolved oxygen, supporting aerobic microbial metabolism."""
-_E_Role_Anaerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anaerobic', label='Anaerobic', definition='A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism.', parent=_E_EnumerationKind_Role)
-"""A role for a process or vessel operated in the absence of both dissolved oxygen and nitrate, supporting anaerobic microbial metabolism."""
-_E_Role_Anoxic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anoxic', label='Anoxic', definition='A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification.', parent=_E_EnumerationKind_Role)
-"""A role for a process or vessel operated without dissolved oxygen but with nitrate or nitrite present, supporting denitrification."""
-_E_Role_Backwash = _EnumValue('https://watermetadata.org/ontology/watr#Role-Backwash', label='Role-Backwash', definition='A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids.', parent=_E_EnumerationKind_Role)
-"""A role for a stream or operating mode that reverses flow through a filter to dislodge and carry away accumulated solids."""
-_E_Role_Containment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Containment', label='Containment', definition='A role for a vessel or structure that holds material to prevent its release to the environment.', parent=_E_EnumerationKind_Role)
-"""A role for a vessel or structure that holds material to prevent its release to the environment."""
-_E_Role_Detention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Detention', label='Detention', definition='A role for a vessel that holds water for a defined period so that a treatment process can take place.', parent=_E_EnumerationKind_Role)
-"""A role for a vessel that holds water for a defined period so that a treatment process can take place."""
-_E_Role_Equalization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Equalization', label='Equalization', definition='A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input.', parent=_E_EnumerationKind_Role)
-"""A role for a vessel that buffers variation in flow rate or load so that downstream processes receive a steadier input."""
-_E_Role_Extended = _EnumValue('https://watermetadata.org/ontology/watr#Role-Extended', label='Extended', definition='A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration.', parent=_E_EnumerationKind_Role)
-"""A role for an activated sludge process operated at long hydraulic and solids retention times, as in extended aeration."""
-_E_Role_Feed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Feed', label='Feed', definition='A role for a stream or vessel that supplies influent to a process.', parent=_E_EnumerationKind_Role)
-"""A role for a stream or vessel that supplies influent to a process."""
-_E_Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='MakeUp', definition='A role for a stream that adds water or chemical to replace losses and maintain volume or concentration.', parent=_E_EnumerationKind_Role)
-"""A role for a stream that adds water or chemical to replace losses and maintain volume or concentration."""
-_E_Role_NutrientRemoval = _EnumValue('https://watermetadata.org/ontology/watr#Role-NutrientRemoval', label='Role-NutrientRemoval', definition='A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus.', parent=_E_EnumerationKind_Role)
-"""A role for a process whose purpose is the removal of nutrients, principally nitrogen and phosphorus."""
-_E_Role_Permeate = _EnumValue('https://watermetadata.org/ontology/watr#Role-Permeate', label='Permeate', definition='A role for the stream that has passed through a membrane, as opposed to the retained concentrate.', parent=_E_EnumerationKind_Role)
-"""A role for the stream that has passed through a membrane, as opposed to the retained concentrate."""
-_E_Role_Posttreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Posttreatment', label='Posttreatment', definition='A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse.', parent=_E_EnumerationKind_Role)
-"""A role for a process applied after the main treatment stages to condition the effluent for discharge or reuse."""
-_E_Role_Pretreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Pretreatment', label='Pretreatment', definition='A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them.', parent=_E_EnumerationKind_Role)
-"""A role for a process applied ahead of the main treatment stages to remove material that would otherwise impair them."""
-_E_Role_Primary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Primary', label='Primary', definition='A role for the first major treatment stage, typically removing settleable and floatable solids.', parent=_E_EnumerationKind_Role)
-"""A role for the first major treatment stage, typically removing settleable and floatable solids."""
-_E_Role_Retention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Retention', label='Retention', definition='A role for a vessel that holds water or solids for storage or continued settling.', parent=_E_EnumerationKind_Role)
-"""A role for a vessel that holds water or solids for storage or continued settling."""
-_E_Role_Secondary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Secondary', label='Secondary', definition='A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics.', parent=_E_EnumerationKind_Role)
-"""A role for the treatment stage following primary treatment, typically the biological removal of dissolved and colloidal organics."""
-_E_Role_SolidsHandling = _EnumValue('https://watermetadata.org/ontology/watr#Role-SolidsHandling', label='Solids handling (e.g., biosolids disposal)', definition='A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream.', parent=_E_EnumerationKind_Role)
-"""A role for processes that thicken, stabilize, dewater, or dispose of solids removed from the liquid stream."""
-_E_Role_Stabilization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stabilization', label='Stabilization', definition='A role for a process that reduces the biodegradability, odor, or pathogen content of solids.', parent=_E_EnumerationKind_Role)
-"""A role for a process that reduces the biodegradability, odor, or pathogen content of solids."""
-_E_Role_Stepfeed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stepfeed', label='Stepfeed', definition='A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor.', parent=_E_EnumerationKind_Role)
-"""A role for an activated sludge configuration in which influent is introduced at multiple points along the reactor."""
-_E_Role_Storage = _EnumValue('https://watermetadata.org/ontology/watr#Role-Storage', label='Storage', definition='A role for a vessel that holds water or material for later use.', parent=_E_EnumerationKind_Role)
-"""A role for a vessel that holds water or material for later use."""
-_E_Role_Tertiary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Tertiary', label='Tertiary', definition='A role for treatment applied after secondary treatment to further improve effluent quality.', parent=_E_EnumerationKind_Role)
-"""A role for treatment applied after secondary treatment to further improve effluent quality."""
+_E_Role_Aerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Aerobic', label='Aerobic', definition='The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it.', parent=_E_EnumerationKind_Role)
+"""The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it."""
+_E_Role_Anaerobic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anaerobic', label='Anaerobic', definition='The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate.', parent=_E_EnumerationKind_Role)
+"""The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate."""
+_E_Role_Anoxic = _EnumValue('https://watermetadata.org/ontology/watr#Role-Anoxic', label='Anoxic', definition='The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present.', parent=_E_EnumerationKind_Role)
+"""The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present."""
+_E_Role_Backwash = _EnumValue('https://watermetadata.org/ontology/watr#Role-Backwash', label='Role-Backwash', definition='Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it.', parent=_E_EnumerationKind_Role)
+"""Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it."""
+_E_Role_Containment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Containment', label='Containment', definition='The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant.', parent=_E_EnumerationKind_Role)
+"""The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant."""
+_E_Role_Detention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Detention', label='Detention', definition='The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete.', parent=_E_EnumerationKind_Role)
+"""The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete."""
+_E_Role_Equalization = _EnumValue('https://watermetadata.org/ontology/watr#Role-Equalization', label='Equalization', definition='The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream.', parent=_E_EnumerationKind_Role)
+"""The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream."""
+_E_Role_Extended = _EnumValue('https://watermetadata.org/ontology/watr#Role-Extended', label='Extended', definition='The equipment is operated at an extended solids retention time.', parent=_E_EnumerationKind_Role)
+"""The equipment is operated at an extended solids retention time."""
+_E_Role_Feed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Feed', label='Feed', definition='A connection point that admits the stream a process acts on.', parent=_E_EnumerationKind_Role)
+"""A connection point that admits the stream a process acts on."""
+_E_Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='MakeUp', definition='A connection point that admits water to replace what a process consumes or loses.', parent=_E_EnumerationKind_Role)
+"""A connection point that admits water to replace what a process consumes or loses."""
+_E_Role_Permeate = _EnumValue('https://watermetadata.org/ontology/watr#Role-Permeate', label='Permeate', definition='A connection point carrying the stream that has passed through a membrane.', parent=_E_EnumerationKind_Role)
+"""A connection point carrying the stream that has passed through a membrane."""
+_E_Role_Posttreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Posttreatment', label='Posttreatment', definition='The equipment sits after the main treatment train and conditions the effluent for discharge or reuse.', parent=_E_EnumerationKind_Role)
+"""The equipment sits after the main treatment train and conditions the effluent for discharge or reuse."""
+_E_Role_Pretreatment = _EnumValue('https://watermetadata.org/ontology/watr#Role-Pretreatment', label='Pretreatment', definition='The equipment sits ahead of the main treatment train and conditions the influent for it.', parent=_E_EnumerationKind_Role)
+"""The equipment sits ahead of the main treatment train and conditions the influent for it."""
+_E_Role_Primary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Primary', label='Primary', definition='Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop.', parent=_E_EnumerationKind_Role)
+"""Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop."""
+_E_Role_Retention = _EnumValue('https://watermetadata.org/ontology/watr#Role-Retention', label='Retention', definition='The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate.', parent=_E_EnumerationKind_Role)
+"""The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate."""
+_E_Role_Secondary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Secondary', label='Secondary', definition='Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop.', parent=_E_EnumerationKind_Role)
+"""Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop."""
+_E_Role_Stepfeed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stepfeed', label='Stepfeed', definition='The equipment is fed at multiple points along its length rather than only at its head.', parent=_E_EnumerationKind_Role)
+"""The equipment is fed at multiple points along its length rather than only at its head."""
+_E_Role_Storage = _EnumValue('https://watermetadata.org/ontology/watr#Role-Storage', label='Storage', definition='The equipment holds water or sludge for later use rather than acting on it.', parent=_E_EnumerationKind_Role)
+"""The equipment holds water or sludge for later use rather than acting on it."""
+_E_Role_Tertiary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Tertiary', label='Tertiary', definition='Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents.', parent=_E_EnumerationKind_Role)
+"""Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents."""
 _E_EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=_E_EnumerationKind)
 """
 This class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.
@@ -1506,8 +1502,16 @@ _E_Constituent_VolatileOrganicCompounds = _EnumValue('http://data.ashrae.org/sta
 """`Constituent-VolatileOrganicCompounds`"""
 _E_Constituent_Ammonia = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Ammonia', label='Ammonia', definition='Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium.', parent=_E_Medium_Constituent)
 """Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium."""
+_E_Constituent_ASM2d_S_NH4 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_NH4', label='ASM2d ammonia and ammonium nitrogen', definition='S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass.', parent=_E_Constituent_Ammonia)
+"""S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass."""
 _E_Constituent_Bacteria = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Bacteria', label='Constituent Bacteria', definition='Bacteria: Microscopic single-celled organisms that can be found in water', parent=_E_Medium_Constituent)
 """Bacteria: Microscopic single-celled organisms that can be found in water"""
+_E_Constituent_ASM2d_X_AUT = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_AUT', label='ASM2d autotrophic nitrifying organisms', definition='X_AUT: autotrophic nitrifying organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
+"""X_AUT: autotrophic nitrifying organism biomass pool in ASM2d."""
+_E_Constituent_ASM2d_X_H = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_H', label='ASM2d heterotrophic organisms', definition='X_H: heterotrophic organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
+"""X_H: heterotrophic organism biomass pool in ASM2d."""
+_E_Constituent_ASM2d_X_PAO = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_PAO', label='ASM2d phosphate-accumulating organisms', definition='X_PAO: phosphate-accumulating organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
+"""X_PAO: phosphate-accumulating organism biomass pool in ASM2d."""
 _E_Constituent_Cyanide = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Cyanide', label='Constituent Cyanide', definition='Cyanide: A highly toxic chemical compound that can be harmful to aquatic life', parent=_E_Medium_Constituent)
 """Cyanide: A highly toxic chemical compound that can be harmful to aquatic life"""
 _E_Constituent_DissolvedOxygen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedOxygen', label='Dissolved Oxygen', definition='Molecular oxygen dissolved in a treatment medium.', parent=_E_Medium_Constituent)
@@ -1516,6 +1520,10 @@ _E_Constituent_InorganicCarbon = _EnumValue('https://watermetadata.org/ontology/
 """Inorganic carbon species present as constituents of a treatment medium."""
 _E_Constituent_Inorganics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Inorganics', label='Constituent-Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
 """Inorganic chemical matter present as a constituent of a treatment medium."""
+_E_Constituent_ASM2d_S_NO3 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_NO3', label='ASM2d nitrate and nitrite nitrogen', definition='S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone.', parent=_E_Constituent_Inorganics)
+"""S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone."""
+_E_Constituent_ASM2d_S_PO4 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_PO4', label='ASM2d soluble inorganic phosphorus', definition='S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus.', parent=_E_Constituent_Inorganics)
+"""S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus."""
 _E_Constituent_Metals = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Metals', label='Constituent-Metals', definition='Constituent-Metals', parent=_E_Medium_Constituent)
 """Constituent-Metals"""
 _E_Constituent_Nitrate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrate', label='Nitrate', definition='Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium.', parent=_E_Medium_Constituent)
@@ -1526,6 +1534,12 @@ _E_Constituent_NitrogenOxides = _EnumValue('https://watermetadata.org/ontology/w
 """Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms."""
 _E_Constituent_Organics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Organics', label='Constituent-Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
 """Organic chemical matter present as a constituent of a treatment medium."""
+_E_Constituent_ASM2d_S_A = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_A', label='ASM2d fermentation products', definition='S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration.', parent=_E_Constituent_Organics)
+"""S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration."""
+_E_Constituent_ASM2d_S_F = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_F', label='ASM2d fermentable substrates', definition='S_F: soluble, readily biodegradable fermentable organic substrate pool in ASM2d, expressed on a COD basis.', parent=_E_Constituent_Organics)
+"""S_F: soluble, readily biodegradable fermentable organic substrate pool in ASM2d, expressed on a COD basis."""
+_E_Constituent_ASM2d_S_I = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_I', label='ASM2d inert soluble organics', definition='S_I: inert soluble organic material pool in ASM2d.', parent=_E_Constituent_Organics)
+"""S_I: inert soluble organic material pool in ASM2d."""
 _E_Constituent_OrganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-OrganicCarbon', label='Organic Carbon', definition='Organic carbon present as a constituent of a treatment medium.', parent=_E_Constituent_Organics)
 """Organic carbon present as a constituent of a treatment medium."""
 _E_Constituent_Particles = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Particles', label='Constituent-Particles', definition='Particulate matter present as a constituent of a medium.', parent=_E_Medium_Constituent)
@@ -1534,6 +1548,18 @@ _E_Constituent_Solids = _EnumValue('https://watermetadata.org/ontology/watr#Cons
 """Solid material present as a constituent of a treatment medium."""
 _E_Constituent_SuspendedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-SuspendedSolids', label='Constituent-SuspendedSolids', definition='Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid.', parent=_E_Constituent_Solids)
 """Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid."""
+_E_Constituent_ASM2d_X_I = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_I', label='ASM2d inert particulate organics', definition='X_I: inert particulate organic material pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
+"""X_I: inert particulate organic material pool in ASM2d."""
+_E_Constituent_ASM2d_X_MeOH = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_MeOH', label='ASM2d metal hydroxides', definition='X_MeOH: metal hydroxide particulate pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
+"""X_MeOH: metal hydroxide particulate pool in ASM2d."""
+_E_Constituent_ASM2d_X_MeP = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_MeP', label='ASM2d metal phosphates', definition='X_MeP: metal phosphate particulate pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
+"""X_MeP: metal phosphate particulate pool in ASM2d."""
+_E_Constituent_ASM2d_X_PHA = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_PHA', label='ASM2d stored polyhydroxyalkanoates', definition='X_PHA: intracellular polyhydroxyalkanoate storage pool of phosphate-accumulating organisms in ASM2d.', parent=_E_Constituent_SuspendedSolids)
+"""X_PHA: intracellular polyhydroxyalkanoate storage pool of phosphate-accumulating organisms in ASM2d."""
+_E_Constituent_ASM2d_X_PP = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_PP', label='ASM2d stored polyphosphate', definition='X_PP: intracellular polyphosphate storage pool of phosphate-accumulating organisms in ASM2d.', parent=_E_Constituent_SuspendedSolids)
+"""X_PP: intracellular polyphosphate storage pool of phosphate-accumulating organisms in ASM2d."""
+_E_Constituent_ASM2d_X_S = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_S', label='ASM2d slowly biodegradable substrates', definition='X_S: slowly biodegradable particulate substrate pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
+"""X_S: slowly biodegradable particulate substrate pool in ASM2d."""
 _E_Constituent_Salt = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Salt', label='Constituent-Salt', definition='Constituent-Salt', parent=_E_Medium_Constituent)
 """Constituent-Salt"""
 _E_Salt_NaCl = _EnumValue('https://watermetadata.org/ontology/watr#Salt-NaCl', label='Salt-NaCl', definition='Salt-NaCl', parent=_E_Constituent_Salt)
@@ -1657,18 +1683,18 @@ _E_Water_HotWater = _EnumValue('http://data.ashrae.org/standard223#Water-HotWate
 """Water-Hot water"""
 _E_Water_Steam = _EnumValue('http://data.ashrae.org/standard223#Water-Steam', label='Steam', definition='Water-Steam', parent=_E_Fluid_Water)
 """Water-Steam"""
-_E_Water_Brackish = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brackish', label='Water-Brackish', definition='Water-Brackish', parent=_E_Fluid_Water)
-"""Water-Brackish"""
-_E_Water_Brine = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brine', label='Water-Brine', definition='Water-Brine', parent=_E_Fluid_Water)
-"""Water-Brine"""
-_E_Water_Freshwater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Freshwater', label='Water-Freshwater', definition='Water-Freshwater', parent=_E_Fluid_Water)
-"""Water-Freshwater"""
-_E_Water_Seawater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Seawater', label='Water-Seawater', definition='Water-Seawater', parent=_E_Fluid_Water)
-"""Water-Seawater"""
-_E_Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry composed of water and solids.', parent=_E_Mix_Fluid)
+_E_Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry composed of water and solids.', parent=_E_Fluid_Water)
 """A semi-solid slurry composed of water and solids."""
 _E_Sludge_MixedLiquor = _EnumValue('https://watermetadata.org/ontology/watr#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=_E_Fluid_Sludge)
 """Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water."""
+_E_Water_Brackish = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brackish', label='Water-Brackish', definition='Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+"""Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
+_E_Water_Brine = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brine', label='Water-Brine', definition='Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+"""Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
+_E_Water_Freshwater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Freshwater', label='Water-Freshwater', definition='Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+"""Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media."""
+_E_Water_Seawater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Seawater', label='Water-Seawater', definition='Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
+"""Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
 _E_Mix_PowerAndSignal = _EnumValue('http://data.ashrae.org/standard223#Mix-PowerAndSignal', label='Power and signal mixture', definition='This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.\n\n: Mix-PowerAndSignal Enumerations\n\n| Enumeration |\n|:-----------|\n| `PowerAndSignal-PoE` |', parent=_E_Medium_Mix)
 """This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.
 
@@ -1763,8 +1789,9 @@ _E_ThermodynamicPhase_Vapor = _EnumValue('http://data.ashrae.org/standard223#The
 """`ThermodynamicPhase-Vapor`"""
 _E_EnumerationKind_DataProcessing = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-DataProcessing', label='DataQuality', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=_E_EnumerationKind)
 """This EnumerationKind describes methods of data processing, aggregation, or imputation"""
-_E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', definition='An enumeration kind describing the accumulated operating time of a piece of equipment.', parent=_E_EnumerationKind)
-"""An enumeration kind describing the accumulated operating time of a piece of equipment."""
+_E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', parent=_E_EnumerationKind)
+"""Runtime"""
+_E_Fluid_Sludge._add_parent(_E_Mix_Fluid)
 EnumerationKind = _E_EnumerationKind
 Aspect = _E_EnumerationKind_Aspect
 Binary = _E_EnumerationKind_Binary
@@ -1915,6 +1942,7 @@ class _Values:
     Role_Dehumidifying = _E_Role_Dehumidifying
     Role_Discharge = _E_Role_Discharge
     Role_Drain = _E_Role_Drain
+    Role_Overflow = _E_Role_Overflow
     Role_Economizer = _E_Role_Economizer
     Role_Evaporator = _E_Role_Evaporator
     Role_Exhaust = _E_Role_Exhaust
@@ -1942,15 +1970,12 @@ class _Values:
     Role_Extended = _E_Role_Extended
     Role_Feed = _E_Role_Feed
     Role_MakeUp = _E_Role_MakeUp
-    Role_NutrientRemoval = _E_Role_NutrientRemoval
     Role_Permeate = _E_Role_Permeate
     Role_Posttreatment = _E_Role_Posttreatment
     Role_Pretreatment = _E_Role_Pretreatment
     Role_Primary = _E_Role_Primary
     Role_Retention = _E_Role_Retention
     Role_Secondary = _E_Role_Secondary
-    Role_SolidsHandling = _E_Role_SolidsHandling
-    Role_Stabilization = _E_Role_Stabilization
     Role_Stepfeed = _E_Role_Stepfeed
     Role_Storage = _E_Role_Storage
     Role_Tertiary = _E_Role_Tertiary
@@ -2201,20 +2226,35 @@ class _Values:
     Constituent_SO2 = _E_Constituent_SO2
     Constituent_VolatileOrganicCompounds = _E_Constituent_VolatileOrganicCompounds
     Constituent_Ammonia = _E_Constituent_Ammonia
+    Constituent_ASM2d_S_NH4 = _E_Constituent_ASM2d_S_NH4
     Constituent_Bacteria = _E_Constituent_Bacteria
+    Constituent_ASM2d_X_AUT = _E_Constituent_ASM2d_X_AUT
+    Constituent_ASM2d_X_H = _E_Constituent_ASM2d_X_H
+    Constituent_ASM2d_X_PAO = _E_Constituent_ASM2d_X_PAO
     Constituent_Cyanide = _E_Constituent_Cyanide
     Constituent_DissolvedOxygen = _E_Constituent_DissolvedOxygen
     Constituent_InorganicCarbon = _E_Constituent_InorganicCarbon
     Constituent_Inorganics = _E_Constituent_Inorganics
+    Constituent_ASM2d_S_NO3 = _E_Constituent_ASM2d_S_NO3
+    Constituent_ASM2d_S_PO4 = _E_Constituent_ASM2d_S_PO4
     Constituent_Metals = _E_Constituent_Metals
     Constituent_Nitrate = _E_Constituent_Nitrate
     Constituent_Nitrite = _E_Constituent_Nitrite
     Constituent_NitrogenOxides = _E_Constituent_NitrogenOxides
     Constituent_Organics = _E_Constituent_Organics
+    Constituent_ASM2d_S_A = _E_Constituent_ASM2d_S_A
+    Constituent_ASM2d_S_F = _E_Constituent_ASM2d_S_F
+    Constituent_ASM2d_S_I = _E_Constituent_ASM2d_S_I
     Constituent_OrganicCarbon = _E_Constituent_OrganicCarbon
     Constituent_Particles = _E_Constituent_Particles
     Constituent_Solids = _E_Constituent_Solids
     Constituent_SuspendedSolids = _E_Constituent_SuspendedSolids
+    Constituent_ASM2d_X_I = _E_Constituent_ASM2d_X_I
+    Constituent_ASM2d_X_MeOH = _E_Constituent_ASM2d_X_MeOH
+    Constituent_ASM2d_X_MeP = _E_Constituent_ASM2d_X_MeP
+    Constituent_ASM2d_X_PHA = _E_Constituent_ASM2d_X_PHA
+    Constituent_ASM2d_X_PP = _E_Constituent_ASM2d_X_PP
+    Constituent_ASM2d_X_S = _E_Constituent_ASM2d_X_S
     Constituent_Salt = _E_Constituent_Salt
     Salt_NaCl = _E_Salt_NaCl
     WastewaterTreatmentChemical = _E_WastewaterTreatmentChemical
@@ -2252,12 +2292,12 @@ class _Values:
     GlycolSolution_30Percent = _E_GlycolSolution_30Percent
     Water_HotWater = _E_Water_HotWater
     Water_Steam = _E_Water_Steam
+    Fluid_Sludge = _E_Fluid_Sludge
+    Sludge_MixedLiquor = _E_Sludge_MixedLiquor
     Water_Brackish = _E_Water_Brackish
     Water_Brine = _E_Water_Brine
     Water_Freshwater = _E_Water_Freshwater
     Water_Seawater = _E_Water_Seawater
-    Fluid_Sludge = _E_Fluid_Sludge
-    Sludge_MixedLiquor = _E_Sludge_MixedLiquor
     Mix_PowerAndSignal = _E_Mix_PowerAndSignal
     PowerAndSignal_PoE = _E_PowerAndSignal_PoE
     Medium_ThermalContact = _E_Medium_ThermalContact
@@ -2411,6 +2451,7 @@ class _Values:
         'Role_Dehumidifying',
         'Role_Discharge',
         'Role_Drain',
+        'Role_Overflow',
         'Role_Economizer',
         'Role_Evaporator',
         'Role_Exhaust',
@@ -2438,15 +2479,12 @@ class _Values:
         'Role_Extended',
         'Role_Feed',
         'Role_MakeUp',
-        'Role_NutrientRemoval',
         'Role_Permeate',
         'Role_Posttreatment',
         'Role_Pretreatment',
         'Role_Primary',
         'Role_Retention',
         'Role_Secondary',
-        'Role_SolidsHandling',
-        'Role_Stabilization',
         'Role_Stepfeed',
         'Role_Storage',
         'Role_Tertiary',
@@ -2697,20 +2735,35 @@ class _Values:
         'Constituent_SO2',
         'Constituent_VolatileOrganicCompounds',
         'Constituent_Ammonia',
+        'Constituent_ASM2d_S_NH4',
         'Constituent_Bacteria',
+        'Constituent_ASM2d_X_AUT',
+        'Constituent_ASM2d_X_H',
+        'Constituent_ASM2d_X_PAO',
         'Constituent_Cyanide',
         'Constituent_DissolvedOxygen',
         'Constituent_InorganicCarbon',
         'Constituent_Inorganics',
+        'Constituent_ASM2d_S_NO3',
+        'Constituent_ASM2d_S_PO4',
         'Constituent_Metals',
         'Constituent_Nitrate',
         'Constituent_Nitrite',
         'Constituent_NitrogenOxides',
         'Constituent_Organics',
+        'Constituent_ASM2d_S_A',
+        'Constituent_ASM2d_S_F',
+        'Constituent_ASM2d_S_I',
         'Constituent_OrganicCarbon',
         'Constituent_Particles',
         'Constituent_Solids',
         'Constituent_SuspendedSolids',
+        'Constituent_ASM2d_X_I',
+        'Constituent_ASM2d_X_MeOH',
+        'Constituent_ASM2d_X_MeP',
+        'Constituent_ASM2d_X_PHA',
+        'Constituent_ASM2d_X_PP',
+        'Constituent_ASM2d_X_S',
         'Constituent_Salt',
         'Salt_NaCl',
         'WastewaterTreatmentChemical',
@@ -2748,12 +2801,12 @@ class _Values:
         'GlycolSolution_30Percent',
         'Water_HotWater',
         'Water_Steam',
+        'Fluid_Sludge',
+        'Sludge_MixedLiquor',
         'Water_Brackish',
         'Water_Brine',
         'Water_Freshwater',
         'Water_Seawater',
-        'Fluid_Sludge',
-        'Sludge_MixedLiquor',
         'Mix_PowerAndSignal',
         'PowerAndSignal_PoE',
         'Medium_ThermalContact',

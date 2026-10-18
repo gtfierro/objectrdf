@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any, TypeVar, cast
+from typing import Any, Literal, TypeVar, cast
 
 from objectrdf.core import (
     ClassInfo,
@@ -11,6 +11,7 @@ from objectrdf.core import (
     Entity,
     Lit,
     Model,
+    PortHandle,
     OntologyInfo,
     PropertySpec,
     Registry,
@@ -19,6 +20,7 @@ from objectrdf.core import (
 )
 
 from . import quantity_kinds, units
+from objectrdf.core.property_schema import QuantityAmount
 
 QUDT = "http://qudt.org/schema/qudt/"
 ONTOLOGY = OntologyInfo(
@@ -29,6 +31,26 @@ ONTOLOGY = OntologyInfo(
 )
 _REGISTRY = Registry(ONTOLOGY)
 PropertyT = TypeVar("PropertyT", bound=Entity)
+QuantityMode = Literal["static", "nominal", "observable", "actuatable"]
+
+
+def _quantity_class(registry: Registry, mode: QuantityMode) -> type[Entity]:
+    class_names = {
+        "nominal": "QuantifiableProperty",
+        "static": "QuantifiableProperty",
+        "observable": "QuantifiableObservableProperty",
+        "actuatable": "QuantifiableActuatableProperty",
+    }
+    try:
+        class_name = class_names[mode]
+    except KeyError:
+        raise ValueError(f"unknown quantity mode {mode!r}") from None
+    property_class = registry.by_iri.get(
+        f"http://data.ashrae.org/standard223#{class_name}"
+    )
+    if property_class is None:
+        raise TypeError(f"{registry.ontology.name} has no {class_name} class")
+    return property_class
 
 _NUMERIC_VALUE = PropertySpec(
     name="numeric_value",
@@ -88,7 +110,8 @@ def quantity(
     unit: TermValue,
     quantity_kind: TermValue,
     *,
-    of: Entity | ConnectionHandle | None = None,
+    of: Entity | ConnectionHandle | PortHandle | None = None,
+    datatype: str | None = None,
     **properties: Any,
 ) -> PropertyT:
     """Instantiate an S223 property with a fixed scalar value and QUDT context.
@@ -117,9 +140,63 @@ def quantity(
         has_value=value,
         **properties,
     )
+    if datatype is not None:
+        from rdflib import Literal, URIRef
+
+        prop._data["has_value"] = Literal(value, datatype=URIRef(datatype))
+        prop.meta.model._touch(prop)
     if of is not None:
-        getattr(of, "has_property").add(prop)
+        if isinstance(of, PortHandle):
+            of._properties.append(prop)
+            of._model._touch(of.owner)
+        else:
+            getattr(of, "has_property").add(prop)
     return cast(PropertyT, prop)
+
+
+def _attached_quantity(
+    target: Entity | PortHandle | ConnectionHandle,
+    name: str,
+    value: float | QuantityAmount,
+    *,
+    unit: TermValue | None,
+    kind: TermValue,
+    capability: Literal["static", "observable", "actuatable"] = "static",
+    mode: Literal["nominal", "observable", "actuatable"] | None = None,
+    label: str | None = None,
+    **properties: Any,
+) -> Entity:
+    """Shared scalar construction for concrete and deferred subjects."""
+    from objectrdf.core.property_schema import QuantityDefinition
+
+    if mode is not None and capability != "static":
+        raise ValueError("use capability or legacy mode, not both")
+    if isinstance(value, QuantityAmount):
+        if unit is not None and unit.iri != value.unit.iri:
+            raise ValueError("explicit amount and unit argument disagree")
+        unit = value.unit
+    if unit is None:
+        raise TypeError("supply unit= or a QuantityAmount")
+    definition = QuantityDefinition(name, "scalar quantity", kind, unit)
+    number, selected_unit = definition.unpack(value)
+    if isinstance(target, Entity):
+        registry = target.meta.registry
+        model = target.meta.model
+    elif isinstance(target, PortHandle):
+        registry = target.owner.meta.registry
+        model = target._model
+    else:
+        registry = target._connection_type().meta.registry
+        model = target._model
+    if mode == "nominal" and "has_aspect" not in properties:
+        properties["has_aspect"] = [registry.resolve_enum(
+            "http://data.ashrae.org/standard223#Aspect-Nominal"
+        )]
+    with model._atomic():
+        return quantity(
+            _quantity_class(registry, mode or capability), name, number,
+            selected_unit, kind, of=target, label=label, **properties,
+        )
 
 
 @dataclass(frozen=True)
@@ -172,6 +249,7 @@ def stream_state(
 __all__ = [
     "ONTOLOGY",
     "QuantityValue",
+    "QuantityAmount",
     "StreamState",
     "quantity",
     "quantity_kinds",

@@ -1,4 +1,4 @@
-# Quantities, values, and nominal stream state
+# Quantities and property schemas
 
 ## Simple fixed values
 
@@ -35,17 +35,49 @@ measurement semantics.
 through ontoenv. They are immutable reference terms, not locally minted
 entities:
 
-```python
-from objectrdf.qudt import quantity, quantity_kinds, units
+When the subject has `hasProperty`, call `quantity` on it to use its package's
+`QuantifiableProperty` class and attach the property in one step:
 
-pressure = quantity(
-    watr.QuantifiableProperty,
+```python
+from objectrdf.qudt import quantity_kinds, units
+
+pressure = pump.quantity(
     "operating-pressure",
     7_000_000,
-    units.PA,
-    quantity_kinds.Pressure,
-    of=pump,
+    unit=units.PA,
+    kind=quantity_kinds.Pressure,
     has_aspect=[enums.values.Aspect_Nominal],
+)
+```
+
+`pressure` is a named `QuantifiableProperty` object in the model, linked from
+`pump` by `hasProperty`. The default `capability="static"` selects
+`QuantifiableProperty`. Use `capability="observable"` for an observed value or
+`capability="actuatable"` for a writable value that can trigger actuation.
+Capability is independent of interpretation: add `Aspect_Nominal` explicitly
+for a nominal value. Observable properties do not imply an actual aspect.
+
+```python
+reading = pump.quantity(
+    "discharge-pressure",
+    7_000_000,
+    unit=units.PA,
+    kind=quantity_kinds.Pressure,
+    capability="observable",
+)
+```
+
+The same method works on a concrete `ConnectionPoint`. A deferred port from
+`equipment.port(...)` can also accept a quantity; the property attaches to
+the concrete connection point when the model resolves:
+
+```python
+outlet = pump.port("pump-out", direction="out")
+outlet.quantity(
+    "outlet-pressure",
+    7_000_000,
+    unit=units.PA,
+    kind=quantity_kinds.Pressure,
 )
 ```
 
@@ -55,45 +87,66 @@ scalar `hasValue` and identifies its QUDT quantity kind and unit. A
 QUDT form, but it is not required for a fixed S223 property value. If a QUDT
 term is also declared as a class (punned), the compiled named individual is
 still used; authoring never creates a new local unit or quantity-kind instance.
-The helper returns the same generated property type passed as its first
-argument, so both `s223.QuantifiableProperty` and
-`watr.QuantifiableProperty` retain their package-specific static type.
+The lower-level `objectrdf.qudt.quantity(...)` helper remains available for
+code that needs to choose a property class explicitly.
 
-## Medium and substance-qualified stream properties
+## Reusable schemas from RDF and SHACL
 
-For a nominal flow state, use a non-RDF authoring view. Its subject can be an
-authored connection point or a deferred `ConnectionHandle`:
+Define reusable quantity metadata and defaults in SHACL, then generate typed,
+immutable value schemas. Model authors supply values and apply the schema:
 
 ```python
-from objectrdf.qudt import stream_state
+from objectrdf.qudt import QuantityAmount as Q, units
+from objectrdf.watr.asm2d import AerobicDesign, OxygenOutletState
 
-state = stream_state(feed_out, medium=enums.values.Water_Seawater)
-tds = state.quantity(
-    watr.QuantifiableProperty,
+design = AerobicDesign(oxygen_transfer_coefficient=10.0)
+r5.apply_properties(design)
+r6.apply_properties(design)
+r5.outlet.apply_properties(
+    OxygenOutletState(oxygen_concentration=Q(0.00191, units.KiloGM_PER_M3))
+)
+```
+
+Each application creates separate RDF property entities. `AerobicDesign`'s
+volume default and the default units come from SHACL. Explicit quantities retain
+their value and permitted compatible unit without implicit conversion.
+`describe()` lists fields, units, defaults, qualifications, and source shapes.
+
+The same `apply_properties(...)` method works on equipment, points, and connection
+handles. It returns a read-only `PropertySet` keyed by field name. `prefix=`
+chooses a different naming stem; duplicate names fail atomically. Attach a value
+to the point or connection it describes, rather than moving it onto equipment.
+
+See [SHACL configurations](shacl-configurations.md) for schema authoring and
+[ASM2d](asm2d-proposed-example.md) for a complete model. Existing `PropertyBundle`,
+`apply_property_block`, `stream_state`, and `mode=` APIs remain available for
+compatibility. New domain APIs should use generated schemas; use `capability=`
+and explicit aspects for individual quantities. Legacy `mode="nominal"` adds
+the nominal aspect to a static property.
+
+## Medium and substance qualifications
+
+A scalar quantity can identify its medium, substance, and interpretation directly:
+
+```python
+feed.outlet.quantity(
     "influent-tds",
-    35.0,
-    units.GM_PER_L,
-    quantity_kinds.MassConcentration,
-    substance=enums.values.Constituent_Salt,
+    Q(35.0, units.GM_PER_L),
+    kind=quantity_kinds.MassConcentration,
+    of_medium=enums.values.Water_Seawater,
+    of_substance=enums.values.Constituent_Salt,
     has_aspect=[enums.values.Aspect_Nominal],
 )
 ```
 
-The helper stages the property on the deferred connection and qualifies it
-with `ofMedium`. `substance=` similarly uses `ofSubstance`. It adds no
-framework-specific RDF class. The example above therefore says that `tds` is
-a nominal salt mass concentration of the seawater at `feed_out`; it does not
-create a new stream-state individual or a simulation state.
+Media, constituents, substances, and aspects are ontology individuals from the
+package's `enums` module. Add missing terms in an ontology extension and
+regenerate its package. The model does not create a separate stream-state
+individual for these properties.
 
-Media, constituents, substances, and aspects are ontology individuals from
-the package's `enums` module. If the needed substance does not exist, define it
-in an ontology extension with the appropriate S223/WaTr parent and regenerate
-the package. A Python-only ad hoc enum would have no portable RDF definition.
-
-See
-[`examples/watr/seawater_ro/watertap_seawater_ro_full.py`](../examples/watr/seawater_ro/watertap_seawater_ro_full.py)
-for inlet composition, equipment design properties, residence times,
-efficiencies, pressures, and UV parameters using these patterns.
+See [the seawater RO example](../examples/watr/seawater_ro/watertap_seawater_ro_full.py)
+for generated schemas covering composition, equipment design, pressures,
+residence times, efficiencies, and UV parameters.
 
 ## What belongs in the ontology
 

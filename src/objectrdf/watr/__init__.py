@@ -17,6 +17,7 @@ from objectrdf.core import (
     CPConstraint as _CPConstraint,
     CPSlot as _CPSlot,
     Entity as _EntityBase,
+    TermValue as _TermValue,
     EnumOne as _EnumOne,
     EnumSet as _EnumSet,
     EnumValue as _EnumValue,
@@ -36,7 +37,7 @@ ONTOLOGY = _OntologyInfo(
     name='WATR',
     iri='https://watermetadata.org/ontology/watr',
     version='0.2',
-    source='https://watermetadata.org/watr.ttl',
+    source='ontology/watr-pr39-pr46.ttl',
 )
 
 _REGISTRY = _Registry(ONTOLOGY)
@@ -139,6 +140,103 @@ class AbstractClass(Class_2):
         definition='This is a modeling construct. Instances of abstract classes cannot be created. All abstract classes in this standard have a more specific subclass.',
     )
 
+_P_Concept_2_abbreviation = _PropertySpec(
+    name='abbreviation',
+    predicate='http://qudt.org/schema/qudt/abbreviation',
+    kind='literal',
+    label='abbreviation',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Concept_2_code = _PropertySpec(
+    name='code',
+    predicate='http://www.linkedmodel.org/schema/dtype#code',
+    kind='object',
+    label='code',
+    definition='A unique value that is assigned to an enumeration member.',
+)
+
+_P_Concept_2_deprecated = _PropertySpec(
+    name='deprecated',
+    predicate='http://qudt.org/schema/qudt/deprecated',
+    kind='literal',
+    label='deprecated',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_Concept_2_deprecated_in_version = _PropertySpec(
+    name='deprecated_in_version',
+    predicate='http://qudt.org/schema/qudt/deprecatedInVersion',
+    kind='literal',
+    label='deprecated in version',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Concept_2_description = _PropertySpec(
+    name='description',
+    predicate='http://purl.org/dc/terms/description',
+    kind='object',
+    label='description',
+)
+
+_P_Concept_2_exact_match = _PropertySpec(
+    name='exact_match',
+    predicate='http://qudt.org/schema/qudt/exactMatch',
+    kind='object',
+    label='exact match',
+    ranges=('Concept_2',),
+)
+
+_P_Concept_2_guidance = _PropertySpec(
+    name='guidance',
+    predicate='http://qudt.org/schema/qudt/guidance',
+    kind='literal',
+    label='guidance',
+    datatype=str,
+)
+
+_P_Concept_2_has_rule = _PropertySpec(
+    name='has_rule',
+    predicate='http://qudt.org/schema/qudt/hasRule',
+    kind='object',
+    label='has rule',
+    ranges=('Rule',),
+)
+
+_P_Concept_2_id = _PropertySpec(
+    name='id',
+    predicate='http://qudt.org/schema/qudt/id',
+    kind='literal',
+    label='qudt id',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Concept_2_is_replaced_by = _PropertySpec(
+    name='is_replaced_by',
+    predicate='http://purl.org/dc/terms/isReplacedBy',
+    kind='object',
+    label='is replaced by',
+    max_count=1,
+)
+
+_P_Concept_2_plain_text_description = _PropertySpec(
+    name='plain_text_description',
+    predicate='http://qudt.org/schema/qudt/plainTextDescription',
+    kind='object',
+    label='description (plain text)',
+)
+
+_P_Concept_2_type_ = _PropertySpec(
+    name='type_',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    kind='object',
+    required=True,
+)
+
 class Concept_2(_EntityBase):
     """QUDT Concept
     
@@ -151,7 +249,249 @@ class Concept_2(_EntityBase):
         registry=_REGISTRY,
         label='QUDT Concept',
         definition=None,
+        properties=(_P_Concept_2_abbreviation, _P_Concept_2_code, _P_Concept_2_deprecated, _P_Concept_2_deprecated_in_version, _P_Concept_2_description, _P_Concept_2_exact_match, _P_Concept_2_guidance, _P_Concept_2_has_rule, _P_Concept_2_id, _P_Concept_2_is_replaced_by, _P_Concept_2_plain_text_description, _P_Concept_2_type_,),
     )
+
+    abbreviation: _Lit[str] = _Lit(_P_Concept_2_abbreviation)
+    """abbreviation (http://qudt.org/schema/qudt/abbreviation)"""
+
+    code: _Rel[_EntityBase] = _Rel(_P_Concept_2_code)
+    """A unique value that is assigned to an enumeration member. (http://www.linkedmodel.org/schema/dtype#code)"""
+
+    deprecated: _Lit[bool] = _Lit(_P_Concept_2_deprecated)
+    """deprecated (http://qudt.org/schema/qudt/deprecated)"""
+
+    deprecated_in_version: _Lit[str] = _Lit(_P_Concept_2_deprecated_in_version)
+    """deprecated in version (http://qudt.org/schema/qudt/deprecatedInVersion)"""
+
+    description: _Rel[_EntityBase] = _Rel(_P_Concept_2_description)
+    """description (http://purl.org/dc/terms/description)"""
+
+    exact_match: _Rel[Concept_2] = _Rel(_P_Concept_2_exact_match)
+    """exact match (http://qudt.org/schema/qudt/exactMatch)"""
+
+    guidance: _Lit[str] = _Lit(_P_Concept_2_guidance)
+    """guidance (http://qudt.org/schema/qudt/guidance)"""
+
+    has_rule: _Rel[Rule] = _Rel(_P_Concept_2_has_rule)
+    """has rule (http://qudt.org/schema/qudt/hasRule)"""
+
+    id: _Lit[str] = _Lit(_P_Concept_2_id)
+    """qudt id (http://qudt.org/schema/qudt/id)"""
+
+    is_replaced_by: _RelOne[_EntityBase] = _RelOne(_P_Concept_2_is_replaced_by)
+    """is replaced by (http://purl.org/dc/terms/isReplacedBy)"""
+
+    plain_text_description: _Rel[_EntityBase] = _Rel(_P_Concept_2_plain_text_description)
+    """description (plain text) (http://qudt.org/schema/qudt/plainTextDescription)"""
+
+    type_: _Rel[_EntityBase] = _Rel(_P_Concept_2_type_)
+    """type_ (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+            ),
+        )
+
+_P_Datatype_ansi_sql_name = _PropertySpec(
+    name='ansi_sql_name',
+    predicate='http://qudt.org/schema/qudt/ansiSQLName',
+    kind='literal',
+    label='ANSI SQL name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_basis = _PropertySpec(
+    name='basis',
+    predicate='http://qudt.org/schema/qudt/basis',
+    kind='object',
+    label='basis',
+    ranges=('Datatype',),
+    max_count=1,
+)
+
+_P_Datatype_bounded = _PropertySpec(
+    name='bounded',
+    predicate='http://qudt.org/schema/qudt/bounded',
+    kind='literal',
+    label='bounded',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_Datatype_c_name = _PropertySpec(
+    name='c_name',
+    predicate='http://qudt.org/schema/qudt/cName',
+    kind='literal',
+    label='C Language name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_cardinality = _PropertySpec(
+    name='cardinality',
+    predicate='http://qudt.org/schema/qudt/cardinality',
+    kind='object',
+    label='cardinality',
+    ranges=('CardinalityType',),
+    max_count=1,
+)
+
+_P_Datatype_id = _PropertySpec(
+    name='id',
+    predicate='http://qudt.org/schema/qudt/id',
+    kind='literal',
+    label='qudt id',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_java_name = _PropertySpec(
+    name='java_name',
+    predicate='http://qudt.org/schema/qudt/javaName',
+    kind='literal',
+    label='java name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_js_name = _PropertySpec(
+    name='js_name',
+    predicate='http://qudt.org/schema/qudt/jsName',
+    kind='literal',
+    label='Javascript name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_matlab_name = _PropertySpec(
+    name='matlab_name',
+    predicate='http://qudt.org/schema/qudt/matlabName',
+    kind='literal',
+    label='matlab name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_microsoft_sql_server_name = _PropertySpec(
+    name='microsoft_sql_server_name',
+    predicate='http://qudt.org/schema/qudt/microsoftSQLServerName',
+    kind='literal',
+    label='Microsoft SQL Server name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_my_sql_name = _PropertySpec(
+    name='my_sql_name',
+    predicate='http://qudt.org/schema/qudt/mySQLName',
+    kind='literal',
+    label='MySQL name',
+    datatype=str,
+)
+
+_P_Datatype_odbc_name = _PropertySpec(
+    name='odbc_name',
+    predicate='http://qudt.org/schema/qudt/odbcName',
+    kind='literal',
+    label='ODBC name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_ole_db_name = _PropertySpec(
+    name='ole_db_name',
+    predicate='http://qudt.org/schema/qudt/oleDBName',
+    kind='literal',
+    label='OLE DB name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_oracle_sql_name = _PropertySpec(
+    name='oracle_sql_name',
+    predicate='http://qudt.org/schema/qudt/oracleSQLName',
+    kind='literal',
+    label='ORACLE SQL name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_ordered_type = _PropertySpec(
+    name='ordered_type',
+    predicate='http://qudt.org/schema/qudt/orderedType',
+    kind='object',
+    label='ordered type',
+    ranges=('OrderedType',),
+    max_count=1,
+)
+
+_P_Datatype_protocol_buffers_name = _PropertySpec(
+    name='protocol_buffers_name',
+    predicate='http://qudt.org/schema/qudt/protocolBuffersName',
+    kind='literal',
+    label='protocol buffers name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_python_name = _PropertySpec(
+    name='python_name',
+    predicate='http://qudt.org/schema/qudt/pythonName',
+    kind='literal',
+    label='python name',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Datatype_vb_name = _PropertySpec(
+    name='vb_name',
+    predicate='http://qudt.org/schema/qudt/vbName',
+    kind='literal',
+    label='Visual Basic name',
+    datatype=str,
+    max_count=1,
+)
 
 class Datatype(Concept_2):
     """Datatype
@@ -165,7 +505,149 @@ class Datatype(Concept_2):
         registry=_REGISTRY,
         label='Datatype',
         definition=None,
+        properties=(_P_Datatype_ansi_sql_name, _P_Datatype_basis, _P_Datatype_bounded, _P_Datatype_c_name, _P_Datatype_cardinality, _P_Datatype_id, _P_Datatype_java_name, _P_Datatype_js_name, _P_Datatype_matlab_name, _P_Datatype_microsoft_sql_server_name, _P_Datatype_my_sql_name, _P_Datatype_odbc_name, _P_Datatype_ole_db_name, _P_Datatype_oracle_sql_name, _P_Datatype_ordered_type, _P_Datatype_protocol_buffers_name, _P_Datatype_python_name, _P_Datatype_vb_name,),
     )
+
+    ansi_sql_name: _Lit[str] = _Lit(_P_Datatype_ansi_sql_name)
+    """ANSI SQL name (http://qudt.org/schema/qudt/ansiSQLName)"""
+
+    basis: _RelOne[Datatype] = _RelOne(_P_Datatype_basis)
+    """basis (http://qudt.org/schema/qudt/basis)"""
+
+    bounded: _Lit[bool] = _Lit(_P_Datatype_bounded)
+    """bounded (http://qudt.org/schema/qudt/bounded)"""
+
+    c_name: _Lit[str] = _Lit(_P_Datatype_c_name)
+    """C Language name (http://qudt.org/schema/qudt/cName)"""
+
+    cardinality: _RelOne[CardinalityType] = _RelOne(_P_Datatype_cardinality)
+    """cardinality (http://qudt.org/schema/qudt/cardinality)"""
+
+    id: _Lit[str] = _Lit(_P_Datatype_id)
+    """qudt id (http://qudt.org/schema/qudt/id)"""
+
+    java_name: _Lit[str] = _Lit(_P_Datatype_java_name)
+    """java name (http://qudt.org/schema/qudt/javaName)"""
+
+    js_name: _Lit[str] = _Lit(_P_Datatype_js_name)
+    """Javascript name (http://qudt.org/schema/qudt/jsName)"""
+
+    matlab_name: _Lit[str] = _Lit(_P_Datatype_matlab_name)
+    """matlab name (http://qudt.org/schema/qudt/matlabName)"""
+
+    microsoft_sql_server_name: _Lit[str] = _Lit(_P_Datatype_microsoft_sql_server_name)
+    """Microsoft SQL Server name (http://qudt.org/schema/qudt/microsoftSQLServerName)"""
+
+    my_sql_name: _Lit[str] = _Lit(_P_Datatype_my_sql_name)
+    """MySQL name (http://qudt.org/schema/qudt/mySQLName)"""
+
+    odbc_name: _Lit[str] = _Lit(_P_Datatype_odbc_name)
+    """ODBC name (http://qudt.org/schema/qudt/odbcName)"""
+
+    ole_db_name: _Lit[str] = _Lit(_P_Datatype_ole_db_name)
+    """OLE DB name (http://qudt.org/schema/qudt/oleDBName)"""
+
+    oracle_sql_name: _Lit[str] = _Lit(_P_Datatype_oracle_sql_name)
+    """ORACLE SQL name (http://qudt.org/schema/qudt/oracleSQLName)"""
+
+    ordered_type: _RelOne[OrderedType] = _RelOne(_P_Datatype_ordered_type)
+    """ordered type (http://qudt.org/schema/qudt/orderedType)"""
+
+    protocol_buffers_name: _Lit[str] = _Lit(_P_Datatype_protocol_buffers_name)
+    """protocol buffers name (http://qudt.org/schema/qudt/protocolBuffersName)"""
+
+    python_name: _Lit[str] = _Lit(_P_Datatype_python_name)
+    """python name (http://qudt.org/schema/qudt/pythonName)"""
+
+    vb_name: _Lit[str] = _Lit(_P_Datatype_vb_name)
+    """Visual Basic name (http://qudt.org/schema/qudt/vbName)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_StructuredDatatype_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype',),
+    max_count=1,
+)
 
 class StructuredDatatype(Datatype):
     """Structured Data Type
@@ -179,7 +661,91 @@ class StructuredDatatype(Datatype):
         registry=_REGISTRY,
         label='Structured Data Type',
         definition=None,
+        properties=(_P_StructuredDatatype_element_datatype,),
     )
+
+    element_datatype: _RelOne[Datatype] = _RelOne(_P_StructuredDatatype_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class AbstractDatatype(StructuredDatatype):
     """Abstract Datatype
@@ -195,6 +761,39 @@ class AbstractDatatype(StructuredDatatype):
         definition=None,
     )
 
+_P_AbstractQuantityKind_alt_symbol = _PropertySpec(
+    name='alt_symbol',
+    predicate='http://qudt.org/schema/qudt/altSymbol',
+    kind='object',
+    label='alt symbol',
+)
+
+_P_AbstractQuantityKind_broader = _PropertySpec(
+    name='broader',
+    predicate='http://www.w3.org/2004/02/skos/core#broader',
+    kind='object',
+    label='has broader',
+    definition='Relates a concept to a concept that is more general in meaning.',
+    ranges=('QuantityKind',),
+    inverse='narrower',
+)
+
+_P_AbstractQuantityKind_latex_symbol = _PropertySpec(
+    name='latex_symbol',
+    predicate='http://qudt.org/schema/qudt/latexSymbol',
+    kind='literal',
+    label='latex symbol',
+    datatype=str,
+)
+
+_P_AbstractQuantityKind_symbol = _PropertySpec(
+    name='symbol',
+    predicate='http://qudt.org/schema/qudt/symbol',
+    kind='object',
+    label='symbol',
+    max_count=1,
+)
+
 class AbstractQuantityKind(Concept_2):
     """Quantity Kind (abstract)
     
@@ -207,7 +806,72 @@ class AbstractQuantityKind(Concept_2):
         registry=_REGISTRY,
         label='Quantity Kind (abstract)',
         definition=None,
+        properties=(_P_AbstractQuantityKind_alt_symbol, _P_AbstractQuantityKind_broader, _P_AbstractQuantityKind_latex_symbol, _P_AbstractQuantityKind_symbol,),
     )
+
+    alt_symbol: _Rel[_EntityBase] = _Rel(_P_AbstractQuantityKind_alt_symbol)
+    """alt symbol (http://qudt.org/schema/qudt/altSymbol)"""
+
+    broader: _Rel[QuantityKind] = _Rel(_P_AbstractQuantityKind_broader)
+    """Relates a concept to a concept that is more general in meaning. (http://www.w3.org/2004/02/skos/core#broader)"""
+
+    latex_symbol: _Lit[str] = _Lit(_P_AbstractQuantityKind_latex_symbol)
+    """latex symbol (http://qudt.org/schema/qudt/latexSymbol)"""
+
+    symbol: _RelOne[_EntityBase] = _RelOne(_P_AbstractQuantityKind_symbol)
+    """symbol (http://qudt.org/schema/qudt/symbol)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        broader: _Iterable[QuantityKind] = (),
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        latex_symbol: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        symbol: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                broader=broader,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                latex_symbol=latex_symbol,
+                plain_text_description=plain_text_description,
+                symbol=symbol,
+            ),
+        )
 
 class DataProcessing_AccuracyMetrics(_EntityBase):
     """Combined accuracy measures (precision and trueness)
@@ -279,16 +943,6 @@ class Accuracy_TotalUncertainty(DataProcessing_AccuracyMetrics):
         definition='Combined standard uncertainty from all sources',
     )
 
-_P_Property_of_substance = _PropertySpec(
-    name='of_substance',
-    predicate='http://data.ashrae.org/standard223#ofSubstance',
-    kind='enum',
-    label='of substance',
-    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Substance',),
-    max_count=1,
-)
-
 _P_Property_has_value = _PropertySpec(
     name='has_value',
     predicate='http://data.ashrae.org/standard223#hasValue',
@@ -307,14 +961,13 @@ _P_Property_has_aspect = _PropertySpec(
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind',),
 )
 
-_P_Property_of_medium = _PropertySpec(
-    name='of_medium',
-    predicate='http://data.ashrae.org/standard223#ofMedium',
-    kind='enum',
-    label='of medium',
-    definition='A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`.',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    max_count=1,
+_P_Property_has_external_reference = _PropertySpec(
+    name='has_external_reference',
+    predicate='http://data.ashrae.org/standard223#hasExternalReference',
+    kind='object',
+    label='has external reference',
+    definition='A `Relation` that associates a `Property` with an external telemetry source.',
+    ranges=('ExternalReference',),
 )
 
 _P_Property_has_internal_reference = _PropertySpec(
@@ -327,6 +980,26 @@ _P_Property_has_internal_reference = _PropertySpec(
     inverse='is_internal_reference_of',
 )
 
+_P_Property_of_medium = _PropertySpec(
+    name='of_medium',
+    predicate='http://data.ashrae.org/standard223#ofMedium',
+    kind='enum',
+    label='of medium',
+    definition='A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`.',
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    max_count=1,
+)
+
+_P_Property_of_substance = _PropertySpec(
+    name='of_substance',
+    predicate='http://data.ashrae.org/standard223#ofSubstance',
+    kind='enum',
+    label='of substance',
+    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Substance',),
+    max_count=1,
+)
+
 _P_Property_is_internal_reference_of = _PropertySpec(
     name='is_internal_reference_of',
     predicate='http://data.ashrae.org/standard223#isInternalReferenceOf',
@@ -336,15 +1009,6 @@ _P_Property_is_internal_reference_of = _PropertySpec(
     ranges=('Property',),
     max_count=1,
     inverse='has_internal_reference',
-)
-
-_P_Property_has_external_reference = _PropertySpec(
-    name='has_external_reference',
-    predicate='http://data.ashrae.org/standard223#hasExternalReference',
-    kind='object',
-    label='has external reference',
-    definition='A `Relation` that associates a `Property` with an external telemetry source.',
-    ranges=('ExternalReference',),
 )
 
 _P_Property_of_constituent = _PropertySpec(
@@ -391,11 +1055,8 @@ class Property(Concept):
         registry=_REGISTRY,
         label='Property',
         definition='An attribute, quality, or characteristic of a feature of interest.\n\nThe `Property` class is the parent of all variations of a `Property`, which are:\n\n- `ActuatableProperty`, a subclass of `Property` that can be modified by user or machine outside of the model (typically command);\n- `ObservableProperty`, a subclass of `Property` that are observed (typically measures);\n- `EnumerableProperty`, a subclass of `Property` defined by `EnumerationKind`; and\n- `QuantifiableProperty`, a subclass of `Property` defined by numerical values.\n\nAnd their subclass combinations:\n\n- `QuantifiableActuatableProperty`,\n- `QuantifiableObservableProperty`,\n- `EnumeratedObservableProperty`, and\n- `EnumeratedActuatableProperty`.\n\nA `QuantifiableProperty` (or subclass thereof) shall always be associated with a `Unit` and a `QuantityKind`, either explicitly from the `Property`,\nor through the associated Value. If the `Unit` is defined, the SHACL reasoner (if invoked) will figure out and assert a `QuantityKind` if it is\nunambiguous.\n\nEnumerable properties shall be associated with an `EnumerationKind`. Different flavors of properties are shown in Figure 11-1.\n\n![Different flavors of Properties](figures/Figure_11-1_Flavors_of_Properties.svg)\n\nA `Property` instance that is not an instance of one of the subclasses is unconstrained with respect to its value.',
-        properties=(_P_Property_of_substance, _P_Property_has_value, _P_Property_has_aspect, _P_Property_of_medium, _P_Property_has_internal_reference, _P_Property_is_internal_reference_of, _P_Property_has_external_reference, _P_Property_of_constituent,),
+        properties=(_P_Property_has_value, _P_Property_has_aspect, _P_Property_has_external_reference, _P_Property_has_internal_reference, _P_Property_of_medium, _P_Property_of_substance, _P_Property_is_internal_reference_of, _P_Property_of_constituent,),
     )
-
-    of_substance: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_substance)
-    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
 
     has_value: _ValueOne[object] = _ValueOne(_P_Property_has_value)
     """A `Relation` that associates something with a fixed value, as opposed to a computed, measured, or externally derived value. (http://data.ashrae.org/standard223#hasValue)"""
@@ -403,8 +1064,8 @@ class Property(Concept):
     has_aspect: _EnumSet[_EnumValue] = _EnumSet(_P_Property_has_aspect)
     """`hasAspect` is used to establish the context of a `Property`. The value must be an instance of `EnumerationKind`. For example, if a `Property` has a temperature value of 45.3, the `hasAspect` relation is used to state what that represents, such as a temperature limit during working hours, etc. A `Property` can have any number of `hasAspect` relations as needed to establish the context. (http://data.ashrae.org/standard223#hasAspect)"""
 
-    of_medium: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_medium)
-    """A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`. (http://data.ashrae.org/standard223#ofMedium)"""
+    has_external_reference: _Rel[ExternalReference] = _Rel(_P_Property_has_external_reference)
+    """A `Relation` that associates a `Property` with an external telemetry source. (http://data.ashrae.org/standard223#hasExternalReference)"""
 
     has_internal_reference: _Rel[Property] = _Rel(_P_Property_has_internal_reference)
     """A `Relation` that associates a `Property` with another equivalent `Property`. For example, a `Property` that represents a `Zone`
@@ -421,11 +1082,14 @@ class Property(Concept):
     Note that the `hasInternalReference` relation is transitive. (http://data.ashrae.org/standard223#hasInternalReference)
     """
 
+    of_medium: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_medium)
+    """A `Relation` that associates a `Property` with the specific Medium it describes. A `Property` corresponding to the temperature of a medium would be associated with this medium using the relation `ofMedium`. (http://data.ashrae.org/standard223#ofMedium)"""
+
+    of_substance: _EnumOne[_EnumValue] = _EnumOne(_P_Property_of_substance)
+    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
+
     is_internal_reference_of: _RelOne[Property] = _RelOne(_P_Property_is_internal_reference_of)
     """The inverse of the relation `hasInternalReference` (see {s223:hasInternalReference}). (http://data.ashrae.org/standard223#isInternalReferenceOf)"""
-
-    has_external_reference: _Rel[ExternalReference] = _Rel(_P_Property_has_external_reference)
-    """A `Relation` that associates a `Property` with an external telemetry source. (http://data.ashrae.org/standard223#hasExternalReference)"""
 
     of_constituent: _Rel[_EntityBase] = _Rel(_P_Property_of_constituent)
     """A `Relation` that associates a `Property` that characterizes a `Medium-Mix` with one of the constituents of that mix (e.g., `Fluid-Water` `composedOf` `Property` `ofConstituent` `Constituent-H2O`). (http://data.ashrae.org/standard223#ofConstituent)"""
@@ -485,23 +1149,23 @@ class ActuatableProperty(Property):
         definition='The term "actuatable" implies that writing to the `ActuatableProperty` value will directly trigger a physical actuation by either an `Actuator` or `Equipment`.\nIn contrast, the term "observable" (see {s223:ObservableProperty}) implies that reading the `ObservableProperty` value will return the result of a physical observation.',
     )
 
-_P_Connectable_cnx = _PropertySpec(
-    name='cnx',
-    predicate='http://data.ashrae.org/standard223#cnx',
+_P_Connectable_has_optional_connection_point = _PropertySpec(
+    name='has_optional_connection_point',
+    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
     kind='object',
-    label='cnx',
-    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
+    label='has optional connection point',
+    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
     ranges=('ConnectionPoint',),
 )
 
-_P_Connectable_connected_from = _PropertySpec(
-    name='connected_from',
-    predicate='http://data.ashrae.org/standard223#connectedFrom',
+_P_Connectable_connected_to = _PropertySpec(
+    name='connected_to',
+    predicate='http://data.ashrae.org/standard223#connectedTo',
     kind='object',
-    label='connected from',
-    definition='The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).',
+    label='connected to',
+    definition='The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).',
     ranges=('Connectable',),
-    inverse='connected_to',
+    inverse='connected_from',
 )
 
 _P_Connectable_has_connection_point = _PropertySpec(
@@ -514,22 +1178,13 @@ _P_Connectable_has_connection_point = _PropertySpec(
     inverse='owner',
 )
 
-_P_Connectable_has_optional_connection_point = _PropertySpec(
-    name='has_optional_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
+_P_Connectable_cnx = _PropertySpec(
+    name='cnx',
+    predicate='http://data.ashrae.org/standard223#cnx',
     kind='object',
-    label='has optional connection point',
-    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
+    label='cnx',
+    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
     ranges=('ConnectionPoint',),
-)
-
-_P_Connectable_connected_through = _PropertySpec(
-    name='connected_through',
-    predicate='http://data.ashrae.org/standard223#connectedThrough',
-    kind='object',
-    label='connected through',
-    definition='A `Relation` that associates a `Connectable` thing with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.',
-    ranges=('Connection',),
 )
 
 _P_Connectable_connected = _PropertySpec(
@@ -541,14 +1196,23 @@ _P_Connectable_connected = _PropertySpec(
     ranges=('Connectable',),
 )
 
-_P_Connectable_connected_to = _PropertySpec(
-    name='connected_to',
-    predicate='http://data.ashrae.org/standard223#connectedTo',
+_P_Connectable_connected_through = _PropertySpec(
+    name='connected_through',
+    predicate='http://data.ashrae.org/standard223#connectedThrough',
     kind='object',
-    label='connected to',
-    definition='The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}).',
+    label='connected through',
+    definition='A `Relation` that associates a `Connectable` thing with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things.',
+    ranges=('Connection',),
+)
+
+_P_Connectable_connected_from = _PropertySpec(
+    name='connected_from',
+    predicate='http://data.ashrae.org/standard223#connectedFrom',
+    kind='object',
+    label='connected from',
+    definition='The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}).',
     ranges=('Connectable',),
-    inverse='connected_from',
+    inverse='connected_to',
 )
 
 class Connectable(Concept):
@@ -564,29 +1228,29 @@ class Connectable(Concept):
         label='Connectable',
         definition='`Connectable` is an abstract class representing a thing such as `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}) that can be `connected` to other `Connectable`s via `ConnectionPoint`s and `Connection`s.',
         abstract=True,
-        properties=(_P_Connectable_cnx, _P_Connectable_connected_from, _P_Connectable_has_connection_point, _P_Connectable_has_optional_connection_point, _P_Connectable_connected_through, _P_Connectable_connected, _P_Connectable_connected_to,),
+        properties=(_P_Connectable_has_optional_connection_point, _P_Connectable_connected_to, _P_Connectable_has_connection_point, _P_Connectable_cnx, _P_Connectable_connected, _P_Connectable_connected_through, _P_Connectable_connected_from,),
     )
-
-    cnx: _Rel[ConnectionPoint] = _Rel(_P_Connectable_cnx)
-    """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
-
-    connected_from: _Rel[Connectable] = _Rel(_P_Connectable_connected_from)
-    """The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}). (http://data.ashrae.org/standard223#connectedFrom)"""
-
-    has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_connection_point)
-    """One of two `Relation`s that associates `Connectable` thing with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
 
     has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_optional_connection_point)
     """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
 
-    connected_through: _Rel[Connection] = _Rel(_P_Connectable_connected_through)
-    """A `Relation` that associates a `Connectable` thing with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things. (http://data.ashrae.org/standard223#connectedThrough)"""
+    connected_to: _Rel[Connectable] = _Rel(_P_Connectable_connected_to)
+    """The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}). (http://data.ashrae.org/standard223#connectedTo)"""
+
+    has_connection_point: _Rel[ConnectionPoint] = _Rel(_P_Connectable_has_connection_point)
+    """One of two `Relation`s that associates `Connectable` thing with a `ConnectionPoint`. It is the inverse of the relation `isConnectionPointOf` (see {s223:isConnectionPointOf}). (http://data.ashrae.org/standard223#hasConnectionPoint)"""
+
+    cnx: _Rel[ConnectionPoint] = _Rel(_P_Connectable_cnx)
+    """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
 
     connected: _Rel[Connectable] = _Rel(_P_Connectable_connected)
     """The relation `connected` indicates that two connectable things are `connected` without regard to the direction of flow. (http://data.ashrae.org/standard223#connected)"""
 
-    connected_to: _Rel[Connectable] = _Rel(_P_Connectable_connected_to)
-    """The relation `connectedTo` indicates that connectable things are `connected` with a specific direction of flow. A is `connectedTo` B, means a direction of flow from A to B.  The inverse direction is indicated by `connectedFrom` (see {s223:connectedFrom}). (http://data.ashrae.org/standard223#connectedTo)"""
+    connected_through: _Rel[Connection] = _Rel(_P_Connectable_connected_through)
+    """A `Relation` that associates a `Connectable` thing with a `Connection`, without regard to the direction of flow. It is used to discover what connection links two connectable things. (http://data.ashrae.org/standard223#connectedThrough)"""
+
+    connected_from: _Rel[Connectable] = _Rel(_P_Connectable_connected_from)
+    """The relation `connectedFrom` indicates that connectable things are `connected` with a specific direction of flow. B is `connectedFrom` A, means that the direction of flow is from A to B.  The inverse direction is indicated by `connectedTo` (see {s223:connectedTo}). (http://data.ashrae.org/standard223#connectedFrom)"""
 
     def __init__(
         self,
@@ -626,6 +1290,33 @@ class Connectable(Concept):
             ),
         )
 
+_P_Equipment_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+)
+
+_P_Equipment_has_treatment_objective = _PropertySpec(
+    name='has_treatment_objective',
+    predicate='https://watermetadata.org/ontology/watr#hasTreatmentObjective',
+    kind='class',
+    label='has treatment objective',
+    definition='Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.',
+    ranges=('TreatmentObjective',),
+)
+
+_P_Equipment_executes = _PropertySpec(
+    name='executes',
+    predicate='http://data.ashrae.org/standard223#executes',
+    kind='object',
+    label='executes',
+    definition='A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.',
+    ranges=('Function',),
+)
+
 _P_Equipment_contains_ = _PropertySpec(
     name='contains_',
     predicate='http://data.ashrae.org/standard223#contains',
@@ -643,15 +1334,6 @@ _P_Equipment_has_physical_location = _PropertySpec(
     ranges=('PhysicalSpace',),
 )
 
-_P_Equipment_actuated_by_property = _PropertySpec(
-    name='actuated_by_property',
-    predicate='http://data.ashrae.org/standard223#actuatedByProperty',
-    kind='object',
-    label='actuated by property',
-    definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
-    ranges=('ActuatableProperty',),
-)
-
 _P_Equipment_has_role = _PropertySpec(
     name='has_role',
     predicate='http://data.ashrae.org/standard223#hasRole',
@@ -661,13 +1343,13 @@ _P_Equipment_has_role = _PropertySpec(
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
 )
 
-_P_Equipment_executes = _PropertySpec(
-    name='executes',
-    predicate='http://data.ashrae.org/standard223#executes',
+_P_Equipment_actuated_by_property = _PropertySpec(
+    name='actuated_by_property',
+    predicate='http://data.ashrae.org/standard223#actuatedByProperty',
     kind='object',
-    label='executes',
-    definition='A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes.',
-    ranges=('Function',),
+    label='actuated by property',
+    definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
+    ranges=('ActuatableProperty',),
 )
 
 class Equipment(Connectable):
@@ -688,8 +1370,17 @@ class Equipment(Connectable):
         registry=_REGISTRY,
         label='Equipment',
         definition='`Equipment` is the modeling construct used to represent a thing designed to accomplish a specific task, or a complex thing\nthat contains component pieces of `Equipment` that are connected to each other and work together to accomplish a task. `Equipment` can have\n`Connection`s and `ConnectionPoint`s through which one or more kinds of medium (see {s223:Substance-Medium}) might flow. Examples of `Equipment` defined in this ontology include `Pump`, `Fan`, `AirHeatExchanger`, `Luminaire`, and `Sensor`. `Equipment` can be connected to other `Connectable`s such as other `Equipment` or `DomainSpace`s.\n\nThe graphical depiction of Equipment used in this document is a round-cornered rectangle as shown in Figure 5-1.\n\n![Graphical Depiction of Equipment.](figures/Figure_5-1_Graphical_Depiciton_of_Equipment.svg)',
-        properties=(_P_Equipment_contains_, _P_Equipment_has_physical_location, _P_Equipment_actuated_by_property, _P_Equipment_has_role, _P_Equipment_executes,),
+        properties=(_P_Equipment_has_process, _P_Equipment_has_treatment_objective, _P_Equipment_executes, _P_Equipment_contains_, _P_Equipment_has_physical_location, _P_Equipment_has_role, _P_Equipment_actuated_by_property,),
     )
+
+    has_process: _Rel[type[Process]] = _Rel(_P_Equipment_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
+
+    has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_Equipment_has_treatment_objective)
+    """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
+
+    executes: _Rel[Function] = _Rel(_P_Equipment_executes)
+    """A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes. (http://data.ashrae.org/standard223#executes)"""
 
     contains_: _Rel[_EntityBase] = _Rel(_P_Equipment_contains_)
     """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
@@ -697,17 +1388,14 @@ class Equipment(Connectable):
     has_physical_location: _Rel[PhysicalSpace] = _Rel(_P_Equipment_has_physical_location)
     """A `Relation` that associates a piece of `Equipment` with its physical location (i.e., in a `PhysicalSpace`). The physical location of a piece of `Equipment` is not necessarily the same as the location affected by the operation of the `Equipment`. For example, an air handler may physically be located on the roof, but its effect is to provide conditioned air to a `Zone` or `DomainSpace` within the building. By following the path of connections, it can be determined what other equipment or spaces are possibly impacted by the `Equipment`. (http://data.ashrae.org/standard223#hasPhysicalLocation)"""
 
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Equipment_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+
     actuated_by_property: _Rel[ActuatableProperty] = _Rel(_P_Equipment_actuated_by_property)
     """A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`
     is an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of
     `Equipment` being actuated (see {s223:actuates}). (http://data.ashrae.org/standard223#actuatedByProperty)
     """
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Equipment_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
-
-    executes: _Rel[Function] = _Rel(_P_Equipment_executes)
-    """A `Relation` that associates a `Controller` (see {s223:Controller}) with the `Function`s (see {s223:Function}) that it executes. (http://data.ashrae.org/standard223#executes)"""
 
     def __init__(
         self,
@@ -724,8 +1412,10 @@ class Equipment(Connectable):
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -751,11 +1441,22 @@ class Equipment(Connectable):
                 has_connection_point=has_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
+
+_P_Actuator_actuates = _PropertySpec(
+    name='actuates',
+    predicate='http://data.ashrae.org/standard223#actuates',
+    kind='object',
+    label='actuates',
+    definition='A `Relation` that associates an `Actuator` with the `Equipment` that it actuates.',
+    ranges=('Equipment',),
+)
 
 _P_Actuator_actuated_by_property = _PropertySpec(
     name='actuated_by_property',
@@ -765,15 +1466,6 @@ _P_Actuator_actuated_by_property = _PropertySpec(
     definition='A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`\nis an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of\n`Equipment` being actuated (see {s223:actuates}).',
     ranges=('ActuatableProperty',),
     required=True,
-)
-
-_P_Actuator_actuates = _PropertySpec(
-    name='actuates',
-    predicate='http://data.ashrae.org/standard223#actuates',
-    kind='object',
-    label='actuates',
-    definition='A `Relation` that associates an `Actuator` with the `Equipment` that it actuates.',
-    ranges=('Equipment',),
 )
 
 class Actuator(Equipment):
@@ -789,17 +1481,17 @@ class Actuator(Equipment):
         registry=_REGISTRY,
         label='Actuator',
         definition='A piece of `Equipment` that receives control signals and electrically, pneumatically, or hydraulically makes changes in the\nphysical world, such as the position of a valve or damper.',
-        properties=(_P_Actuator_actuated_by_property, _P_Actuator_actuates,),
+        properties=(_P_Actuator_actuates, _P_Actuator_actuated_by_property,),
     )
+
+    actuates: _Rel[Equipment] = _Rel(_P_Actuator_actuates)
+    """A `Relation` that associates an `Actuator` with the `Equipment` that it actuates. (http://data.ashrae.org/standard223#actuates)"""
 
     actuated_by_property: _Rel[ActuatableProperty] = _Rel(_P_Actuator_actuated_by_property)
     """A `Relation` that associates a piece of `Equipment` with the `ActuatableProperty` that it responds to. If the `Equipment`
     is an `Actuator` (a subclass of `Equipment`), `actuatedByProperty` is a required relation. An `Actuator` may also identify another piece of
     `Equipment` being actuated (see {s223:actuates}). (http://data.ashrae.org/standard223#actuatedByProperty)
     """
-
-    actuates: _Rel[Equipment] = _Rel(_P_Actuator_actuates)
-    """A `Relation` that associates an `Actuator` with the `Equipment` that it actuates. (http://data.ashrae.org/standard223#actuates)"""
 
     def __init__(
         self,
@@ -817,8 +1509,10 @@ class Actuator(Equipment):
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -845,14 +1539,16 @@ class Actuator(Equipment):
                 has_connection_point=has_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
 
 class Tank(Equipment):
-    """A tank with at least one inlet and one outlet
+    """A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Tank
     """
@@ -862,15 +1558,9 @@ class Tank(Equipment):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Tank',
-        definition='A tank with at least one inlet and one outlet',
+        definition='A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify.',
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=0, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=0, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=0, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=0, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
         ),
     )
@@ -878,9 +1568,9 @@ class Tank(Equipment):
 _P_UnitProcess_has_process = _PropertySpec(
     name='has_process',
     predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
+    kind='class',
     label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
     ranges=('Process',),
     required=True,
 )
@@ -900,14 +1590,14 @@ class UnitProcess(Equipment):
         properties=(_P_UnitProcess_has_process,),
     )
 
-    has_process: _Rel[Process] = _Rel(_P_UnitProcess_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
+    has_process: _Rel[type[Process]] = _Rel(_P_UnitProcess_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        has_process: _Iterable[Process],
+        has_process: _Iterable[type[Process]],
         actuated_by_property: _Iterable[ActuatableProperty] = (),
         cnx: _Iterable[ConnectionPoint] = (),
         connected: _Iterable[Connectable] = (),
@@ -921,6 +1611,7 @@ class UnitProcess(Equipment):
         has_physical_location: _Iterable[PhysicalSpace] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -949,12 +1640,13 @@ class UnitProcess(Equipment):
                 has_physical_location=has_physical_location,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
 
 class Reactor(Tank, UnitProcess):
-    """A tank used for reaction or biological/chemical treatment processes
+    """A vessel in which a reaction or biological/chemical treatment process takes place
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Reactor
     """
@@ -964,25 +1656,11 @@ class Reactor(Tank, UnitProcess):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Reactor',
-        definition='A tank used for reaction or biological/chemical treatment processes',
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=0, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=0, max_count=None),
-        ),
+        definition='A vessel in which a reaction or biological/chemical treatment process takes place',
     )
 
-_P_AerationBasin_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-    required=True,
-)
-
 class AerationBasin(Reactor):
-    """A tank where water is aerated to remove gases and volatile organic compounds
+    """A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#AerationBasin
     """
@@ -992,62 +1670,8 @@ class AerationBasin(Reactor):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Aeration Basin',
-        definition='A tank where water is aerated to remove gases and volatile organic compounds',
-        properties=(_P_AerationBasin_has_role,),
+        definition='A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.',
     )
-
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_AerationBasin_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: _Iterable[Process],
-        has_role: _Iterable[_EnumValue],
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                has_role=has_role,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
 
 class Digester(Reactor):
     """A container to promote decomposition of organic waste
@@ -1107,7 +1731,19 @@ class CoordinateSystem(Concept_2):
         self,
         name: str | None = None,
         *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
         coordinate_center: _Iterable[CoordinateCenterKind] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
         model: _Model | None = None,
@@ -1121,7 +1757,19 @@ class CoordinateSystem(Concept_2):
             comment=comment,
             model=model,
             **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
                 coordinate_center=coordinate_center,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
             ),
         )
 
@@ -1325,9 +1973,9 @@ class AirHeatExchanger(Equipment):
         label='Air heat exchanger',
         definition='A piece of `Equipment` that transfers heat from one air stream to another while keeping the two media separate.',
         cp_slots=(
+            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=1, max_count=0),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=2, max_count=None),
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=1, max_count=0),
         ),
     )
 
@@ -1366,6 +2014,37 @@ class AirReleaseValve(Valve_2):
         registry=_REGISTRY,
         label='Air Release Valve',
         definition='Valve for vent trapped air pockets',
+    )
+
+class SeparationTank(Tank, UnitProcess):
+    """A tank that has at least two outlets (e.g. overflow and underflow)
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#SeparationTank
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#SeparationTank',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Separation Tank',
+        definition='A tank that has at least two outlets (e.g. overflow and underflow)',
+        cp_slots=(
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
+        ),
+    )
+
+class AirStripper(SeparationTank):
+    """A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#AirStripper
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#AirStripper',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Air Stripper',
+        definition='A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream',
     )
 
 class HeatPump(Equipment):
@@ -1442,6 +2121,45 @@ class Aspect(_EntityBase):
         definition=None,
     )
 
+_P_Verifiable_informative_reference = _PropertySpec(
+    name='informative_reference',
+    predicate='http://qudt.org/schema/qudt/informativeReference',
+    kind='object',
+    label='informative reference',
+)
+
+_P_Verifiable_dbpedia_match = _PropertySpec(
+    name='dbpedia_match',
+    predicate='http://qudt.org/schema/qudt/dbpediaMatch',
+    kind='literal',
+    label='dbpedia match',
+    datatype=str,
+)
+
+_P_Verifiable_iso_normative_reference = _PropertySpec(
+    name='iso_normative_reference',
+    predicate='http://qudt.org/schema/qudt/isoNormativeReference',
+    kind='literal',
+    label='normative reference (ISO)',
+    datatype=str,
+)
+
+_P_Verifiable_normative_reference = _PropertySpec(
+    name='normative_reference',
+    predicate='http://qudt.org/schema/qudt/normativeReference',
+    kind='literal',
+    label='normative reference',
+    datatype=str,
+)
+
+_P_Verifiable_wikidata_match = _PropertySpec(
+    name='wikidata_match',
+    predicate='http://qudt.org/schema/qudt/wikidataMatch',
+    kind='object',
+    label='Wikidata match',
+    max_count=1,
+)
+
 class Verifiable(Aspect):
     """Verifiable
     
@@ -1454,7 +2172,85 @@ class Verifiable(Aspect):
         registry=_REGISTRY,
         label='Verifiable',
         definition=None,
+        properties=(_P_Verifiable_informative_reference, _P_Verifiable_dbpedia_match, _P_Verifiable_iso_normative_reference, _P_Verifiable_normative_reference, _P_Verifiable_wikidata_match,),
     )
+
+    informative_reference: _Rel[_EntityBase] = _Rel(_P_Verifiable_informative_reference)
+    """informative reference (http://qudt.org/schema/qudt/informativeReference)"""
+
+    dbpedia_match: _Lit[str] = _Lit(_P_Verifiable_dbpedia_match)
+    """dbpedia match (http://qudt.org/schema/qudt/dbpediaMatch)"""
+
+    iso_normative_reference: _Lit[str] = _Lit(_P_Verifiable_iso_normative_reference)
+    """normative reference (ISO) (http://qudt.org/schema/qudt/isoNormativeReference)"""
+
+    normative_reference: _Lit[str] = _Lit(_P_Verifiable_normative_reference)
+    """normative reference (http://qudt.org/schema/qudt/normativeReference)"""
+
+    wikidata_match: _RelOne[_EntityBase] = _RelOne(_P_Verifiable_wikidata_match)
+    """Wikidata match (http://qudt.org/schema/qudt/wikidataMatch)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        dbpedia_match: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                dbpedia_match=dbpedia_match,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_EnumeratedValue_abbreviation = _PropertySpec(
+    name='abbreviation',
+    predicate='http://qudt.org/schema/qudt/abbreviation',
+    kind='literal',
+    label='abbreviation',
+    datatype=str,
+    max_count=1,
+)
+
+_P_EnumeratedValue_alt_symbol = _PropertySpec(
+    name='alt_symbol',
+    predicate='http://qudt.org/schema/qudt/altSymbol',
+    kind='object',
+    label='alt symbol',
+)
+
+_P_EnumeratedValue_description = _PropertySpec(
+    name='description',
+    predicate='http://purl.org/dc/terms/description',
+    kind='object',
+    label='description',
+    max_count=1,
+)
+
+_P_EnumeratedValue_symbol = _PropertySpec(
+    name='symbol',
+    predicate='http://qudt.org/schema/qudt/symbol',
+    kind='object',
+    label='symbol',
+    max_count=1,
+)
 
 class EnumeratedValue(EnumeratedValue_2, Verifiable):
     """Enumerated Value
@@ -1468,7 +2264,58 @@ class EnumeratedValue(EnumeratedValue_2, Verifiable):
         registry=_REGISTRY,
         label='Enumerated Value',
         definition=None,
+        properties=(_P_EnumeratedValue_abbreviation, _P_EnumeratedValue_alt_symbol, _P_EnumeratedValue_description, _P_EnumeratedValue_symbol,),
     )
+
+    abbreviation: _Lit[str] = _Lit(_P_EnumeratedValue_abbreviation)
+    """abbreviation (http://qudt.org/schema/qudt/abbreviation)"""
+
+    alt_symbol: _Rel[_EntityBase] = _Rel(_P_EnumeratedValue_alt_symbol)
+    """alt symbol (http://qudt.org/schema/qudt/altSymbol)"""
+
+    description: _RelOne[_EntityBase] = _RelOne(_P_EnumeratedValue_description)
+    """description (http://purl.org/dc/terms/description)"""
+
+    symbol: _RelOne[_EntityBase] = _RelOne(_P_EnumeratedValue_symbol)
+    """symbol (http://qudt.org/schema/qudt/symbol)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class AlignmentType(EnumeratedValue):
     """Alignment type
@@ -1506,6 +2353,268 @@ _P_Unit_unit_for = _PropertySpec(
     inverse='has_unit',
 )
 
+_P_Unit_alt_symbol = _PropertySpec(
+    name='alt_symbol',
+    predicate='http://qudt.org/schema/qudt/altSymbol',
+    kind='object',
+    label='alt symbol',
+)
+
+_P_Unit_applicable_system = _PropertySpec(
+    name='applicable_system',
+    predicate='http://qudt.org/schema/qudt/applicableSystem',
+    kind='object',
+    label='applicable system',
+    ranges=('SystemOfUnits',),
+)
+
+_P_Unit_conversion_multiplier = _PropertySpec(
+    name='conversion_multiplier',
+    predicate='http://qudt.org/schema/qudt/conversionMultiplier',
+    kind='literal',
+    label='conversion multiplier',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Unit_conversion_multiplier_sn = _PropertySpec(
+    name='conversion_multiplier_sn',
+    predicate='http://qudt.org/schema/qudt/conversionMultiplierSN',
+    kind='literal',
+    label='conversion multiplier scientific',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Unit_conversion_offset = _PropertySpec(
+    name='conversion_offset',
+    predicate='http://qudt.org/schema/qudt/conversionOffset',
+    kind='literal',
+    label='conversion offset',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Unit_conversion_offset_sn = _PropertySpec(
+    name='conversion_offset_sn',
+    predicate='http://qudt.org/schema/qudt/conversionOffsetSN',
+    kind='literal',
+    label='conversion offset scientific',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Unit_defined_unit_of_system = _PropertySpec(
+    name='defined_unit_of_system',
+    predicate='http://qudt.org/schema/qudt/definedUnitOfSystem',
+    kind='object',
+    label='defined unit of system',
+    ranges=('SystemOfUnits',),
+    inverse='has_defined_unit',
+)
+
+_P_Unit_derived_coherent_unit_of_system = _PropertySpec(
+    name='derived_coherent_unit_of_system',
+    predicate='http://qudt.org/schema/qudt/derivedCoherentUnitOfSystem',
+    kind='object',
+    label='is coherent derived unit of system',
+    ranges=('SystemOfUnits',),
+    inverse='has_derived_coherent_unit',
+)
+
+_P_Unit_derived_unit_of_system = _PropertySpec(
+    name='derived_unit_of_system',
+    predicate='http://qudt.org/schema/qudt/derivedUnitOfSystem',
+    kind='object',
+    label='is derived unit of system',
+    ranges=('SystemOfUnits',),
+    inverse='has_derived_unit',
+)
+
+_P_Unit_expression = _PropertySpec(
+    name='expression',
+    predicate='http://qudt.org/schema/qudt/expression',
+    kind='object',
+    label='expression',
+)
+
+_P_Unit_factor_unit_scalar = _PropertySpec(
+    name='factor_unit_scalar',
+    predicate='http://qudt.org/schema/qudt/factorUnitScalar',
+    kind='literal',
+    label='factorUnitScalar',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Unit_has_dimension_vector = _PropertySpec(
+    name='has_dimension_vector',
+    predicate='http://qudt.org/schema/qudt/hasDimensionVector',
+    kind='object',
+    label='has dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+    required=True,
+    max_count=1,
+)
+
+_P_Unit_has_factor_unit = _PropertySpec(
+    name='has_factor_unit',
+    predicate='http://qudt.org/schema/qudt/hasFactorUnit',
+    kind='object',
+    label='hasFactorUnit',
+)
+
+_P_Unit_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+    required=True,
+)
+
+_P_Unit_has_reciprocal_unit = _PropertySpec(
+    name='has_reciprocal_unit',
+    predicate='http://qudt.org/schema/qudt/hasReciprocalUnit',
+    kind='object',
+    label='has reciprocal unit',
+    ranges=('Unit',),
+)
+
+_P_Unit_iec61360_code = _PropertySpec(
+    name='iec61360_code',
+    predicate='http://qudt.org/schema/qudt/iec61360Code',
+    kind='literal',
+    label='iec-61360 code',
+    datatype=str,
+)
+
+_P_Unit_latex_definition = _PropertySpec(
+    name='latex_definition',
+    predicate='http://qudt.org/schema/qudt/latexDefinition',
+    kind='literal',
+    label='latex definition',
+    datatype=str,
+)
+
+_P_Unit_latex_symbol = _PropertySpec(
+    name='latex_symbol',
+    predicate='http://qudt.org/schema/qudt/latexSymbol',
+    kind='literal',
+    label='latex symbol',
+    datatype=str,
+)
+
+_P_Unit_math_m_ldefinition = _PropertySpec(
+    name='math_m_ldefinition',
+    predicate='http://qudt.org/schema/qudt/mathMLdefinition',
+    kind='literal',
+    label='mathML definition',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Unit_om_unit = _PropertySpec(
+    name='om_unit',
+    predicate='http://qudt.org/schema/qudt/omUnit',
+    kind='object',
+    label='om unit',
+)
+
+_P_Unit_prefix = _PropertySpec(
+    name='prefix',
+    predicate='http://qudt.org/schema/qudt/prefix',
+    kind='object',
+    label='prefix',
+    ranges=('Prefix',),
+    max_count=1,
+)
+
+_P_Unit_qkdv_denominator = _PropertySpec(
+    name='qkdv_denominator',
+    predicate='http://qudt.org/schema/qudt/qkdvDenominator',
+    kind='object',
+    label='denominator dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+    max_count=1,
+)
+
+_P_Unit_qkdv_numerator = _PropertySpec(
+    name='qkdv_numerator',
+    predicate='http://qudt.org/schema/qudt/qkdvNumerator',
+    kind='object',
+    label='numerator dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+    max_count=1,
+)
+
+_P_Unit_scaling_of = _PropertySpec(
+    name='scaling_of',
+    predicate='http://qudt.org/schema/qudt/scalingOf',
+    kind='object',
+    label='scalingOf',
+    ranges=('Unit',),
+    max_count=1,
+)
+
+_P_Unit_si_exact_match = _PropertySpec(
+    name='si_exact_match',
+    predicate='http://qudt.org/schema/qudt/siExactMatch',
+    kind='object',
+    label='Individual from SI Reference Point',
+    max_count=1,
+)
+
+_P_Unit_si_units_expression = _PropertySpec(
+    name='si_units_expression',
+    predicate='http://qudt.org/schema/qudt/siUnitsExpression',
+    kind='literal',
+    label='si units expression',
+    datatype=str,
+)
+
+_P_Unit_symbol = _PropertySpec(
+    name='symbol',
+    predicate='http://qudt.org/schema/qudt/symbol',
+    kind='object',
+    label='symbol',
+    max_count=1,
+)
+
+_P_Unit_ucum_code = _PropertySpec(
+    name='ucum_code',
+    predicate='http://qudt.org/schema/qudt/ucumCode',
+    kind='literal',
+    label='ucum code',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Unit_udunits_code = _PropertySpec(
+    name='udunits_code',
+    predicate='http://qudt.org/schema/qudt/udunitsCode',
+    kind='literal',
+    label='udunits code',
+    datatype=str,
+)
+
+_P_Unit_unece_common_code = _PropertySpec(
+    name='unece_common_code',
+    predicate='http://qudt.org/schema/qudt/uneceCommonCode',
+    kind='literal',
+    label='unece common code',
+    datatype=str,
+)
+
+_P_Unit_is_unit_of_system = _PropertySpec(
+    name='is_unit_of_system',
+    predicate='http://qudt.org/schema/qudt/isUnitOfSystem',
+    kind='object',
+    label='is unit of system',
+    ranges=('SystemOfUnits',),
+)
+
 class Unit(Concept_2, Verifiable):
     """Unit
     
@@ -1518,17 +2627,158 @@ class Unit(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Unit',
         definition=None,
-        properties=(_P_Unit_unit_for,),
+        properties=(_P_Unit_unit_for, _P_Unit_alt_symbol, _P_Unit_applicable_system, _P_Unit_conversion_multiplier, _P_Unit_conversion_multiplier_sn, _P_Unit_conversion_offset, _P_Unit_conversion_offset_sn, _P_Unit_defined_unit_of_system, _P_Unit_derived_coherent_unit_of_system, _P_Unit_derived_unit_of_system, _P_Unit_expression, _P_Unit_factor_unit_scalar, _P_Unit_has_dimension_vector, _P_Unit_has_factor_unit, _P_Unit_has_quantity_kind, _P_Unit_has_reciprocal_unit, _P_Unit_iec61360_code, _P_Unit_latex_definition, _P_Unit_latex_symbol, _P_Unit_math_m_ldefinition, _P_Unit_om_unit, _P_Unit_prefix, _P_Unit_qkdv_denominator, _P_Unit_qkdv_numerator, _P_Unit_scaling_of, _P_Unit_si_exact_match, _P_Unit_si_units_expression, _P_Unit_symbol, _P_Unit_ucum_code, _P_Unit_udunits_code, _P_Unit_unece_common_code, _P_Unit_is_unit_of_system,),
     )
 
     unit_for: _Rel[_EntityBase] = _Rel(_P_Unit_unit_for)
     """unit for (http://qudt.org/schema/qudt/unitFor)"""
 
+    alt_symbol: _Rel[_EntityBase] = _Rel(_P_Unit_alt_symbol)
+    """alt symbol (http://qudt.org/schema/qudt/altSymbol)"""
+
+    applicable_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_applicable_system)
+    """applicable system (http://qudt.org/schema/qudt/applicableSystem)"""
+
+    conversion_multiplier: _Lit[float] = _Lit(_P_Unit_conversion_multiplier)
+    """conversion multiplier (http://qudt.org/schema/qudt/conversionMultiplier)"""
+
+    conversion_multiplier_sn: _Lit[float] = _Lit(_P_Unit_conversion_multiplier_sn)
+    """conversion multiplier scientific (http://qudt.org/schema/qudt/conversionMultiplierSN)"""
+
+    conversion_offset: _Lit[float] = _Lit(_P_Unit_conversion_offset)
+    """conversion offset (http://qudt.org/schema/qudt/conversionOffset)"""
+
+    conversion_offset_sn: _Lit[float] = _Lit(_P_Unit_conversion_offset_sn)
+    """conversion offset scientific (http://qudt.org/schema/qudt/conversionOffsetSN)"""
+
+    defined_unit_of_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_defined_unit_of_system)
+    """defined unit of system (http://qudt.org/schema/qudt/definedUnitOfSystem)"""
+
+    derived_coherent_unit_of_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_derived_coherent_unit_of_system)
+    """is coherent derived unit of system (http://qudt.org/schema/qudt/derivedCoherentUnitOfSystem)"""
+
+    derived_unit_of_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_derived_unit_of_system)
+    """is derived unit of system (http://qudt.org/schema/qudt/derivedUnitOfSystem)"""
+
+    expression: _Rel[_EntityBase] = _Rel(_P_Unit_expression)
+    """expression (http://qudt.org/schema/qudt/expression)"""
+
+    factor_unit_scalar: _Lit[float] = _Lit(_P_Unit_factor_unit_scalar)
+    """factorUnitScalar (http://qudt.org/schema/qudt/factorUnitScalar)"""
+
+    has_dimension_vector: _RelOne[QuantityKindDimensionVector] = _RelOne(_P_Unit_has_dimension_vector)
+    """has dimension vector (http://qudt.org/schema/qudt/hasDimensionVector)"""
+
+    has_factor_unit: _Rel[_EntityBase] = _Rel(_P_Unit_has_factor_unit)
+    """hasFactorUnit (http://qudt.org/schema/qudt/hasFactorUnit)"""
+
+    has_quantity_kind: _Rel[QuantityKind | _TermValue] = _Rel(_P_Unit_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    has_reciprocal_unit: _Rel[Unit] = _Rel(_P_Unit_has_reciprocal_unit)
+    """has reciprocal unit (http://qudt.org/schema/qudt/hasReciprocalUnit)"""
+
+    iec61360_code: _Lit[str] = _Lit(_P_Unit_iec61360_code)
+    """iec-61360 code (http://qudt.org/schema/qudt/iec61360Code)"""
+
+    latex_definition: _Lit[str] = _Lit(_P_Unit_latex_definition)
+    """latex definition (http://qudt.org/schema/qudt/latexDefinition)"""
+
+    latex_symbol: _Lit[str] = _Lit(_P_Unit_latex_symbol)
+    """latex symbol (http://qudt.org/schema/qudt/latexSymbol)"""
+
+    math_m_ldefinition: _Lit[str] = _Lit(_P_Unit_math_m_ldefinition)
+    """mathML definition (http://qudt.org/schema/qudt/mathMLdefinition)"""
+
+    om_unit: _Rel[_EntityBase] = _Rel(_P_Unit_om_unit)
+    """om unit (http://qudt.org/schema/qudt/omUnit)"""
+
+    prefix: _RelOne[Prefix] = _RelOne(_P_Unit_prefix)
+    """prefix (http://qudt.org/schema/qudt/prefix)"""
+
+    qkdv_denominator: _RelOne[QuantityKindDimensionVector] = _RelOne(_P_Unit_qkdv_denominator)
+    """denominator dimension vector (http://qudt.org/schema/qudt/qkdvDenominator)"""
+
+    qkdv_numerator: _RelOne[QuantityKindDimensionVector] = _RelOne(_P_Unit_qkdv_numerator)
+    """numerator dimension vector (http://qudt.org/schema/qudt/qkdvNumerator)"""
+
+    scaling_of: _RelOne[Unit] = _RelOne(_P_Unit_scaling_of)
+    """scalingOf (http://qudt.org/schema/qudt/scalingOf)"""
+
+    si_exact_match: _RelOne[_EntityBase] = _RelOne(_P_Unit_si_exact_match)
+    """Individual from SI Reference Point (http://qudt.org/schema/qudt/siExactMatch)"""
+
+    si_units_expression: _Lit[str] = _Lit(_P_Unit_si_units_expression)
+    """si units expression (http://qudt.org/schema/qudt/siUnitsExpression)"""
+
+    symbol: _RelOne[_EntityBase] = _RelOne(_P_Unit_symbol)
+    """symbol (http://qudt.org/schema/qudt/symbol)"""
+
+    ucum_code: _Lit[str] = _Lit(_P_Unit_ucum_code)
+    """ucum code (http://qudt.org/schema/qudt/ucumCode)"""
+
+    udunits_code: _Lit[str] = _Lit(_P_Unit_udunits_code)
+    """udunits code (http://qudt.org/schema/qudt/udunitsCode)"""
+
+    unece_common_code: _Lit[str] = _Lit(_P_Unit_unece_common_code)
+    """unece common code (http://qudt.org/schema/qudt/uneceCommonCode)"""
+
+    is_unit_of_system: _Rel[SystemOfUnits] = _Rel(_P_Unit_is_unit_of_system)
+    """is unit of system (http://qudt.org/schema/qudt/isUnitOfSystem)"""
+
     def __init__(
         self,
         name: str | None = None,
         *,
+        has_dimension_vector: QuantityKindDimensionVector | None,
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        applicable_system: _Iterable[SystemOfUnits] = (),
+        code: _Iterable[_EntityBase] = (),
+        conversion_multiplier: float | None = None,
+        conversion_multiplier_sn: float | None = None,
+        conversion_offset: float | None = None,
+        conversion_offset_sn: float | None = None,
+        dbpedia_match: str | None = None,
+        defined_unit_of_system: _Iterable[SystemOfUnits] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        derived_coherent_unit_of_system: _Iterable[SystemOfUnits] = (),
+        derived_unit_of_system: _Iterable[SystemOfUnits] = (),
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        expression: _Iterable[_EntityBase] = (),
+        factor_unit_scalar: float | None = None,
+        guidance: str | None = None,
+        has_factor_unit: _Iterable[_EntityBase] = (),
+        has_reciprocal_unit: _Iterable[Unit] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        iec61360_code: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        is_unit_of_system: _Iterable[SystemOfUnits] = (),
+        iso_normative_reference: str | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        math_m_ldefinition: str | None = None,
+        normative_reference: str | None = None,
+        om_unit: _Iterable[_EntityBase] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        prefix: Prefix | None = None,
+        qkdv_denominator: QuantityKindDimensionVector | None = None,
+        qkdv_numerator: QuantityKindDimensionVector | None = None,
+        scaling_of: Unit | None = None,
+        si_exact_match: _EntityBase | None = None,
+        si_units_expression: str | None = None,
+        symbol: _EntityBase | None = None,
+        ucum_code: str | None = None,
+        udunits_code: str | None = None,
+        unece_common_code: str | None = None,
         unit_for: _Iterable[_EntityBase] = (),
+        wikidata_match: _EntityBase | None = None,
         label: str | None = None,
         comment: str | None = None,
         model: _Model | None = None,
@@ -1542,7 +2792,55 @@ class Unit(Concept_2, Verifiable):
             comment=comment,
             model=model,
             **_provided(
+                has_dimension_vector=has_dimension_vector,
+                has_quantity_kind=has_quantity_kind,
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                applicable_system=applicable_system,
+                code=code,
+                conversion_multiplier=conversion_multiplier,
+                conversion_multiplier_sn=conversion_multiplier_sn,
+                conversion_offset=conversion_offset,
+                conversion_offset_sn=conversion_offset_sn,
+                dbpedia_match=dbpedia_match,
+                defined_unit_of_system=defined_unit_of_system,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                derived_coherent_unit_of_system=derived_coherent_unit_of_system,
+                derived_unit_of_system=derived_unit_of_system,
+                description=description,
+                exact_match=exact_match,
+                expression=expression,
+                factor_unit_scalar=factor_unit_scalar,
+                guidance=guidance,
+                has_factor_unit=has_factor_unit,
+                has_reciprocal_unit=has_reciprocal_unit,
+                has_rule=has_rule,
+                id=id,
+                iec61360_code=iec61360_code,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                is_unit_of_system=is_unit_of_system,
+                iso_normative_reference=iso_normative_reference,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                math_m_ldefinition=math_m_ldefinition,
+                normative_reference=normative_reference,
+                om_unit=om_unit,
+                plain_text_description=plain_text_description,
+                prefix=prefix,
+                qkdv_denominator=qkdv_denominator,
+                qkdv_numerator=qkdv_numerator,
+                scaling_of=scaling_of,
+                si_exact_match=si_exact_match,
+                si_units_expression=si_units_expression,
+                symbol=symbol,
+                ucum_code=ucum_code,
+                udunits_code=udunits_code,
+                unece_common_code=unece_common_code,
                 unit_for=unit_for,
+                wikidata_match=wikidata_match,
             ),
         )
 
@@ -1602,6 +2900,48 @@ class Anode(Electrode):
         definition='An electrode where oxidation occurs, often a sacrificial component in electrocoagulation.',
     )
 
+_P_Array_is_heterogeneous = _PropertySpec(
+    name='is_heterogeneous',
+    predicate='http://qudt.org/schema/qudt/isHeterogeneous',
+    kind='literal',
+    label='is heterogeneous',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_Array_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
+    kind='object',
+    label='value',
+)
+
+_P_Array_datatype = _PropertySpec(
+    name='datatype',
+    predicate='http://qudt.org/schema/qudt/datatype',
+    kind='object',
+    label='datatype',
+    ranges=('Datatype',),
+    required=True,
+    max_count=1,
+)
+
+_P_Array_dimensionality = _PropertySpec(
+    name='dimensionality',
+    predicate='http://qudt.org/schema/qudt/dimensionality',
+    kind='literal',
+    label='dimensionality',
+    datatype=int,
+    max_count=1,
+)
+
+_P_Array_dimensions = _PropertySpec(
+    name='dimensions',
+    predicate='http://qudt.org/schema/qudt/dimensions',
+    kind='object',
+    label='dimensions',
+)
+
 class Array(StructuredDatatype):
     """Array
     
@@ -1614,7 +2954,124 @@ class Array(StructuredDatatype):
         registry=_REGISTRY,
         label='Array',
         definition=None,
+        properties=(_P_Array_is_heterogeneous, _P_Array_value, _P_Array_datatype, _P_Array_dimensionality, _P_Array_dimensions,),
+        cp_constraints=(
+            _CPConstraint(operator='opaque'),
+        ),
     )
+
+    is_heterogeneous: _Lit[bool] = _Lit(_P_Array_is_heterogeneous)
+    """is heterogeneous (http://qudt.org/schema/qudt/isHeterogeneous)"""
+
+    value: _Rel[_EntityBase] = _Rel(_P_Array_value)
+    """value (http://qudt.org/schema/qudt/value)"""
+
+    datatype: _RelOne[Datatype] = _RelOne(_P_Array_datatype)
+    """datatype (http://qudt.org/schema/qudt/datatype)"""
+
+    dimensionality: _Lit[int] = _Lit(_P_Array_dimensionality)
+    """dimensionality (http://qudt.org/schema/qudt/dimensionality)"""
+
+    dimensions: _Rel[_EntityBase] = _Rel(_P_Array_dimensions)
+    """dimensions (http://qudt.org/schema/qudt/dimensions)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_heterogeneous: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[_EntityBase] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_heterogeneous=is_heterogeneous,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_DataItem_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
+    kind='object',
+    label='value',
+    max_count=1,
+)
 
 class DataItem(Concept_2):
     """Data Item
@@ -1628,7 +3085,87 @@ class DataItem(Concept_2):
         registry=_REGISTRY,
         label='Data Item',
         definition=None,
+        properties=(_P_DataItem_value,),
     )
+
+    value: _RelOne[_EntityBase] = _RelOne(_P_DataItem_value)
+    """value (http://qudt.org/schema/qudt/value)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                value=value,
+            ),
+        )
+
+_P_List_datatype = _PropertySpec(
+    name='datatype',
+    predicate='http://qudt.org/schema/qudt/datatype',
+    kind='object',
+    label='datatype',
+    ranges=('Datatype',),
+    required=True,
+    max_count=1,
+)
+
+_P_List_quantity_ = _PropertySpec(
+    name='quantity_',
+    predicate='http://qudt.org/schema/qudt/quantity',
+    kind='object',
+    label='quantity',
+    ranges=('Quantity',),
+    max_count=1,
+)
+
+_P_List_has_unit = _PropertySpec(
+    name='has_unit',
+    predicate='http://qudt.org/schema/qudt/hasUnit',
+    kind='object',
+    label='has unit',
+    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    ranges=('Unit',),
+    max_count=1,
+    inverse='unit_for',
+)
 
 class List(DataItem):
     """List
@@ -1642,7 +3179,69 @@ class List(DataItem):
         registry=_REGISTRY,
         label='List',
         definition=None,
+        properties=(_P_List_datatype, _P_List_quantity_, _P_List_has_unit,),
     )
+
+    datatype: _RelOne[Datatype] = _RelOne(_P_List_datatype)
+    """datatype (http://qudt.org/schema/qudt/datatype)"""
+
+    quantity_: _RelOne[Quantity] = _RelOne(_P_List_quantity_)
+    """quantity (http://qudt.org/schema/qudt/quantity)"""
+
+    has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_List_has_unit)
+    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        quantity_: Quantity | None = None,
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                quantity_=quantity_,
+                value=value,
+            ),
+        )
 
 class Array2DvalueList(List):
     """2D Array Value List
@@ -1672,6 +3271,23 @@ class ArrayDataOrder(EnumeratedValue):
         definition=None,
     )
 
+_P_CompositeDatatype_alignment = _PropertySpec(
+    name='alignment',
+    predicate='http://qudt.org/schema/qudt/alignment',
+    kind='object',
+    label='alignment',
+    ranges=('AlignmentType',),
+)
+
+_P_CompositeDatatype_padding = _PropertySpec(
+    name='padding',
+    predicate='http://qudt.org/schema/qudt/padding',
+    kind='object',
+    label='padding',
+    ranges=('PaddingType',),
+    max_count=1,
+)
+
 class CompositeDatatype(StructuredDatatype):
     """Composite Data Type
     
@@ -1684,7 +3300,98 @@ class CompositeDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Composite Data Type',
         definition=None,
+        properties=(_P_CompositeDatatype_alignment, _P_CompositeDatatype_padding,),
     )
+
+    alignment: _Rel[AlignmentType] = _Rel(_P_CompositeDatatype_alignment)
+    """alignment (http://qudt.org/schema/qudt/alignment)"""
+
+    padding: _RelOne[PaddingType] = _RelOne(_P_CompositeDatatype_padding)
+    """padding (http://qudt.org/schema/qudt/padding)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class ArrayType(CompositeDatatype):
     """Array Type
@@ -1756,6 +3463,14 @@ class AssociativeArray(Array):
         definition=None,
     )
 
+_P_ModalCue_duration = _PropertySpec(
+    name='duration',
+    predicate='http://qudt.org/schema/qudt/duration',
+    kind='object',
+    label='duration',
+    max_count=1,
+)
+
 class ModalCue(EnumeratedValue):
     """Modal Cue
     
@@ -1768,7 +3483,61 @@ class ModalCue(EnumeratedValue):
         registry=_REGISTRY,
         label='Modal Cue',
         definition=None,
+        properties=(_P_ModalCue_duration,),
     )
+
+    duration: _RelOne[_EntityBase] = _RelOne(_P_ModalCue_duration)
+    """duration (http://qudt.org/schema/qudt/duration)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        duration: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                duration=duration,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_AuralCue_sound = _PropertySpec(
+    name='sound',
+    predicate='http://qudt.org/schema/qudt/sound',
+    kind='literal',
+    label='sound',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
 
 class AuralCue(ModalCue):
     """Aural Cue
@@ -1782,7 +3551,53 @@ class AuralCue(ModalCue):
         registry=_REGISTRY,
         label='Aural Cue',
         definition=None,
+        properties=(_P_AuralCue_sound,),
     )
+
+    sound: _Lit[str] = _Lit(_P_AuralCue_sound)
+    """sound (http://qudt.org/schema/qudt/sound)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        sound: str | None,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        duration: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                sound=sound,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                duration=duration,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class AxialOrientationType(EnumeratedValue):
     """Axial Orientation Type
@@ -1813,26 +3628,6 @@ class ExternalReference(Concept):
         abstract=True,
     )
 
-_P_BACnetExternalReference_device_identifier = _PropertySpec(
-    name='device_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#device-identifier',
-    kind='literal',
-    label='Device identifier',
-    definition='The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1.',
-    datatype=str,
-    max_count=1,
-)
-
-_P_BACnetExternalReference_property_identifier = _PropertySpec(
-    name='property_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#property-identifier',
-    kind='literal',
-    label='Property identifier',
-    definition='The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
-    datatype=str,
-    max_count=1,
-)
-
 _P_BACnetExternalReference_priority_for_writing = _PropertySpec(
     name='priority_for_writing',
     predicate='http://data.ashrae.org/bacnet/2020#priority-for-writing',
@@ -1843,12 +3638,12 @@ _P_BACnetExternalReference_priority_for_writing = _PropertySpec(
     max_count=1,
 )
 
-_P_BACnetExternalReference_device_name = _PropertySpec(
-    name='device_name',
-    predicate='http://data.ashrae.org/bacnet/2020#device-name',
+_P_BACnetExternalReference_property_identifier = _PropertySpec(
+    name='property_identifier',
+    predicate='http://data.ashrae.org/bacnet/2020#property-identifier',
     kind='literal',
-    label='Device name',
-    definition='The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2.',
+    label='Property identifier',
+    definition='The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
     datatype=str,
     max_count=1,
 )
@@ -1863,6 +3658,26 @@ _P_BACnetExternalReference_property_array_index = _PropertySpec(
     max_count=1,
 )
 
+_P_BACnetExternalReference_object_identifier = _PropertySpec(
+    name='object_identifier',
+    predicate='http://data.ashrae.org/bacnet/2020#object-identifier',
+    kind='literal',
+    label='Object identifier',
+    definition='The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
+    datatype=str,
+    max_count=1,
+)
+
+_P_BACnetExternalReference_device_identifier = _PropertySpec(
+    name='device_identifier',
+    predicate='http://data.ashrae.org/bacnet/2020#device-identifier',
+    kind='literal',
+    label='Device identifier',
+    definition='The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1.',
+    datatype=str,
+    max_count=1,
+)
+
 _P_BACnetExternalReference_object_name = _PropertySpec(
     name='object_name',
     predicate='http://data.ashrae.org/bacnet/2020#object-name',
@@ -1873,12 +3688,12 @@ _P_BACnetExternalReference_object_name = _PropertySpec(
     max_count=1,
 )
 
-_P_BACnetExternalReference_object_identifier = _PropertySpec(
-    name='object_identifier',
-    predicate='http://data.ashrae.org/bacnet/2020#object-identifier',
+_P_BACnetExternalReference_device_name = _PropertySpec(
+    name='device_name',
+    predicate='http://data.ashrae.org/bacnet/2020#device-name',
     kind='literal',
-    label='Object identifier',
-    definition='The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1.',
+    label='Device name',
+    definition='The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2.',
     datatype=str,
     max_count=1,
 )
@@ -1895,14 +3710,8 @@ class BACnetExternalReference(ExternalReference):
         registry=_REGISTRY,
         label='BACnet external reference',
         definition='An `ExternalReference` that contains BACnet protocol parameter values necessary to associate a `Property` with a value.',
-        properties=(_P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_property_identifier, _P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_device_name, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_object_identifier,),
+        properties=(_P_BACnetExternalReference_priority_for_writing, _P_BACnetExternalReference_property_identifier, _P_BACnetExternalReference_property_array_index, _P_BACnetExternalReference_object_identifier, _P_BACnetExternalReference_device_identifier, _P_BACnetExternalReference_object_name, _P_BACnetExternalReference_device_name,),
     )
-
-    device_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_device_identifier)
-    """The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1. (http://data.ashrae.org/bacnet/2020#device-identifier)"""
-
-    property_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_property_identifier)
-    """The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#property-identifier)"""
 
     priority_for_writing: _Lit[int] = _Lit(_P_BACnetExternalReference_priority_for_writing)
     """This parameter shall be an integer in the range 1..16, which indicates the priority assigned to the WriteProperty service. If an attempt
@@ -1911,8 +3720,8 @@ class BACnetExternalReference(ExternalReference):
     ignored.  See ASHRAE 135-2024 Clause 15.9.1.1.5. (http://data.ashrae.org/bacnet/2020#priority-for-writing)
     """
 
-    device_name: _Lit[str] = _Lit(_P_BACnetExternalReference_device_name)
-    """The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2. (http://data.ashrae.org/bacnet/2020#device-name)"""
+    property_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_property_identifier)
+    """The Object_Identifier `Property` of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#property-identifier)"""
 
     property_array_index: _Lit[int] = _Lit(_P_BACnetExternalReference_property_array_index)
     """If the property identified is of datatype array, this optional property of type Unsigned shall indicate the array index of
@@ -1920,11 +3729,17 @@ class BACnetExternalReference(ExternalReference):
     array shall be referenced.  See ASHRAE 135-2024 Clause 15.5.1.1.3 and Clause 15.7.1.1.1. (http://data.ashrae.org/bacnet/2020#property-array-index)
     """
 
+    object_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_object_identifier)
+    """The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#object-identifier)"""
+
+    device_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_device_identifier)
+    """The Object_Identifier property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.1. (http://data.ashrae.org/bacnet/2020#device-identifier)"""
+
     object_name: _Lit[str] = _Lit(_P_BACnetExternalReference_object_name)
     """The Object_Name property of the object being referenced.  For example, for the object name of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.2. (http://data.ashrae.org/bacnet/2020#object-name)"""
 
-    object_identifier: _Lit[str] = _Lit(_P_BACnetExternalReference_object_identifier)
-    """The Object_Identifier property of the object being referenced.  For example, for the object identifier of an Analog Value Object, see ASHRAE 135-2024 Clause 12.4.1. (http://data.ashrae.org/bacnet/2020#object-identifier)"""
+    device_name: _Lit[str] = _Lit(_P_BACnetExternalReference_device_name)
+    """The name of the BACnet device being referenced, more formally the Object_Name property of the device object within the BACnet device.  See ASHRAE 135-2024 Clause 12.11.2. (http://data.ashrae.org/bacnet/2020#device-name)"""
 
     def __init__(
         self,
@@ -1992,6 +3807,15 @@ class Tree(Graph):
         definition=None,
     )
 
+_P_BalancedTree_max_depth = _PropertySpec(
+    name='max_depth',
+    predicate='http://qudt.org/schema/qudt/maxDepth',
+    kind='literal',
+    label='max depth',
+    datatype=int,
+    max_count=1,
+)
+
 class BalancedTree(Tree):
     """Balanced Tree Type
     
@@ -2004,7 +3828,59 @@ class BalancedTree(Tree):
         registry=_REGISTRY,
         label='Balanced Tree Type',
         definition=None,
+        properties=(_P_BalancedTree_max_depth,),
     )
+
+    max_depth: _Lit[int] = _Lit(_P_BalancedTree_max_depth)
+    """max depth (http://qudt.org/schema/qudt/maxDepth)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        max_depth: int | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                max_depth=max_depth,
+                plain_text_description=plain_text_description,
+                value=value,
+            ),
+        )
 
 class BallValve(Valve_2):
     """A valve which operates using a spherical ball with a hole (also known as a bore) through the middle.
@@ -2020,6 +3896,26 @@ class BallValve(Valve_2):
         definition='A valve which operates using a spherical ball with a hole (also known as a bore) through the middle.',
     )
 
+_P_BaseDimensionMagnitude_has_base_quantity_kind = _PropertySpec(
+    name='has_base_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasBaseQuantityKind',
+    kind='object',
+    label='has base quantity kind',
+    ranges=('QuantityKind',),
+    required=True,
+    max_count=1,
+)
+
+_P_BaseDimensionMagnitude_vector_magnitude = _PropertySpec(
+    name='vector_magnitude',
+    predicate='http://qudt.org/schema/qudt/vectorMagnitude',
+    kind='literal',
+    label='vector magnitude',
+    datatype=float,
+    required=True,
+    max_count=1,
+)
+
 class BaseDimensionMagnitude(Concept_2):
     """Base Dimension Magnitude
     
@@ -2032,7 +3928,62 @@ class BaseDimensionMagnitude(Concept_2):
         registry=_REGISTRY,
         label='Base Dimension Magnitude',
         definition=None,
+        properties=(_P_BaseDimensionMagnitude_has_base_quantity_kind, _P_BaseDimensionMagnitude_vector_magnitude,),
     )
+
+    has_base_quantity_kind: _RelOne[QuantityKind] = _RelOne(_P_BaseDimensionMagnitude_has_base_quantity_kind)
+    """has base quantity kind (http://qudt.org/schema/qudt/hasBaseQuantityKind)"""
+
+    vector_magnitude: _Lit[float] = _Lit(_P_BaseDimensionMagnitude_vector_magnitude)
+    """vector magnitude (http://qudt.org/schema/qudt/vectorMagnitude)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_base_quantity_kind: QuantityKind | None,
+        type_: _Iterable[_EntityBase],
+        vector_magnitude: float | None,
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_base_quantity_kind=has_base_quantity_kind,
+                type_=type_,
+                vector_magnitude=vector_magnitude,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+            ),
+        )
 
 class Bathtub(Equipment):
     """A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.
@@ -2047,8 +3998,8 @@ class Bathtub(Equipment):
         label='Bathtub',
         definition='A piece of `Equipment` for bathing that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -2100,17 +4051,6 @@ class DewateringUnit(UnitProcess):
         definition='A unit used to remove water from solid material',
     )
 
-_P_BeltFilterPress_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
-    label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
-    ranges=('Process',),
-    required=True,
-    max_count=1,
-)
-
 class BeltFilterPress(DewateringUnit):
     """A dewatering unit that uses a belt system to separate solids from liquids
     
@@ -2123,72 +4063,7 @@ class BeltFilterPress(DewateringUnit):
         registry=_REGISTRY,
         label='Belt Filter Press',
         definition='A dewatering unit that uses a belt system to separate solids from liquids',
-        properties=(_P_BeltFilterPress_has_process,),
     )
-
-    has_process: _RelOne[Process] = _RelOne(_P_BeltFilterPress_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: Process | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                has_role=has_role,
-                medium=medium,
-            ),
-        )
-
-_P_Thickener_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
-    label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
-    ranges=('Process',),
-    required=True,
-    max_count=1,
-)
 
 class Thickener(UnitProcess):
     """A device used to increase the solids concentration of a slurry
@@ -2202,61 +4077,7 @@ class Thickener(UnitProcess):
         registry=_REGISTRY,
         label='Thickener',
         definition='A device used to increase the solids concentration of a slurry',
-        properties=(_P_Thickener_has_process,),
     )
-
-    has_process: _RelOne[Process] = _RelOne(_P_Thickener_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: Process | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                has_role=has_role,
-                medium=medium,
-            ),
-        )
 
 class BeltThickener(Thickener):
     """A thickener that uses a belt system to separate solids from liquids
@@ -2272,14 +4093,53 @@ class BeltThickener(Thickener):
         definition='A thickener that uses a belt system to separate solids from liquids',
     )
 
-_P_ConnectionPoint_medium = _PropertySpec(
-    name='medium',
-    predicate='http://data.ashrae.org/standard223#hasMedium',
+_P_ConnectionPoint_has_electrical_phase = _PropertySpec(
+    name='has_electrical_phase',
+    predicate='http://data.ashrae.org/standard223#hasElectricalPhase',
     kind='enum',
-    label='has medium',
-    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
-    required=True,
+    label='has electrical phase',
+    definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
+    max_count=1,
+)
+
+_P_ConnectionPoint_maps_to = _PropertySpec(
+    name='maps_to',
+    predicate='http://data.ashrae.org/standard223#mapsTo',
+    kind='object',
+    label='maps to',
+    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
+    ranges=('ConnectionPoint',),
+    max_count=1,
+)
+
+_P_ConnectionPoint_has_role = _PropertySpec(
+    name='has_role',
+    predicate='http://data.ashrae.org/standard223#hasRole',
+    kind='enum',
+    label='has role',
+    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
+
+_P_ConnectionPoint_connection = _PropertySpec(
+    name='connection',
+    predicate='http://data.ashrae.org/standard223#connectsThrough',
+    kind='object',
+    label='connects through',
+    definition='A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow.',
+    ranges=('Connection',),
+    max_count=1,
+    inverse='connects_at',
+)
+
+_P_ConnectionPoint_paired_with = _PropertySpec(
+    name='paired_with',
+    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
+    kind='object',
+    label='paired connection point',
+    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
+    ranges=('ConnectionPoint',),
     max_count=1,
 )
 
@@ -2295,53 +4155,14 @@ _P_ConnectionPoint_owner = _PropertySpec(
     inverse='has_connection_point',
 )
 
-_P_ConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-)
-
-_P_ConnectionPoint_paired_with = _PropertySpec(
-    name='paired_with',
-    predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
-    kind='object',
-    label='paired connection point',
-    definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
-    ranges=('ConnectionPoint',),
-    max_count=1,
-)
-
-_P_ConnectionPoint_connection = _PropertySpec(
-    name='connection',
-    predicate='http://data.ashrae.org/standard223#connectsThrough',
-    kind='object',
-    label='connects through',
-    definition='A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow.',
-    ranges=('Connection',),
-    max_count=1,
-    inverse='connects_at',
-)
-
-_P_ConnectionPoint_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
+_P_ConnectionPoint_medium = _PropertySpec(
+    name='medium',
+    predicate='http://data.ashrae.org/standard223#hasMedium',
     kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-)
-
-_P_ConnectionPoint_has_electrical_phase = _PropertySpec(
-    name='has_electrical_phase',
-    predicate='http://data.ashrae.org/standard223#hasElectricalPhase',
-    kind='enum',
-    label='has electrical phase',
-    definition='A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`.',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ElectricalPhaseIdentifier',),
+    label='has medium',
+    definition='The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}).',
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Medium',),
+    required=True,
     max_count=1,
 )
 
@@ -2366,37 +4187,37 @@ class ConnectionPoint(Concept, _RecipeConnectionPoint):
         label='Connection point',
         definition='A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one connectable thing can be connected to another connectable thing using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).\n\nA `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what other things can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.\n\nA `ConnectionPoint` belongs to exactly one connectable thing (see {s223:Connectable}).\n\n`ConnectionPoint`s are represented graphically in this standard by a triangle with the point indicating a direction of flow, or a diamond in the case of a bidirectional flow as shown in Figure 6-1.\n\n![Graphical Representation of a ConnectionPoint](figures/Figure_5-2_Graphical_Depiciton_of_Connection_Points.svg)',
         abstract=True,
-        properties=(_P_ConnectionPoint_medium, _P_ConnectionPoint_owner, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_paired_with, _P_ConnectionPoint_connection, _P_ConnectionPoint_has_role, _P_ConnectionPoint_has_electrical_phase,),
+        properties=(_P_ConnectionPoint_has_electrical_phase, _P_ConnectionPoint_maps_to, _P_ConnectionPoint_has_role, _P_ConnectionPoint_connection, _P_ConnectionPoint_paired_with, _P_ConnectionPoint_owner, _P_ConnectionPoint_medium,),
     )
 
-    medium: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_medium)
-    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
-    owner: _RelOne[Connectable] = _RelOne(_P_ConnectionPoint_owner)
-    """One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable` thing. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}). (http://data.ashrae.org/standard223#isConnectionPointOf)"""
-
-    is_connection_point_of: _PropertyAlias = _PropertyAlias('owner')
+    has_electrical_phase: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_has_electrical_phase)
+    """A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`. (http://data.ashrae.org/standard223#hasElectricalPhase)"""
 
     maps_to: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
-    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
-    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-
-    paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
+    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_ConnectionPoint_has_role)
+    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
 
     connection: _RelOne[Connection] = _RelOne(_P_ConnectionPoint_connection)
     """A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow. (http://data.ashrae.org/standard223#connectsThrough)"""
 
     connects_through: _PropertyAlias = _PropertyAlias('connection')
 
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_ConnectionPoint_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+    paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
+    """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
-    has_electrical_phase: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_has_electrical_phase)
-    """A `Relation` that associates a `Conductor` or `ConnectionPoint` with at most one `EnumerationKind-ElectricalPhaseIdentifier`. (http://data.ashrae.org/standard223#hasElectricalPhase)"""
+    paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
+
+    owner: _RelOne[Connectable] = _RelOne(_P_ConnectionPoint_owner)
+    """One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable` thing. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}). (http://data.ashrae.org/standard223#isConnectionPointOf)"""
+
+    is_connection_point_of: _PropertyAlias = _PropertyAlias('owner')
+
+    medium: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_medium)
+    """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
+
+    has_medium: _PropertyAlias = _PropertyAlias('medium')
 
     def __init__(
         self,
@@ -2513,6 +4334,101 @@ class BidirectionalConnectionPoint(ConnectionPoint):
             ),
         )
 
+_P_ScalarDatatype_bit_order = _PropertySpec(
+    name='bit_order',
+    predicate='http://qudt.org/schema/qudt/bitOrder',
+    kind='object',
+    label='bit order',
+    ranges=('EndianType',),
+    max_count=1,
+)
+
+_P_ScalarDatatype_bits = _PropertySpec(
+    name='bits',
+    predicate='http://qudt.org/schema/qudt/bits',
+    kind='literal',
+    label='bits',
+    datatype=int,
+    max_count=1,
+)
+
+_P_ScalarDatatype_byte_order = _PropertySpec(
+    name='byte_order',
+    predicate='http://qudt.org/schema/qudt/byteOrder',
+    kind='object',
+    label='byte order',
+    ranges=('EndianType',),
+    max_count=1,
+)
+
+_P_ScalarDatatype_bytes = _PropertySpec(
+    name='bytes',
+    predicate='http://qudt.org/schema/qudt/bytes',
+    kind='literal',
+    label='bytes',
+    datatype=int,
+    max_count=1,
+)
+
+_P_ScalarDatatype_encoding = _PropertySpec(
+    name='encoding',
+    predicate='http://qudt.org/schema/qudt/encoding',
+    kind='object',
+    label='encoding',
+    ranges=('Encoding',),
+    max_count=1,
+)
+
+_P_ScalarDatatype_length = _PropertySpec(
+    name='length',
+    predicate='http://qudt.org/schema/qudt/length',
+    kind='literal',
+    label='length',
+    datatype=int,
+    max_count=1,
+)
+
+_P_ScalarDatatype_max_exclusive = _PropertySpec(
+    name='max_exclusive',
+    predicate='http://qudt.org/schema/qudt/maxExclusive',
+    kind='literal',
+    label='max exclusive',
+    datatype=str,
+    max_count=1,
+)
+
+_P_ScalarDatatype_max_inclusive = _PropertySpec(
+    name='max_inclusive',
+    predicate='http://qudt.org/schema/qudt/maxInclusive',
+    kind='object',
+    label='max inclusive',
+    max_count=1,
+)
+
+_P_ScalarDatatype_min_exclusive = _PropertySpec(
+    name='min_exclusive',
+    predicate='http://qudt.org/schema/qudt/minExclusive',
+    kind='object',
+    label='min exclusive',
+    max_count=1,
+)
+
+_P_ScalarDatatype_min_inclusive = _PropertySpec(
+    name='min_inclusive',
+    predicate='http://qudt.org/schema/qudt/minInclusive',
+    kind='object',
+    label='min inclusive',
+    max_count=1,
+)
+
+_P_ScalarDatatype_rdfs_datatype = _PropertySpec(
+    name='rdfs_datatype',
+    predicate='http://qudt.org/schema/qudt/rdfsDatatype',
+    kind='object',
+    label='rdfs datatype',
+    max_count=1,
+)
+
 class ScalarDatatype(Datatype):
     """Scalar Datatype
     
@@ -2525,7 +4441,159 @@ class ScalarDatatype(Datatype):
         registry=_REGISTRY,
         label='Scalar Datatype',
         definition=None,
+        properties=(_P_ScalarDatatype_bit_order, _P_ScalarDatatype_bits, _P_ScalarDatatype_byte_order, _P_ScalarDatatype_bytes, _P_ScalarDatatype_encoding, _P_ScalarDatatype_length, _P_ScalarDatatype_max_exclusive, _P_ScalarDatatype_max_inclusive, _P_ScalarDatatype_min_exclusive, _P_ScalarDatatype_min_inclusive, _P_ScalarDatatype_rdfs_datatype,),
     )
+
+    bit_order: _RelOne[EndianType] = _RelOne(_P_ScalarDatatype_bit_order)
+    """bit order (http://qudt.org/schema/qudt/bitOrder)"""
+
+    bits: _Lit[int] = _Lit(_P_ScalarDatatype_bits)
+    """bits (http://qudt.org/schema/qudt/bits)"""
+
+    byte_order: _RelOne[EndianType] = _RelOne(_P_ScalarDatatype_byte_order)
+    """byte order (http://qudt.org/schema/qudt/byteOrder)"""
+
+    bytes: _Lit[int] = _Lit(_P_ScalarDatatype_bytes)
+    """bytes (http://qudt.org/schema/qudt/bytes)"""
+
+    encoding: _RelOne[Encoding] = _RelOne(_P_ScalarDatatype_encoding)
+    """encoding (http://qudt.org/schema/qudt/encoding)"""
+
+    length: _Lit[int] = _Lit(_P_ScalarDatatype_length)
+    """length (http://qudt.org/schema/qudt/length)"""
+
+    max_exclusive: _Lit[str] = _Lit(_P_ScalarDatatype_max_exclusive)
+    """max exclusive (http://qudt.org/schema/qudt/maxExclusive)"""
+
+    max_inclusive: _RelOne[_EntityBase] = _RelOne(_P_ScalarDatatype_max_inclusive)
+    """max inclusive (http://qudt.org/schema/qudt/maxInclusive)"""
+
+    min_exclusive: _RelOne[_EntityBase] = _RelOne(_P_ScalarDatatype_min_exclusive)
+    """min exclusive (http://qudt.org/schema/qudt/minExclusive)"""
+
+    min_inclusive: _RelOne[_EntityBase] = _RelOne(_P_ScalarDatatype_min_inclusive)
+    """min inclusive (http://qudt.org/schema/qudt/minInclusive)"""
+
+    rdfs_datatype: _RelOne[_EntityBase] = _RelOne(_P_ScalarDatatype_rdfs_datatype)
+    """rdfs datatype (http://qudt.org/schema/qudt/rdfsDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_NumericType_accuracy = _PropertySpec(
+    name='accuracy',
+    predicate='http://qudt.org/schema/qudt/accuracy',
+    kind='literal',
+    label='accuracy',
+    datatype=int,
+    max_count=1,
+)
+
+_P_NumericType_signedness = _PropertySpec(
+    name='signedness',
+    predicate='http://qudt.org/schema/qudt/signedness',
+    kind='object',
+    label='signedness',
+    ranges=('SignednessType',),
+    max_count=1,
+)
 
 class NumericType(ScalarDatatype):
     """Numeric Type
@@ -2539,7 +4607,118 @@ class NumericType(ScalarDatatype):
         registry=_REGISTRY,
         label='Numeric Type',
         definition=None,
+        properties=(_P_NumericType_accuracy, _P_NumericType_signedness,),
     )
+
+    accuracy: _Lit[int] = _Lit(_P_NumericType_accuracy)
+    """accuracy (http://qudt.org/schema/qudt/accuracy)"""
+
+    signedness: _RelOne[SignednessType] = _RelOne(_P_NumericType_signedness)
+    """signedness (http://qudt.org/schema/qudt/signedness)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
 
 class OrdinalType(ScalarDatatype):
     """Ordinal Data Type
@@ -2583,6 +4762,63 @@ class BigIntegerType(IntegerDatatype):
         definition=None,
     )
 
+_P_Prefix_alt_symbol = _PropertySpec(
+    name='alt_symbol',
+    predicate='http://qudt.org/schema/qudt/altSymbol',
+    kind='object',
+    label='alt symbol',
+)
+
+_P_Prefix_latex_symbol = _PropertySpec(
+    name='latex_symbol',
+    predicate='http://qudt.org/schema/qudt/latexSymbol',
+    kind='literal',
+    label='latex symbol',
+    datatype=str,
+)
+
+_P_Prefix_prefix_multiplier = _PropertySpec(
+    name='prefix_multiplier',
+    predicate='http://qudt.org/schema/qudt/prefixMultiplier',
+    kind='literal',
+    label='prefix multiplier',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Prefix_prefix_multiplier_sn = _PropertySpec(
+    name='prefix_multiplier_sn',
+    predicate='http://qudt.org/schema/qudt/prefixMultiplierSN',
+    kind='literal',
+    label='prefix multiplier scientific',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Prefix_si_exact_match = _PropertySpec(
+    name='si_exact_match',
+    predicate='http://qudt.org/schema/qudt/siExactMatch',
+    kind='object',
+    label='Individual from SI Reference Point',
+    max_count=1,
+)
+
+_P_Prefix_symbol = _PropertySpec(
+    name='symbol',
+    predicate='http://qudt.org/schema/qudt/symbol',
+    kind='object',
+    label='symbol',
+    max_count=1,
+)
+
+_P_Prefix_ucum_code = _PropertySpec(
+    name='ucum_code',
+    predicate='http://qudt.org/schema/qudt/ucumCode',
+    kind='literal',
+    label='ucum code',
+    datatype=str,
+)
+
 class Prefix(Concept_2, Verifiable):
     """Prefix
     
@@ -2595,7 +4831,97 @@ class Prefix(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Prefix',
         definition=None,
+        properties=(_P_Prefix_alt_symbol, _P_Prefix_latex_symbol, _P_Prefix_prefix_multiplier, _P_Prefix_prefix_multiplier_sn, _P_Prefix_si_exact_match, _P_Prefix_symbol, _P_Prefix_ucum_code,),
     )
+
+    alt_symbol: _Rel[_EntityBase] = _Rel(_P_Prefix_alt_symbol)
+    """alt symbol (http://qudt.org/schema/qudt/altSymbol)"""
+
+    latex_symbol: _Lit[str] = _Lit(_P_Prefix_latex_symbol)
+    """latex symbol (http://qudt.org/schema/qudt/latexSymbol)"""
+
+    prefix_multiplier: _Lit[float] = _Lit(_P_Prefix_prefix_multiplier)
+    """prefix multiplier (http://qudt.org/schema/qudt/prefixMultiplier)"""
+
+    prefix_multiplier_sn: _Lit[float] = _Lit(_P_Prefix_prefix_multiplier_sn)
+    """prefix multiplier scientific (http://qudt.org/schema/qudt/prefixMultiplierSN)"""
+
+    si_exact_match: _RelOne[_EntityBase] = _RelOne(_P_Prefix_si_exact_match)
+    """Individual from SI Reference Point (http://qudt.org/schema/qudt/siExactMatch)"""
+
+    symbol: _RelOne[_EntityBase] = _RelOne(_P_Prefix_symbol)
+    """symbol (http://qudt.org/schema/qudt/symbol)"""
+
+    ucum_code: _Lit[str] = _Lit(_P_Prefix_ucum_code)
+    """ucum code (http://qudt.org/schema/qudt/ucumCode)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        code: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        latex_symbol: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        prefix_multiplier: float | None = None,
+        prefix_multiplier_sn: float | None = None,
+        si_exact_match: _EntityBase | None = None,
+        symbol: _EntityBase | None = None,
+        ucum_code: str | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                code=code,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                latex_symbol=latex_symbol,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                prefix_multiplier=prefix_multiplier,
+                prefix_multiplier_sn=prefix_multiplier_sn,
+                si_exact_match=si_exact_match,
+                symbol=symbol,
+                ucum_code=ucum_code,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class BinaryPrefix(Prefix):
     """Binary Prefix
@@ -2639,8 +4965,8 @@ class Filter_2(Equipment):
         label='Filter',
         definition='A piece of `Equipment` that removes contaminants from gases or liquids. See {s223:Substance-Medium} for\nmore details on validating compatible mediums upstream and downstream of a `Filter`.',
         cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -2672,6 +4998,24 @@ class BiologicalAeratedFilter(Filter, Reactor):
         definition='A filter that uses biological processes to remove contaminants.',
     )
 
+_P_Encoding_bits = _PropertySpec(
+    name='bits',
+    predicate='http://qudt.org/schema/qudt/bits',
+    kind='literal',
+    label='bits',
+    datatype=int,
+    max_count=1,
+)
+
+_P_Encoding_bytes = _PropertySpec(
+    name='bytes',
+    predicate='http://qudt.org/schema/qudt/bytes',
+    kind='literal',
+    label='bytes',
+    datatype=int,
+    max_count=1,
+)
+
 class Encoding(_EntityBase):
     """Encoding
     
@@ -2684,7 +5028,38 @@ class Encoding(_EntityBase):
         registry=_REGISTRY,
         label='Encoding',
         definition=None,
+        properties=(_P_Encoding_bits, _P_Encoding_bytes,),
     )
+
+    bits: _Lit[int] = _Lit(_P_Encoding_bits)
+    """bits (http://qudt.org/schema/qudt/bits)"""
+
+    bytes: _Lit[int] = _Lit(_P_Encoding_bytes)
+    """bytes (http://qudt.org/schema/qudt/bytes)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        bits: int | None = None,
+        bytes: int | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                bits=bits,
+                bytes=bytes,
+            ),
+        )
 
 class BitEncodingType(Encoding):
     """Bit Encoding
@@ -2713,8 +5088,8 @@ class Boiler_2(Equipment):
         label='Boiler',
         definition='A piece of `Equipment` that uses fuel or electricity to heat water or other fluids and supply steam or hot water for heating, humidification, or other applications.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -2746,6 +5121,15 @@ class BooleanEncodingType(Encoding):
         definition=None,
     )
 
+_P_BooleanType_encoding = _PropertySpec(
+    name='encoding',
+    predicate='http://qudt.org/schema/qudt/encoding',
+    kind='object',
+    label='encoding',
+    ranges=('BooleanEncodingType', 'Encoding'),
+    max_count=1,
+)
+
 class BooleanType(OrdinalType):
     """Boolean Type
     
@@ -2758,7 +5142,111 @@ class BooleanType(OrdinalType):
         registry=_REGISTRY,
         label='Boolean Type',
         definition=None,
+        properties=(_P_BooleanType_encoding,),
     )
+
+    encoding: _RelOne[BooleanEncodingType | Encoding] = _RelOne(_P_BooleanType_encoding)
+    """encoding (http://qudt.org/schema/qudt/encoding)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: BooleanEncodingType | Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
 
 class BooleanTypeEnumeratedValue(EnumeratedValue):
     """boolean value
@@ -2802,6 +5290,16 @@ class ByteEncodingType(Encoding):
         definition=None,
     )
 
+_P_CardinalityType_literal = _PropertySpec(
+    name='literal',
+    predicate='http://www.linkedmodel.org/schema/dtype#literal',
+    kind='literal',
+    label='literal',
+    definition='',
+    datatype=str,
+    max_count=1,
+)
+
 class CardinalityType(EnumeratedValue):
     """Cardinality Type
     
@@ -2814,7 +5312,77 @@ class CardinalityType(EnumeratedValue):
         registry=_REGISTRY,
         label='Cardinality Type',
         definition=None,
+        properties=(_P_CardinalityType_literal,),
     )
+
+    literal: _Lit[str] = _Lit(_P_CardinalityType_literal)
+    """literal (http://www.linkedmodel.org/schema/dtype#literal)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        literal: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                literal=literal,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_Tuple_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
+_P_Tuple_element_type_count = _PropertySpec(
+    name='element_type_count',
+    predicate='http://qudt.org/schema/qudt/elementTypeCount',
+    kind='literal',
+    label='element type count',
+    datatype=int,
+)
+
+_P_Tuple_length = _PropertySpec(
+    name='length',
+    predicate='http://qudt.org/schema/qudt/length',
+    kind='literal',
+    label='length',
+    datatype=int,
+    max_count=1,
+)
 
 class Tuple(CompositeDatatype):
     """Tuple
@@ -2828,7 +5396,105 @@ class Tuple(CompositeDatatype):
         registry=_REGISTRY,
         label='Tuple',
         definition=None,
+        properties=(_P_Tuple_element_datatype, _P_Tuple_element_type_count, _P_Tuple_length,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_Tuple_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    element_type_count: _Lit[int] = _Lit(_P_Tuple_element_type_count)
+    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
+
+    length: _Lit[int] = _Lit(_P_Tuple_length)
+    """length (http://qudt.org/schema/qudt/length)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class Coordinates(Tuple):
     """Coordinates
@@ -2900,17 +5566,6 @@ class Cathode(Electrode):
         definition='An electrode where reduction occurs.',
     )
 
-_P_CentrifugalDewateringUnit_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
-    label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
-    ranges=('Process',),
-    required=True,
-    max_count=1,
-)
-
 class CentrifugalDewateringUnit(DewateringUnit):
     """A dewatering unit that uses centrifugal force to separate solids from liquids
     
@@ -2923,61 +5578,7 @@ class CentrifugalDewateringUnit(DewateringUnit):
         registry=_REGISTRY,
         label='Centrifugal Dewatering Unit',
         definition='A dewatering unit that uses centrifugal force to separate solids from liquids',
-        properties=(_P_CentrifugalDewateringUnit_has_process,),
     )
-
-    has_process: _RelOne[Process] = _RelOne(_P_CentrifugalDewateringUnit_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: Process | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                has_role=has_role,
-                medium=medium,
-            ),
-        )
 
 class CentrifugalThickener(Thickener):
     """A thickener that uses centrifugal force to separate solids from liquids
@@ -3048,8 +5649,8 @@ class ChilledBeam(Equipment):
         label='Chilled beam',
         definition='A piece of `Equipment` with a colder surface temperature where air passes through, and air movement is induced in the room to achieve cooling. Cooling medium is generally water.',
         cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
@@ -3083,15 +5684,15 @@ class Coil(Equipment):
         cp_constraints=(
             _CPConstraint(operator='xone', children=(
                 _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=2)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=1)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=2)),
                     _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=1)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=2)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=2)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=1)),
                 )),
                 _CPConstraint(operator='and', children=(
                     _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Medium-ThermalContact', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=2)),
                     _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Medium-ThermalContact', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=1, max_count=2)),
                 )),
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Medium-ThermalContact', 'http://data.ashrae.org/standard223#Mix-Fluid'), min_count=3, max_count=3)),
             )),
@@ -3192,6 +5793,24 @@ class ChlorinationUnit(DisinfectionUnit):
         definition='A unit that uses chlorine or chlorine compounds for disinfection.',
     )
 
+_P_Citation_description = _PropertySpec(
+    name='description',
+    predicate='http://purl.org/dc/terms/description',
+    kind='object',
+    label='description',
+    required=True,
+    max_count=1,
+)
+
+_P_Citation_url = _PropertySpec(
+    name='url',
+    predicate='http://qudt.org/schema/qudt/url',
+    kind='literal',
+    label='url',
+    datatype=str,
+    max_count=1,
+)
+
 class Citation(Concept_2):
     """Citation
     
@@ -3204,7 +5823,87 @@ class Citation(Concept_2):
         registry=_REGISTRY,
         label='Citation',
         definition=None,
+        properties=(_P_Citation_description, _P_Citation_url,),
     )
+
+    description: _RelOne[_EntityBase] = _RelOne(_P_Citation_description)
+    """description (http://purl.org/dc/terms/description)"""
+
+    url: _Lit[str] = _Lit(_P_Citation_url)
+    """url (http://qudt.org/schema/qudt/url)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        description: _EntityBase | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        url: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                description=description,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                url=url,
+            ),
+        )
+
+_P_Class_achieves_treatment_objective = _PropertySpec(
+    name='achieves_treatment_objective',
+    predicate='https://watermetadata.org/ontology/watr#achievesTreatmentObjective',
+    kind='object',
+    label='achieves treatment objective',
+    definition="Relates a process type to the treatment objective it achieves wherever it is performed. Used to derive an equipment's treatment objective from its process.",
+    ranges=('Class',),
+)
+
+_P_Class_includes_process = _PropertySpec(
+    name='includes_process',
+    predicate='https://watermetadata.org/ontology/watr#includesProcess',
+    kind='object',
+    label='includes process',
+    definition='Relates a compound process to a constituent process that a system performing it is expected to carry out, typically through a member. Used to check coverage, not validity.',
+    ranges=('Class',),
+)
+
+_P_Class_may_also_perform = _PropertySpec(
+    name='may_also_perform',
+    predicate='https://watermetadata.org/ontology/watr#mayAlsoPerform',
+    kind='object',
+    label='may also perform',
+    definition='Relates an equipment class to a process it may perform in addition to the process it requires. Used for plausibility warnings, not validity.',
+    ranges=('Class',),
+)
 
 class Class(_EntityBase):
     """This is a modeling construct. All classes defined in the watr ontology are instances of `watr:Class`.
@@ -3218,7 +5917,49 @@ class Class(_EntityBase):
         registry=_REGISTRY,
         label='Class',
         definition='This is a modeling construct. All classes defined in the watr ontology are instances of `watr:Class`.',
+        properties=(_P_Class_achieves_treatment_objective, _P_Class_includes_process, _P_Class_may_also_perform,),
+        cp_constraints=(
+            _CPConstraint(operator='or', children=(
+                _CPConstraint(operator='opaque'),
+                _CPConstraint(operator='opaque'),
+            )),
+        ),
     )
+
+    achieves_treatment_objective: _Rel[Class] = _Rel(_P_Class_achieves_treatment_objective)
+    """Relates a process type to the treatment objective it achieves wherever it is performed. Used to derive an equipment's treatment objective from its process. (https://watermetadata.org/ontology/watr#achievesTreatmentObjective)"""
+
+    includes_process: _Rel[Class] = _Rel(_P_Class_includes_process)
+    """Relates a compound process to a constituent process that a system performing it is expected to carry out, typically through a member. Used to check coverage, not validity. (https://watermetadata.org/ontology/watr#includesProcess)"""
+
+    may_also_perform: _Rel[Class] = _Rel(_P_Class_may_also_perform)
+    """Relates an equipment class to a process it may perform in addition to the process it requires. Used for plausibility warnings, not validity. (https://watermetadata.org/ontology/watr#mayAlsoPerform)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        achieves_treatment_objective: _Iterable[Class] = (),
+        includes_process: _Iterable[Class] = (),
+        may_also_perform: _Iterable[Class] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                achieves_treatment_objective=achieves_treatment_objective,
+                includes_process=includes_process,
+                may_also_perform=may_also_perform,
+            ),
+        )
 
 class ClothesWasher(Equipment):
     """A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).
@@ -3234,8 +5975,8 @@ class ClothesWasher(Equipment):
         definition='A piece of `Equipment` that automatically cleans a load of textiles (e.g., clothing, bedding).',
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -3262,15 +6003,6 @@ _P_Connection_connects_from = _PropertySpec(
     ranges=('Connectable',),
 )
 
-_P_Connection_cnx = _PropertySpec(
-    name='cnx',
-    predicate='http://data.ashrae.org/standard223#cnx',
-    kind='object',
-    label='cnx',
-    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
-    ranges=('ConnectionPoint',),
-)
-
 _P_Connection_connects_at = _PropertySpec(
     name='connects_at',
     predicate='http://data.ashrae.org/standard223#connectsAt',
@@ -3280,25 +6012,6 @@ _P_Connection_connects_at = _PropertySpec(
     ranges=('ConnectionPoint',),
     required=True,
     inverse='connection',
-)
-
-_P_Connection_connects_to = _PropertySpec(
-    name='connects_to',
-    predicate='http://data.ashrae.org/standard223#connectsTo',
-    kind='object',
-    label='connects to',
-    definition='A `Relation` that associates a `Connection` with a `Connectable` thing, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B.',
-    ranges=('Connectable',),
-)
-
-_P_Connection_has_thermodynamic_phase = _PropertySpec(
-    name='has_thermodynamic_phase',
-    predicate='http://data.ashrae.org/standard223#hasThermodynamicPhase',
-    kind='enum',
-    label='has thermodynamic phase',
-    definition='A `Relation` that associates a Medium with its thermodynamic phases.',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase',),
-    max_count=1,
 )
 
 _P_Connection_medium = _PropertySpec(
@@ -3312,6 +6025,25 @@ _P_Connection_medium = _PropertySpec(
     max_count=1,
 )
 
+_P_Connection_has_thermodynamic_phase = _PropertySpec(
+    name='has_thermodynamic_phase',
+    predicate='http://data.ashrae.org/standard223#hasThermodynamicPhase',
+    kind='enum',
+    label='has thermodynamic phase',
+    definition='A `Relation` that associates a Medium with its thermodynamic phases.',
+    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-ThermodynamicPhase',),
+    max_count=1,
+)
+
+_P_Connection_cnx = _PropertySpec(
+    name='cnx',
+    predicate='http://data.ashrae.org/standard223#cnx',
+    kind='object',
+    label='cnx',
+    definition='A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences.',
+    ranges=('ConnectionPoint',),
+)
+
 _P_Connection_has_role = _PropertySpec(
     name='has_role',
     predicate='http://data.ashrae.org/standard223#hasRole',
@@ -3319,6 +6051,15 @@ _P_Connection_has_role = _PropertySpec(
     label='has role',
     definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
+)
+
+_P_Connection_connects_to = _PropertySpec(
+    name='connects_to',
+    predicate='http://data.ashrae.org/standard223#connectsTo',
+    kind='object',
+    label='connects to',
+    definition='A `Relation` that associates a `Connection` with a `Connectable` thing, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B.',
+    ranges=('Connectable',),
 )
 
 class Connection(Concept):
@@ -3346,12 +6087,12 @@ class Connection(Concept):
         registry=_REGISTRY,
         label='Connection',
         definition='A `Connection` is the modeling construct used to represent the thing (e.g., pipe, duct, conductor, or free space) that is used to convey\nsome Medium (e.g., water, air, electricity, light, Wi-Fi) between two connectable things. All connections have two or more connection points bound\nto either `Equipment` (see {s223:Equipment}), `DomainSpace` (see {s223:DomainSpace}), or `Junction` (see {s223:Junction}). See Figure 6-2. If the direction\nof flow is constrained, that constraint is indicated by using one or more `InletConnectionPoint`s (see {s223:InletConnectionPoint}) to represent the\ninflow points and `OutletConnectionPoint`s (see {s223:OutletConnectionPoint}) to represent the outflow points.\n\nA `Connection` may contain branches or intersections. These may be modeled using `Junction`s if it is necessary to identify a specific intersection\n(see {s223:Junction}).\n\nThe constraint to maintain compatible mediums among a `Connection` and all of its associated `ConnectionPoint`s gives rise to multiple\nvalidation test cases, where the specified medium might be a pure medium, or a mixture with constituents. See {s223:Substance-Medium} for\nmore details.\n\n![Graphical Depiction of Connection.](figures/Figure_5-3_Connection.svg)',
-        properties=(_P_Connection_connects_from, _P_Connection_cnx, _P_Connection_connects_at, _P_Connection_connects_to, _P_Connection_has_thermodynamic_phase, _P_Connection_medium, _P_Connection_has_role,),
+        properties=(_P_Connection_connects_from, _P_Connection_connects_at, _P_Connection_medium, _P_Connection_has_thermodynamic_phase, _P_Connection_cnx, _P_Connection_has_role, _P_Connection_connects_to,),
         cp_constraints=(
             _CPConstraint(operator='or', children=(
                 _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None)),
                     _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=(), min_count=1, max_count=None)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=(), min_count=1, max_count=None)),
                 )),
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=(), min_count=1, max_count=None)),
             )),
@@ -3361,25 +6102,25 @@ class Connection(Concept):
     connects_from: _Rel[Connectable] = _Rel(_P_Connection_connects_from)
     """A `Relation` that associates a `Connectable` thing with a `Connection`, with an implied direction of flow. B `connectsFrom` A indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsFrom)"""
 
-    cnx: _Rel[ConnectionPoint] = _Rel(_P_Connection_cnx)
-    """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
-
     connects_at: _Rel[ConnectionPoint] = _Rel(_P_Connection_connects_at)
     """A `Relation` that associates a `Connection` with a specific `ConnectionPoint`. (http://data.ashrae.org/standard223#connectsAt)"""
-
-    connects_to: _Rel[Connectable] = _Rel(_P_Connection_connects_to)
-    """A `Relation` that associates a `Connection` with a `Connectable` thing, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsTo)"""
-
-    has_thermodynamic_phase: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_has_thermodynamic_phase)
-    """A `Relation` that associates a Medium with its thermodynamic phases. (http://data.ashrae.org/standard223#hasThermodynamicPhase)"""
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
     has_medium: _PropertyAlias = _PropertyAlias('medium')
 
+    has_thermodynamic_phase: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_has_thermodynamic_phase)
+    """A `Relation` that associates a Medium with its thermodynamic phases. (http://data.ashrae.org/standard223#hasThermodynamicPhase)"""
+
+    cnx: _Rel[ConnectionPoint] = _Rel(_P_Connection_cnx)
+    """A `Relation` that associates adjacent entities in a connection path, comprised of `Equipment`-`ConnectionPoint`-`Connection`-`ConnectionPoint`-`Equipment` sequences. (http://data.ashrae.org/standard223#cnx)"""
+
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Connection_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
+
+    connects_to: _Rel[Connectable] = _Rel(_P_Connection_connects_to)
+    """A `Relation` that associates a `Connection` with a `Connectable` thing, with an implied direction of flow. A `connectsTo` B indicates a flow from A to B. (http://data.ashrae.org/standard223#connectsTo)"""
 
     def __init__(
         self,
@@ -3638,6 +6379,16 @@ class VisualCue(ModalCue):
         definition=None,
     )
 
+_P_ColorCue_rgb_code = _PropertySpec(
+    name='rgb_code',
+    predicate='http://qudt.org/schema/qudt/rgbCode',
+    kind='literal',
+    label='rgb code',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
 class ColorCue(VisualCue):
     """Color Cue
     
@@ -3650,7 +6401,69 @@ class ColorCue(VisualCue):
         registry=_REGISTRY,
         label='Color Cue',
         definition=None,
+        properties=(_P_ColorCue_rgb_code,),
     )
+
+    rgb_code: _Lit[str] = _Lit(_P_ColorCue_rgb_code)
+    """rgb code (http://qudt.org/schema/qudt/rgbCode)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        rgb_code: str | None,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        duration: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                rgb_code=rgb_code,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                duration=duration,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_Comment_description = _PropertySpec(
+    name='description',
+    predicate='http://purl.org/dc/terms/description',
+    kind='object',
+    label='description',
+    max_count=1,
+)
+
+_P_Comment_rationale = _PropertySpec(
+    name='rationale',
+    predicate='http://qudt.org/schema/qudt/rationale',
+    kind='literal',
+    label='rationale',
+    datatype=str,
+)
 
 class Comment(Verifiable):
     """Comment
@@ -3664,7 +6477,48 @@ class Comment(Verifiable):
         registry=_REGISTRY,
         label='Comment',
         definition=None,
+        properties=(_P_Comment_description, _P_Comment_rationale,),
     )
+
+    description: _RelOne[_EntityBase] = _RelOne(_P_Comment_description)
+    """description (http://purl.org/dc/terms/description)"""
+
+    rationale: _Lit[str] = _Lit(_P_Comment_rationale)
+    """rationale (http://qudt.org/schema/qudt/rationale)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        rationale: str | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                rationale=rationale,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class CompositeCodeList(CodeList):
     """Composite Code List
@@ -3680,6 +6534,14 @@ class CompositeCodeList(CodeList):
         definition=None,
     )
 
+_P_CompositeDataStructure_field = _PropertySpec(
+    name='field',
+    predicate='http://qudt.org/schema/qudt/field',
+    kind='object',
+    label='field',
+    ranges=('DataSetElement',),
+)
+
 class CompositeDataStructure(CompositeDatatype):
     """Composite Data Structure
     
@@ -3692,7 +6554,140 @@ class CompositeDataStructure(CompositeDatatype):
         registry=_REGISTRY,
         label='Composite Data Structure',
         definition=None,
+        properties=(_P_CompositeDataStructure_field,),
     )
+
+    field: _Rel[DataSetElement] = _Rel(_P_CompositeDataStructure_field)
+    """field (http://qudt.org/schema/qudt/field)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        field: _Iterable[DataSetElement] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                field=field,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_Table_dimensions = _PropertySpec(
+    name='dimensions',
+    predicate='http://qudt.org/schema/qudt/dimensions',
+    kind='object',
+    label='dimensions',
+)
+
+_P_Table_by_row = _PropertySpec(
+    name='by_row',
+    predicate='http://qudt.org/schema/qudt/byRow',
+    kind='literal',
+    label='by row',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_Table_columns = _PropertySpec(
+    name='columns',
+    predicate='http://qudt.org/schema/qudt/columns',
+    kind='literal',
+    label='columns',
+    datatype=int,
+    max_count=1,
+)
+
+_P_Table_dimensionality = _PropertySpec(
+    name='dimensionality',
+    predicate='http://qudt.org/schema/qudt/dimensionality',
+    kind='literal',
+    label='dimensionality',
+    datatype=int,
+    max_count=1,
+)
+
+_P_Table_rows = _PropertySpec(
+    name='rows',
+    predicate='http://qudt.org/schema/qudt/rows',
+    kind='literal',
+    label='rows',
+    datatype=int,
+    max_count=1,
+)
 
 class Table(StructuredDatatype):
     """Table Type
@@ -3706,7 +6701,113 @@ class Table(StructuredDatatype):
         registry=_REGISTRY,
         label='Table Type',
         definition=None,
+        properties=(_P_Table_dimensions, _P_Table_by_row, _P_Table_columns, _P_Table_dimensionality, _P_Table_rows,),
     )
+
+    dimensions: _Rel[_EntityBase] = _Rel(_P_Table_dimensions)
+    """dimensions (http://qudt.org/schema/qudt/dimensions)"""
+
+    by_row: _Lit[bool] = _Lit(_P_Table_by_row)
+    """by row (http://qudt.org/schema/qudt/byRow)"""
+
+    columns: _Lit[int] = _Lit(_P_Table_columns)
+    """columns (http://qudt.org/schema/qudt/columns)"""
+
+    dimensionality: _Lit[int] = _Lit(_P_Table_dimensionality)
+    """dimensionality (http://qudt.org/schema/qudt/dimensionality)"""
+
+    rows: _Lit[int] = _Lit(_P_Table_rows)
+    """rows (http://qudt.org/schema/qudt/rows)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        by_row: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        columns: int | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rows: int | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                by_row=by_row,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                columns=columns,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rows=rows,
+                vb_name=vb_name,
+            ),
+        )
 
 class CompositeTable(Table):
     """Composite Table Type
@@ -3750,6 +6851,16 @@ class CompositionFunction(Function_2):
         definition=None,
     )
 
+_P_CompositionTree_function = _PropertySpec(
+    name='function',
+    predicate='http://qudt.org/schema/qudt/function',
+    kind='object',
+    label='function',
+    ranges=('CompositionFunction',),
+    required=True,
+    max_count=1,
+)
+
 class CompositionTree(Tree):
     """Composition Tree
     
@@ -3762,7 +6873,59 @@ class CompositionTree(Tree):
         registry=_REGISTRY,
         label='Composition Tree',
         definition=None,
+        properties=(_P_CompositionTree_function,),
     )
+
+    function: _RelOne[CompositionFunction] = _RelOne(_P_CompositionTree_function)
+    """function (http://qudt.org/schema/qudt/function)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        function: CompositionFunction | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                function=function,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                value=value,
+            ),
+        )
 
 class Compressor_2(Equipment):
     """A piece of `Equipment` that mechanically increases the pressure of a gas.
@@ -3828,19 +6991,10 @@ class ComputerPrinter(Equipment):
         label='Computer printer',
         definition='A piece of `Equipment` that processes an input electrical or RF signal, typically from a `Computer`, and outputs a durable representation of information, typically text and/or graphics, typically on paper.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-RF', 'http://data.ashrae.org/standard223#Electricity-Signal'), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
     )
-
-_P_Sensor_has_measurement_range = _PropertySpec(
-    name='has_measurement_range',
-    predicate='https://watermetadata.org/ontology/watr#hasMeasurementRange',
-    kind='object',
-    label='has measurement range',
-    definition='The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.',
-    ranges=('QuantifiableProperty',),
-)
 
 _P_Sensor_observes = _PropertySpec(
     name='observes',
@@ -3852,12 +7006,13 @@ _P_Sensor_observes = _PropertySpec(
     max_count=1,
 )
 
-_P_Sensor_has_reference_location = _PropertySpec(
-    name='has_reference_location',
-    predicate='http://data.ashrae.org/standard223#hasReferenceLocation',
+_P_Sensor_has_observation_location = _PropertySpec(
+    name='has_observation_location',
+    predicate='http://data.ashrae.org/standard223#hasObservationLocation',
     kind='object',
-    label='has reference location',
-    definition='A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}).',
+    label='has observation location',
+    definition='A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}).',
+    required=True,
     max_count=1,
 )
 
@@ -3870,13 +7025,21 @@ _P_Sensor_has_measurement_resolution = _PropertySpec(
     ranges=('QuantifiableProperty',),
 )
 
-_P_Sensor_has_observation_location = _PropertySpec(
-    name='has_observation_location',
-    predicate='http://data.ashrae.org/standard223#hasObservationLocation',
+_P_Sensor_has_measurement_range = _PropertySpec(
+    name='has_measurement_range',
+    predicate='https://watermetadata.org/ontology/watr#hasMeasurementRange',
     kind='object',
-    label='has observation location',
-    definition='A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}).',
-    required=True,
+    label='has measurement range',
+    definition='The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor.',
+    ranges=('QuantifiableProperty',),
+)
+
+_P_Sensor_has_reference_location = _PropertySpec(
+    name='has_reference_location',
+    predicate='http://data.ashrae.org/standard223#hasReferenceLocation',
+    kind='object',
+    label='has reference location',
+    definition='A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}).',
     max_count=1,
 )
 
@@ -3923,11 +7086,8 @@ class Sensor(Equipment):
         registry=_REGISTRY,
         label='Sensor',
         definition='\nA `Sensor` `observes` an `ObservableProperty` (see {s223:ObservableProperty})\nwhich may be quantifiable (see {s223:QuantifiableObservableProperty}), such as a\ntemperature, flow, or concentration, or enumerable (see {s223:EnumeratedObservableProperty}),\nsuch as an occupancy state.\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to an assumed\nor common reference point, it can be modeled with only an observation location.\nFor example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example1 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    qudt:hasQuantityKind quantitykind:Temperature .\n```\n\nIf a `Sensor` observes a `QuantifiableObservableProperty` relative to a unique\nor specified reference point, it can be modeled with an observation location and\na reference location, and indicating the difference between two values by setting `qudt:isDeltaQuantity` to `true`. For example:\n\n```turtle\n@prefix : <http://example.com/> .\n\n:example2 a s223:TemperatureSensor ;\n    s223:hasObservationLocation :location1 ;\n    s223:hasReferenceLocation :location2 ;\n    qudt:hasQuantityKind quantitykind:Temperature ;\n    qudt:isDeltaQuantity true .\n```\n',
-        properties=(_P_Sensor_has_measurement_range, _P_Sensor_observes, _P_Sensor_has_reference_location, _P_Sensor_has_measurement_resolution, _P_Sensor_has_observation_location,),
+        properties=(_P_Sensor_observes, _P_Sensor_has_observation_location, _P_Sensor_has_measurement_resolution, _P_Sensor_has_measurement_range, _P_Sensor_has_reference_location,),
     )
-
-    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_range)
-    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
 
     observes: _RelOne[_EntityBase] = _RelOne(_P_Sensor_observes)
     """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
@@ -3935,14 +7095,17 @@ class Sensor(Equipment):
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
 
-    has_reference_location: _RelOne[_EntityBase] = _RelOne(_P_Sensor_has_reference_location)
-    """A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}). (http://data.ashrae.org/standard223#hasReferenceLocation)"""
+    has_observation_location: _RelOne[_EntityBase] = _RelOne(_P_Sensor_has_observation_location)
+    """A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}). (http://data.ashrae.org/standard223#hasObservationLocation)"""
 
     has_measurement_resolution: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_resolution)
     """A `Relation` that associates a `Sensor` with the `QuantifiableProperty` whose value indicates the smallest recognizable change in engineering units that the `Sensor` is able to measure. (http://data.ashrae.org/standard223#hasMeasurementResolution)"""
 
-    has_observation_location: _RelOne[_EntityBase] = _RelOne(_P_Sensor_has_observation_location)
-    """A `Relation` that associates a `Sensor` with the topological location where it is observing a `Property` (see {s223:observes}). The observation location shall be a `Connectable` (see {s223:Connectable}), `Connection` (see {s223:Connection}), or `ConnectionPoint` (see {s223:ConnectionPoint}). (http://data.ashrae.org/standard223#hasObservationLocation)"""
+    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_Sensor_has_measurement_range)
+    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
+
+    has_reference_location: _RelOne[_EntityBase] = _RelOne(_P_Sensor_has_reference_location)
+    """A `Relation` that associates  a differential sensor with the topological location of the baseline (reference) `Property` (see {s223:observes}). (http://data.ashrae.org/standard223#hasReferenceLocation)"""
 
     def __init__(
         self,
@@ -3963,9 +7126,11 @@ class Sensor(Equipment):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -3995,9 +7160,11 @@ class Sensor(Equipment):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -4056,9 +7223,11 @@ class ConcentrationSensor_2(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -4088,9 +7257,11 @@ class ConcentrationSensor_2(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -4233,6 +7404,77 @@ class Conductor(Connection):
             ),
         )
 
+_P_Quantifiable_data_encoding = _PropertySpec(
+    name='data_encoding',
+    predicate='http://qudt.org/schema/qudt/dataEncoding',
+    kind='object',
+    label='data encoding',
+    ranges=('DataEncoding',),
+    max_count=1,
+)
+
+_P_Quantifiable_datatype = _PropertySpec(
+    name='datatype',
+    predicate='http://qudt.org/schema/qudt/datatype',
+    kind='object',
+    label='datatype',
+    max_count=1,
+)
+
+_P_Quantifiable_has_unit = _PropertySpec(
+    name='has_unit',
+    predicate='http://qudt.org/schema/qudt/hasUnit',
+    kind='object',
+    label='has unit',
+    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    ranges=('Unit',),
+    max_count=1,
+    inverse='unit_for',
+)
+
+_P_Quantifiable_relative_standard_uncertainty = _PropertySpec(
+    name='relative_standard_uncertainty',
+    predicate='http://qudt.org/schema/qudt/relativeStandardUncertainty',
+    kind='literal',
+    label='relative standard uncertainty',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Quantifiable_standard_uncertainty = _PropertySpec(
+    name='standard_uncertainty',
+    predicate='http://qudt.org/schema/qudt/standardUncertainty',
+    kind='literal',
+    label='standard uncertainty',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Quantifiable_standard_uncertainty_sn = _PropertySpec(
+    name='standard_uncertainty_sn',
+    predicate='http://qudt.org/schema/qudt/standardUncertaintySN',
+    kind='literal',
+    label='standard uncertainty scientific',
+    datatype=float,
+    max_count=1,
+)
+
+_P_Quantifiable_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
+    kind='object',
+    label='value',
+    max_count=1,
+)
+
+_P_Quantifiable_value_sn = _PropertySpec(
+    name='value_sn',
+    predicate='http://qudt.org/schema/qudt/valueSN',
+    kind='object',
+    label='value scientific',
+    max_count=1,
+)
+
 class Quantifiable(Aspect):
     """Quantifiable
     
@@ -4245,7 +7487,68 @@ class Quantifiable(Aspect):
         registry=_REGISTRY,
         label='Quantifiable',
         definition=None,
+        properties=(_P_Quantifiable_data_encoding, _P_Quantifiable_datatype, _P_Quantifiable_has_unit, _P_Quantifiable_relative_standard_uncertainty, _P_Quantifiable_standard_uncertainty, _P_Quantifiable_standard_uncertainty_sn, _P_Quantifiable_value, _P_Quantifiable_value_sn,),
     )
+
+    data_encoding: _RelOne[DataEncoding] = _RelOne(_P_Quantifiable_data_encoding)
+    """data encoding (http://qudt.org/schema/qudt/dataEncoding)"""
+
+    datatype: _RelOne[_EntityBase] = _RelOne(_P_Quantifiable_datatype)
+    """datatype (http://qudt.org/schema/qudt/datatype)"""
+
+    has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_Quantifiable_has_unit)
+    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    relative_standard_uncertainty: _Lit[float] = _Lit(_P_Quantifiable_relative_standard_uncertainty)
+    """relative standard uncertainty (http://qudt.org/schema/qudt/relativeStandardUncertainty)"""
+
+    standard_uncertainty: _Lit[float] = _Lit(_P_Quantifiable_standard_uncertainty)
+    """standard uncertainty (http://qudt.org/schema/qudt/standardUncertainty)"""
+
+    standard_uncertainty_sn: _Lit[float] = _Lit(_P_Quantifiable_standard_uncertainty_sn)
+    """standard uncertainty scientific (http://qudt.org/schema/qudt/standardUncertaintySN)"""
+
+    value: _RelOne[_EntityBase] = _RelOne(_P_Quantifiable_value)
+    """value (http://qudt.org/schema/qudt/value)"""
+
+    value_sn: _RelOne[_EntityBase] = _RelOne(_P_Quantifiable_value_sn)
+    """value scientific (http://qudt.org/schema/qudt/valueSN)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        data_encoding: DataEncoding | None = None,
+        datatype: _EntityBase | None = None,
+        has_unit: Unit | _TermValue | None = None,
+        relative_standard_uncertainty: float | None = None,
+        standard_uncertainty: float | None = None,
+        standard_uncertainty_sn: float | None = None,
+        value: _EntityBase | None = None,
+        value_sn: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                data_encoding=data_encoding,
+                datatype=datatype,
+                has_unit=has_unit,
+                relative_standard_uncertainty=relative_standard_uncertainty,
+                standard_uncertainty=standard_uncertainty,
+                standard_uncertainty_sn=standard_uncertainty_sn,
+                value=value,
+                value_sn=value_sn,
+            ),
+        )
 
 class QuantityValue(Concept_2, Quantifiable, Verifiable):
     """Quantity value
@@ -4261,6 +7564,85 @@ class QuantityValue(Concept_2, Quantifiable, Verifiable):
         definition=None,
     )
 
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        data_encoding: DataEncoding | None = None,
+        datatype: _EntityBase | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        relative_standard_uncertainty: float | None = None,
+        standard_uncertainty: float | None = None,
+        standard_uncertainty_sn: float | None = None,
+        value: _EntityBase | None = None,
+        value_sn: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                data_encoding=data_encoding,
+                datatype=datatype,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                relative_standard_uncertainty=relative_standard_uncertainty,
+                standard_uncertainty=standard_uncertainty,
+                standard_uncertainty_sn=standard_uncertainty_sn,
+                value=value,
+                value_sn=value_sn,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_ConstantValue_exact_constant = _PropertySpec(
+    name='exact_constant',
+    predicate='http://qudt.org/schema/qudt/exactConstant',
+    kind='literal',
+    label='exact constant',
+    datatype=bool,
+    max_count=1,
+)
+
 class ConstantValue(QuantityValue):
     """Constant value
     
@@ -4273,7 +7655,93 @@ class ConstantValue(QuantityValue):
         registry=_REGISTRY,
         label='Constant value',
         definition=None,
+        properties=(_P_ConstantValue_exact_constant,),
     )
+
+    exact_constant: _Lit[bool] = _Lit(_P_ConstantValue_exact_constant)
+    """exact constant (http://qudt.org/schema/qudt/exactConstant)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        data_encoding: DataEncoding | None = None,
+        datatype: _EntityBase | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_constant: bool | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        relative_standard_uncertainty: float | None = None,
+        standard_uncertainty: float | None = None,
+        standard_uncertainty_sn: float | None = None,
+        value: _EntityBase | None = None,
+        value_sn: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                data_encoding=data_encoding,
+                datatype=datatype,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_constant=exact_constant,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                relative_standard_uncertainty=relative_standard_uncertainty,
+                standard_uncertainty=standard_uncertainty,
+                standard_uncertainty_sn=standard_uncertainty_sn,
+                value=value,
+                value_sn=value_sn,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_ContextualUnit_broader = _PropertySpec(
+    name='broader',
+    predicate='http://www.w3.org/2004/02/skos/core#broader',
+    kind='object',
+    label='has broader',
+    definition='Relates a concept to a concept that is more general in meaning.',
+    ranges=('Unit',),
+    inverse='narrower',
+)
 
 class ContextualUnit(Unit):
     """Contextual Unit
@@ -4287,7 +7755,131 @@ class ContextualUnit(Unit):
         registry=_REGISTRY,
         label='Contextual Unit',
         definition=None,
+        properties=(_P_ContextualUnit_broader,),
     )
+
+    broader: _Rel[Unit] = _Rel(_P_ContextualUnit_broader)
+    """Relates a concept to a concept that is more general in meaning. (http://www.w3.org/2004/02/skos/core#broader)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_dimension_vector: QuantityKindDimensionVector | None,
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        applicable_system: _Iterable[SystemOfUnits] = (),
+        broader: _Iterable[Unit] = (),
+        code: _Iterable[_EntityBase] = (),
+        conversion_multiplier: float | None = None,
+        conversion_multiplier_sn: float | None = None,
+        conversion_offset: float | None = None,
+        conversion_offset_sn: float | None = None,
+        dbpedia_match: str | None = None,
+        defined_unit_of_system: _Iterable[SystemOfUnits] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        derived_coherent_unit_of_system: _Iterable[SystemOfUnits] = (),
+        derived_unit_of_system: _Iterable[SystemOfUnits] = (),
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        expression: _Iterable[_EntityBase] = (),
+        factor_unit_scalar: float | None = None,
+        guidance: str | None = None,
+        has_factor_unit: _Iterable[_EntityBase] = (),
+        has_reciprocal_unit: _Iterable[Unit] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        iec61360_code: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        is_unit_of_system: _Iterable[SystemOfUnits] = (),
+        iso_normative_reference: str | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        math_m_ldefinition: str | None = None,
+        normative_reference: str | None = None,
+        om_unit: _Iterable[_EntityBase] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        prefix: Prefix | None = None,
+        qkdv_denominator: QuantityKindDimensionVector | None = None,
+        qkdv_numerator: QuantityKindDimensionVector | None = None,
+        scaling_of: Unit | None = None,
+        si_exact_match: _EntityBase | None = None,
+        si_units_expression: str | None = None,
+        symbol: _EntityBase | None = None,
+        ucum_code: str | None = None,
+        udunits_code: str | None = None,
+        unece_common_code: str | None = None,
+        unit_for: _Iterable[_EntityBase] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_dimension_vector=has_dimension_vector,
+                has_quantity_kind=has_quantity_kind,
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                applicable_system=applicable_system,
+                broader=broader,
+                code=code,
+                conversion_multiplier=conversion_multiplier,
+                conversion_multiplier_sn=conversion_multiplier_sn,
+                conversion_offset=conversion_offset,
+                conversion_offset_sn=conversion_offset_sn,
+                dbpedia_match=dbpedia_match,
+                defined_unit_of_system=defined_unit_of_system,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                derived_coherent_unit_of_system=derived_coherent_unit_of_system,
+                derived_unit_of_system=derived_unit_of_system,
+                description=description,
+                exact_match=exact_match,
+                expression=expression,
+                factor_unit_scalar=factor_unit_scalar,
+                guidance=guidance,
+                has_factor_unit=has_factor_unit,
+                has_reciprocal_unit=has_reciprocal_unit,
+                has_rule=has_rule,
+                id=id,
+                iec61360_code=iec61360_code,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                is_unit_of_system=is_unit_of_system,
+                iso_normative_reference=iso_normative_reference,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                math_m_ldefinition=math_m_ldefinition,
+                normative_reference=normative_reference,
+                om_unit=om_unit,
+                plain_text_description=plain_text_description,
+                prefix=prefix,
+                qkdv_denominator=qkdv_denominator,
+                qkdv_numerator=qkdv_numerator,
+                scaling_of=scaling_of,
+                si_exact_match=si_exact_match,
+                si_units_expression=si_units_expression,
+                symbol=symbol,
+                ucum_code=ucum_code,
+                udunits_code=udunits_code,
+                unece_common_code=unece_common_code,
+                unit_for=unit_for,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class ContinuouslyStirredTankReactor(Reactor):
     """A reactor in which contents are well mixed and reactants are added continuously
@@ -4345,8 +7937,10 @@ class Controller_2(Equipment):
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -4372,8 +7966,10 @@ class Controller_2(Equipment):
                 has_connection_point=has_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -4410,6 +8006,40 @@ class CoolingTower(Equipment):
         ),
     )
 
+_P_Scale_data_structure = _PropertySpec(
+    name='data_structure',
+    predicate='http://qudt.org/schema/qudt/dataStructure',
+    kind='literal',
+    label='data structure',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Scale_permissible_maths = _PropertySpec(
+    name='permissible_maths',
+    predicate='http://qudt.org/schema/qudt/permissibleMaths',
+    kind='object',
+    label='permissible maths',
+    ranges=('MathsFunctionType',),
+)
+
+_P_Scale_permissible_transformation = _PropertySpec(
+    name='permissible_transformation',
+    predicate='http://qudt.org/schema/qudt/permissibleTransformation',
+    kind='object',
+    label='permissible transformation',
+    ranges=('TransformType',),
+)
+
+_P_Scale_scale_type = _PropertySpec(
+    name='scale_type',
+    predicate='http://qudt.org/schema/qudt/scaleType',
+    kind='object',
+    label='scale type',
+    ranges=('ScaleType',),
+    max_count=1,
+)
+
 class Scale(Concept_2, Verifiable):
     """Scale
     
@@ -4422,7 +8052,82 @@ class Scale(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Scale',
         definition=None,
+        properties=(_P_Scale_data_structure, _P_Scale_permissible_maths, _P_Scale_permissible_transformation, _P_Scale_scale_type,),
     )
+
+    data_structure: _Lit[str] = _Lit(_P_Scale_data_structure)
+    """data structure (http://qudt.org/schema/qudt/dataStructure)"""
+
+    permissible_maths: _Rel[MathsFunctionType] = _Rel(_P_Scale_permissible_maths)
+    """permissible maths (http://qudt.org/schema/qudt/permissibleMaths)"""
+
+    permissible_transformation: _Rel[TransformType] = _Rel(_P_Scale_permissible_transformation)
+    """permissible transformation (http://qudt.org/schema/qudt/permissibleTransformation)"""
+
+    scale_type: _RelOne[ScaleType] = _RelOne(_P_Scale_scale_type)
+    """scale type (http://qudt.org/schema/qudt/scaleType)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        data_structure: str | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        permissible_maths: _Iterable[MathsFunctionType] = (),
+        permissible_transformation: _Iterable[TransformType] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        scale_type: ScaleType | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                data_structure=data_structure,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                permissible_maths=permissible_maths,
+                permissible_transformation=permissible_transformation,
+                plain_text_description=plain_text_description,
+                scale_type=scale_type,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class NominalScale(Scale):
     """Nominal scale
@@ -4452,6 +8157,90 @@ class CoordinateCenterKind(EnumeratedValue, NominalScale):
         definition=None,
     )
 
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        code: _Iterable[_EntityBase] = (),
+        data_structure: str | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        permissible_maths: _Iterable[MathsFunctionType] = (),
+        permissible_transformation: _Iterable[TransformType] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        scale_type: ScaleType | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                code=code,
+                data_structure=data_structure,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                permissible_maths=permissible_maths,
+                permissible_transformation=permissible_transformation,
+                plain_text_description=plain_text_description,
+                scale_type=scale_type,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_TupleMember_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'ScalarDatatype'),
+    max_count=1,
+)
+
+_P_TupleMember_order_in_structure = _PropertySpec(
+    name='order_in_structure',
+    predicate='http://qudt.org/schema/qudt/orderInStructure',
+    kind='object',
+    label='order in structure',
+    required=True,
+    max_count=1,
+)
+
 class TupleMember(CompositeDatatype):
     """Tuple Member Type
     
@@ -4464,7 +8253,100 @@ class TupleMember(CompositeDatatype):
         registry=_REGISTRY,
         label='Tuple Member Type',
         definition=None,
+        properties=(_P_TupleMember_element_datatype, _P_TupleMember_order_in_structure,),
     )
+
+    element_datatype: _RelOne[Datatype | ScalarDatatype] = _RelOne(_P_TupleMember_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    order_in_structure: _RelOne[_EntityBase] = _RelOne(_P_TupleMember_order_in_structure)
+    """order in structure (http://qudt.org/schema/qudt/orderInStructure)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        order_in_structure: _EntityBase | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | ScalarDatatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                order_in_structure=order_in_structure,
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class CoordinateMember(TupleMember):
     """Coordinate Member
@@ -4480,6 +8362,15 @@ class CoordinateMember(TupleMember):
         definition=None,
     )
 
+_P_N_Tuple_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
 class N_Tuple(Tuple):
     """N-Tuple Type
     
@@ -4492,7 +8383,116 @@ class N_Tuple(Tuple):
         registry=_REGISTRY,
         label='N-Tuple Type',
         definition=None,
+        properties=(_P_N_Tuple_element_datatype,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_N_Tuple_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_TwoTuple_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
+_P_TwoTuple_element_type_count = _PropertySpec(
+    name='element_type_count',
+    predicate='http://qudt.org/schema/qudt/elementTypeCount',
+    kind='literal',
+    label='element type count',
+    datatype=int,
+)
 
 class TwoTuple(N_Tuple):
     """Two-Tuple
@@ -4506,7 +8506,102 @@ class TwoTuple(N_Tuple):
         registry=_REGISTRY,
         label='Two-Tuple',
         definition=None,
+        properties=(_P_TwoTuple_element_datatype, _P_TwoTuple_element_type_count,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_TwoTuple_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    element_type_count: _Lit[int] = _Lit(_P_TwoTuple_element_type_count)
+    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class Coordinates_2D(CartesianCoordinates, TwoTuple):
     """2D Coordinate Type
@@ -4550,6 +8645,23 @@ class Coordinates_2D_SinglePrecision(Coordinates_2D):
         definition=None,
     )
 
+_P_ThreeTuple_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
+_P_ThreeTuple_element_type_count = _PropertySpec(
+    name='element_type_count',
+    predicate='http://qudt.org/schema/qudt/elementTypeCount',
+    kind='literal',
+    label='element type count',
+    datatype=int,
+)
+
 class ThreeTuple(N_Tuple):
     """Three-Tuple
     
@@ -4562,7 +8674,102 @@ class ThreeTuple(N_Tuple):
         registry=_REGISTRY,
         label='Three-Tuple',
         definition=None,
+        properties=(_P_ThreeTuple_element_datatype, _P_ThreeTuple_element_type_count,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_ThreeTuple_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    element_type_count: _Lit[int] = _Lit(_P_ThreeTuple_element_type_count)
+    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class Coordinates_3D(CartesianCoordinates, ThreeTuple):
     """3D Coordinate Type
@@ -4688,9 +8895,11 @@ class LightSensor(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -4720,9 +8929,11 @@ class LightSensor(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -4779,9 +8990,11 @@ class CorrelatedColorTemperatureSensor(LightSensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -4811,9 +9024,11 @@ class CorrelatedColorTemperatureSensor(LightSensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -4846,6 +9061,30 @@ class Crystallizer(UnitProcess):
         definition='An equipment used to produce solid crystals from a solution',
     )
 
+_P_CurrencyUnit_currency_code = _PropertySpec(
+    name='currency_code',
+    predicate='http://qudt.org/schema/qudt/currencyCode',
+    kind='literal',
+    label='currency code',
+    datatype=str,
+)
+
+_P_CurrencyUnit_currency_exponent = _PropertySpec(
+    name='currency_exponent',
+    predicate='http://qudt.org/schema/qudt/currencyExponent',
+    kind='literal',
+    label='currency exponent',
+    datatype=int,
+)
+
+_P_CurrencyUnit_currency_number = _PropertySpec(
+    name='currency_number',
+    predicate='http://qudt.org/schema/qudt/currencyNumber',
+    kind='literal',
+    label='currency number',
+    datatype=str,
+)
+
 class CurrencyUnit(DimensionlessUnit):
     """Currency Unit
     
@@ -4858,7 +9097,141 @@ class CurrencyUnit(DimensionlessUnit):
         registry=_REGISTRY,
         label='Currency Unit',
         definition=None,
+        properties=(_P_CurrencyUnit_currency_code, _P_CurrencyUnit_currency_exponent, _P_CurrencyUnit_currency_number,),
     )
+
+    currency_code: _Lit[str] = _Lit(_P_CurrencyUnit_currency_code)
+    """currency code (http://qudt.org/schema/qudt/currencyCode)"""
+
+    currency_exponent: _Lit[int] = _Lit(_P_CurrencyUnit_currency_exponent)
+    """currency exponent (http://qudt.org/schema/qudt/currencyExponent)"""
+
+    currency_number: _Lit[str] = _Lit(_P_CurrencyUnit_currency_number)
+    """currency number (http://qudt.org/schema/qudt/currencyNumber)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_dimension_vector: QuantityKindDimensionVector | None,
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        applicable_system: _Iterable[SystemOfUnits] = (),
+        code: _Iterable[_EntityBase] = (),
+        conversion_multiplier: float | None = None,
+        conversion_multiplier_sn: float | None = None,
+        conversion_offset: float | None = None,
+        conversion_offset_sn: float | None = None,
+        currency_code: str | None = None,
+        currency_exponent: int | None = None,
+        currency_number: str | None = None,
+        dbpedia_match: str | None = None,
+        defined_unit_of_system: _Iterable[SystemOfUnits] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        derived_coherent_unit_of_system: _Iterable[SystemOfUnits] = (),
+        derived_unit_of_system: _Iterable[SystemOfUnits] = (),
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        expression: _Iterable[_EntityBase] = (),
+        factor_unit_scalar: float | None = None,
+        guidance: str | None = None,
+        has_factor_unit: _Iterable[_EntityBase] = (),
+        has_reciprocal_unit: _Iterable[Unit] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        iec61360_code: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        is_unit_of_system: _Iterable[SystemOfUnits] = (),
+        iso_normative_reference: str | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        math_m_ldefinition: str | None = None,
+        normative_reference: str | None = None,
+        om_unit: _Iterable[_EntityBase] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        prefix: Prefix | None = None,
+        qkdv_denominator: QuantityKindDimensionVector | None = None,
+        qkdv_numerator: QuantityKindDimensionVector | None = None,
+        scaling_of: Unit | None = None,
+        si_exact_match: _EntityBase | None = None,
+        si_units_expression: str | None = None,
+        symbol: _EntityBase | None = None,
+        ucum_code: str | None = None,
+        udunits_code: str | None = None,
+        unece_common_code: str | None = None,
+        unit_for: _Iterable[_EntityBase] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_dimension_vector=has_dimension_vector,
+                has_quantity_kind=has_quantity_kind,
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                applicable_system=applicable_system,
+                code=code,
+                conversion_multiplier=conversion_multiplier,
+                conversion_multiplier_sn=conversion_multiplier_sn,
+                conversion_offset=conversion_offset,
+                conversion_offset_sn=conversion_offset_sn,
+                currency_code=currency_code,
+                currency_exponent=currency_exponent,
+                currency_number=currency_number,
+                dbpedia_match=dbpedia_match,
+                defined_unit_of_system=defined_unit_of_system,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                derived_coherent_unit_of_system=derived_coherent_unit_of_system,
+                derived_unit_of_system=derived_unit_of_system,
+                description=description,
+                exact_match=exact_match,
+                expression=expression,
+                factor_unit_scalar=factor_unit_scalar,
+                guidance=guidance,
+                has_factor_unit=has_factor_unit,
+                has_reciprocal_unit=has_reciprocal_unit,
+                has_rule=has_rule,
+                id=id,
+                iec61360_code=iec61360_code,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                is_unit_of_system=is_unit_of_system,
+                iso_normative_reference=iso_normative_reference,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                math_m_ldefinition=math_m_ldefinition,
+                normative_reference=normative_reference,
+                om_unit=om_unit,
+                plain_text_description=plain_text_description,
+                prefix=prefix,
+                qkdv_denominator=qkdv_denominator,
+                qkdv_numerator=qkdv_numerator,
+                scaling_of=scaling_of,
+                si_exact_match=si_exact_match,
+                si_units_expression=si_units_expression,
+                symbol=symbol,
+                ucum_code=ucum_code,
+                udunits_code=udunits_code,
+                unece_common_code=unece_common_code,
+                unit_for=unit_for,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class DMERecoverySystem(Equipment):
     """A system designed to recover a high percentage of Dimethyl Ether solvent in solvent-driven processes.
@@ -4887,8 +9260,8 @@ class Damper(Equipment):
         label='Damper',
         definition='A piece of `Equipment` inserted into an air distribution system permitting modification of the air resistance of the system and consequently changing the airflow rate or shutting off the airflow.',
         cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -4912,6 +9285,33 @@ class Damper_2(Damper):
         ),
     )
 
+_P_DataEncoding_bit_order = _PropertySpec(
+    name='bit_order',
+    predicate='http://qudt.org/schema/qudt/bitOrder',
+    kind='object',
+    label='bit order',
+    ranges=('EndianType',),
+    max_count=1,
+)
+
+_P_DataEncoding_byte_order = _PropertySpec(
+    name='byte_order',
+    predicate='http://qudt.org/schema/qudt/byteOrder',
+    kind='object',
+    label='byte order',
+    ranges=('EndianType',),
+    max_count=1,
+)
+
+_P_DataEncoding_encoding = _PropertySpec(
+    name='encoding',
+    predicate='http://qudt.org/schema/qudt/encoding',
+    kind='object',
+    label='encoding',
+    ranges=('Encoding',),
+    max_count=1,
+)
+
 class DataEncoding(Aspect):
     """Data Encoding
     
@@ -4924,7 +9324,43 @@ class DataEncoding(Aspect):
         registry=_REGISTRY,
         label='Data Encoding',
         definition=None,
+        properties=(_P_DataEncoding_bit_order, _P_DataEncoding_byte_order, _P_DataEncoding_encoding,),
     )
+
+    bit_order: _RelOne[EndianType] = _RelOne(_P_DataEncoding_bit_order)
+    """bit order (http://qudt.org/schema/qudt/bitOrder)"""
+
+    byte_order: _RelOne[EndianType] = _RelOne(_P_DataEncoding_byte_order)
+    """byte order (http://qudt.org/schema/qudt/byteOrder)"""
+
+    encoding: _RelOne[Encoding] = _RelOne(_P_DataEncoding_encoding)
+    """encoding (http://qudt.org/schema/qudt/encoding)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        bit_order: EndianType | None = None,
+        byte_order: EndianType | None = None,
+        encoding: Encoding | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                bit_order=bit_order,
+                byte_order=byte_order,
+                encoding=encoding,
+            ),
+        )
 
 class DataProcessing_ErrorMetrics(_EntityBase):
     """Parent class for error and uncertainty measurements
@@ -5010,6 +9446,35 @@ class DataProcessing_Synchronization(_EntityBase):
         definition='Parent class for synchronization methods to align data from multiple sources to common time intervals',
     )
 
+_P_DataSetElement_element_label = _PropertySpec(
+    name='element_label',
+    predicate='http://qudt.org/schema/qudt/elementLabel',
+    kind='literal',
+    label='element label',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
+_P_DataSetElement_optional = _PropertySpec(
+    name='optional',
+    predicate='http://qudt.org/schema/qudt/optional',
+    kind='literal',
+    label='optional',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_DataSetElement_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+    max_count=1,
+)
+
 class DataSetElement(DataItem, Tuple):
     """QUDT DataSet Element
     
@@ -5022,7 +9487,146 @@ class DataSetElement(DataItem, Tuple):
         registry=_REGISTRY,
         label='QUDT DataSet Element',
         definition=None,
+        properties=(_P_DataSetElement_element_label, _P_DataSetElement_optional, _P_DataSetElement_has_quantity_kind,),
     )
+
+    element_label: _Lit[str] = _Lit(_P_DataSetElement_element_label)
+    """element label (http://qudt.org/schema/qudt/elementLabel)"""
+
+    optional: _Lit[bool] = _Lit(_P_DataSetElement_optional)
+    """optional (http://qudt.org/schema/qudt/optional)"""
+
+    has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_DataSetElement_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        element_label: str | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_quantity_kind: QuantityKind | _TermValue | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        optional: bool | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                element_label=element_label,
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_quantity_kind=has_quantity_kind,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                optional=optional,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_StringType_dimensionality = _PropertySpec(
+    name='dimensionality',
+    predicate='http://qudt.org/schema/qudt/dimensionality',
+    kind='object',
+    label='dimensionality',
+)
+
+_P_StringType_is_byte_string = _PropertySpec(
+    name='is_byte_string',
+    predicate='http://qudt.org/schema/qudt/isByteString',
+    kind='literal',
+    label='is byte string',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_StringType_max_length = _PropertySpec(
+    name='max_length',
+    predicate='http://qudt.org/schema/qudt/maxLength',
+    kind='literal',
+    label='max length',
+    datatype=int,
+    max_count=1,
+)
+
+_P_StringType_member_datatype = _PropertySpec(
+    name='member_datatype',
+    predicate='http://qudt.org/schema/qudt/memberDatatype',
+    kind='object',
+    label='member datatype',
+    ranges=('CharacterType',),
+)
 
 class StringType(ScalarDatatype):
     """String Type
@@ -5036,7 +9640,137 @@ class StringType(ScalarDatatype):
         registry=_REGISTRY,
         label='String Type',
         definition=None,
+        properties=(_P_StringType_dimensionality, _P_StringType_is_byte_string, _P_StringType_max_length, _P_StringType_member_datatype,),
     )
+
+    dimensionality: _Rel[_EntityBase] = _Rel(_P_StringType_dimensionality)
+    """dimensionality (http://qudt.org/schema/qudt/dimensionality)"""
+
+    is_byte_string: _Lit[bool] = _Lit(_P_StringType_is_byte_string)
+    """is byte string (http://qudt.org/schema/qudt/isByteString)"""
+
+    max_length: _Lit[int] = _Lit(_P_StringType_max_length)
+    """max length (http://qudt.org/schema/qudt/maxLength)"""
+
+    member_datatype: _Rel[CharacterType] = _Rel(_P_StringType_member_datatype)
+    """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_byte_string: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        max_length: int | None = None,
+        member_datatype: _Iterable[CharacterType] = (),
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_byte_string=is_byte_string,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                max_length=max_length,
+                member_datatype=member_datatype,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_DateTimeStringType_encoding = _PropertySpec(
+    name='encoding',
+    predicate='http://qudt.org/schema/qudt/encoding',
+    kind='object',
+    label='encoding',
+    ranges=('DateTimeStringEncodingType', 'Encoding'),
+    max_count=1,
+)
 
 class DateTimeStringType(StringType):
     """Temporal Type
@@ -5050,7 +9784,119 @@ class DateTimeStringType(StringType):
         registry=_REGISTRY,
         label='Temporal Type',
         definition=None,
+        properties=(_P_DateTimeStringType_encoding,),
     )
+
+    encoding: _RelOne[DateTimeStringEncodingType | Encoding] = _RelOne(_P_DateTimeStringType_encoding)
+    """encoding (http://qudt.org/schema/qudt/encoding)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: _Iterable[_EntityBase] = (),
+        encoding: DateTimeStringEncodingType | Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_byte_string: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        max_length: int | None = None,
+        member_datatype: _Iterable[CharacterType] = (),
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_byte_string=is_byte_string,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                max_length=max_length,
+                member_datatype=member_datatype,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
 
 class DateStringType(DateTimeStringType):
     """Date String Type
@@ -5080,6 +9926,15 @@ class StringEncodingType(Encoding):
         definition=None,
     )
 
+_P_DateTimeStringEncodingType_allowed_pattern = _PropertySpec(
+    name='allowed_pattern',
+    predicate='http://qudt.org/schema/qudt/allowedPattern',
+    kind='literal',
+    label='allowed pattern',
+    datatype=str,
+    required=True,
+)
+
 class DateTimeStringEncodingType(StringEncodingType):
     """Date Time String Encoding Type
     
@@ -5092,7 +9947,37 @@ class DateTimeStringEncodingType(StringEncodingType):
         registry=_REGISTRY,
         label='Date Time String Encoding Type',
         definition=None,
+        properties=(_P_DateTimeStringEncodingType_allowed_pattern,),
     )
+
+    allowed_pattern: _Lit[str] = _Lit(_P_DateTimeStringEncodingType_allowed_pattern)
+    """allowed pattern (http://qudt.org/schema/qudt/allowedPattern)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        allowed_pattern: str | None,
+        bits: int | None = None,
+        bytes: int | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                allowed_pattern=allowed_pattern,
+                bits=bits,
+                bytes=bytes,
+            ),
+        )
 
 class DecimalPrefix(Prefix):
     """Decimal Prefix
@@ -5164,6 +10049,44 @@ class Dictionary(Map):
         definition=None,
     )
 
+_P_DigitalCurrencyUnit_blockchain_network = _PropertySpec(
+    name='blockchain_network',
+    predicate='http://qudt.org/schema/qudt/blockchainNetwork',
+    kind='literal',
+    label='blockchain network',
+    definition="Primary network name (e.g., 'Bitcoin Mainnet', 'Ethereum Mainnet').",
+    datatype=str,
+    max_count=1,
+)
+
+_P_DigitalCurrencyUnit_has_dti_code = _PropertySpec(
+    name='has_dti_code',
+    predicate='http://qudt.org/schema/qudt/hasDTICode',
+    kind='literal',
+    label='has DTI code',
+    definition='ISO 24165 Digital Token Identifier (12-character alphanumeric).',
+    datatype=str,
+    max_count=1,
+)
+
+_P_DigitalCurrencyUnit_currency_exponent = _PropertySpec(
+    name='currency_exponent',
+    predicate='http://qudt.org/schema/qudt/currencyExponent',
+    kind='literal',
+    label='currency exponent',
+    datatype=int,
+    max_count=1,
+)
+
+_P_DigitalCurrencyUnit_currency_code = _PropertySpec(
+    name='currency_code',
+    predicate='http://qudt.org/schema/qudt/currencyCode',
+    kind='literal',
+    label='currency code',
+    datatype=str,
+    max_count=1,
+)
+
 class DigitalCurrencyUnit(CurrencyUnit):
     """A currency-like unit for cryptographic or tokenized assets. Instances should reference an ISO 24165 Digital Token Identifier (DTI) when available.
     
@@ -5176,7 +10099,148 @@ class DigitalCurrencyUnit(CurrencyUnit):
         registry=_REGISTRY,
         label='Digital Currency Unit',
         definition='A currency-like unit for cryptographic or tokenized assets. Instances should reference an ISO 24165 Digital Token Identifier (DTI) when available.',
+        properties=(_P_DigitalCurrencyUnit_blockchain_network, _P_DigitalCurrencyUnit_has_dti_code, _P_DigitalCurrencyUnit_currency_exponent, _P_DigitalCurrencyUnit_currency_code,),
     )
+
+    blockchain_network: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_blockchain_network)
+    """Primary network name (e.g., 'Bitcoin Mainnet', 'Ethereum Mainnet'). (http://qudt.org/schema/qudt/blockchainNetwork)"""
+
+    has_dti_code: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_has_dti_code)
+    """ISO 24165 Digital Token Identifier (12-character alphanumeric). (http://qudt.org/schema/qudt/hasDTICode)"""
+
+    currency_exponent: _Lit[int] = _Lit(_P_DigitalCurrencyUnit_currency_exponent)
+    """currency exponent (http://qudt.org/schema/qudt/currencyExponent)"""
+
+    currency_code: _Lit[str] = _Lit(_P_DigitalCurrencyUnit_currency_code)
+    """currency code (http://qudt.org/schema/qudt/currencyCode)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_dimension_vector: QuantityKindDimensionVector | None,
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        applicable_system: _Iterable[SystemOfUnits] = (),
+        blockchain_network: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        conversion_multiplier: float | None = None,
+        conversion_multiplier_sn: float | None = None,
+        conversion_offset: float | None = None,
+        conversion_offset_sn: float | None = None,
+        currency_code: str | None = None,
+        currency_exponent: int | None = None,
+        currency_number: str | None = None,
+        dbpedia_match: str | None = None,
+        defined_unit_of_system: _Iterable[SystemOfUnits] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        derived_coherent_unit_of_system: _Iterable[SystemOfUnits] = (),
+        derived_unit_of_system: _Iterable[SystemOfUnits] = (),
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        expression: _Iterable[_EntityBase] = (),
+        factor_unit_scalar: float | None = None,
+        guidance: str | None = None,
+        has_dti_code: str | None = None,
+        has_factor_unit: _Iterable[_EntityBase] = (),
+        has_reciprocal_unit: _Iterable[Unit] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        iec61360_code: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        is_unit_of_system: _Iterable[SystemOfUnits] = (),
+        iso_normative_reference: str | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        math_m_ldefinition: str | None = None,
+        normative_reference: str | None = None,
+        om_unit: _Iterable[_EntityBase] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        prefix: Prefix | None = None,
+        qkdv_denominator: QuantityKindDimensionVector | None = None,
+        qkdv_numerator: QuantityKindDimensionVector | None = None,
+        scaling_of: Unit | None = None,
+        si_exact_match: _EntityBase | None = None,
+        si_units_expression: str | None = None,
+        symbol: _EntityBase | None = None,
+        ucum_code: str | None = None,
+        udunits_code: str | None = None,
+        unece_common_code: str | None = None,
+        unit_for: _Iterable[_EntityBase] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_dimension_vector=has_dimension_vector,
+                has_quantity_kind=has_quantity_kind,
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                applicable_system=applicable_system,
+                blockchain_network=blockchain_network,
+                code=code,
+                conversion_multiplier=conversion_multiplier,
+                conversion_multiplier_sn=conversion_multiplier_sn,
+                conversion_offset=conversion_offset,
+                conversion_offset_sn=conversion_offset_sn,
+                currency_code=currency_code,
+                currency_exponent=currency_exponent,
+                currency_number=currency_number,
+                dbpedia_match=dbpedia_match,
+                defined_unit_of_system=defined_unit_of_system,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                derived_coherent_unit_of_system=derived_coherent_unit_of_system,
+                derived_unit_of_system=derived_unit_of_system,
+                description=description,
+                exact_match=exact_match,
+                expression=expression,
+                factor_unit_scalar=factor_unit_scalar,
+                guidance=guidance,
+                has_dti_code=has_dti_code,
+                has_factor_unit=has_factor_unit,
+                has_reciprocal_unit=has_reciprocal_unit,
+                has_rule=has_rule,
+                id=id,
+                iec61360_code=iec61360_code,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                is_unit_of_system=is_unit_of_system,
+                iso_normative_reference=iso_normative_reference,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                math_m_ldefinition=math_m_ldefinition,
+                normative_reference=normative_reference,
+                om_unit=om_unit,
+                plain_text_description=plain_text_description,
+                prefix=prefix,
+                qkdv_denominator=qkdv_denominator,
+                qkdv_numerator=qkdv_numerator,
+                scaling_of=scaling_of,
+                si_exact_match=si_exact_match,
+                si_units_expression=si_units_expression,
+                symbol=symbol,
+                ucum_code=ucum_code,
+                udunits_code=udunits_code,
+                unece_common_code=unece_common_code,
+                unit_for=unit_for,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class DimensionalDatatype(StructuredDatatype):
     """Dimensional Data Type
@@ -5220,6 +10284,15 @@ class Discipline_2(Dimension):
         definition=None,
     )
 
+_P_DiscreteState_inverted = _PropertySpec(
+    name='inverted',
+    predicate='http://qudt.org/schema/qudt/inverted',
+    kind='literal',
+    label='inverted',
+    datatype=bool,
+    max_count=1,
+)
+
 class DiscreteState(EnumeratedValue):
     """Discrete State
     
@@ -5232,7 +10305,51 @@ class DiscreteState(EnumeratedValue):
         registry=_REGISTRY,
         label='Discrete State',
         definition=None,
+        properties=(_P_DiscreteState_inverted,),
     )
+
+    inverted: _Lit[bool] = _Lit(_P_DiscreteState_inverted)
+    """inverted (http://qudt.org/schema/qudt/inverted)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        inverted: bool | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                inverted=inverted,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class Dishwasher(Equipment):
     """A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.
@@ -5247,8 +10364,8 @@ class Dishwasher(Equipment):
         label='Dishwasher',
         definition='A piece of `Equipment` that automatically cleans dishware, cookware, and cutlery.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
@@ -5500,9 +10617,11 @@ class DuvSensor(LightSensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -5532,9 +10651,11 @@ class DuvSensor(LightSensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -5733,9 +10854,11 @@ class ElectricCurrentSensor(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -5765,9 +10888,11 @@ class ElectricCurrentSensor(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -5851,8 +10976,8 @@ class ElectricResistanceElement(Equipment):
             _CPConstraint(operator='xone', children=(
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
                 _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
                     _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
+                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=1)),
                 )),
             )),
         ),
@@ -6092,6 +11217,15 @@ class EndianType(EnumeratedValue):
         definition=None,
     )
 
+_P_EngineeringValueTupleMember_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'RealSinglePrecisionType', 'ScalarDatatype'),
+    max_count=1,
+)
+
 class EngineeringValueTupleMember(TupleMember):
     """Engineering Value Tuple Member
     
@@ -6104,7 +11238,97 @@ class EngineeringValueTupleMember(TupleMember):
         registry=_REGISTRY,
         label='Engineering Value Tuple Member',
         definition=None,
+        properties=(_P_EngineeringValueTupleMember_element_datatype,),
     )
+
+    element_datatype: _RelOne[Datatype | RealSinglePrecisionType | ScalarDatatype] = _RelOne(_P_EngineeringValueTupleMember_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        order_in_structure: _EntityBase | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | RealSinglePrecisionType | ScalarDatatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                order_in_structure=order_in_structure,
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 _P_EnumerableProperty_has_enumeration_kind = _PropertySpec(
     name='has_enumeration_kind',
@@ -6220,6 +11444,24 @@ class EnumeratedObservableProperty(EnumerableProperty, ObservableProperty):
         definition='An `EnumeratedObservableProperty` is a `Property` with an enumerated (fixed) set of possible values that cannot be changed (can only be observed).',
     )
 
+_P_EnumeratedQuantity_enumerated_value = _PropertySpec(
+    name='enumerated_value',
+    predicate='http://qudt.org/schema/qudt/enumeratedValue',
+    kind='object',
+    label='enumerated value',
+    ranges=('EnumeratedValue',),
+    max_count=1,
+)
+
+_P_EnumeratedQuantity_enumeration = _PropertySpec(
+    name='enumeration',
+    predicate='http://qudt.org/schema/qudt/enumeration',
+    kind='object',
+    label='enumeration',
+    ranges=('Enumeration',),
+    max_count=1,
+)
+
 class EnumeratedQuantity(Concept_2):
     """Enumerated Quantity
     
@@ -6232,7 +11474,122 @@ class EnumeratedQuantity(Concept_2):
         registry=_REGISTRY,
         label='Enumerated Quantity',
         definition=None,
+        properties=(_P_EnumeratedQuantity_enumerated_value, _P_EnumeratedQuantity_enumeration,),
     )
+
+    enumerated_value: _RelOne[EnumeratedValue] = _RelOne(_P_EnumeratedQuantity_enumerated_value)
+    """enumerated value (http://qudt.org/schema/qudt/enumeratedValue)"""
+
+    enumeration: _RelOne[Enumeration] = _RelOne(_P_EnumeratedQuantity_enumeration)
+    """enumeration (http://qudt.org/schema/qudt/enumeration)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        enumerated_value: EnumeratedValue | None = None,
+        enumeration: Enumeration | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                enumerated_value=enumerated_value,
+                enumeration=enumeration,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+            ),
+        )
+
+_P_Enumeration_abbreviation = _PropertySpec(
+    name='abbreviation',
+    predicate='http://qudt.org/schema/qudt/abbreviation',
+    kind='literal',
+    label='abbreviation',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Enumeration_bits = _PropertySpec(
+    name='bits',
+    predicate='http://qudt.org/schema/qudt/bits',
+    kind='literal',
+    label='bits',
+    datatype=int,
+    max_count=1,
+)
+
+_P_Enumeration_default = _PropertySpec(
+    name='default',
+    predicate='http://qudt.org/schema/qudt/default',
+    kind='object',
+    label='default',
+    ranges=('EnumeratedValue',),
+    max_count=1,
+)
+
+_P_Enumeration_default_value = _PropertySpec(
+    name='default_value',
+    predicate='http://qudt.org/schema/qudt/defaultValue',
+    kind='object',
+    label='Default Value',
+    ranges=('EnumeratedValue',),
+)
+
+_P_Enumeration_element = _PropertySpec(
+    name='element',
+    predicate='http://qudt.org/schema/qudt/element',
+    kind='object',
+    label='element',
+    ranges=('EnumeratedValue',),
+    required=True,
+)
+
+_P_Enumeration_encoding = _PropertySpec(
+    name='encoding',
+    predicate='http://qudt.org/schema/qudt/encoding',
+    kind='object',
+    label='encoding',
+    max_count=1,
+)
+
+_P_Enumeration_value = _PropertySpec(
+    name='value',
+    predicate='http://www.linkedmodel.org/schema/dtype#value',
+    kind='object',
+    label='value',
+    ranges=('EnumeratedValue',),
+)
 
 class Enumeration(Enumeration_2, StructuredDatatype):
     """Enumeration
@@ -6246,7 +11603,121 @@ class Enumeration(Enumeration_2, StructuredDatatype):
         registry=_REGISTRY,
         label='Enumeration',
         definition=None,
+        properties=(_P_Enumeration_abbreviation, _P_Enumeration_bits, _P_Enumeration_default, _P_Enumeration_default_value, _P_Enumeration_element, _P_Enumeration_encoding, _P_Enumeration_value,),
     )
+
+    abbreviation: _Lit[str] = _Lit(_P_Enumeration_abbreviation)
+    """abbreviation (http://qudt.org/schema/qudt/abbreviation)"""
+
+    bits: _Lit[int] = _Lit(_P_Enumeration_bits)
+    """bits (http://qudt.org/schema/qudt/bits)"""
+
+    default: _RelOne[EnumeratedValue] = _RelOne(_P_Enumeration_default)
+    """default (http://qudt.org/schema/qudt/default)"""
+
+    default_value: _Rel[EnumeratedValue] = _Rel(_P_Enumeration_default_value)
+    """Default Value (http://qudt.org/schema/qudt/defaultValue)"""
+
+    element: _Rel[EnumeratedValue] = _Rel(_P_Enumeration_element)
+    """element (http://qudt.org/schema/qudt/element)"""
+
+    encoding: _RelOne[_EntityBase] = _RelOne(_P_Enumeration_encoding)
+    """encoding (http://qudt.org/schema/qudt/encoding)"""
+
+    value: _Rel[EnumeratedValue] = _Rel(_P_Enumeration_value)
+    """value (http://www.linkedmodel.org/schema/dtype#value)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        element: _Iterable[EnumeratedValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        default: EnumeratedValue | None = None,
+        default_value: _Iterable[EnumeratedValue] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        encoding: _EntityBase | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[EnumeratedValue] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                element=element,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bits=bits,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                default=default,
+                default_value=default_value,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class EnumerationScale(Enumeration_2, Scale):
     """Enumeration scale
@@ -6630,8 +12101,8 @@ class EthernetPort(Equipment):
         label='Ethernet port',
         definition='A piece of `Equipment` that connects a single instance of electrical equipment, such as `Computer`s and Wi-Fi access points,\nto an Ethernet network so it can communicate with other equipment and, optionally, with the Internet.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium=None, medium_options=('http://data.ashrae.org/standard223#Signal-FiberEthernet', 'http://data.ashrae.org/standard223#Signal-WiredEthernet'), min_count=2, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Electricity-DC', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -6668,6 +12139,26 @@ class Evaporator(UnitProcess):
         definition='A device used to turn the liquid form of a substance into its gaseous form',
     )
 
+_P_FactorUnit_exponent = _PropertySpec(
+    name='exponent',
+    predicate='http://qudt.org/schema/qudt/exponent',
+    kind='object',
+    label='exponent',
+    required=True,
+    max_count=1,
+)
+
+_P_FactorUnit_has_unit = _PropertySpec(
+    name='has_unit',
+    predicate='http://qudt.org/schema/qudt/hasUnit',
+    kind='object',
+    label='has unit',
+    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    required=True,
+    max_count=1,
+    inverse='unit_for',
+)
+
 class FactorUnit(Concept_2):
     """Factor Unit
     
@@ -6680,7 +12171,62 @@ class FactorUnit(Concept_2):
         registry=_REGISTRY,
         label='Factor Unit',
         definition=None,
+        properties=(_P_FactorUnit_exponent, _P_FactorUnit_has_unit,),
     )
+
+    exponent: _RelOne[_EntityBase] = _RelOne(_P_FactorUnit_exponent)
+    """exponent (http://qudt.org/schema/qudt/exponent)"""
+
+    has_unit: _RelOne[_EntityBase | _TermValue] = _RelOne(_P_FactorUnit_has_unit)
+    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        exponent: _EntityBase | None,
+        has_unit: _EntityBase | _TermValue | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                exponent=exponent,
+                has_unit=has_unit,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+            ),
+        )
 
 class Fan(Equipment):
     """A piece of `Equipment` that causes a gas (e.g., air) to flow.
@@ -6773,8 +12319,8 @@ class Faucet(Valve_2):
         label='Faucet',
         definition='A `Valve` that allows, regulates, or stops the flow of hot or cold water from a plumbing supply system into a `Sink`, `Shower`, `Bathtub`, or other plumbing service equipment.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -6791,8 +12337,8 @@ class FiberEthernetOutlet(Equipment):
         label='Fiber Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a fiber Ethernet communication network, typically via a fiber Ethernet cable.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-FiberEthernet', medium_options=(), min_count=1, max_count=1),
         ),
     )
 
@@ -6973,6 +12519,44 @@ class FiberOpticCable_OS2(FiberOpticCable):
         definition='FiberOpticCable-OS2',
     )
 
+_P_FieldType_element_name = _PropertySpec(
+    name='element_name',
+    predicate='http://qudt.org/schema/qudt/elementName',
+    kind='literal',
+    label='element name',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
+_P_FieldType_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype',),
+    max_count=1,
+)
+
+_P_FieldType_field_label = _PropertySpec(
+    name='field_label',
+    predicate='http://qudt.org/schema/qudt/fieldLabel',
+    kind='literal',
+    label='field label',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
+_P_FieldType_field_type = _PropertySpec(
+    name='field_type',
+    predicate='http://qudt.org/schema/qudt/fieldType',
+    kind='object',
+    label='field type',
+    ranges=('Datatype',),
+    required=True,
+)
+
 class FieldType(CompositeDatatype):
     """Field Type
     
@@ -6985,7 +12569,174 @@ class FieldType(CompositeDatatype):
         registry=_REGISTRY,
         label='Field Type',
         definition=None,
+        properties=(_P_FieldType_element_name, _P_FieldType_element_datatype, _P_FieldType_field_label, _P_FieldType_field_type,),
     )
+
+    element_name: _Lit[str] = _Lit(_P_FieldType_element_name)
+    """element name (http://qudt.org/schema/qudt/elementName)"""
+
+    element_datatype: _RelOne[Datatype] = _RelOne(_P_FieldType_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    field_label: _Lit[str] = _Lit(_P_FieldType_field_label)
+    """field label (http://qudt.org/schema/qudt/fieldLabel)"""
+
+    field_type: _Rel[Datatype] = _Rel(_P_FieldType_field_type)
+    """field type (http://qudt.org/schema/qudt/fieldType)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        element_name: str | None,
+        field_label: str | None,
+        field_type: _Iterable[Datatype],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                element_name=element_name,
+                field_label=field_label,
+                field_type=field_type,
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_Figure_figure_caption = _PropertySpec(
+    name='figure_caption',
+    predicate='http://qudt.org/schema/qudt/figureCaption',
+    kind='literal',
+    label='figure caption',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Figure_figure_label = _PropertySpec(
+    name='figure_label',
+    predicate='http://qudt.org/schema/qudt/figureLabel',
+    kind='literal',
+    label='figure label',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Figure_height = _PropertySpec(
+    name='height',
+    predicate='http://qudt.org/schema/qudt/height',
+    kind='literal',
+    label='height',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Figure_image = _PropertySpec(
+    name='image',
+    predicate='http://qudt.org/schema/qudt/image',
+    kind='literal',
+    label='image',
+    datatype=str,
+    max_count=1,
+)
+
+_P_Figure_image_location = _PropertySpec(
+    name='image_location',
+    predicate='http://qudt.org/schema/qudt/imageLocation',
+    kind='literal',
+    label='image location',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
+_P_Figure_landscape = _PropertySpec(
+    name='landscape',
+    predicate='http://qudt.org/schema/qudt/landscape',
+    kind='literal',
+    label='landscape',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_Figure_width = _PropertySpec(
+    name='width',
+    predicate='http://qudt.org/schema/qudt/width',
+    kind='literal',
+    label='width',
+    datatype=str,
+    max_count=1,
+)
 
 class Figure(Concept_2):
     """Figure
@@ -6999,7 +12750,87 @@ class Figure(Concept_2):
         registry=_REGISTRY,
         label='Figure',
         definition=None,
+        properties=(_P_Figure_figure_caption, _P_Figure_figure_label, _P_Figure_height, _P_Figure_image, _P_Figure_image_location, _P_Figure_landscape, _P_Figure_width,),
     )
+
+    figure_caption: _Lit[str] = _Lit(_P_Figure_figure_caption)
+    """figure caption (http://qudt.org/schema/qudt/figureCaption)"""
+
+    figure_label: _Lit[str] = _Lit(_P_Figure_figure_label)
+    """figure label (http://qudt.org/schema/qudt/figureLabel)"""
+
+    height: _Lit[str] = _Lit(_P_Figure_height)
+    """height (http://qudt.org/schema/qudt/height)"""
+
+    image: _Lit[str] = _Lit(_P_Figure_image)
+    """image (http://qudt.org/schema/qudt/image)"""
+
+    image_location: _Lit[str] = _Lit(_P_Figure_image_location)
+    """image location (http://qudt.org/schema/qudt/imageLocation)"""
+
+    landscape: _Lit[bool] = _Lit(_P_Figure_landscape)
+    """landscape (http://qudt.org/schema/qudt/landscape)"""
+
+    width: _Lit[str] = _Lit(_P_Figure_width)
+    """width (http://qudt.org/schema/qudt/width)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        image_location: str | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        figure_caption: str | None = None,
+        figure_label: str | None = None,
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        height: str | None = None,
+        id: str | None = None,
+        image: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        landscape: bool | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        width: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                image_location=image_location,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                figure_caption=figure_caption,
+                figure_label=figure_label,
+                guidance=guidance,
+                has_rule=has_rule,
+                height=height,
+                id=id,
+                image=image,
+                is_replaced_by=is_replaced_by,
+                landscape=landscape,
+                plain_text_description=plain_text_description,
+                width=width,
+            ),
+        )
 
 class FileFormat(EnumeratedValue):
     """File format
@@ -7015,6 +12846,25 @@ class FileFormat(EnumeratedValue):
         definition=None,
     )
 
+_P_TimeSeriesArray_increment_datatype = _PropertySpec(
+    name='increment_datatype',
+    predicate='http://qudt.org/schema/qudt/incrementDatatype',
+    kind='object',
+    label='increment datatype',
+    ranges=('TimeStringType',),
+    required=True,
+    max_count=1,
+)
+
+_P_TimeSeriesArray_vector = _PropertySpec(
+    name='vector',
+    predicate='http://qudt.org/schema/qudt/vector',
+    kind='object',
+    label='vector',
+    ranges=('Vector',),
+    max_count=1,
+)
+
 class TimeSeriesArray(Array):
     """Time Series Array
     
@@ -7027,7 +12877,108 @@ class TimeSeriesArray(Array):
         registry=_REGISTRY,
         label='Time Series Array',
         definition=None,
+        properties=(_P_TimeSeriesArray_increment_datatype, _P_TimeSeriesArray_vector,),
     )
+
+    increment_datatype: _RelOne[TimeStringType] = _RelOne(_P_TimeSeriesArray_increment_datatype)
+    """increment datatype (http://qudt.org/schema/qudt/incrementDatatype)"""
+
+    vector: _RelOne[Vector] = _RelOne(_P_TimeSeriesArray_vector)
+    """vector (http://qudt.org/schema/qudt/vector)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        increment_datatype: TimeStringType | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_heterogeneous: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[_EntityBase] = (),
+        vb_name: str | None = None,
+        vector: Vector | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                increment_datatype=increment_datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_heterogeneous=is_heterogeneous,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+                vector=vector,
+            ),
+        )
 
 class FixedIntervalTimeSeriesArray(TimeSeriesArray):
     """Fixed Interval Time Series Array Type
@@ -7164,9 +13115,11 @@ class FlowSensor_2(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -7196,9 +13149,11 @@ class FlowSensor_2(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -7373,6 +13328,33 @@ class Function(Concept):
             ),
         )
 
+_P_FunctionDatatype_arg_type = _PropertySpec(
+    name='arg_type',
+    predicate='http://qudt.org/schema/qudt/argType',
+    kind='object',
+    label='argType',
+    ranges=('Datatype',),
+)
+
+_P_FunctionDatatype_function_arity = _PropertySpec(
+    name='function_arity',
+    predicate='http://qudt.org/schema/qudt/functionArity',
+    kind='literal',
+    label='function arity',
+    datatype=int,
+    required=True,
+    max_count=1,
+)
+
+_P_FunctionDatatype_return_type = _PropertySpec(
+    name='return_type',
+    predicate='http://qudt.org/schema/qudt/returnType',
+    kind='object',
+    label='return type',
+    ranges=('Datatype',),
+    max_count=1,
+)
+
 class FunctionDatatype(StructuredDatatype):
     """Function Data Type
     
@@ -7385,7 +13367,103 @@ class FunctionDatatype(StructuredDatatype):
         registry=_REGISTRY,
         label='Function Data Type',
         definition=None,
+        properties=(_P_FunctionDatatype_arg_type, _P_FunctionDatatype_function_arity, _P_FunctionDatatype_return_type,),
     )
+
+    arg_type: _Rel[Datatype] = _Rel(_P_FunctionDatatype_arg_type)
+    """argType (http://qudt.org/schema/qudt/argType)"""
+
+    function_arity: _Lit[int] = _Lit(_P_FunctionDatatype_function_arity)
+    """function arity (http://qudt.org/schema/qudt/functionArity)"""
+
+    return_type: _RelOne[Datatype] = _RelOne(_P_FunctionDatatype_return_type)
+    """return type (http://qudt.org/schema/qudt/returnType)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        function_arity: int | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        arg_type: _Iterable[Datatype] = (),
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        return_type: Datatype | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                function_arity=function_arity,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                arg_type=arg_type,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                return_type=return_type,
+                vb_name=vb_name,
+            ),
+        )
 
 class Furnace(Equipment):
     """A piece of `Equipment` that converts fuel or electrical energy into heat.
@@ -7400,8 +13478,8 @@ class Furnace(Equipment):
         label='Furnace',
         definition='A piece of `Equipment` that converts fuel or electrical energy into heat.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -7470,9 +13548,11 @@ class PressureSensor_2(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -7502,9 +13582,11 @@ class PressureSensor_2(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -7562,9 +13644,11 @@ class GaugePressureSensor(PressureSensor_2):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -7594,9 +13678,11 @@ class GaugePressureSensor(PressureSensor_2):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -7674,6 +13760,20 @@ class GraphRole(_EntityBase):
         definition=None,
     )
 
+class GravityBeltThickener(BeltThickener):
+    """A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#GravityBeltThickener
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#GravityBeltThickener',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Gravity Belt Thickener',
+        definition='A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener.',
+    )
+
 class GravityThickener(Thickener):
     """A thickener that uses gravity to separate solids from liquids
     
@@ -7686,20 +13786,6 @@ class GravityThickener(Thickener):
         registry=_REGISTRY,
         label='Gravity Thickener',
         definition='A thickener that uses gravity to separate solids from liquids',
-    )
-
-class GravityBeltThickener(BeltThickener, GravityThickener):
-    """A thickener that combines gravity separation with a belt system
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#GravityBeltThickener
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#GravityBeltThickener',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Gravity Belt Thickener',
-        definition='A thickener that combines gravity separation with a belt system',
     )
 
 class Grinder(UnitProcess):
@@ -7757,11 +13843,19 @@ class GroundToAirHeatPump(HeatPump):
         label='Ground-to-air heat pump',
         definition='A `HeatPump` that transfers thermal energy between air and the ground.',
         cp_slots=(
-            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Medium-ThermalContact', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Medium-ThermalContact', medium_options=(), min_count=1, max_count=None),
         ),
     )
+
+_P_OrderedCollection_ordering_relation = _PropertySpec(
+    name='ordering_relation',
+    predicate='http://qudt.org/schema/qudt/orderingRelation',
+    kind='object',
+    label='Ordering Relation',
+    max_count=1,
+)
 
 class OrderedCollection(Collection):
     """Ordered Collection Kind
@@ -7775,7 +13869,93 @@ class OrderedCollection(Collection):
         registry=_REGISTRY,
         label='Ordered Collection Kind',
         definition=None,
+        properties=(_P_OrderedCollection_ordering_relation,),
     )
+
+    ordering_relation: _RelOne[_EntityBase] = _RelOne(_P_OrderedCollection_ordering_relation)
+    """Ordering Relation (http://qudt.org/schema/qudt/orderingRelation)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        ordering_relation: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                ordering_relation=ordering_relation,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class OrderedTree(OrderedCollection, Tree):
     """Ordered Tree Type
@@ -7790,6 +13970,90 @@ class OrderedTree(OrderedCollection, Tree):
         label='Ordered Tree Type',
         definition=None,
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        ordering_relation: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                ordering_relation=ordering_relation,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class Heap(OrderedTree):
     """Heap
@@ -7819,6 +14083,16 @@ class HeatingCoil(Coil):
         definition='A `Coil` that is specifically used to heat air.',
     )
 
+_P_HeterogenousArray_datatype = _PropertySpec(
+    name='datatype',
+    predicate='http://qudt.org/schema/qudt/datatype',
+    kind='object',
+    label='datatype',
+    ranges=('Datatype',),
+    required=True,
+    max_count=1,
+)
+
 class HeterogenousArray(Array):
     """Heterogenous Array
     
@@ -7831,7 +14105,101 @@ class HeterogenousArray(Array):
         registry=_REGISTRY,
         label='Heterogenous Array',
         definition=None,
+        properties=(_P_HeterogenousArray_datatype,),
     )
+
+    datatype: _RelOne[Datatype] = _RelOne(_P_HeterogenousArray_datatype)
+    """datatype (http://qudt.org/schema/qudt/datatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_heterogeneous: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[_EntityBase] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_heterogeneous=is_heterogeneous,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class TextStringType(StringType):
     """Text String Type
@@ -7847,6 +14215,42 @@ class TextStringType(StringType):
         definition=None,
     )
 
+_P_HexBinaryType_length = _PropertySpec(
+    name='length',
+    predicate='http://qudt.org/schema/qudt/length',
+    kind='literal',
+    label='length',
+    datatype=int,
+    max_count=1,
+)
+
+_P_HexBinaryType_max_length = _PropertySpec(
+    name='max_length',
+    predicate='http://qudt.org/schema/qudt/maxLength',
+    kind='literal',
+    label='max length',
+    datatype=int,
+    max_count=1,
+)
+
+_P_HexBinaryType_min_length = _PropertySpec(
+    name='min_length',
+    predicate='http://qudt.org/schema/qudt/minLength',
+    kind='literal',
+    label='min length',
+    datatype=int,
+    max_count=1,
+)
+
+_P_HexBinaryType_pattern = _PropertySpec(
+    name='pattern',
+    predicate='http://qudt.org/schema/qudt/pattern',
+    kind='literal',
+    label='pattern',
+    datatype=str,
+    max_count=1,
+)
+
 class HexBinaryType(TextStringType):
     """Hexidecimal Binary Type
     
@@ -7859,7 +14263,132 @@ class HexBinaryType(TextStringType):
         registry=_REGISTRY,
         label='Hexidecimal Binary Type',
         definition=None,
+        properties=(_P_HexBinaryType_length, _P_HexBinaryType_max_length, _P_HexBinaryType_min_length, _P_HexBinaryType_pattern,),
     )
+
+    length: _Lit[int] = _Lit(_P_HexBinaryType_length)
+    """length (http://qudt.org/schema/qudt/length)"""
+
+    max_length: _Lit[int] = _Lit(_P_HexBinaryType_max_length)
+    """max length (http://qudt.org/schema/qudt/maxLength)"""
+
+    min_length: _Lit[int] = _Lit(_P_HexBinaryType_min_length)
+    """min length (http://qudt.org/schema/qudt/minLength)"""
+
+    pattern: _Lit[str] = _Lit(_P_HexBinaryType_pattern)
+    """pattern (http://qudt.org/schema/qudt/pattern)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_byte_string: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        max_length: int | None = None,
+        member_datatype: _Iterable[CharacterType] = (),
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        min_length: int | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        pattern: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_byte_string=is_byte_string,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                max_length=max_length,
+                member_datatype=member_datatype,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                min_length=min_length,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                pattern=pattern,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
 
 class HomogeneousArray(Array):
     """Homogeneous Array
@@ -7988,9 +14517,11 @@ class HumiditySensor(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -8020,9 +14551,11 @@ class HumiditySensor(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -8064,6 +14597,15 @@ class IceMaker(Equipment):
         ),
     )
 
+_P_IconicCue_image = _PropertySpec(
+    name='image',
+    predicate='http://qudt.org/schema/qudt/image',
+    kind='object',
+    label='image',
+    required=True,
+    max_count=1,
+)
+
 class IconicCue(ModalCue):
     """Iconic enumeration literal
     
@@ -8076,7 +14618,53 @@ class IconicCue(ModalCue):
         registry=_REGISTRY,
         label='Iconic enumeration literal',
         definition=None,
+        properties=(_P_IconicCue_image,),
     )
+
+    image: _RelOne[_EntityBase] = _RelOne(_P_IconicCue_image)
+    """image (http://qudt.org/schema/qudt/image)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        image: _EntityBase | None,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        duration: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                image=image,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                duration=duration,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 _P_IlluminanceSensor_observes = _PropertySpec(
     name='observes',
@@ -8130,9 +14718,11 @@ class IlluminanceSensor(LightSensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -8162,30 +14752,14 @@ class IlluminanceSensor(LightSensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
-
-class SeparationTank(Tank, UnitProcess):
-    """A tank that has at least two outlets (e.g. overflow and underflow)
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#SeparationTank
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#SeparationTank',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Separation Tank',
-        definition='A tank that has at least two outlets (e.g. overflow and underflow)',
-        cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
-        ),
-    )
 
 class SedimentationTank(SeparationTank):
     """A tank used to remove solids from liquids through sedimentation
@@ -8271,16 +14845,6 @@ class InertialCoordinateFrame(InertialReferenceFrame):
         definition=None,
     )
 
-_P_InletConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint', 'InletConnectionPoint'),
-    max_count=1,
-)
-
 _P_InletConnectionPoint_paired_with = _PropertySpec(
     name='paired_with',
     predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
@@ -8288,6 +14852,16 @@ _P_InletConnectionPoint_paired_with = _PropertySpec(
     label='paired connection point',
     definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
     ranges=('ConnectionPoint',),
+    max_count=1,
+)
+
+_P_InletConnectionPoint_maps_to = _PropertySpec(
+    name='maps_to',
+    predicate='http://data.ashrae.org/standard223#mapsTo',
+    kind='object',
+    label='maps to',
+    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
+    ranges=('ConnectionPoint', 'InletConnectionPoint'),
     max_count=1,
 )
 
@@ -8303,16 +14877,16 @@ class InletConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Inlet connection point',
         definition='An `InletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow into the associated `Connectable`.',
-        properties=(_P_InletConnectionPoint_maps_to, _P_InletConnectionPoint_paired_with,),
+        properties=(_P_InletConnectionPoint_paired_with, _P_InletConnectionPoint_maps_to,),
     )
-
-    maps_to: _RelOne[ConnectionPoint | InletConnectionPoint] = _RelOne(_P_InletConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_InletConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
     paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
+
+    maps_to: _RelOne[ConnectionPoint | InletConnectionPoint] = _RelOne(_P_InletConnectionPoint_maps_to)
+    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     def __init__(
         self,
@@ -8364,6 +14938,19 @@ class IntegerEncodingType(Encoding):
         definition=None,
     )
 
+_P_IntegerListShape_first = _PropertySpec(
+    name='first',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
+    kind='literal',
+    datatype=int,
+)
+
+_P_IntegerListShape_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+)
+
 class IntegerListShape(List):
     """IntegerListShape
     
@@ -8376,7 +14963,70 @@ class IntegerListShape(List):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        properties=(_P_IntegerListShape_first, _P_IntegerListShape_rest,),
     )
+
+    first: _Lit[int] = _Lit(_P_IntegerListShape_first)
+    """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    rest: _Rel[_EntityBase] = _Rel(_P_IntegerListShape_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        first: int | None = None,
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        quantity_: Quantity | None = None,
+        rest: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                first=first,
+                guidance=guidance,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                quantity_=quantity_,
+                rest=rest,
+                value=value,
+            ),
+        )
 
 class InterpolatedTable(Table):
     """Interpolated Table Type
@@ -8603,6 +15253,16 @@ class Junction(Connectable):
             ),
         )
 
+_P_KinestheticCue_code = _PropertySpec(
+    name='code',
+    predicate='http://www.linkedmodel.org/schema/dtype#code',
+    kind='object',
+    label='code',
+    definition='A unique value that is assigned to an enumeration member.',
+    required=True,
+    max_count=1,
+)
+
 class KinestheticCue(ModalCue):
     """Kinesthetic Cue
     
@@ -8615,7 +15275,53 @@ class KinestheticCue(ModalCue):
         registry=_REGISTRY,
         label='Kinesthetic Cue',
         definition=None,
+        properties=(_P_KinestheticCue_code,),
     )
+
+    code: _RelOne[_EntityBase] = _RelOne(_P_KinestheticCue_code)
+    """A unique value that is assigned to an enumeration member. (http://www.linkedmodel.org/schema/dtype#code)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        code: _EntityBase | None,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        duration: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                code=code,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                duration=duration,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class LargeObject(CompositeDatatype):
     """Large object
@@ -8803,6 +15509,13 @@ class MarsCoordinateSystem(TrajectoryCoordinateSystem):
         definition=None,
     )
 
+_P_MassPropertiesArray_has_quantity_kinds_list = _PropertySpec(
+    name='has_quantity_kinds_list',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKindsList',
+    kind='object',
+    label='quantity kinds',
+)
+
 class MassPropertiesArray(HeterogenousArray):
     """Mass Properties Array
     
@@ -8815,7 +15528,103 @@ class MassPropertiesArray(HeterogenousArray):
         registry=_REGISTRY,
         label='Mass Properties Array',
         definition=None,
+        properties=(_P_MassPropertiesArray_has_quantity_kinds_list,),
     )
+
+    has_quantity_kinds_list: _Rel[_EntityBase] = _Rel(_P_MassPropertiesArray_has_quantity_kinds_list)
+    """quantity kinds (http://qudt.org/schema/qudt/hasQuantityKindsList)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_quantity_kinds_list: _Iterable[_EntityBase] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_heterogeneous: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[_EntityBase] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_quantity_kinds_list=has_quantity_kinds_list,
+                has_rule=has_rule,
+                id=id,
+                is_heterogeneous=is_heterogeneous,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class MathsFunctionType(Concept_2):
     """Maths Function Type
@@ -8845,6 +15654,15 @@ class Matrix(Array):
         definition=None,
     )
 
+_P_MatrixElementOrder_by_row = _PropertySpec(
+    name='by_row',
+    predicate='http://qudt.org/schema/qudt/byRow',
+    kind='literal',
+    label='by row',
+    datatype=bool,
+    max_count=1,
+)
+
 class MatrixElementOrder(StructuredDatatype):
     """Matrix Element Order
     
@@ -8857,56 +15675,47 @@ class MatrixElementOrder(StructuredDatatype):
         registry=_REGISTRY,
         label='Matrix Element Order',
         definition=None,
+        properties=(_P_MatrixElementOrder_by_row,),
     )
 
-_P_MediaFiltrationUnit_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
-    label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
-    ranges=('Process',),
-    required=True,
-    max_count=1,
-)
-
-class MediaFiltrationUnit(Filter):
-    """A filter system that uses a bed of material to filter out contaminants
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#MediaFiltrationUnit
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#MediaFiltrationUnit',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='MediaFiltration Unit',
-        definition='A filter system that uses a bed of material to filter out contaminants',
-        properties=(_P_MediaFiltrationUnit_has_process,),
-    )
-
-    has_process: _RelOne[Process] = _RelOne(_P_MediaFiltrationUnit_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
+    by_row: _Lit[bool] = _Lit(_P_MatrixElementOrder_by_row)
+    """by row (http://qudt.org/schema/qudt/byRow)"""
 
     def __init__(
         self,
         name: str | None = None,
         *,
-        has_process: Process | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        medium: _Iterable[_EntityBase] = (),
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        by_row: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
         label: str | None = None,
         comment: str | None = None,
         model: _Model | None = None,
@@ -8920,23 +15729,53 @@ class MediaFiltrationUnit(Filter):
             comment=comment,
             model=model,
             **_provided(
-                has_process=has_process,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                has_role=has_role,
-                medium=medium,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                by_row=by_row,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
             ),
         )
+
+class MediaFiltrationUnit(Filter):
+    """A filter system that uses a bed of material to filter out contaminants
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#MediaFiltrationUnit
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#MediaFiltrationUnit',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='MediaFiltration Unit',
+        definition='A filter system that uses a bed of material to filter out contaminants',
+    )
 
 class MembraneAeratedBiofilmReaactor(Reactor):
     """A reactor that grows biofilm on membranes supplied with air
@@ -8952,17 +15791,6 @@ class MembraneAeratedBiofilmReaactor(Reactor):
         definition='A reactor that grows biofilm on membranes supplied with air',
     )
 
-_P_MembraneBioreactor_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
-    label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
-    ranges=('Process',),
-    required=True,
-    max_count=1,
-)
-
 class MembraneBioreactor(Filter, Reactor, SeparationTank):
     """A filter system that combines a membrane process like microfiltration with a biological reactor
     
@@ -8975,61 +15803,7 @@ class MembraneBioreactor(Filter, Reactor, SeparationTank):
         registry=_REGISTRY,
         label='Membrane Bioreactor',
         definition='A filter system that combines a membrane process like microfiltration with a biological reactor',
-        properties=(_P_MembraneBioreactor_has_process,),
     )
-
-    has_process: _RelOne[Process] = _RelOne(_P_MembraneBioreactor_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: Process | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                has_role=has_role,
-                medium=medium,
-            ),
-        )
 
 class MemoryOrderType(EnumeratedValue):
     """Memory order type
@@ -9076,16 +15850,6 @@ class MicrowaveOven(ElectricOven):
         ),
     )
 
-_P_MixingBasin_has_role = _PropertySpec(
-    name='has_role',
-    predicate='http://data.ashrae.org/standard223#hasRole',
-    kind='enum',
-    label='has role',
-    definition='A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}).',
-    enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
-    required=True,
-)
-
 class MixingBasin(Reactor):
     """A tank where mixed liquor is stirred without aeration
     
@@ -9098,61 +15862,15 @@ class MixingBasin(Reactor):
         registry=_REGISTRY,
         label='Mixing Basin',
         definition='A tank where mixed liquor is stirred without aeration',
-        properties=(_P_MixingBasin_has_role,),
     )
 
-    has_role: _EnumSet[_EnumValue] = _EnumSet(_P_MixingBasin_has_role)
-    """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: _Iterable[Process],
-        has_role: _Iterable[_EnumValue],
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                has_role=has_role,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                medium=medium,
-            ),
-        )
+_P_ModalEnumeration_default_value = _PropertySpec(
+    name='default_value',
+    predicate='http://qudt.org/schema/qudt/defaultValue',
+    kind='object',
+    label='Default Value',
+    ranges=('EnumeratedValue', 'ModalCue'),
+)
 
 class ModalEnumeration(Enumeration):
     """Modal Enumeration
@@ -9166,7 +15884,103 @@ class ModalEnumeration(Enumeration):
         registry=_REGISTRY,
         label='Modal Enumeration',
         definition=None,
+        properties=(_P_ModalEnumeration_default_value,),
     )
+
+    default_value: _Rel[EnumeratedValue | ModalCue] = _Rel(_P_ModalEnumeration_default_value)
+    """Default Value (http://qudt.org/schema/qudt/defaultValue)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        element: _Iterable[EnumeratedValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        default: EnumeratedValue | None = None,
+        default_value: _Iterable[EnumeratedValue | ModalCue] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        encoding: _EntityBase | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[EnumeratedValue] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                element=element,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bits=bits,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                default=default,
+                default_value=default_value,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class MolybdenumSulfideBasedMembrane(Filter):
     """A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity.
@@ -9213,18 +16027,7 @@ class Motor(Equipment):
         ),
     )
 
-_P_MovingBedBioreactor_has_process = _PropertySpec(
-    name='has_process',
-    predicate='https://watermetadata.org/ontology/watr#hasProcess',
-    kind='object',
-    label='has process',
-    definition='This property is used to associate a water treatment process with a piece of equipment.',
-    ranges=('Process',),
-    required=True,
-    max_count=1,
-)
-
-class MovingBedBioreactor(Filter):
+class MovingBedBioreactor(Filter, Reactor):
     """MBBR process using suspended growth media a tank
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#MovingBedBioreactor
@@ -9236,61 +16039,7 @@ class MovingBedBioreactor(Filter):
         registry=_REGISTRY,
         label='Moving Bed Bioreactor (MBBR)',
         definition='MBBR process using suspended growth media a tank',
-        properties=(_P_MovingBedBioreactor_has_process,),
     )
-
-    has_process: _RelOne[Process] = _RelOne(_P_MovingBedBioreactor_has_process)
-    """This property is used to associate a water treatment process with a piece of equipment. (https://watermetadata.org/ontology/watr#hasProcess)"""
-
-    def __init__(
-        self,
-        name: str | None = None,
-        *,
-        has_process: Process | None,
-        actuated_by_property: _Iterable[ActuatableProperty] = (),
-        cnx: _Iterable[ConnectionPoint] = (),
-        connected: _Iterable[Connectable] = (),
-        connected_from: _Iterable[Connectable] = (),
-        connected_through: _Iterable[Connection] = (),
-        connected_to: _Iterable[Connectable] = (),
-        contains_: _Iterable[_EntityBase] = (),
-        executes: _Iterable[Function] = (),
-        has_connection_point: _Iterable[ConnectionPoint] = (),
-        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
-        has_physical_location: _Iterable[PhysicalSpace] = (),
-        has_property: _Iterable[Property] = (),
-        has_role: _Iterable[_EnumValue] = (),
-        medium: _Iterable[_EntityBase] = (),
-        label: str | None = None,
-        comment: str | None = None,
-        model: _Model | None = None,
-    ) -> None:
-        # Funnel straight to the runtime base: generated __init__ methods are
-        # typed sugar, not a cooperative chain (parents' signatures differ).
-        _EntityBase.__init__(
-            self,
-            name,
-            label=label,
-            comment=comment,
-            model=model,
-            **_provided(
-                has_process=has_process,
-                actuated_by_property=actuated_by_property,
-                cnx=cnx,
-                connected=connected,
-                connected_from=connected_from,
-                connected_through=connected_through,
-                connected_to=connected_to,
-                contains_=contains_,
-                executes=executes,
-                has_connection_point=has_connection_point,
-                has_optional_connection_point=has_optional_connection_point,
-                has_physical_location=has_physical_location,
-                has_property=has_property,
-                has_role=has_role,
-                medium=medium,
-            ),
-        )
 
 class MultiDimensionalArray(Array):
     """Multi-Dimensional Array Type
@@ -9306,6 +16055,14 @@ class MultiDimensionalArray(Array):
         definition=None,
     )
 
+_P_MultiDimensionalDataFormat_descriptor = _PropertySpec(
+    name='descriptor',
+    predicate='http://qudt.org/schema/qudt/descriptor',
+    kind='object',
+    label='descriptor',
+    max_count=1,
+)
+
 class MultiDimensionalDataFormat(CompositeDatatype):
     """Multi dimensional data format
     
@@ -9318,7 +16075,137 @@ class MultiDimensionalDataFormat(CompositeDatatype):
         registry=_REGISTRY,
         label='Multi dimensional data format',
         definition=None,
+        properties=(_P_MultiDimensionalDataFormat_descriptor,),
     )
+
+    descriptor: _RelOne[_EntityBase] = _RelOne(_P_MultiDimensionalDataFormat_descriptor)
+    """descriptor (http://qudt.org/schema/qudt/descriptor)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        descriptor: _EntityBase | None = None,
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                descriptor=descriptor,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_MultiModalEnumeration_aural_cue_enumeration = _PropertySpec(
+    name='aural_cue_enumeration',
+    predicate='http://qudt.org/schema/qudt/auralCueEnumeration',
+    kind='object',
+    label='aural cue enumeration',
+    max_count=1,
+)
+
+_P_MultiModalEnumeration_iconic_cue_enumeration = _PropertySpec(
+    name='iconic_cue_enumeration',
+    predicate='http://qudt.org/schema/qudt/iconicCueEnumeration',
+    kind='object',
+    label='iconic cue enumeration',
+    max_count=1,
+)
+
+_P_MultiModalEnumeration_kinesthetic_cue_enumeration = _PropertySpec(
+    name='kinesthetic_cue_enumeration',
+    predicate='http://qudt.org/schema/qudt/kinestheticCueEnumeration',
+    kind='object',
+    label='kinesthetic cue enumeration',
+    max_count=1,
+)
+
+_P_MultiModalEnumeration_modal_cue_enumeration = _PropertySpec(
+    name='modal_cue_enumeration',
+    predicate='http://qudt.org/schema/qudt/modalCueEnumeration',
+    kind='object',
+    label='modal cue enumeration',
+    ranges=('ModalEnumeration',),
+)
+
+_P_MultiModalEnumeration_visual_cue_enumeration = _PropertySpec(
+    name='visual_cue_enumeration',
+    predicate='http://qudt.org/schema/qudt/visualCueEnumeration',
+    kind='object',
+    label='visual cue enumeration',
+    max_count=1,
+)
 
 class MultiModalEnumeration(Enumeration):
     """Multi modal enumeration
@@ -9332,7 +16219,165 @@ class MultiModalEnumeration(Enumeration):
         registry=_REGISTRY,
         label='Multi modal enumeration',
         definition=None,
+        properties=(_P_MultiModalEnumeration_aural_cue_enumeration, _P_MultiModalEnumeration_iconic_cue_enumeration, _P_MultiModalEnumeration_kinesthetic_cue_enumeration, _P_MultiModalEnumeration_modal_cue_enumeration, _P_MultiModalEnumeration_visual_cue_enumeration,),
     )
+
+    aural_cue_enumeration: _RelOne[_EntityBase] = _RelOne(_P_MultiModalEnumeration_aural_cue_enumeration)
+    """aural cue enumeration (http://qudt.org/schema/qudt/auralCueEnumeration)"""
+
+    iconic_cue_enumeration: _RelOne[_EntityBase] = _RelOne(_P_MultiModalEnumeration_iconic_cue_enumeration)
+    """iconic cue enumeration (http://qudt.org/schema/qudt/iconicCueEnumeration)"""
+
+    kinesthetic_cue_enumeration: _RelOne[_EntityBase] = _RelOne(_P_MultiModalEnumeration_kinesthetic_cue_enumeration)
+    """kinesthetic cue enumeration (http://qudt.org/schema/qudt/kinestheticCueEnumeration)"""
+
+    modal_cue_enumeration: _Rel[ModalEnumeration] = _Rel(_P_MultiModalEnumeration_modal_cue_enumeration)
+    """modal cue enumeration (http://qudt.org/schema/qudt/modalCueEnumeration)"""
+
+    visual_cue_enumeration: _RelOne[_EntityBase] = _RelOne(_P_MultiModalEnumeration_visual_cue_enumeration)
+    """visual cue enumeration (http://qudt.org/schema/qudt/visualCueEnumeration)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        element: _Iterable[EnumeratedValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        aural_cue_enumeration: _EntityBase | None = None,
+        basis: Datatype | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        default: EnumeratedValue | None = None,
+        default_value: _Iterable[EnumeratedValue] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        encoding: _EntityBase | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        iconic_cue_enumeration: _EntityBase | None = None,
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        kinesthetic_cue_enumeration: _EntityBase | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        modal_cue_enumeration: _Iterable[ModalEnumeration] = (),
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[EnumeratedValue] = (),
+        vb_name: str | None = None,
+        visual_cue_enumeration: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                element=element,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                aural_cue_enumeration=aural_cue_enumeration,
+                basis=basis,
+                bits=bits,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                default=default,
+                default_value=default_value,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                iconic_cue_enumeration=iconic_cue_enumeration,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                kinesthetic_cue_enumeration=kinesthetic_cue_enumeration,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                modal_cue_enumeration=modal_cue_enumeration,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+                visual_cue_enumeration=visual_cue_enumeration,
+            ),
+        )
+
+_P_MultiModalType_aural_cue = _PropertySpec(
+    name='aural_cue',
+    predicate='http://qudt.org/schema/qudt/auralCue',
+    kind='object',
+    label='aural cue',
+    max_count=1,
+)
+
+_P_MultiModalType_iconic_cue = _PropertySpec(
+    name='iconic_cue',
+    predicate='http://qudt.org/schema/qudt/iconicCue',
+    kind='object',
+    label='iconic cue',
+    max_count=1,
+)
+
+_P_MultiModalType_kinesthetic_cue = _PropertySpec(
+    name='kinesthetic_cue',
+    predicate='http://qudt.org/schema/qudt/kinestheticCue',
+    kind='object',
+    label='kinesthetic cue',
+    max_count=1,
+)
+
+_P_MultiModalType_modal_cue = _PropertySpec(
+    name='modal_cue',
+    predicate='http://qudt.org/schema/qudt/modalCue',
+    kind='object',
+    label='modal cue',
+    ranges=('ModalCue',),
+)
+
+_P_MultiModalType_visual_cue = _PropertySpec(
+    name='visual_cue',
+    predicate='http://qudt.org/schema/qudt/visualCue',
+    kind='object',
+    label='visual cue',
+    max_count=1,
+)
 
 class MultiModalType(EnumeratedValue):
     """Multi Modal Type
@@ -9346,7 +16391,71 @@ class MultiModalType(EnumeratedValue):
         registry=_REGISTRY,
         label='Multi Modal Type',
         definition=None,
+        properties=(_P_MultiModalType_aural_cue, _P_MultiModalType_iconic_cue, _P_MultiModalType_kinesthetic_cue, _P_MultiModalType_modal_cue, _P_MultiModalType_visual_cue,),
     )
+
+    aural_cue: _RelOne[_EntityBase] = _RelOne(_P_MultiModalType_aural_cue)
+    """aural cue (http://qudt.org/schema/qudt/auralCue)"""
+
+    iconic_cue: _RelOne[_EntityBase] = _RelOne(_P_MultiModalType_iconic_cue)
+    """iconic cue (http://qudt.org/schema/qudt/iconicCue)"""
+
+    kinesthetic_cue: _RelOne[_EntityBase] = _RelOne(_P_MultiModalType_kinesthetic_cue)
+    """kinesthetic cue (http://qudt.org/schema/qudt/kinestheticCue)"""
+
+    modal_cue: _Rel[ModalCue] = _Rel(_P_MultiModalType_modal_cue)
+    """modal cue (http://qudt.org/schema/qudt/modalCue)"""
+
+    visual_cue: _RelOne[_EntityBase] = _RelOne(_P_MultiModalType_visual_cue)
+    """visual cue (http://qudt.org/schema/qudt/visualCue)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        aural_cue: _EntityBase | None = None,
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        iconic_cue: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        kinesthetic_cue: _EntityBase | None = None,
+        modal_cue: _Iterable[ModalCue] = (),
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        visual_cue: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                aural_cue=aural_cue,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                iconic_cue=iconic_cue,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                kinesthetic_cue=kinesthetic_cue,
+                modal_cue=modal_cue,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                visual_cue=visual_cue,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class MultiSet(Collection):
     """Bag
@@ -9390,6 +16499,15 @@ class NIST_SP811_Comment(Comment):
         definition=None,
     )
 
+_P_N_TupleType_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
 class N_TupleType(Tuple):
     """N-Tuple Type
     
@@ -9402,7 +16520,99 @@ class N_TupleType(Tuple):
         registry=_REGISTRY,
         label='N-Tuple Type',
         definition=None,
+        properties=(_P_N_TupleType_element_datatype,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_N_TupleType_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class NanofiltrationUnit(Filter):
     """A filter system that uses a membrane to soften water and remove organic contaminants
@@ -9474,6 +16684,63 @@ class Normalization_ZScore(DataProcessing_Normalization):
         definition='Standardize data to have mean=0 and standard deviation=1',
     )
 
+_P_NumericListShape_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+)
+
+_P_NumericListShape_first = _PropertySpec(
+    name='first',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
+    kind='object',
+)
+
+class NumericListShape(_EntityBase):
+    """NumericListShape
+    
+    Ontology: WATR — http://qudt.org/schema/qudt/NumericListShape
+    """
+
+    _classinfo = _ClassInfo(
+        iri='http://qudt.org/schema/qudt/NumericListShape',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label=None,
+        definition=None,
+        properties=(_P_NumericListShape_rest, _P_NumericListShape_first,),
+    )
+
+    rest: _Rel[_EntityBase] = _Rel(_P_NumericListShape_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
+
+    first: _Rel[_EntityBase] = _Rel(_P_NumericListShape_first)
+    """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        first: _Iterable[_EntityBase] = (),
+        rest: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                first=first,
+                rest=rest,
+            ),
+        )
+
 class OccupancySensor(Sensor):
     """A `Sensor` that `observes` an `ObservableProperty` that represents an attribute of occupancy in a space.
     
@@ -9540,9 +16807,11 @@ class OccupantCountSensor(OccupancySensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -9572,9 +16841,11 @@ class OccupantCountSensor(OccupancySensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -9630,9 +16901,11 @@ class OccupantMotionSensor(OccupancySensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -9662,9 +16935,11 @@ class OccupantMotionSensor(OccupancySensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -9720,9 +16995,11 @@ class OccupantPresenceSensor(OccupancySensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -9752,12 +17029,23 @@ class OccupantPresenceSensor(OccupancySensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
+
+_P_UnsignedType_signedness = _PropertySpec(
+    name='signedness',
+    predicate='http://qudt.org/schema/qudt/signedness',
+    kind='object',
+    label='signedness',
+    ranges=('SignednessType',),
+    max_count=1,
+)
 
 class UnsignedType(NumericType):
     """Unsigned Type
@@ -9771,7 +17059,115 @@ class UnsignedType(NumericType):
         registry=_REGISTRY,
         label='Unsigned Type',
         definition=None,
+        properties=(_P_UnsignedType_signedness,),
     )
+
+    signedness: _RelOne[SignednessType] = _RelOne(_P_UnsignedType_signedness)
+    """signedness (http://qudt.org/schema/qudt/signedness)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
 
 class UnsignedIntegerType(IntegerDatatype, UnsignedType):
     """Unsigned Integer Type
@@ -9843,6 +17239,16 @@ class OnOffStateTypeEnumeration(Enumeration):
         definition=None,
     )
 
+_P_OrderedType_literal = _PropertySpec(
+    name='literal',
+    predicate='http://www.linkedmodel.org/schema/dtype#literal',
+    kind='literal',
+    label='literal',
+    definition='',
+    datatype=str,
+    max_count=1,
+)
+
 class OrderedType(EnumeratedValue):
     """Ordered type
     
@@ -9855,7 +17261,61 @@ class OrderedType(EnumeratedValue):
         registry=_REGISTRY,
         label='Ordered type',
         definition=None,
+        properties=(_P_OrderedType_literal,),
     )
+
+    literal: _Lit[str] = _Lit(_P_OrderedType_literal)
+    """literal (http://www.linkedmodel.org/schema/dtype#literal)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        literal: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                literal=literal,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_OrdinalScale_order = _PropertySpec(
+    name='order',
+    predicate='http://qudt.org/schema/qudt/order',
+    kind='literal',
+    label='order',
+    datatype=int,
+    required=True,
+    max_count=1,
+)
 
 class OrdinalScale(Scale):
     """Ordinal scale
@@ -9869,7 +17329,83 @@ class OrdinalScale(Scale):
         registry=_REGISTRY,
         label='Ordinal scale',
         definition=None,
+        properties=(_P_OrdinalScale_order,),
     )
+
+    order: _Lit[int] = _Lit(_P_OrdinalScale_order)
+    """order (http://qudt.org/schema/qudt/order)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        order: int | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        data_structure: str | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        permissible_maths: _Iterable[MathsFunctionType] = (),
+        permissible_transformation: _Iterable[TransformType] = (),
+        plain_text_description: _Iterable[_EntityBase] = (),
+        scale_type: ScaleType | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                order=order,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                data_structure=data_structure,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                permissible_maths=permissible_maths,
+                permissible_transformation=permissible_transformation,
+                plain_text_description=plain_text_description,
+                scale_type=scale_type,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_Organization_url = _PropertySpec(
+    name='url',
+    predicate='http://qudt.org/schema/qudt/url',
+    kind='literal',
+    label='url',
+    datatype=str,
+)
 
 class Organization(Concept_2):
     """Organization
@@ -9883,16 +17419,57 @@ class Organization(Concept_2):
         registry=_REGISTRY,
         label='Organization',
         definition=None,
+        properties=(_P_Organization_url,),
     )
 
-_P_PhysicalSpace_contains_ = _PropertySpec(
-    name='contains_',
-    predicate='http://data.ashrae.org/standard223#contains',
-    kind='object',
-    label='contains',
-    definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
-    ranges=('PhysicalSpace',),
-)
+    url: _Lit[str] = _Lit(_P_Organization_url)
+    """url (http://qudt.org/schema/qudt/url)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        url: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                url=url,
+            ),
+        )
 
 _P_PhysicalSpace_encloses = _PropertySpec(
     name='encloses',
@@ -9901,6 +17478,15 @@ _P_PhysicalSpace_encloses = _PropertySpec(
     label='encloses',
     definition='A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s.',
     ranges=('DomainSpace',),
+)
+
+_P_PhysicalSpace_contains_ = _PropertySpec(
+    name='contains_',
+    predicate='http://data.ashrae.org/standard223#contains',
+    kind='object',
+    label='contains',
+    definition='A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s.',
+    ranges=('PhysicalSpace',),
 )
 
 class PhysicalSpace(Concept):
@@ -9915,14 +17501,14 @@ class PhysicalSpace(Concept):
         registry=_REGISTRY,
         label='Physical space',
         definition='An architectural concept representing a room, a part of a room, a collection of rooms, or any other physical region in a building. PhysicalSpaces may be grouped to define larger `PhysicalSpace`s using the relation `contains` (see {s223:contains}).',
-        properties=(_P_PhysicalSpace_contains_, _P_PhysicalSpace_encloses,),
+        properties=(_P_PhysicalSpace_encloses, _P_PhysicalSpace_contains_,),
     )
-
-    contains_: _Rel[PhysicalSpace] = _Rel(_P_PhysicalSpace_contains_)
-    """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
 
     encloses: _Rel[DomainSpace] = _Rel(_P_PhysicalSpace_encloses)
     """A `Relation` that associates a `PhysicalSpace` with one or more `DomainSpace`s. (http://data.ashrae.org/standard223#encloses)"""
+
+    contains_: _Rel[PhysicalSpace] = _Rel(_P_PhysicalSpace_contains_)
+    """A `Relation` that associates a piece of `Equipment` with its component pieces of `Equipment`, or a `PhysicalSpace` (see {s223:PhysicalSpace}) with its component `PhysicalSpace`s. (http://data.ashrae.org/standard223#contains)"""
 
     def __init__(
         self,
@@ -9966,16 +17552,6 @@ class OutdoorPhysicalSpace(PhysicalSpace):
         definition='A `PhysicalSpace` that is outside of the building where, for example, outdoor ambient properties might be measured, within a suitably defined `DomainSpace`.',
     )
 
-_P_OutletConnectionPoint_maps_to = _PropertySpec(
-    name='maps_to',
-    predicate='http://data.ashrae.org/standard223#mapsTo',
-    kind='object',
-    label='maps to',
-    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
-    ranges=('ConnectionPoint', 'OutletConnectionPoint'),
-    max_count=1,
-)
-
 _P_OutletConnectionPoint_paired_with = _PropertySpec(
     name='paired_with',
     predicate='http://data.ashrae.org/standard223#pairedConnectionPoint',
@@ -9983,6 +17559,16 @@ _P_OutletConnectionPoint_paired_with = _PropertySpec(
     label='paired connection point',
     definition='A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`.',
     ranges=('ConnectionPoint',),
+    max_count=1,
+)
+
+_P_OutletConnectionPoint_maps_to = _PropertySpec(
+    name='maps_to',
+    predicate='http://data.ashrae.org/standard223#mapsTo',
+    kind='object',
+    label='maps to',
+    definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
+    ranges=('ConnectionPoint', 'OutletConnectionPoint'),
     max_count=1,
 )
 
@@ -9998,16 +17584,16 @@ class OutletConnectionPoint(ConnectionPoint):
         registry=_REGISTRY,
         label='Outlet connection point',
         definition='An `OutletConnectionPoint` is a `ConnectionPoint` for which a `Substance-Medium` is expected to flow out of the associated `Connectable`.',
-        properties=(_P_OutletConnectionPoint_maps_to, _P_OutletConnectionPoint_paired_with,),
+        properties=(_P_OutletConnectionPoint_paired_with, _P_OutletConnectionPoint_maps_to,),
     )
-
-    maps_to: _RelOne[ConnectionPoint | OutletConnectionPoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
-    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_OutletConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
     paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
+
+    maps_to: _RelOne[ConnectionPoint | OutletConnectionPoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
+    """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     def __init__(
         self,
@@ -10087,7 +17673,7 @@ class OxygenMeter(ConcentrationSensor_2):
         definition='A sensor used to measure the concentration of oxygen',
     )
 
-class OzonationUnit(Reactor):
+class OzonationUnit(UnitProcess):
     """A unit that uses ozone for water treatment.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#OzonationUnit
@@ -10143,6 +17729,15 @@ class PartialArray(Array):
         definition=None,
     )
 
+_P_ParticulateSensor_of_substance = _PropertySpec(
+    name='of_substance',
+    predicate='http://data.ashrae.org/standard223#ofSubstance',
+    kind='enum',
+    label='of substance',
+    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
+    enum_ranges=('http://data.ashrae.org/standard223#Substance-Particulate',),
+)
+
 _P_ParticulateSensor_observes = _PropertySpec(
     name='observes',
     predicate='http://data.ashrae.org/standard223#observes',
@@ -10152,15 +17747,6 @@ _P_ParticulateSensor_observes = _PropertySpec(
     ranges=('QuantifiableObservableProperty',),
     required=True,
     max_count=1,
-)
-
-_P_ParticulateSensor_of_substance = _PropertySpec(
-    name='of_substance',
-    predicate='http://data.ashrae.org/standard223#ofSubstance',
-    kind='enum',
-    label='of substance',
-    definition='A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix.',
-    enum_ranges=('http://data.ashrae.org/standard223#Substance-Particulate',),
 )
 
 class ParticulateSensor(Sensor):
@@ -10184,17 +17770,17 @@ class ParticulateSensor(Sensor):
         registry=_REGISTRY,
         label='Particulate sensor',
         definition="A `Sensor` that `observes` a `QuantifiableObservableProperty` that represents an amount of a particulate in a medium, in contrast\nto a `ConcentrationSensor` that `observes` a `QuantifiableObservableProperty` that represents a concentration of a miscible constituent in a medium\n(see {s223:ConcentrationSensor}).\n\nThe 223 standard does not constrain the `Unit` or `QuantityKind` reported by a `ParticulateSensor`, but possible\n`QuantityKind`s include `Density` (mass per volume), `ParticleNumberDensity` (count per volume), and `DimensionlessRatio` (with units such as `PPM` or\n`PPB`). Some particulate sensors may claim to report a raw count of particles, for which a `QuantityKind` of `Count` could be used, but the required\ncontext for such a measurement should be provided in the sensor's documentation to specify if it in fact measures a count per volume (e.g., `ParticleNumberDensity`),\ntime (e.g., `CountRate` or `ParticleCurrent`), or some\nother combination. Explicitly declaring the `QuantityKind` of a sensor's output is preferable to relying on implicit assumptions.",
-        properties=(_P_ParticulateSensor_observes, _P_ParticulateSensor_of_substance,),
+        properties=(_P_ParticulateSensor_of_substance, _P_ParticulateSensor_observes,),
     )
+
+    of_substance: _EnumSet[_EnumValue] = _EnumSet(_P_ParticulateSensor_of_substance)
+    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
 
     observes: _RelOne[QuantifiableObservableProperty] = _RelOne(_P_ParticulateSensor_observes)
     """A `Relation` that associates a `Sensor` with one `ObservableProperty` (see {s223:ObservableProperty})
     which is used by the sensor to generate a measurement value (e.g., a temperature) or a simple observation of a stimulus
     causing a reaction (e.g., a current binary switch that closes a dry contact when a fan is powered on). (http://data.ashrae.org/standard223#observes)
     """
-
-    of_substance: _EnumSet[_EnumValue] = _EnumSet(_P_ParticulateSensor_of_substance)
-    """A `Relation` that associates a `Property` being observed by a `Sensor` with the `EnumerationKind-Substance` it characterizes within a specific `Substance-Medium`. For example, to denote the concentration of a `EnumerationKind-Substance` in a `Substance-Medium`, `ofSubstance` is used. Typically, there is also an `ofMedium` relation between the observed `Property` and the `Substance-Medium` (see Figures 10-9 and 10-10). For example, to represent the concentration of CO2 in air, we use `ofSubstance` to relate to CO2 and `ofMedium` to relate to air. The term `ofSubstance` is broad enough to include situations where a sensor is used to detect constituents that should not be present in a medium, such as ammonia in air. Therefore, `ofSubstance` is used to indicate the substance of interest, while `ofConstituent` would indicate a constituent that is normally present in the composition of the mix. (http://data.ashrae.org/standard223#ofSubstance)"""
 
     def __init__(
         self,
@@ -10215,9 +17801,11 @@ class ParticulateSensor(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         of_substance: _Iterable[_EnumValue] = (),
         label: str | None = None,
@@ -10248,9 +17836,11 @@ class ParticulateSensor(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
                 of_substance=of_substance,
             ),
@@ -10319,6 +17909,32 @@ class PhysicalAddress(CompositeDatatype):
         definition=None,
     )
 
+_P_Quantity_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+)
+
+_P_Quantity_is_delta_quantity = _PropertySpec(
+    name='is_delta_quantity',
+    predicate='http://qudt.org/schema/qudt/isDeltaQuantity',
+    kind='literal',
+    label='is Delta Quantity',
+    datatype=bool,
+)
+
+_P_Quantity_quantity_value = _PropertySpec(
+    name='quantity_value',
+    predicate='http://qudt.org/schema/qudt/quantityValue',
+    kind='object',
+    label='quantity value',
+    ranges=('QuantityValue',),
+    inverse='value_quantity',
+)
+
 class Quantity(Concept_2, Quantifiable, Verifiable):
     """Quantity
     
@@ -10331,7 +17947,214 @@ class Quantity(Concept_2, Quantifiable, Verifiable):
         registry=_REGISTRY,
         label='Quantity',
         definition=None,
+        properties=(_P_Quantity_has_quantity_kind, _P_Quantity_is_delta_quantity, _P_Quantity_quantity_value,),
     )
+
+    has_quantity_kind: _Rel[QuantityKind | _TermValue] = _Rel(_P_Quantity_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    is_delta_quantity: _Lit[bool] = _Lit(_P_Quantity_is_delta_quantity)
+    """is Delta Quantity (http://qudt.org/schema/qudt/isDeltaQuantity)"""
+
+    quantity_value: _Rel[QuantityValue] = _Rel(_P_Quantity_quantity_value)
+    """quantity value (http://qudt.org/schema/qudt/quantityValue)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        data_encoding: DataEncoding | None = None,
+        datatype: _EntityBase | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue] = (),
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_delta_quantity: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        quantity_value: _Iterable[QuantityValue] = (),
+        relative_standard_uncertainty: float | None = None,
+        standard_uncertainty: float | None = None,
+        standard_uncertainty_sn: float | None = None,
+        value: _EntityBase | None = None,
+        value_sn: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                data_encoding=data_encoding,
+                datatype=datatype,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_quantity_kind=has_quantity_kind,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                informative_reference=informative_reference,
+                is_delta_quantity=is_delta_quantity,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                quantity_value=quantity_value,
+                relative_standard_uncertainty=relative_standard_uncertainty,
+                standard_uncertainty=standard_uncertainty,
+                standard_uncertainty_sn=standard_uncertainty_sn,
+                value=value,
+                value_sn=value_sn,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_PhysicalConstant_alt_symbol = _PropertySpec(
+    name='alt_symbol',
+    predicate='http://qudt.org/schema/qudt/altSymbol',
+    kind='object',
+    label='alt symbol',
+)
+
+_P_PhysicalConstant_applicable_system = _PropertySpec(
+    name='applicable_system',
+    predicate='http://qudt.org/schema/qudt/applicableSystem',
+    kind='object',
+    label='applicable system',
+    ranges=('SystemOfUnits',),
+)
+
+_P_PhysicalConstant_applicable_unit = _PropertySpec(
+    name='applicable_unit',
+    predicate='http://qudt.org/schema/qudt/applicableUnit',
+    kind='object',
+    label='applicable unit',
+    ranges=('Unit',),
+)
+
+_P_PhysicalConstant_dbpedia_match = _PropertySpec(
+    name='dbpedia_match',
+    predicate='http://qudt.org/schema/qudt/dbpediaMatch',
+    kind='literal',
+    label='dbpedia match',
+    datatype=str,
+)
+
+_P_PhysicalConstant_exact_constant = _PropertySpec(
+    name='exact_constant',
+    predicate='http://qudt.org/schema/qudt/exactConstant',
+    kind='literal',
+    label='exact constant',
+    datatype=bool,
+)
+
+_P_PhysicalConstant_has_dimension_vector = _PropertySpec(
+    name='has_dimension_vector',
+    predicate='http://qudt.org/schema/qudt/hasDimensionVector',
+    kind='object',
+    label='has dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+)
+
+_P_PhysicalConstant_iec61360_code = _PropertySpec(
+    name='iec61360_code',
+    predicate='http://qudt.org/schema/qudt/iec61360Code',
+    kind='literal',
+    label='iec-61360 code',
+    datatype=str,
+)
+
+_P_PhysicalConstant_iso_normative_reference = _PropertySpec(
+    name='iso_normative_reference',
+    predicate='http://qudt.org/schema/qudt/isoNormativeReference',
+    kind='literal',
+    label='normative reference (ISO)',
+    datatype=str,
+)
+
+_P_PhysicalConstant_latex_definition = _PropertySpec(
+    name='latex_definition',
+    predicate='http://qudt.org/schema/qudt/latexDefinition',
+    kind='literal',
+    label='latex definition',
+    datatype=str,
+    max_count=1,
+)
+
+_P_PhysicalConstant_latex_symbol = _PropertySpec(
+    name='latex_symbol',
+    predicate='http://qudt.org/schema/qudt/latexSymbol',
+    kind='literal',
+    label='latex symbol',
+    datatype=str,
+)
+
+_P_PhysicalConstant_math_m_ldefinition = _PropertySpec(
+    name='math_m_ldefinition',
+    predicate='http://qudt.org/schema/qudt/mathMLdefinition',
+    kind='literal',
+    label='mathML definition',
+    datatype=str,
+    max_count=1,
+)
+
+_P_PhysicalConstant_normative_reference = _PropertySpec(
+    name='normative_reference',
+    predicate='http://qudt.org/schema/qudt/normativeReference',
+    kind='literal',
+    label='normative reference',
+    datatype=str,
+)
+
+_P_PhysicalConstant_si_exact_match = _PropertySpec(
+    name='si_exact_match',
+    predicate='http://qudt.org/schema/qudt/siExactMatch',
+    kind='object',
+    label='Individual from SI Reference Point',
+    max_count=1,
+)
+
+_P_PhysicalConstant_symbol = _PropertySpec(
+    name='symbol',
+    predicate='http://qudt.org/schema/qudt/symbol',
+    kind='object',
+    label='symbol',
+    max_count=1,
+)
+
+_P_PhysicalConstant_ucum_code = _PropertySpec(
+    name='ucum_code',
+    predicate='http://qudt.org/schema/qudt/ucumCode',
+    kind='literal',
+    label='ucum code',
+    datatype=str,
+)
 
 class PhysicalConstant(Quantity):
     """Physical Constant
@@ -10345,7 +18168,153 @@ class PhysicalConstant(Quantity):
         registry=_REGISTRY,
         label='Physical Constant',
         definition=None,
+        properties=(_P_PhysicalConstant_alt_symbol, _P_PhysicalConstant_applicable_system, _P_PhysicalConstant_applicable_unit, _P_PhysicalConstant_dbpedia_match, _P_PhysicalConstant_exact_constant, _P_PhysicalConstant_has_dimension_vector, _P_PhysicalConstant_iec61360_code, _P_PhysicalConstant_iso_normative_reference, _P_PhysicalConstant_latex_definition, _P_PhysicalConstant_latex_symbol, _P_PhysicalConstant_math_m_ldefinition, _P_PhysicalConstant_normative_reference, _P_PhysicalConstant_si_exact_match, _P_PhysicalConstant_symbol, _P_PhysicalConstant_ucum_code,),
     )
+
+    alt_symbol: _Rel[_EntityBase] = _Rel(_P_PhysicalConstant_alt_symbol)
+    """alt symbol (http://qudt.org/schema/qudt/altSymbol)"""
+
+    applicable_system: _Rel[SystemOfUnits] = _Rel(_P_PhysicalConstant_applicable_system)
+    """applicable system (http://qudt.org/schema/qudt/applicableSystem)"""
+
+    applicable_unit: _Rel[Unit] = _Rel(_P_PhysicalConstant_applicable_unit)
+    """applicable unit (http://qudt.org/schema/qudt/applicableUnit)"""
+
+    dbpedia_match: _Lit[str] = _Lit(_P_PhysicalConstant_dbpedia_match)
+    """dbpedia match (http://qudt.org/schema/qudt/dbpediaMatch)"""
+
+    exact_constant: _Lit[bool] = _Lit(_P_PhysicalConstant_exact_constant)
+    """exact constant (http://qudt.org/schema/qudt/exactConstant)"""
+
+    has_dimension_vector: _Rel[QuantityKindDimensionVector] = _Rel(_P_PhysicalConstant_has_dimension_vector)
+    """has dimension vector (http://qudt.org/schema/qudt/hasDimensionVector)"""
+
+    iec61360_code: _Lit[str] = _Lit(_P_PhysicalConstant_iec61360_code)
+    """iec-61360 code (http://qudt.org/schema/qudt/iec61360Code)"""
+
+    iso_normative_reference: _Lit[str] = _Lit(_P_PhysicalConstant_iso_normative_reference)
+    """normative reference (ISO) (http://qudt.org/schema/qudt/isoNormativeReference)"""
+
+    latex_definition: _Lit[str] = _Lit(_P_PhysicalConstant_latex_definition)
+    """latex definition (http://qudt.org/schema/qudt/latexDefinition)"""
+
+    latex_symbol: _Lit[str] = _Lit(_P_PhysicalConstant_latex_symbol)
+    """latex symbol (http://qudt.org/schema/qudt/latexSymbol)"""
+
+    math_m_ldefinition: _Lit[str] = _Lit(_P_PhysicalConstant_math_m_ldefinition)
+    """mathML definition (http://qudt.org/schema/qudt/mathMLdefinition)"""
+
+    normative_reference: _Lit[str] = _Lit(_P_PhysicalConstant_normative_reference)
+    """normative reference (http://qudt.org/schema/qudt/normativeReference)"""
+
+    si_exact_match: _RelOne[_EntityBase] = _RelOne(_P_PhysicalConstant_si_exact_match)
+    """Individual from SI Reference Point (http://qudt.org/schema/qudt/siExactMatch)"""
+
+    symbol: _RelOne[_EntityBase] = _RelOne(_P_PhysicalConstant_symbol)
+    """symbol (http://qudt.org/schema/qudt/symbol)"""
+
+    ucum_code: _Lit[str] = _Lit(_P_PhysicalConstant_ucum_code)
+    """ucum code (http://qudt.org/schema/qudt/ucumCode)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        applicable_system: _Iterable[SystemOfUnits] = (),
+        applicable_unit: _Iterable[Unit] = (),
+        code: _Iterable[_EntityBase] = (),
+        data_encoding: DataEncoding | None = None,
+        datatype: _EntityBase | None = None,
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_constant: bool | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_dimension_vector: _Iterable[QuantityKindDimensionVector] = (),
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue] = (),
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        iec61360_code: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_delta_quantity: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        math_m_ldefinition: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        quantity_value: _Iterable[QuantityValue] = (),
+        relative_standard_uncertainty: float | None = None,
+        si_exact_match: _EntityBase | None = None,
+        standard_uncertainty: float | None = None,
+        standard_uncertainty_sn: float | None = None,
+        symbol: _EntityBase | None = None,
+        ucum_code: str | None = None,
+        value: _EntityBase | None = None,
+        value_sn: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                applicable_system=applicable_system,
+                applicable_unit=applicable_unit,
+                code=code,
+                data_encoding=data_encoding,
+                datatype=datatype,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_constant=exact_constant,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_dimension_vector=has_dimension_vector,
+                has_quantity_kind=has_quantity_kind,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                iec61360_code=iec61360_code,
+                informative_reference=informative_reference,
+                is_delta_quantity=is_delta_quantity,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                math_m_ldefinition=math_m_ldefinition,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                quantity_value=quantity_value,
+                relative_standard_uncertainty=relative_standard_uncertainty,
+                si_exact_match=si_exact_match,
+                standard_uncertainty=standard_uncertainty,
+                standard_uncertainty_sn=standard_uncertainty_sn,
+                symbol=symbol,
+                ucum_code=ucum_code,
+                value=value,
+                value_sn=value_sn,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class Pipe(Connection):
     """A `Connection` that is used primarily to transport liquids and gases such as water, sewage, natural gas, and compressed air.
@@ -10390,8 +18359,6 @@ class PlugFlowReactor(Reactor):
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -10524,8 +18491,8 @@ class PowerOverEthernetSwitch(Equipment):
         label='Power over Ethernet (PoE) switch',
         definition='A piece of `Equipment` that connects and is capable of powering one or more instances of electrical equipment, such as computers and Wi-Fi access points, as well as connect the equipment to an Ethernet network so they can communicate with each other and, optionally, to the Internet.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#PowerAndSignal-PoE', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -10613,8 +18580,19 @@ class PressureSensor(PressureSensor_2):
         definition='A sensor used to measure pressure',
     )
 
+_P_Process_definition = _PropertySpec(
+    name='definition',
+    predicate='http://www.w3.org/2004/02/skos/core#definition',
+    kind='literal',
+    label='definition',
+    definition='A statement or formal explanation of the meaning of a concept.',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
 class Process(_EntityBase):
-    """A process applied to water treatment.
+    """A physical, chemical, or biological activity performed by a piece of equipment or by a system.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process
     """
@@ -10624,8 +18602,34 @@ class Process(_EntityBase):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Water Process',
-        definition='A process applied to water treatment.',
+        definition='A physical, chemical, or biological activity performed by a piece of equipment or by a system.',
+        properties=(_P_Process_definition,),
     )
+
+    definition: _Lit[str] = _Lit(_P_Process_definition)
+    """A statement or formal explanation of the meaning of a concept. (http://www.w3.org/2004/02/skos/core#definition)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        definition: str | None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                definition=definition,
+            ),
+        )
 
 class Process_BiologicalProcess(Process):
     """A unit process that utilizes biological activity for water treatment.
@@ -10641,36 +18645,8 @@ class Process_BiologicalProcess(Process):
         definition='A unit process that utilizes biological activity for water treatment.',
     )
 
-class Process_PhysicalProcess(Process):
-    """A unit process that relies on physical forces to separate or treat water.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-PhysicalProcess
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-PhysicalProcess',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Physical Process',
-        definition='A unit process that relies on physical forces to separate or treat water.',
-    )
-
-class Process_Separation(Process_PhysicalProcess):
-    """The most generic process for separation of any two constituents.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Separation
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Separation',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Separation',
-        definition='The most generic process for separation of any two constituents.',
-    )
-
-class Process_ActivatedSludge(Process_BiologicalProcess, Process_Separation):
-    """Aerobic suspended-growth biological treatment
+class Process_ActivatedSludge(Process_BiologicalProcess):
+    """Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ActivatedSludge
     """
@@ -10680,38 +18656,10 @@ class Process_ActivatedSludge(Process_BiologicalProcess, Process_Separation):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Activated Sludge',
-        definition='Aerobic suspended-growth biological treatment',
+        definition='Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water.',
     )
 
-class Process_Denitrification(Process_BiologicalProcess):
-    """Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Denitrification
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Denitrification',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Denitrification',
-        definition='Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides.',
-    )
-
-class Process_Nitrification(Process_BiologicalProcess):
-    """Process by which ammonia is oxidized to nitrite and subsequently nitrate.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Nitrification
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Nitrification',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Nitrification',
-        definition='Process by which ammonia is oxidized to nitrite and subsequently nitrate.',
-    )
-
-class Process_A2O(Process_ActivatedSludge, Process_Denitrification, Process_Nitrification):
+class Process_A2O(Process_ActivatedSludge):
     """Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-A2O
@@ -10725,7 +18673,7 @@ class Process_A2O(Process_ActivatedSludge, Process_Denitrification, Process_Nitr
         definition='Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal.',
     )
 
-class Process_AO(Process_ActivatedSludge, Process_Denitrification, Process_Nitrification):
+class Process_AO(Process_ActivatedSludge):
     """Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-AO
@@ -10737,6 +18685,20 @@ class Process_AO(Process_ActivatedSludge, Process_Denitrification, Process_Nitri
         registry=_REGISTRY,
         label='Anoxic-Aerobic',
         definition='Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal.',
+    )
+
+class Process_PhysicalProcess(Process):
+    """A unit process that relies on physical forces to separate or treat water.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-PhysicalProcess
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#Process-PhysicalProcess',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Physical Process',
+        definition='A unit process that relies on physical forces to separate or treat water.',
     )
 
 class Process_Adsorption(Process_PhysicalProcess):
@@ -10754,7 +18716,7 @@ class Process_Adsorption(Process_PhysicalProcess):
     )
 
 class Process_ChemicalProcess(Process):
-    """A unit process that involves the addition of chemicals to water to achieve a desired effect.
+    """A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChemicalProcess
     """
@@ -10764,7 +18726,7 @@ class Process_ChemicalProcess(Process):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Chemical Process',
-        definition='A unit process that involves the addition of chemicals to water to achieve a desired effect.',
+        definition='A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect.',
     )
 
 class Process_Oxidation(Process_ChemicalProcess):
@@ -10907,8 +18869,22 @@ class Process_Backwashing(Process_Cleaning):
         definition='A cleaning process in which water, and sometimes air, is driven backward through a filter or membrane system to remove accumulated solids.',
     )
 
+class Process_Separation(Process_PhysicalProcess):
+    """The most generic process for separation of any two constituents.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Separation
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#Process-Separation',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Separation',
+        definition='The most generic process for separation of any two constituents.',
+    )
+
 class Process_Filtration(Process_Separation):
-    """A unit process that removes smaller particles from water by passing it through a filter.
+    """A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Filtration
     """
@@ -10918,7 +18894,7 @@ class Process_Filtration(Process_Separation):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Filtration',
-        definition='A unit process that removes smaller particles from water by passing it through a filter.',
+        definition='A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass.',
     )
 
 class Process_Biofiltration(Process_BiologicalProcess, Process_Filtration):
@@ -10949,21 +18925,21 @@ class Process_BiologicallyActiveFiltration(Process_Biofiltration):
         definition='A biologically activated filtration column.',
     )
 
-class Process_BiosolidsDisposal(Process_PhysicalProcess):
-    """Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.).
+class Process_SolidLiquidSeparation(Process_Separation):
+    """Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-BiosolidsDisposal
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-BiosolidsDisposal',
+        iri='https://watermetadata.org/ontology/watr#Process-SolidLiquidSeparation',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='BiosolidsDisposal',
-        definition='Generic process for unspecified disposal of biosolids (e.g., incineration, land application, landfilling, etc.).',
+        label='Solid-Liquid Separation',
+        definition='Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents.',
     )
 
-class Process_Centrifugation(Process_PhysicalProcess):
+class Process_Centrifugation(Process_SolidLiquidSeparation):
     """A process that uses centrifugal force to separate substances of different densities.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Centrifugation
@@ -10977,22 +18953,8 @@ class Process_Centrifugation(Process_PhysicalProcess):
         definition='A process that uses centrifugal force to separate substances of different densities.',
     )
 
-class Process_ChemicalAddition(Process_ChemicalProcess):
-    """Addition of chemicals, such as coagulant, polymer, disinfectant, etc.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChemicalAddition
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-ChemicalAddition',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Chemical Addition',
-        definition='Addition of chemicals, such as coagulant, polymer, disinfectant, etc.',
-    )
-
 class Process_ChemicalPrecipitation(Process_ChemicalProcess):
-    """Removal of nutrients or metals using coagulants
+    """Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. Which constituent it targets depends on the reagent, which is why the objective is stated on the equipment rather than here.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChemicalPrecipitation
     """
@@ -11002,35 +18964,35 @@ class Process_ChemicalPrecipitation(Process_ChemicalProcess):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Chemical Precipitation',
-        definition='Removal of nutrients or metals using coagulants',
+        definition='Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. Which constituent it targets depends on the reagent, which is why the objective is stated on the equipment rather than here.',
     )
 
-class Process_Disinfection(Process_ChemicalProcess):
-    """A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water.
+class Process_Dosing(Process_ChemicalProcess):
+    """Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Disinfection
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Dosing
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Disinfection',
+        iri='https://watermetadata.org/ontology/watr#Process-Dosing',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='Disinfection',
-        definition='A unit process that uses chemicals or other methods to kill or inactivate harmful microorganisms in water.',
+        label='Dosing',
+        definition='Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite.',
     )
 
-class Process_Chlorination(Process_Disinfection):
-    """A disinfection process that uses chlorine or chlorine compounds.
+class Process_ChlorineDosing(Process_Dosing):
+    """Dosing of chlorine or chlorine compounds into water.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Chlorination
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ChlorineDosing
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Chlorination',
+        iri='https://watermetadata.org/ontology/watr#Process-ChlorineDosing',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='Chlorination',
-        definition='A disinfection process that uses chlorine or chlorine compounds.',
+        label='Chlorine Dosing',
+        definition='Dosing of chlorine or chlorine compounds into water.',
     )
 
 class Process_MembraneProcess(Process_Filtration):
@@ -11048,7 +19010,7 @@ class Process_MembraneProcess(Process_Filtration):
     )
 
 class Process_ReverseOsmosis(Process_MembraneProcess):
-    """A core membrane separation process for desalination and advanced purification.
+    """Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ReverseOsmosis
     """
@@ -11058,11 +19020,11 @@ class Process_ReverseOsmosis(Process_MembraneProcess):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Reverse Osmosis (RO)',
-        definition='A core membrane separation process for desalination and advanced purification.',
+        definition='Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained.',
     )
 
 class Process_ClosedCircuitReverseOsmosis(Process_ReverseOsmosis):
-    """A specific RO configuration explored for optimization, capable of adapting to unmeasured changes like feed salinity.
+    """Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ClosedCircuitReverseOsmosis
     """
@@ -11072,10 +19034,10 @@ class Process_ClosedCircuitReverseOsmosis(Process_ReverseOsmosis):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Closed Circuit Reverse Osmosis (CCRO)',
-        definition='A specific RO configuration explored for optimization, capable of adapting to unmeasured changes like feed salinity.',
+        definition='Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage.',
     )
 
-class Process_Coagulation(Process_ChemicalAddition):
+class Process_Coagulation(Process_Dosing):
     """A unit process that adds chemicals to water to cause small particles to clump together.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Coagulation
@@ -11131,7 +19093,7 @@ class Process_Comminution(Process_PhysicalProcess):
         definition='Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression.',
     )
 
-class Process_Composting(Process_BiosolidsDisposal):
+class Process_Composting(Process_BiologicalProcess):
     """Biological degradation of organic materials under controlled aerobic conditions.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Composting
@@ -11187,60 +19149,18 @@ class Process_Crystallization(Process_Solidification):
         definition='A process of forming solid crystals from a solution.',
     )
 
-class Process_Dechlorination(Process_Disinfection):
-    """A post-disinfection process that removes excess chlorine compounds.
+class Process_Denitrification(Process_BiologicalProcess):
+    """Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Dechlorination
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Denitrification
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Dechlorination',
+        iri='https://watermetadata.org/ontology/watr#Process-Denitrification',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='Dechlorination',
-        definition='A post-disinfection process that removes excess chlorine compounds.',
-    )
-
-class Process_Dewatering(Process_PhysicalProcess):
-    """A process to remove or separate water from another material, typically solids.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Dewatering
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Dewatering',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Dewatering',
-        definition='A process to remove or separate water from another material, typically solids.',
-    )
-
-class Process_Evaporation(Process_PhysicalProcess):
-    """A process of turning a liquid into a vapor.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Evaporation
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Evaporation',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Evaporation',
-        definition='A process of turning a liquid into a vapor.',
-    )
-
-class Process_Drying(Process_Dewatering, Process_Evaporation):
-    """Drying of biosolids to reduce moisture content.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Drying
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Drying',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Drying',
-        definition='Drying of biosolids to reduce moisture content.',
+        label='Denitrification',
+        definition='Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides.',
     )
 
 class Process_Electrodialysis(Process_ChemicalProcess, Process_PhysicalProcess):
@@ -11300,7 +19220,7 @@ class Process_Electrolysis(Process_ChemicalProcess):
     )
 
 class Process_Electrooxidation(Process_Oxidation, Process_PhysicalProcess):
-    """An advanced oxidation process often combined with EC to enhance contaminant removal and inactivation, particularly for viruses.
+    """Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Electrooxidation
     """
@@ -11310,7 +19230,7 @@ class Process_Electrooxidation(Process_Oxidation, Process_PhysicalProcess):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Electrooxidation (EO)',
-        definition='An advanced oxidation process often combined with EC to enhance contaminant removal and inactivation, particularly for viruses.',
+        definition='Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent.',
     )
 
 class Process_Elutriation(Process_Separation):
@@ -11327,8 +19247,36 @@ class Process_Elutriation(Process_Separation):
         definition='A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density.',
     )
 
+class Process_EnhancedBiologicalPhosphorusRemoval(Process_BiologicalProcess):
+    """Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-EnhancedBiologicalPhosphorusRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#Process-EnhancedBiologicalPhosphorusRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Enhanced Biological Phosphorus Removal (EBPR)',
+        definition='Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions.',
+    )
+
+class Process_Evaporation(Process_PhysicalProcess):
+    """A process of turning a liquid into a vapor.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Evaporation
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#Process-Evaporation',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Evaporation',
+        definition='A process of turning a liquid into a vapor.',
+    )
+
 class Process_FeedReversalReverseOsmosis(Process_ReverseOsmosis):
-    """A dynamic and cyclic design to mitigate scaling and balance salt/foulant load, enabling high recovery.
+    """Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FeedReversalReverseOsmosis
     """
@@ -11338,10 +19286,10 @@ class Process_FeedReversalReverseOsmosis(Process_ReverseOsmosis):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Feed Reversal Reverse Osmosis (FRRO)',
-        definition='A dynamic and cyclic design to mitigate scaling and balance salt/foulant load, enabling high recovery.',
+        definition='Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved.',
     )
 
-class Process_FiveStageBardenpho(Process_ActivatedSludge, Process_Denitrification, Process_Nitrification):
+class Process_FiveStageBardenpho(Process_ActivatedSludge):
     """A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FiveStageBardenpho
@@ -11383,7 +19331,7 @@ class Process_Flocculation(Process_ChemicalProcess, Process_Mixing):
         definition='A unit process that gently mixes water to allow coagulated particles to form larger clumps.',
     )
 
-class Process_Flotation(Process_PhysicalProcess):
+class Process_Flotation(Process_SolidLiquidSeparation):
     """A unit process that uses buoyancy to separate solids from water, often using air bubbles.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Flotation
@@ -11411,7 +19359,7 @@ class Process_FluidizedBedIncineration(Process_Combustion):
         definition='A process that combusts a constantly moving bed of biosolids.',
     )
 
-class Process_FourStageBardenpho(Process_ActivatedSludge, Process_Denitrification, Process_Nitrification):
+class Process_FourStageBardenpho(Process_ActivatedSludge):
     """A four-stage biological nutrient removal process with two anoxic and two aerobic zones.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-FourStageBardenpho
@@ -11440,7 +19388,7 @@ class Process_GranularActivatedCarbon(Process_Adsorption, Process_Filtration):
     )
 
 class Process_HighDensitySludge(Process_ChemicalProcess, Process_PhysicalProcess):
-    """A method for treating acid mine drainage involving neutralization.
+    """Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-HighDensitySludge
     """
@@ -11450,7 +19398,7 @@ class Process_HighDensitySludge(Process_ChemicalProcess, Process_PhysicalProcess
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='High-Density Sludge (HDS) Process',
-        definition='A method for treating acid mine drainage involving neutralization.',
+        definition='Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge.',
     )
 
 class Process_Hydrolysis(Process_ChemicalProcess):
@@ -11481,36 +19429,8 @@ class Process_IonExchange(Process_ChemicalProcess, Process_PhysicalProcess):
         definition='A process in which ions are exchanged between a solution and an ion-exchange resin or membrane.',
     )
 
-class Process_LandApplication(Process_BiosolidsDisposal):
-    """Beneficial reuse of biosolids by spreading on agricultural land.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-LandApplication
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-LandApplication',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Land Application',
-        definition='Beneficial reuse of biosolids by spreading on agricultural land.',
-    )
-
-class Process_Landfill(Process_BiosolidsDisposal):
-    """Disposal of biosolids in a landfill.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Landfill
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Landfill',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Biosolids Landfill',
-        definition='Disposal of biosolids in a landfill.',
-    )
-
 class Process_MLE(Process_AO):
-    """Modification of AO a with internal recycle.
+    """Modification of AO with an internal recycle returning nitrate to the anoxic zone.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MLE
     """
@@ -11520,10 +19440,10 @@ class Process_MLE(Process_AO):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Modified Ludzack-Ettinger (MLE)',
-        definition='Modification of AO a with internal recycle.',
+        definition='Modification of AO with an internal recycle returning nitrate to the anoxic zone.',
     )
 
-class Process_MediaFiltration(Process_Filtration):
+class Process_MediaFiltration(Process_Filtration, Process_SolidLiquidSeparation):
     """A filtration process that uses a bed of media (as opposed to a membrane-based process).
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MediaFiltration
@@ -11538,7 +19458,7 @@ class Process_MediaFiltration(Process_Filtration):
     )
 
 class Process_MembraneDistillation(Process_MembraneProcess):
-    """A thermal membrane process, often subject to CFD modeling for optimization of heat and mass transfer.
+    """Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-MembraneDistillation
     """
@@ -11548,11 +19468,11 @@ class Process_MembraneDistillation(Process_MembraneProcess):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Membrane Distillation (MD)',
-        definition='A thermal membrane process, often subject to CFD modeling for optimization of heat and mass transfer.',
+        definition='Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back.',
     )
 
-class Process_Microfiltration(Process_Filtration):
-    """0.1 to 1 micron-scale filtration
+class Process_Microfiltration(Process_MembraneProcess, Process_SolidLiquidSeparation):
+    """Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Microfiltration
     """
@@ -11562,7 +19482,7 @@ class Process_Microfiltration(Process_Filtration):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Microfiltration',
-        definition='0.1 to 1 micron-scale filtration',
+        definition='Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately.',
     )
 
 class Process_MultipleHearthIncineration(Process_Combustion):
@@ -11579,36 +19499,22 @@ class Process_MultipleHearthIncineration(Process_Combustion):
         definition='A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow.',
     )
 
-class Process_pHAdjustment(Process_ChemicalAddition):
-    """A unit process that adjusts the pH of water to a desired level using chemicals.
+class Process_Nitrification(Process_BiologicalProcess):
+    """Process by which ammonia is oxidized to nitrite and subsequently nitrate.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-pHAdjustment
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Nitrification
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-pHAdjustment',
+        iri='https://watermetadata.org/ontology/watr#Process-Nitrification',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='pH Adjustment',
-        definition='A unit process that adjusts the pH of water to a desired level using chemicals.',
-    )
-
-class Process_Neutralization(Process_pHAdjustment):
-    """pH adjustment to neutral, typically with a base, used in processes like high-density sludge treatment.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Neutralization
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Neutralization',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Neutralization',
-        definition='pH adjustment to neutral, typically with a base, used in processes like high-density sludge treatment.',
+        label='Nitrification',
+        definition='Process by which ammonia is oxidized to nitrite and subsequently nitrate.',
     )
 
 class Process_OsmoticallyAssistedReverseOsmosis(Process_ReverseOsmosis):
-    """A process with validated Computational Fluid Dynamics (CFD) models for cost optimization.
+    """Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-OsmoticallyAssistedReverseOsmosis
     """
@@ -11618,11 +19524,11 @@ class Process_OsmoticallyAssistedReverseOsmosis(Process_ReverseOsmosis):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Osmotically Assisted Reverse Osmosis (OARO)',
-        definition='A process with validated Computational Fluid Dynamics (CFD) models for cost optimization.',
+        definition='Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow.',
     )
 
 class Process_Ozonation(Process_Oxidation):
-    """A water treatment process that uses ozone as an oxidant.
+    """A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Ozonation
     """
@@ -11632,7 +19538,7 @@ class Process_Ozonation(Process_Oxidation):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Ozonation',
-        definition='A water treatment process that uses ozone as an oxidant.',
+        definition='A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control.',
     )
 
 class Process_Purging(Process_Cleaning):
@@ -11705,7 +19611,7 @@ class Process_Screening(Process_Separation):
         definition='A unit process that removes large solids from water, such as leaves, branches, and other debris.',
     )
 
-class Process_Sedimentation(Process_Separation):
+class Process_Sedimentation(Process_SolidLiquidSeparation):
     """A unit process that allows solids to settle out of water by gravity.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Sedimentation
@@ -11731,20 +19637,6 @@ class Process_SlowSandFiltration(Process_MediaFiltration):
         registry=_REGISTRY,
         label='Slow Sand Filtration',
         definition='A filtration process that uses a bed of sand to remove impurities at low flow rates.',
-    )
-
-class Process_Softening(Process_ChemicalAddition):
-    """Chemical precipitation of calcium/magnesium
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Softening
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Softening',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Softening',
-        definition='Chemical precipitation of calcium/magnesium',
     )
 
 class Process_SolventExtraction(Process_ChemicalProcess):
@@ -11775,20 +19667,6 @@ class Process_Stripping(Process_Separation):
         definition='Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds.',
     )
 
-class Process_ThermalDisinfection(Process_Disinfection):
-    """Heat-based pathogen inactivation such as pasteurization.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ThermalDisinfection
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-ThermalDisinfection',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Thermal Disinfection',
-        definition='Heat-based pathogen inactivation such as pasteurization.',
-    )
-
 class Process_ThermalHydrolysis(Process_Hydrolysis):
     """A process that breaks down complex organic matter into soluble compounds using heat and pressure.
     
@@ -11803,18 +19681,18 @@ class Process_ThermalHydrolysis(Process_Hydrolysis):
         definition='A process that breaks down complex organic matter into soluble compounds using heat and pressure.',
     )
 
-class Process_Thickening(Process_PhysicalProcess):
-    """A process to increase the solids content of a sludge or slurry.
+class Process_ThermalTreatment(Process_PhysicalProcess):
+    """Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Thickening
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-ThermalTreatment
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-Thickening',
+        iri='https://watermetadata.org/ontology/watr#Process-ThermalTreatment',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='Thickening',
-        definition='A process to increase the solids content of a sludge or slurry.',
+        label='Thermal Treatment',
+        definition='Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result.',
     )
 
 class Process_TricklingFiltration(Process_Biofiltration):
@@ -11845,22 +19723,22 @@ class Process_UCT(Process_A2O):
         definition='Variant of A2O with modified recycle streams for phosphorus removal.',
     )
 
-class Process_UVDisinfection(Process_Disinfection):
-    """A disinfection process that uses ultraviolet light to inactivate microorganisms.
+class Process_UVIrradiation(Process_PhysicalProcess):
+    """Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation.
     
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-UVDisinfection
+    Ontology: WATR — https://watermetadata.org/ontology/watr#Process-UVIrradiation
     """
 
     _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Process-UVDisinfection',
+        iri='https://watermetadata.org/ontology/watr#Process-UVIrradiation',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
-        label='UV Disinfection',
-        definition='A disinfection process that uses ultraviolet light to inactivate microorganisms.',
+        label='Ultraviolet Irradiation',
+        definition='Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation.',
     )
 
-class Process_Ultrafiltration(Process_Filtration):
-    """0.01 to 0.1 micron-scale filtration
+class Process_Ultrafiltration(Process_MembraneProcess, Process_SolidLiquidSeparation):
+    """Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#Process-Ultrafiltration
     """
@@ -11870,7 +19748,7 @@ class Process_Ultrafiltration(Process_Filtration):
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Ultrafiltration',
-        definition='0.01 to 0.1 micron-scale filtration',
+        definition='Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately.',
     )
 
 class Pump_2(Equipment):
@@ -11886,8 +19764,8 @@ class Pump_2(Equipment):
         label='Pump',
         definition='A piece of `Equipment` that imparts energy to a fluid, drawing a fluid into itself through an inlet port, and forcing the fluid out through an outlet port.',
         cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#Constituent-Refrigerant', 'http://data.ashrae.org/standard223#Fluid-Oil', 'http://data.ashrae.org/standard223#Fluid-Water'), min_count=1, max_count=None),
         ),
     )
 
@@ -11905,12 +19783,79 @@ class Pump(Pump_2):
         definition='A device used to move fluids by mechanical action',
     )
 
-_P_QuantifiableProperty_has_response_time = _PropertySpec(
-    name='has_response_time',
-    predicate='https://watermetadata.org/ontology/watr#hasResponseTime',
+_P_QuantifiableProperty_has_temporal_range = _PropertySpec(
+    name='has_temporal_range',
+    predicate='https://watermetadata.org/ontology/watr#hasTemporalRange',
     kind='object',
-    label='has response time',
-    definition='The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable.',
+    label='has temporal range',
+    definition='The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded.',
+    ranges=('QuantifiableProperty',),
+)
+
+_P_QuantifiableProperty_has_alarm_status = _PropertySpec(
+    name='has_alarm_status',
+    predicate='http://data.ashrae.org/standard223#hasAlarmStatus',
+    kind='object',
+    label='has alarm status',
+    definition='A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`.',
+    ranges=('EnumerableProperty',),
+)
+
+_P_QuantifiableProperty_has_deadband = _PropertySpec(
+    name='has_deadband',
+    predicate='http://data.ashrae.org/standard223#hasDeadband',
+    kind='object',
+    label='has deadband',
+    definition='This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed.',
+    ranges=('QuantifiableProperty',),
+)
+
+_P_QuantifiableProperty_has_unit = _PropertySpec(
+    name='has_unit',
+    predicate='http://qudt.org/schema/qudt/hasUnit',
+    kind='object',
+    label='has unit',
+    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    ranges=('Unit',),
+    max_count=1,
+    inverse='unit_for',
+)
+
+_P_QuantifiableProperty_has_numeric_range = _PropertySpec(
+    name='has_numeric_range',
+    predicate='https://watermetadata.org/ontology/watr#hasNumericRange',
+    kind='object',
+    label='has numeric range',
+    definition='The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units.',
+    ranges=('QuantifiableProperty',),
+)
+
+_P_QuantifiableProperty_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+    required=True,
+    max_count=1,
+)
+
+_P_QuantifiableProperty_has_variable_range = _PropertySpec(
+    name='has_variable_range',
+    predicate='https://watermetadata.org/ontology/watr#hasVariableRange',
+    kind='object',
+    label='has variable range',
+    definition='The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions.',
+    ranges=('QuantifiableProperty',),
+)
+
+_P_QuantifiableProperty_has_processed_data = _PropertySpec(
+    name='has_processed_data',
+    predicate='https://watermetadata.org/ontology/watr#hasProcessedData',
+    kind='object',
+    label='has processed data',
+    definition='The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values.',
     ranges=('QuantifiableProperty',),
 )
 
@@ -11923,12 +19868,21 @@ _P_QuantifiableProperty_has_measurement_range = _PropertySpec(
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_variable_range = _PropertySpec(
-    name='has_variable_range',
-    predicate='https://watermetadata.org/ontology/watr#hasVariableRange',
+_P_QuantifiableProperty_is_delta_quantity = _PropertySpec(
+    name='is_delta_quantity',
+    predicate='http://qudt.org/schema/qudt/isDeltaQuantity',
+    kind='literal',
+    label='is Delta Quantity',
+    datatype=bool,
+    max_count=1,
+)
+
+_P_QuantifiableProperty_has_numeric_resolution = _PropertySpec(
+    name='has_numeric_resolution',
+    predicate='https://watermetadata.org/ontology/watr#hasNumericResolution',
     kind='object',
-    label='has variable range',
-    definition='The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions.',
+    label='has numeric resolution',
+    definition='The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units.',
     ranges=('QuantifiableProperty',),
 )
 
@@ -11942,30 +19896,38 @@ _P_QuantifiableProperty_has_aggregation = _PropertySpec(
     max_count=1,
 )
 
-_P_QuantifiableProperty_has_numeric_range = _PropertySpec(
-    name='has_numeric_range',
-    predicate='https://watermetadata.org/ontology/watr#hasNumericRange',
+_P_QuantifiableProperty_quantity_value = _PropertySpec(
+    name='quantity_value',
+    predicate='http://qudt.org/schema/qudt/quantityValue',
     kind='object',
-    label='has numeric range',
-    definition='The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units.',
+    label='quantity value',
+    ranges=('QuantityValue',),
+    inverse='value_quantity',
+)
+
+_P_QuantifiableProperty_has_setpoint = _PropertySpec(
+    name='has_setpoint',
+    predicate='http://data.ashrae.org/standard223#hasSetpoint',
+    kind='object',
+    label='has setpoint',
+    definition='A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain.',
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_calibration_curve = _PropertySpec(
-    name='has_calibration_curve',
-    predicate='https://watermetadata.org/ontology/watr#hasCalibrationCurve',
+_P_QuantifiableProperty_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
     kind='object',
-    label='has calibration curve',
-    definition='The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units.',
-    ranges=('QuantifiableProperty',),
+    label='value',
+    max_count=0,
 )
 
-_P_QuantifiableProperty_has_temporal_resolution = _PropertySpec(
-    name='has_temporal_resolution',
-    predicate='https://watermetadata.org/ontology/watr#hasTemporalResolution',
+_P_QuantifiableProperty_has_drop_rate = _PropertySpec(
+    name='has_drop_rate',
+    predicate='https://watermetadata.org/ontology/watr#hasDropRate',
     kind='object',
-    label='has temporal resolution',
-    definition='The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points.',
+    label='has drop rate',
+    definition='The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors.',
     ranges=('QuantifiableProperty',),
 )
 
@@ -11978,39 +19940,39 @@ _P_QuantifiableProperty_has_bias = _PropertySpec(
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_temporal_range = _PropertySpec(
-    name='has_temporal_range',
-    predicate='https://watermetadata.org/ontology/watr#hasTemporalRange',
+_P_QuantifiableProperty_has_response_time = _PropertySpec(
+    name='has_response_time',
+    predicate='https://watermetadata.org/ontology/watr#hasResponseTime',
     kind='object',
-    label='has temporal range',
-    definition='The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded.',
+    label='has response time',
+    definition='The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable.',
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_drop_rate = _PropertySpec(
-    name='has_drop_rate',
-    predicate='https://watermetadata.org/ontology/watr#hasDropRate',
+_P_QuantifiableProperty_has_calibration_curve = _PropertySpec(
+    name='has_calibration_curve',
+    predicate='https://watermetadata.org/ontology/watr#hasCalibrationCurve',
     kind='object',
-    label='has drop rate',
-    definition='The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors.',
+    label='has calibration curve',
+    definition='The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units.',
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_processed_data = _PropertySpec(
-    name='has_processed_data',
-    predicate='https://watermetadata.org/ontology/watr#hasProcessedData',
+_P_QuantifiableProperty_has_threshold = _PropertySpec(
+    name='has_threshold',
+    predicate='http://data.ashrae.org/standard223#hasThreshold',
     kind='object',
-    label='has processed data',
-    definition='The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values.',
+    label='has threshold',
+    definition='A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range.',
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_numeric_resolution = _PropertySpec(
-    name='has_numeric_resolution',
-    predicate='https://watermetadata.org/ontology/watr#hasNumericResolution',
+_P_QuantifiableProperty_has_temporal_resolution = _PropertySpec(
+    name='has_temporal_resolution',
+    predicate='https://watermetadata.org/ontology/watr#hasTemporalResolution',
     kind='object',
-    label='has numeric resolution',
-    definition='The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units.',
+    label='has temporal resolution',
+    definition='The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points.',
     ranges=('QuantifiableProperty',),
 )
 
@@ -12032,90 +19994,6 @@ _P_QuantifiableProperty_has_precision = _PropertySpec(
     ranges=('QuantifiableProperty',),
 )
 
-_P_QuantifiableProperty_has_unit = _PropertySpec(
-    name='has_unit',
-    predicate='http://qudt.org/schema/qudt/hasUnit',
-    kind='object',
-    label='has unit',
-    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
-    ranges=('Unit',),
-    max_count=1,
-    inverse='unit_for',
-)
-
-_P_QuantifiableProperty_has_deadband = _PropertySpec(
-    name='has_deadband',
-    predicate='http://data.ashrae.org/standard223#hasDeadband',
-    kind='object',
-    label='has deadband',
-    definition='This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_quantity_kind = _PropertySpec(
-    name='has_quantity_kind',
-    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
-    kind='object',
-    label='has quantity kind',
-    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
-    ranges=('QuantityKind',),
-    required=True,
-    max_count=1,
-)
-
-_P_QuantifiableProperty_has_threshold = _PropertySpec(
-    name='has_threshold',
-    predicate='http://data.ashrae.org/standard223#hasThreshold',
-    kind='object',
-    label='has threshold',
-    definition='A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_value = _PropertySpec(
-    name='value',
-    predicate='http://qudt.org/schema/qudt/value',
-    kind='object',
-    label='value',
-    max_count=0,
-)
-
-_P_QuantifiableProperty_is_delta_quantity = _PropertySpec(
-    name='is_delta_quantity',
-    predicate='http://qudt.org/schema/qudt/isDeltaQuantity',
-    kind='literal',
-    label='is Delta Quantity',
-    datatype=bool,
-    max_count=1,
-)
-
-_P_QuantifiableProperty_has_setpoint = _PropertySpec(
-    name='has_setpoint',
-    predicate='http://data.ashrae.org/standard223#hasSetpoint',
-    kind='object',
-    label='has setpoint',
-    definition='A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain.',
-    ranges=('QuantifiableProperty',),
-)
-
-_P_QuantifiableProperty_has_alarm_status = _PropertySpec(
-    name='has_alarm_status',
-    predicate='http://data.ashrae.org/standard223#hasAlarmStatus',
-    kind='object',
-    label='has alarm status',
-    definition='A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`.',
-    ranges=('EnumerableProperty',),
-)
-
-_P_QuantifiableProperty_quantity_value = _PropertySpec(
-    name='quantity_value',
-    predicate='http://qudt.org/schema/qudt/quantityValue',
-    kind='object',
-    label='quantity value',
-    ranges=('QuantityValue',),
-    inverse='value_quantity',
-)
-
 class QuantifiableProperty(Property):
     """This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.
     
@@ -12128,44 +20006,71 @@ class QuantifiableProperty(Property):
         registry=_REGISTRY,
         label='Quantifiable property',
         definition='This class is for quantifiable values that describe an object (`System`, `Equipment`, etc.) that are typically static (`hasValue`). That is, they are neither measured nor specified in the course of operations.',
-        properties=(_P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_has_variable_range, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_has_accuracy, _P_QuantifiableProperty_has_precision, _P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_value, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_quantity_value,),
+        properties=(_P_QuantifiableProperty_has_temporal_range, _P_QuantifiableProperty_has_alarm_status, _P_QuantifiableProperty_has_deadband, _P_QuantifiableProperty_has_unit, _P_QuantifiableProperty_has_numeric_range, _P_QuantifiableProperty_has_quantity_kind, _P_QuantifiableProperty_has_variable_range, _P_QuantifiableProperty_has_processed_data, _P_QuantifiableProperty_has_measurement_range, _P_QuantifiableProperty_is_delta_quantity, _P_QuantifiableProperty_has_numeric_resolution, _P_QuantifiableProperty_has_aggregation, _P_QuantifiableProperty_quantity_value, _P_QuantifiableProperty_has_setpoint, _P_QuantifiableProperty_value, _P_QuantifiableProperty_has_drop_rate, _P_QuantifiableProperty_has_bias, _P_QuantifiableProperty_has_response_time, _P_QuantifiableProperty_has_calibration_curve, _P_QuantifiableProperty_has_threshold, _P_QuantifiableProperty_has_temporal_resolution, _P_QuantifiableProperty_has_accuracy, _P_QuantifiableProperty_has_precision,),
     )
-
-    has_response_time: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_response_time)
-    """The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable. (https://watermetadata.org/ontology/watr#hasResponseTime)"""
-
-    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_measurement_range)
-    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
-
-    has_variable_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_variable_range)
-    """The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions. (https://watermetadata.org/ontology/watr#hasVariableRange)"""
-
-    has_aggregation: _EnumOne[_EnumValue] = _EnumOne(_P_QuantifiableProperty_has_aggregation)
-    """The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum. (https://watermetadata.org/ontology/watr#hasAggregation)"""
-
-    has_numeric_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_range)
-    """The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericRange)"""
-
-    has_calibration_curve: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_calibration_curve)
-    """The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units. (https://watermetadata.org/ontology/watr#hasCalibrationCurve)"""
-
-    has_temporal_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_resolution)
-    """The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points. (https://watermetadata.org/ontology/watr#hasTemporalResolution)"""
-
-    has_bias: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_bias)
-    """The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value. (https://watermetadata.org/ontology/watr#hasBias)"""
 
     has_temporal_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_range)
     """The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded. (https://watermetadata.org/ontology/watr#hasTemporalRange)"""
 
-    has_drop_rate: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_drop_rate)
-    """The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors. (https://watermetadata.org/ontology/watr#hasDropRate)"""
+    has_alarm_status: _Rel[EnumerableProperty] = _Rel(_P_QuantifiableProperty_has_alarm_status)
+    """A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`. (http://data.ashrae.org/standard223#hasAlarmStatus)"""
+
+    has_deadband: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_deadband)
+    """This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed. (http://data.ashrae.org/standard223#hasDeadband)"""
+
+    has_unit: _RelOne[Unit | _TermValue] = _RelOne(_P_QuantifiableProperty_has_unit)
+    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    has_numeric_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_range)
+    """The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericRange)"""
+
+    has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    has_variable_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_variable_range)
+    """The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions. (https://watermetadata.org/ontology/watr#hasVariableRange)"""
 
     has_processed_data: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_processed_data)
     """The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values. (https://watermetadata.org/ontology/watr#hasProcessedData)"""
 
+    has_measurement_range: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_measurement_range)
+    """The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor. (https://watermetadata.org/ontology/watr#hasMeasurementRange)"""
+
+    is_delta_quantity: _Lit[bool] = _Lit(_P_QuantifiableProperty_is_delta_quantity)
+    """is Delta Quantity (http://qudt.org/schema/qudt/isDeltaQuantity)"""
+
     has_numeric_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_numeric_resolution)
     """The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units. (https://watermetadata.org/ontology/watr#hasNumericResolution)"""
+
+    has_aggregation: _EnumOne[_EnumValue] = _EnumOne(_P_QuantifiableProperty_has_aggregation)
+    """The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum. (https://watermetadata.org/ontology/watr#hasAggregation)"""
+
+    quantity_value: _Rel[QuantityValue] = _Rel(_P_QuantifiableProperty_quantity_value)
+    """quantity value (http://qudt.org/schema/qudt/quantityValue)"""
+
+    has_setpoint: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_setpoint)
+    """A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain. (http://data.ashrae.org/standard223#hasSetpoint)"""
+
+    value: _Rel[_EntityBase] = _Rel(_P_QuantifiableProperty_value)
+    """value (http://qudt.org/schema/qudt/value)"""
+
+    has_drop_rate: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_drop_rate)
+    """The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors. (https://watermetadata.org/ontology/watr#hasDropRate)"""
+
+    has_bias: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_bias)
+    """The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value. (https://watermetadata.org/ontology/watr#hasBias)"""
+
+    has_response_time: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_response_time)
+    """The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable. (https://watermetadata.org/ontology/watr#hasResponseTime)"""
+
+    has_calibration_curve: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_calibration_curve)
+    """The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units. (https://watermetadata.org/ontology/watr#hasCalibrationCurve)"""
+
+    has_threshold: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_threshold)
+    """A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range. (http://data.ashrae.org/standard223#hasThreshold)"""
+
+    has_temporal_resolution: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_temporal_resolution)
+    """The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points. (https://watermetadata.org/ontology/watr#hasTemporalResolution)"""
 
     has_accuracy: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_accuracy)
     """The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units. (https://watermetadata.org/ontology/watr#hasAccuracy)"""
@@ -12173,38 +20078,11 @@ class QuantifiableProperty(Property):
     has_precision: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_precision)
     """The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions. (https://watermetadata.org/ontology/watr#hasPrecision)"""
 
-    has_unit: _RelOne[Unit] = _RelOne(_P_QuantifiableProperty_has_unit)
-    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
-
-    has_deadband: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_deadband)
-    """This relation binds a control setpoint to the `QuantifiableProperty` indicating the range of values within which a sensed variable can vary without indicating a condition has changed. (http://data.ashrae.org/standard223#hasDeadband)"""
-
-    has_quantity_kind: _RelOne[QuantityKind] = _RelOne(_P_QuantifiableProperty_has_quantity_kind)
-    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
-
-    has_threshold: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_threshold)
-    """A `Relation` that associates a threshold with the `QuantifiableProperty` indicating a specific value at which an action may be taken, distinguished from an offset or a range. (http://data.ashrae.org/standard223#hasThreshold)"""
-
-    value: _Rel[_EntityBase] = _Rel(_P_QuantifiableProperty_value)
-    """value (http://qudt.org/schema/qudt/value)"""
-
-    is_delta_quantity: _Lit[bool] = _Lit(_P_QuantifiableProperty_is_delta_quantity)
-    """is Delta Quantity (http://qudt.org/schema/qudt/isDeltaQuantity)"""
-
-    has_setpoint: _Rel[QuantifiableProperty] = _Rel(_P_QuantifiableProperty_has_setpoint)
-    """A `Relation` that associates a control setpoint with the `QuantifiableProperty` indicating the desired value which the control process is trying to maintain. (http://data.ashrae.org/standard223#hasSetpoint)"""
-
-    has_alarm_status: _Rel[EnumerableProperty] = _Rel(_P_QuantifiableProperty_has_alarm_status)
-    """A `Relation` that associates an `EnumerableProperty` that describes an Alarm or Status with a `QuantifiableProperty`. (http://data.ashrae.org/standard223#hasAlarmStatus)"""
-
-    quantity_value: _Rel[QuantityValue] = _Rel(_P_QuantifiableProperty_quantity_value)
-    """quantity value (http://qudt.org/schema/qudt/quantityValue)"""
-
     def __init__(
         self,
         name: str | None = None,
         *,
-        has_quantity_kind: QuantityKind | None,
+        has_quantity_kind: QuantityKind | _TermValue | None,
         has_accuracy: _Iterable[QuantifiableProperty] = (),
         has_aggregation: _EnumValue | None = None,
         has_alarm_status: _Iterable[EnumerableProperty] = (),
@@ -12226,7 +20104,7 @@ class QuantifiableProperty(Property):
         has_temporal_range: _Iterable[QuantifiableProperty] = (),
         has_temporal_resolution: _Iterable[QuantifiableProperty] = (),
         has_threshold: _Iterable[QuantifiableProperty] = (),
-        has_unit: Unit | None = None,
+        has_unit: Unit | _TermValue | None = None,
         has_value: object | None = None,
         has_variable_range: _Iterable[QuantifiableProperty] = (),
         is_delta_quantity: bool | None = None,
@@ -12314,6 +20192,180 @@ class QuantifiableObservableProperty(ObservableProperty, QuantifiableProperty):
         definition='This class is for instances of `QuantifiableProperty` for which numerical values are observed, like a temperature reading or a voltage measure.',
     )
 
+_P_QuantityKind_applicable_cgs_unit = _PropertySpec(
+    name='applicable_cgs_unit',
+    predicate='http://qudt.org/schema/qudt/applicableCGSUnit',
+    kind='object',
+    label='applicable CGS unit',
+    ranges=('Unit',),
+)
+
+_P_QuantityKind_applicable_iso_unit = _PropertySpec(
+    name='applicable_iso_unit',
+    predicate='http://qudt.org/schema/qudt/applicableISOUnit',
+    kind='object',
+    label='applicable ISO unit',
+    ranges=('Unit',),
+)
+
+_P_QuantityKind_applicable_imperial_unit = _PropertySpec(
+    name='applicable_imperial_unit',
+    predicate='http://qudt.org/schema/qudt/applicableImperialUnit',
+    kind='object',
+    label='applicable Imperial unit',
+    ranges=('Unit',),
+)
+
+_P_QuantityKind_applicable_si_unit = _PropertySpec(
+    name='applicable_si_unit',
+    predicate='http://qudt.org/schema/qudt/applicableSIUnit',
+    kind='object',
+    label='applicable SI unit',
+    ranges=('Unit',),
+)
+
+_P_QuantityKind_applicable_us_customary_unit = _PropertySpec(
+    name='applicable_us_customary_unit',
+    predicate='http://qudt.org/schema/qudt/applicableUSCustomaryUnit',
+    kind='object',
+    label='applicable US Customary unit',
+    ranges=('Unit',),
+)
+
+_P_QuantityKind_applicable_unit = _PropertySpec(
+    name='applicable_unit',
+    predicate='http://qudt.org/schema/qudt/applicableUnit',
+    kind='object',
+    label='applicable unit',
+    ranges=('Unit',),
+)
+
+_P_QuantityKind_base_cgs_unit_dimensions = _PropertySpec(
+    name='base_cgs_unit_dimensions',
+    predicate='http://qudt.org/schema/qudt/baseCGSUnitDimensions',
+    kind='object',
+    label='base CGS unit dimensions',
+    max_count=1,
+)
+
+_P_QuantityKind_base_iso_unit_dimensions = _PropertySpec(
+    name='base_iso_unit_dimensions',
+    predicate='http://qudt.org/schema/qudt/baseISOUnitDimensions',
+    kind='object',
+    label='base ISO unit dimensions',
+    max_count=1,
+)
+
+_P_QuantityKind_base_imperial_unit_dimensions = _PropertySpec(
+    name='base_imperial_unit_dimensions',
+    predicate='http://qudt.org/schema/qudt/baseImperialUnitDimensions',
+    kind='object',
+    label='base imperial unit dimensions',
+    max_count=1,
+)
+
+_P_QuantityKind_base_si_unit_dimensions = _PropertySpec(
+    name='base_si_unit_dimensions',
+    predicate='http://qudt.org/schema/qudt/baseSIUnitDimensions',
+    kind='object',
+    label='base SI unit dimensions',
+    max_count=1,
+)
+
+_P_QuantityKind_base_us_customary_unit_dimensions = _PropertySpec(
+    name='base_us_customary_unit_dimensions',
+    predicate='http://qudt.org/schema/qudt/baseUSCustomaryUnitDimensions',
+    kind='object',
+    label='base US customary unit dimensions',
+    max_count=1,
+)
+
+_P_QuantityKind_belongs_to_system_of_quantities = _PropertySpec(
+    name='belongs_to_system_of_quantities',
+    predicate='http://qudt.org/schema/qudt/belongsToSystemOfQuantities',
+    kind='object',
+    label='belongs to system of quantities',
+    ranges=('SystemOfQuantityKinds',),
+)
+
+_P_QuantityKind_dimension_vector_for_si = _PropertySpec(
+    name='dimension_vector_for_si',
+    predicate='http://qudt.org/schema/qudt/dimensionVectorForSI',
+    kind='object',
+    label='dimension vector for SI',
+    ranges=('QuantityKindDimensionVector_SI',),
+    max_count=1,
+)
+
+_P_QuantityKind_expression = _PropertySpec(
+    name='expression',
+    predicate='http://qudt.org/schema/qudt/expression',
+    kind='object',
+    label='expression',
+)
+
+_P_QuantityKind_has_dimension_vector = _PropertySpec(
+    name='has_dimension_vector',
+    predicate='http://qudt.org/schema/qudt/hasDimensionVector',
+    kind='object',
+    label='has dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKind_iec61360_code = _PropertySpec(
+    name='iec61360_code',
+    predicate='http://qudt.org/schema/qudt/iec61360Code',
+    kind='literal',
+    label='iec-61360 code',
+    datatype=str,
+)
+
+_P_QuantityKind_latex_definition = _PropertySpec(
+    name='latex_definition',
+    predicate='http://qudt.org/schema/qudt/latexDefinition',
+    kind='literal',
+    label='latex definition',
+    datatype=str,
+    max_count=1,
+)
+
+_P_QuantityKind_math_m_ldefinition = _PropertySpec(
+    name='math_m_ldefinition',
+    predicate='http://qudt.org/schema/qudt/mathMLdefinition',
+    kind='literal',
+    label='mathML definition',
+    datatype=str,
+    max_count=1,
+)
+
+_P_QuantityKind_qkdv_denominator = _PropertySpec(
+    name='qkdv_denominator',
+    predicate='http://qudt.org/schema/qudt/qkdvDenominator',
+    kind='object',
+    label='denominator dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+    max_count=1,
+)
+
+_P_QuantityKind_qkdv_numerator = _PropertySpec(
+    name='qkdv_numerator',
+    predicate='http://qudt.org/schema/qudt/qkdvNumerator',
+    kind='object',
+    label='numerator dimension vector',
+    ranges=('QuantityKindDimensionVector',),
+    max_count=1,
+)
+
+_P_QuantityKind_si_exact_match = _PropertySpec(
+    name='si_exact_match',
+    predicate='http://qudt.org/schema/qudt/siExactMatch',
+    kind='object',
+    label='Individual from SI Reference Point',
+    max_count=1,
+)
+
 class QuantityKind(AbstractQuantityKind, Verifiable):
     """Quantity Kind
     
@@ -12326,7 +20378,273 @@ class QuantityKind(AbstractQuantityKind, Verifiable):
         registry=_REGISTRY,
         label='Quantity Kind',
         definition=None,
+        properties=(_P_QuantityKind_applicable_cgs_unit, _P_QuantityKind_applicable_iso_unit, _P_QuantityKind_applicable_imperial_unit, _P_QuantityKind_applicable_si_unit, _P_QuantityKind_applicable_us_customary_unit, _P_QuantityKind_applicable_unit, _P_QuantityKind_base_cgs_unit_dimensions, _P_QuantityKind_base_iso_unit_dimensions, _P_QuantityKind_base_imperial_unit_dimensions, _P_QuantityKind_base_si_unit_dimensions, _P_QuantityKind_base_us_customary_unit_dimensions, _P_QuantityKind_belongs_to_system_of_quantities, _P_QuantityKind_dimension_vector_for_si, _P_QuantityKind_expression, _P_QuantityKind_has_dimension_vector, _P_QuantityKind_iec61360_code, _P_QuantityKind_latex_definition, _P_QuantityKind_math_m_ldefinition, _P_QuantityKind_qkdv_denominator, _P_QuantityKind_qkdv_numerator, _P_QuantityKind_si_exact_match,),
     )
+
+    applicable_cgs_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_cgs_unit)
+    """applicable CGS unit (http://qudt.org/schema/qudt/applicableCGSUnit)"""
+
+    applicable_iso_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_iso_unit)
+    """applicable ISO unit (http://qudt.org/schema/qudt/applicableISOUnit)"""
+
+    applicable_imperial_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_imperial_unit)
+    """applicable Imperial unit (http://qudt.org/schema/qudt/applicableImperialUnit)"""
+
+    applicable_si_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_si_unit)
+    """applicable SI unit (http://qudt.org/schema/qudt/applicableSIUnit)"""
+
+    applicable_us_customary_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_us_customary_unit)
+    """applicable US Customary unit (http://qudt.org/schema/qudt/applicableUSCustomaryUnit)"""
+
+    applicable_unit: _Rel[Unit] = _Rel(_P_QuantityKind_applicable_unit)
+    """applicable unit (http://qudt.org/schema/qudt/applicableUnit)"""
+
+    base_cgs_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_cgs_unit_dimensions)
+    """base CGS unit dimensions (http://qudt.org/schema/qudt/baseCGSUnitDimensions)"""
+
+    base_iso_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_iso_unit_dimensions)
+    """base ISO unit dimensions (http://qudt.org/schema/qudt/baseISOUnitDimensions)"""
+
+    base_imperial_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_imperial_unit_dimensions)
+    """base imperial unit dimensions (http://qudt.org/schema/qudt/baseImperialUnitDimensions)"""
+
+    base_si_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_si_unit_dimensions)
+    """base SI unit dimensions (http://qudt.org/schema/qudt/baseSIUnitDimensions)"""
+
+    base_us_customary_unit_dimensions: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_base_us_customary_unit_dimensions)
+    """base US customary unit dimensions (http://qudt.org/schema/qudt/baseUSCustomaryUnitDimensions)"""
+
+    belongs_to_system_of_quantities: _Rel[SystemOfQuantityKinds] = _Rel(_P_QuantityKind_belongs_to_system_of_quantities)
+    """belongs to system of quantities (http://qudt.org/schema/qudt/belongsToSystemOfQuantities)"""
+
+    dimension_vector_for_si: _RelOne[QuantityKindDimensionVector_SI] = _RelOne(_P_QuantityKind_dimension_vector_for_si)
+    """dimension vector for SI (http://qudt.org/schema/qudt/dimensionVectorForSI)"""
+
+    expression: _Rel[_EntityBase] = _Rel(_P_QuantityKind_expression)
+    """expression (http://qudt.org/schema/qudt/expression)"""
+
+    has_dimension_vector: _RelOne[QuantityKindDimensionVector] = _RelOne(_P_QuantityKind_has_dimension_vector)
+    """has dimension vector (http://qudt.org/schema/qudt/hasDimensionVector)"""
+
+    iec61360_code: _Lit[str] = _Lit(_P_QuantityKind_iec61360_code)
+    """iec-61360 code (http://qudt.org/schema/qudt/iec61360Code)"""
+
+    latex_definition: _Lit[str] = _Lit(_P_QuantityKind_latex_definition)
+    """latex definition (http://qudt.org/schema/qudt/latexDefinition)"""
+
+    math_m_ldefinition: _Lit[str] = _Lit(_P_QuantityKind_math_m_ldefinition)
+    """mathML definition (http://qudt.org/schema/qudt/mathMLdefinition)"""
+
+    qkdv_denominator: _RelOne[QuantityKindDimensionVector] = _RelOne(_P_QuantityKind_qkdv_denominator)
+    """denominator dimension vector (http://qudt.org/schema/qudt/qkdvDenominator)"""
+
+    qkdv_numerator: _RelOne[QuantityKindDimensionVector] = _RelOne(_P_QuantityKind_qkdv_numerator)
+    """numerator dimension vector (http://qudt.org/schema/qudt/qkdvNumerator)"""
+
+    si_exact_match: _RelOne[_EntityBase] = _RelOne(_P_QuantityKind_si_exact_match)
+    """Individual from SI Reference Point (http://qudt.org/schema/qudt/siExactMatch)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_dimension_vector: QuantityKindDimensionVector | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        applicable_cgs_unit: _Iterable[Unit] = (),
+        applicable_imperial_unit: _Iterable[Unit] = (),
+        applicable_iso_unit: _Iterable[Unit] = (),
+        applicable_si_unit: _Iterable[Unit] = (),
+        applicable_unit: _Iterable[Unit] = (),
+        applicable_us_customary_unit: _Iterable[Unit] = (),
+        base_cgs_unit_dimensions: _EntityBase | None = None,
+        base_imperial_unit_dimensions: _EntityBase | None = None,
+        base_iso_unit_dimensions: _EntityBase | None = None,
+        base_si_unit_dimensions: _EntityBase | None = None,
+        base_us_customary_unit_dimensions: _EntityBase | None = None,
+        belongs_to_system_of_quantities: _Iterable[SystemOfQuantityKinds] = (),
+        broader: _Iterable[QuantityKind] = (),
+        code: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimension_vector_for_si: QuantityKindDimensionVector_SI | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        expression: _Iterable[_EntityBase] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        iec61360_code: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        math_m_ldefinition: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        qkdv_denominator: QuantityKindDimensionVector | None = None,
+        qkdv_numerator: QuantityKindDimensionVector | None = None,
+        si_exact_match: _EntityBase | None = None,
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_dimension_vector=has_dimension_vector,
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                applicable_cgs_unit=applicable_cgs_unit,
+                applicable_imperial_unit=applicable_imperial_unit,
+                applicable_iso_unit=applicable_iso_unit,
+                applicable_si_unit=applicable_si_unit,
+                applicable_unit=applicable_unit,
+                applicable_us_customary_unit=applicable_us_customary_unit,
+                base_cgs_unit_dimensions=base_cgs_unit_dimensions,
+                base_imperial_unit_dimensions=base_imperial_unit_dimensions,
+                base_iso_unit_dimensions=base_iso_unit_dimensions,
+                base_si_unit_dimensions=base_si_unit_dimensions,
+                base_us_customary_unit_dimensions=base_us_customary_unit_dimensions,
+                belongs_to_system_of_quantities=belongs_to_system_of_quantities,
+                broader=broader,
+                code=code,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimension_vector_for_si=dimension_vector_for_si,
+                exact_match=exact_match,
+                expression=expression,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                iec61360_code=iec61360_code,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                math_m_ldefinition=math_m_ldefinition,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                qkdv_denominator=qkdv_denominator,
+                qkdv_numerator=qkdv_numerator,
+                si_exact_match=si_exact_match,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_amount_of_substance = _PropertySpec(
+    name='dimension_exponent_for_amount_of_substance',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForAmountOfSubstance',
+    kind='object',
+    label='dimension exponent for amount of substance',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_electric_current = _PropertySpec(
+    name='dimension_exponent_for_electric_current',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForElectricCurrent',
+    kind='literal',
+    label='dimension exponent for electric current',
+    datatype=int,
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_length = _PropertySpec(
+    name='dimension_exponent_for_length',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForLength',
+    kind='object',
+    label='dimension exponent for length',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_luminous_intensity = _PropertySpec(
+    name='dimension_exponent_for_luminous_intensity',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForLuminousIntensity',
+    kind='object',
+    label='dimension exponent for luminous intensity',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_mass = _PropertySpec(
+    name='dimension_exponent_for_mass',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForMass',
+    kind='object',
+    label='dimension exponent for mass',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_thermodynamic_temperature = _PropertySpec(
+    name='dimension_exponent_for_thermodynamic_temperature',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForThermodynamicTemperature',
+    kind='object',
+    label='dimension exponent for thermodynamic temperature',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimension_exponent_for_time = _PropertySpec(
+    name='dimension_exponent_for_time',
+    predicate='http://qudt.org/schema/qudt/dimensionExponentForTime',
+    kind='object',
+    label='dimension exponent for time',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_dimensionless_exponent = _PropertySpec(
+    name='dimensionless_exponent',
+    predicate='http://qudt.org/schema/qudt/dimensionlessExponent',
+    kind='object',
+    label='dimensionless exponent',
+    required=True,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_has_reference_quantity_kind = _PropertySpec(
+    name='has_reference_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasReferenceQuantityKind',
+    kind='object',
+    label='has reference quantity kind',
+    ranges=('QuantityKind',),
+)
+
+_P_QuantityKindDimensionVector_latex_definition = _PropertySpec(
+    name='latex_definition',
+    predicate='http://qudt.org/schema/qudt/latexDefinition',
+    kind='literal',
+    label='latex definition',
+    datatype=str,
+    max_count=1,
+)
+
+_P_QuantityKindDimensionVector_latex_symbol = _PropertySpec(
+    name='latex_symbol',
+    predicate='http://qudt.org/schema/qudt/latexSymbol',
+    kind='literal',
+    label='latex symbol',
+    datatype=str,
+)
 
 class QuantityKindDimensionVector(Concept_2):
     """Quantity Kind Dimension Vector
@@ -12340,7 +20658,107 @@ class QuantityKindDimensionVector(Concept_2):
         registry=_REGISTRY,
         label='Quantity Kind Dimension Vector',
         definition=None,
+        properties=(_P_QuantityKindDimensionVector_dimension_exponent_for_amount_of_substance, _P_QuantityKindDimensionVector_dimension_exponent_for_electric_current, _P_QuantityKindDimensionVector_dimension_exponent_for_length, _P_QuantityKindDimensionVector_dimension_exponent_for_luminous_intensity, _P_QuantityKindDimensionVector_dimension_exponent_for_mass, _P_QuantityKindDimensionVector_dimension_exponent_for_thermodynamic_temperature, _P_QuantityKindDimensionVector_dimension_exponent_for_time, _P_QuantityKindDimensionVector_dimensionless_exponent, _P_QuantityKindDimensionVector_has_reference_quantity_kind, _P_QuantityKindDimensionVector_latex_definition, _P_QuantityKindDimensionVector_latex_symbol,),
     )
+
+    dimension_exponent_for_amount_of_substance: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimension_exponent_for_amount_of_substance)
+    """dimension exponent for amount of substance (http://qudt.org/schema/qudt/dimensionExponentForAmountOfSubstance)"""
+
+    dimension_exponent_for_electric_current: _Lit[int] = _Lit(_P_QuantityKindDimensionVector_dimension_exponent_for_electric_current)
+    """dimension exponent for electric current (http://qudt.org/schema/qudt/dimensionExponentForElectricCurrent)"""
+
+    dimension_exponent_for_length: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimension_exponent_for_length)
+    """dimension exponent for length (http://qudt.org/schema/qudt/dimensionExponentForLength)"""
+
+    dimension_exponent_for_luminous_intensity: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimension_exponent_for_luminous_intensity)
+    """dimension exponent for luminous intensity (http://qudt.org/schema/qudt/dimensionExponentForLuminousIntensity)"""
+
+    dimension_exponent_for_mass: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimension_exponent_for_mass)
+    """dimension exponent for mass (http://qudt.org/schema/qudt/dimensionExponentForMass)"""
+
+    dimension_exponent_for_thermodynamic_temperature: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimension_exponent_for_thermodynamic_temperature)
+    """dimension exponent for thermodynamic temperature (http://qudt.org/schema/qudt/dimensionExponentForThermodynamicTemperature)"""
+
+    dimension_exponent_for_time: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimension_exponent_for_time)
+    """dimension exponent for time (http://qudt.org/schema/qudt/dimensionExponentForTime)"""
+
+    dimensionless_exponent: _RelOne[_EntityBase] = _RelOne(_P_QuantityKindDimensionVector_dimensionless_exponent)
+    """dimensionless exponent (http://qudt.org/schema/qudt/dimensionlessExponent)"""
+
+    has_reference_quantity_kind: _Rel[QuantityKind] = _Rel(_P_QuantityKindDimensionVector_has_reference_quantity_kind)
+    """has reference quantity kind (http://qudt.org/schema/qudt/hasReferenceQuantityKind)"""
+
+    latex_definition: _Lit[str] = _Lit(_P_QuantityKindDimensionVector_latex_definition)
+    """latex definition (http://qudt.org/schema/qudt/latexDefinition)"""
+
+    latex_symbol: _Lit[str] = _Lit(_P_QuantityKindDimensionVector_latex_symbol)
+    """latex symbol (http://qudt.org/schema/qudt/latexSymbol)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        dimension_exponent_for_amount_of_substance: _EntityBase | None,
+        dimension_exponent_for_electric_current: int | None,
+        dimension_exponent_for_length: _EntityBase | None,
+        dimension_exponent_for_luminous_intensity: _EntityBase | None,
+        dimension_exponent_for_mass: _EntityBase | None,
+        dimension_exponent_for_thermodynamic_temperature: _EntityBase | None,
+        dimension_exponent_for_time: _EntityBase | None,
+        dimensionless_exponent: _EntityBase | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_reference_quantity_kind: _Iterable[QuantityKind] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        latex_definition: str | None = None,
+        latex_symbol: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                dimension_exponent_for_amount_of_substance=dimension_exponent_for_amount_of_substance,
+                dimension_exponent_for_electric_current=dimension_exponent_for_electric_current,
+                dimension_exponent_for_length=dimension_exponent_for_length,
+                dimension_exponent_for_luminous_intensity=dimension_exponent_for_luminous_intensity,
+                dimension_exponent_for_mass=dimension_exponent_for_mass,
+                dimension_exponent_for_thermodynamic_temperature=dimension_exponent_for_thermodynamic_temperature,
+                dimension_exponent_for_time=dimension_exponent_for_time,
+                dimensionless_exponent=dimensionless_exponent,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_reference_quantity_kind=has_reference_quantity_kind,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                latex_definition=latex_definition,
+                latex_symbol=latex_symbol,
+                plain_text_description=plain_text_description,
+            ),
+        )
 
 class QuantityKindDimensionVector_CGS(QuantityKindDimensionVector):
     """CGS Dimension vector
@@ -12454,6 +20872,19 @@ class QuantityKindDimensionVector_SI(QuantityKindDimensionVector):
         definition=None,
     )
 
+_P_QuantityKindList_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+)
+
+_P_QuantityKindList_first = _PropertySpec(
+    name='first',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
+    kind='object',
+    ranges=('QuantityKind',),
+)
+
 class QuantityKindList(List):
     """Quantity kind List
     
@@ -12466,7 +20897,78 @@ class QuantityKindList(List):
         registry=_REGISTRY,
         label='Quantity kind List',
         definition=None,
+        properties=(_P_QuantityKindList_rest, _P_QuantityKindList_first,),
     )
+
+    rest: _Rel[_EntityBase] = _Rel(_P_QuantityKindList_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
+
+    first: _Rel[QuantityKind] = _Rel(_P_QuantityKindList_first)
+    """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        first: _Iterable[QuantityKind] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        quantity_: Quantity | None = None,
+        rest: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                first=first,
+                guidance=guidance,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                quantity_=quantity_,
+                rest=rest,
+                value=value,
+            ),
+        )
+
+_P_QuantityType_value = _PropertySpec(
+    name='value',
+    predicate='http://www.linkedmodel.org/schema/dtype#value',
+    kind='object',
+    label='value',
+    ranges=('QuantityKind',),
+)
 
 class QuantityType(EnumeratedValue):
     """Quantity type
@@ -12480,7 +20982,78 @@ class QuantityType(EnumeratedValue):
         registry=_REGISTRY,
         label='Quantity type',
         definition=None,
+        properties=(_P_QuantityType_value,),
     )
+
+    value: _Rel[QuantityKind] = _Rel(_P_QuantityType_value)
+    """value (http://www.linkedmodel.org/schema/dtype#value)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        symbol: _EntityBase | None = None,
+        value: _Iterable[QuantityKind] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                symbol=symbol,
+                value=value,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_QuantityValueType_basis = _PropertySpec(
+    name='basis',
+    predicate='http://qudt.org/schema/qudt/basis',
+    kind='object',
+    label='basis',
+    ranges=('Datatype', 'QuantityType'),
+    max_count=1,
+)
+
+_P_QuantityValueType_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'NumericType'),
+    max_count=1,
+)
+
+_P_QuantityValueType_element_unit = _PropertySpec(
+    name='element_unit',
+    predicate='http://qudt.org/schema/qudt/elementUnit',
+    kind='object',
+    label='element unit',
+    ranges=('Unit',),
+    max_count=1,
+)
 
 class QuantityValueType(DimensionalDatatype):
     """Quantity value type
@@ -12494,7 +21067,99 @@ class QuantityValueType(DimensionalDatatype):
         registry=_REGISTRY,
         label='Quantity value type',
         definition=None,
+        properties=(_P_QuantityValueType_basis, _P_QuantityValueType_element_datatype, _P_QuantityValueType_element_unit,),
     )
+
+    basis: _RelOne[Datatype | QuantityType] = _RelOne(_P_QuantityValueType_basis)
+    """basis (http://qudt.org/schema/qudt/basis)"""
+
+    element_datatype: _RelOne[Datatype | NumericType] = _RelOne(_P_QuantityValueType_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    element_unit: _RelOne[Unit] = _RelOne(_P_QuantityValueType_element_unit)
+    """element unit (http://qudt.org/schema/qudt/elementUnit)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | QuantityType | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | NumericType | None = None,
+        element_unit: Unit | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_unit=element_unit,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class RFOutlet(Equipment):
     """A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.
@@ -12509,8 +21174,8 @@ class RFOutlet(Equipment):
         label='Radio frequency outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a radio frequency (RF) communication network, via, for example, a coaxial cable.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#RF-Signal', medium_options=(), min_count=1, max_count=1),
         ),
     )
 
@@ -12609,6 +21274,15 @@ class RatioScale(Scale):
         definition=None,
     )
 
+_P_RawValueTupleMember_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'ScalarDatatype', 'UnsignedIntegerType'),
+    max_count=1,
+)
+
 class RawValueTupleMember(TupleMember):
     """Raw value tuple member
     
@@ -12621,7 +21295,106 @@ class RawValueTupleMember(TupleMember):
         registry=_REGISTRY,
         label='Raw value tuple member',
         definition=None,
+        properties=(_P_RawValueTupleMember_element_datatype,),
     )
+
+    element_datatype: _RelOne[Datatype | ScalarDatatype | UnsignedIntegerType] = _RelOne(_P_RawValueTupleMember_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        order_in_structure: _EntityBase | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | ScalarDatatype | UnsignedIntegerType | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                order_in_structure=order_in_structure,
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_RawValueTupleMemberType_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'ScalarDatatype', 'UnsignedIntegerType'),
+    max_count=1,
+)
 
 class RawValueTupleMemberType(TupleMember):
     """Raw value tuple member type
@@ -12635,7 +21408,140 @@ class RawValueTupleMemberType(TupleMember):
         registry=_REGISTRY,
         label='Raw value tuple member type',
         definition=None,
+        properties=(_P_RawValueTupleMemberType_element_datatype,),
     )
+
+    element_datatype: _RelOne[Datatype | ScalarDatatype | UnsignedIntegerType] = _RelOne(_P_RawValueTupleMemberType_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        order_in_structure: _EntityBase | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | ScalarDatatype | UnsignedIntegerType | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                order_in_structure=order_in_structure,
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_RealDatatype_base = _PropertySpec(
+    name='base',
+    predicate='http://qudt.org/schema/qudt/base',
+    kind='literal',
+    label='base',
+    datatype=int,
+    max_count=1,
+)
+
+_P_RealDatatype_max_exponent = _PropertySpec(
+    name='max_exponent',
+    predicate='http://qudt.org/schema/qudt/maxExponent',
+    kind='literal',
+    label='max exponent',
+    datatype=int,
+    max_count=1,
+)
+
+_P_RealDatatype_max_mantissa = _PropertySpec(
+    name='max_mantissa',
+    predicate='http://qudt.org/schema/qudt/maxMantissa',
+    kind='object',
+    label='max mantissa',
+    max_count=1,
+)
+
+_P_RealDatatype_min_mantissa = _PropertySpec(
+    name='min_mantissa',
+    predicate='http://qudt.org/schema/qudt/minMantissa',
+    kind='object',
+    label='min mantissa',
+    max_count=1,
+)
+
+_P_RealDatatype_precision = _PropertySpec(
+    name='precision',
+    predicate='http://qudt.org/schema/qudt/precision',
+    kind='literal',
+    label='precision',
+    datatype=int,
+    max_count=1,
+)
 
 class RealDatatype(NumericType):
     """Real Datatype
@@ -12649,7 +21555,137 @@ class RealDatatype(NumericType):
         registry=_REGISTRY,
         label='Real Datatype',
         definition=None,
+        properties=(_P_RealDatatype_base, _P_RealDatatype_max_exponent, _P_RealDatatype_max_mantissa, _P_RealDatatype_min_mantissa, _P_RealDatatype_precision,),
     )
+
+    base: _Lit[int] = _Lit(_P_RealDatatype_base)
+    """base (http://qudt.org/schema/qudt/base)"""
+
+    max_exponent: _Lit[int] = _Lit(_P_RealDatatype_max_exponent)
+    """max exponent (http://qudt.org/schema/qudt/maxExponent)"""
+
+    max_mantissa: _RelOne[_EntityBase] = _RelOne(_P_RealDatatype_max_mantissa)
+    """max mantissa (http://qudt.org/schema/qudt/maxMantissa)"""
+
+    min_mantissa: _RelOne[_EntityBase] = _RelOne(_P_RealDatatype_min_mantissa)
+    """min mantissa (http://qudt.org/schema/qudt/minMantissa)"""
+
+    precision: _Lit[int] = _Lit(_P_RealDatatype_precision)
+    """precision (http://qudt.org/schema/qudt/precision)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        base: int | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_exponent: int | None = None,
+        max_inclusive: _EntityBase | None = None,
+        max_mantissa: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        min_mantissa: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        precision: int | None = None,
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                base=base,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_exponent=max_exponent,
+                max_inclusive=max_inclusive,
+                max_mantissa=max_mantissa,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                min_mantissa=min_mantissa,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                precision=precision,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
 
 class RealDoublePrecisionType(DoublePrecisionType, RealDatatype):
     """Real Double Precision Type
@@ -12850,34 +21886,6 @@ class ReverseOsmosisMembrane(Filter):
         definition='A membrane used for reverse osmosis',
     )
 
-class Role_NitrogenRemoval(_EntityBase):
-    """A role for a process whose purpose is the removal of nitrogen species from water.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Role-NitrogenRemoval
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Role-NitrogenRemoval',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Role-NitrogenRemoval',
-        definition='A role for a process whose purpose is the removal of nitrogen species from water.',
-    )
-
-class Role_PhosphorusRemoval(_EntityBase):
-    """A role for a process whose purpose is the removal of phosphorus from water.
-    
-    Ontology: WATR — https://watermetadata.org/ontology/watr#Role-PhosphorusRemoval
-    """
-
-    _classinfo = _ClassInfo(
-        iri='https://watermetadata.org/ontology/watr#Role-PhosphorusRemoval',
-        ontology=ONTOLOGY,
-        registry=_REGISTRY,
-        label='Role-PhosphorusRemoval',
-        definition='A role for a process whose purpose is the removal of phosphorus from water.',
-    )
-
 class RotaryDrumThickener(Thickener):
     """A thickener that uses a rotating drum to separate solids from liquids
     
@@ -12892,7 +21900,7 @@ class RotaryDrumThickener(Thickener):
         definition='A thickener that uses a rotating drum to separate solids from liquids',
     )
 
-class RotatingBiologicalContactor(Filter):
+class RotatingBiologicalContactor(Filter, Reactor):
     """Fixed-film process using a slowly rotating discs partially submerged in a tank
     
     Ontology: WATR — https://watermetadata.org/ontology/watr#RotatingBiologicalContactor
@@ -12934,6 +21942,29 @@ class RotationSensor(Sensor):
         definition='A sensor used to measure the rotational speed or position of an object',
     )
 
+_P_Rule_example = _PropertySpec(
+    name='example',
+    predicate='http://qudt.org/schema/qudt/example',
+    kind='object',
+    label='example',
+)
+
+_P_Rule_rationale = _PropertySpec(
+    name='rationale',
+    predicate='http://qudt.org/schema/qudt/rationale',
+    kind='literal',
+    label='rationale',
+    datatype=str,
+)
+
+_P_Rule_rule_type = _PropertySpec(
+    name='rule_type',
+    predicate='http://qudt.org/schema/qudt/ruleType',
+    kind='object',
+    label='rule type',
+    ranges=('RuleType',),
+)
+
 class Rule(Concept_2, Verifiable):
     """Rule
     
@@ -12946,7 +21977,77 @@ class Rule(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='Rule',
         definition=None,
+        properties=(_P_Rule_example, _P_Rule_rationale, _P_Rule_rule_type,),
     )
+
+    example: _Rel[_EntityBase] = _Rel(_P_Rule_example)
+    """example (http://qudt.org/schema/qudt/example)"""
+
+    rationale: _Lit[str] = _Lit(_P_Rule_rationale)
+    """rationale (http://qudt.org/schema/qudt/rationale)"""
+
+    rule_type: _Rel[RuleType] = _Rel(_P_Rule_rule_type)
+    """rule type (http://qudt.org/schema/qudt/ruleType)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        example: _Iterable[_EntityBase] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        rationale: str | None = None,
+        rule_type: _Iterable[RuleType] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                example=example,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                rationale=rationale,
+                rule_type=rule_type,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class RuleType(EnumeratedValue):
     """Rule Type
@@ -12962,6 +22063,23 @@ class RuleType(EnumeratedValue):
         definition=None,
     )
 
+_P_ScalarDataItem_datatype = _PropertySpec(
+    name='datatype',
+    predicate='http://qudt.org/schema/qudt/datatype',
+    kind='object',
+    label='datatype',
+    ranges=('ScalarDatatype',),
+    max_count=1,
+)
+
+_P_ScalarDataItem_value = _PropertySpec(
+    name='value',
+    predicate='http://qudt.org/schema/qudt/value',
+    kind='object',
+    label='value',
+    max_count=1,
+)
+
 class ScalarDataItem(Concept_2):
     """Scalar Data Item
     
@@ -12974,7 +22092,74 @@ class ScalarDataItem(Concept_2):
         registry=_REGISTRY,
         label='Scalar Data Item',
         definition=None,
+        properties=(_P_ScalarDataItem_datatype, _P_ScalarDataItem_value,),
     )
+
+    datatype: _RelOne[ScalarDatatype] = _RelOne(_P_ScalarDataItem_datatype)
+    """datatype (http://qudt.org/schema/qudt/datatype)"""
+
+    value: _RelOne[_EntityBase] = _RelOne(_P_ScalarDataItem_value)
+    """value (http://qudt.org/schema/qudt/value)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        datatype: ScalarDatatype | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                datatype=datatype,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                value=value,
+            ),
+        )
+
+_P_ScalarListShape_rest = _PropertySpec(
+    name='rest',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#rest',
+    kind='object',
+)
+
+_P_ScalarListShape_first = _PropertySpec(
+    name='first',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#first',
+    kind='object',
+)
 
 class ScalarListShape(List):
     """ScalarListShape
@@ -12988,7 +22173,95 @@ class ScalarListShape(List):
         registry=_REGISTRY,
         label=None,
         definition=None,
+        properties=(_P_ScalarListShape_rest, _P_ScalarListShape_first,),
     )
+
+    rest: _Rel[_EntityBase] = _Rel(_P_ScalarListShape_rest)
+    """rest (http://www.w3.org/1999/02/22-rdf-syntax-ns#rest)"""
+
+    first: _Rel[_EntityBase] = _Rel(_P_ScalarListShape_first)
+    """first (http://www.w3.org/1999/02/22-rdf-syntax-ns#first)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        first: _Iterable[_EntityBase] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        has_unit: Unit | _TermValue | None = None,
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        quantity_: Quantity | None = None,
+        rest: _Iterable[_EntityBase] = (),
+        value: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                first=first,
+                guidance=guidance,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+                quantity_=quantity_,
+                rest=rest,
+                value=value,
+            ),
+        )
+
+_P_ScaleType_data_structure = _PropertySpec(
+    name='data_structure',
+    predicate='http://qudt.org/schema/qudt/dataStructure',
+    kind='literal',
+    label='data structure',
+    datatype=str,
+    max_count=1,
+)
+
+_P_ScaleType_permissible_maths = _PropertySpec(
+    name='permissible_maths',
+    predicate='http://qudt.org/schema/qudt/permissibleMaths',
+    kind='object',
+    label='permissible maths',
+    ranges=('MathsFunctionType',),
+)
+
+_P_ScaleType_permissible_transformation = _PropertySpec(
+    name='permissible_transformation',
+    predicate='http://qudt.org/schema/qudt/permissibleTransformation',
+    kind='object',
+    label='permissible transformation',
+    ranges=('TransformType',),
+)
 
 class ScaleType(EnumeratedValue):
     """Scale type
@@ -13002,7 +22275,61 @@ class ScaleType(EnumeratedValue):
         registry=_REGISTRY,
         label='Scale type',
         definition=None,
+        properties=(_P_ScaleType_data_structure, _P_ScaleType_permissible_maths, _P_ScaleType_permissible_transformation,),
     )
+
+    data_structure: _Lit[str] = _Lit(_P_ScaleType_data_structure)
+    """data structure (http://qudt.org/schema/qudt/dataStructure)"""
+
+    permissible_maths: _Rel[MathsFunctionType] = _Rel(_P_ScaleType_permissible_maths)
+    """permissible maths (http://qudt.org/schema/qudt/permissibleMaths)"""
+
+    permissible_transformation: _Rel[TransformType] = _Rel(_P_ScaleType_permissible_transformation)
+    """permissible transformation (http://qudt.org/schema/qudt/permissibleTransformation)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        data_structure: str | None = None,
+        dbpedia_match: str | None = None,
+        description: _EntityBase | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        permissible_maths: _Iterable[MathsFunctionType] = (),
+        permissible_transformation: _Iterable[TransformType] = (),
+        symbol: _EntityBase | None = None,
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                data_structure=data_structure,
+                dbpedia_match=dbpedia_match,
+                description=description,
+                informative_reference=informative_reference,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                permissible_maths=permissible_maths,
+                permissible_transformation=permissible_transformation,
+                symbol=symbol,
+                wikidata_match=wikidata_match,
+            ),
+        )
 
 class Screen(UnitProcess):
     """An equipment used for separation
@@ -13046,16 +22373,8 @@ class SequencingBatchReactor(Reactor, SeparationTank):
         definition='A type of activated sludge process for wastewater treatment',
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=None),
         ),
         cp_constraints=(
-            _CPConstraint(operator='xone', children=(
-                _CPConstraint(operator='and', children=(
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None)),
-                    _CPConstraint(operator='slot', slot=_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None)),
-                )),
-                _CPConstraint(operator='slot', slot=_CPSlot(cp_class='BidirectionalConnectionPoint', direction='bi', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None)),
-            )),
             _CPConstraint(operator='xone', children=(
                 _CPConstraint(operator='and', children=(
                     _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=1, max_count=None)),
@@ -13124,8 +22443,8 @@ class Shower(Equipment):
         label='Shower',
         definition='A piece of `Equipment` for showering that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -13157,6 +22476,15 @@ class SignedIntegerType(IntegerDatatype, SignedType):
         definition=None,
     )
 
+_P_SignedBigIntegerType_literal = _PropertySpec(
+    name='literal',
+    predicate='http://www.linkedmodel.org/schema/dtype#literal',
+    kind='literal',
+    label='literal',
+    definition='',
+    datatype=str,
+)
+
 class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
     """Signed Big Integer Type
     
@@ -13169,7 +22497,126 @@ class SignedBigIntegerType(BigIntegerType, SignedIntegerType):
         registry=_REGISTRY,
         label='Signed Big Integer Type',
         definition=None,
+        properties=(_P_SignedBigIntegerType_literal,),
     )
+
+    literal: _Lit[str] = _Lit(_P_SignedBigIntegerType_literal)
+    """literal (http://www.linkedmodel.org/schema/dtype#literal)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        literal: str | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                literal=literal,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_SignedLongIntegerType_abbreviation = _PropertySpec(
+    name='abbreviation',
+    predicate='http://qudt.org/schema/qudt/abbreviation',
+    kind='literal',
+    label='abbreviation',
+    datatype=str,
+    max_count=1,
+)
 
 class SignedLongIntegerType(LongIntegerType, SignedIntegerType):
     """Signed Long Integer Type
@@ -13183,7 +22630,115 @@ class SignedLongIntegerType(LongIntegerType, SignedIntegerType):
         registry=_REGISTRY,
         label='Signed Long Integer Type',
         definition=None,
+        properties=(_P_SignedLongIntegerType_abbreviation,),
     )
+
+    abbreviation: _Lit[str] = _Lit(_P_SignedLongIntegerType_abbreviation)
+    """abbreviation (http://qudt.org/schema/qudt/abbreviation)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
 
 class SignedMediumIntegerType(SignedIntegerType):
     """Signed Integer Type
@@ -13213,6 +22768,22 @@ class SignedShortIntegerType(ShortIntegerType, SignedIntegerType):
         definition=None,
     )
 
+_P_VariableLengthIntegerType_max_bits = _PropertySpec(
+    name='max_bits',
+    predicate='http://qudt.org/schema/qudt/maxBits',
+    kind='literal',
+    label='maximum bits',
+    datatype=int,
+)
+
+_P_VariableLengthIntegerType_min_bits = _PropertySpec(
+    name='min_bits',
+    predicate='http://qudt.org/schema/qudt/minBits',
+    kind='literal',
+    label='minimum bits',
+    datatype=int,
+)
+
 class VariableLengthIntegerType(IntegerDatatype):
     """Variable Length Integer Type
     
@@ -13225,7 +22796,122 @@ class VariableLengthIntegerType(IntegerDatatype):
         registry=_REGISTRY,
         label='Variable Length Integer Type',
         definition=None,
+        properties=(_P_VariableLengthIntegerType_max_bits, _P_VariableLengthIntegerType_min_bits,),
     )
+
+    max_bits: _Lit[int] = _Lit(_P_VariableLengthIntegerType_max_bits)
+    """maximum bits (http://qudt.org/schema/qudt/maxBits)"""
+
+    min_bits: _Lit[int] = _Lit(_P_VariableLengthIntegerType_min_bits)
+    """minimum bits (http://qudt.org/schema/qudt/minBits)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_bits: int | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_bits: int | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_bits=max_bits,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_bits=min_bits,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
 
 class SignedVariableLengthIntegerType(SignedIntegerType, VariableLengthIntegerType):
     """Signed Variable Length Integer Type
@@ -13296,8 +22982,8 @@ class Sink(Equipment):
         label='Sink',
         definition='A piece of `Equipment` for manually washing hands, dishes, or other items that receives as an input hot or cold water dispensed from one or two `Faucet`s, and is designed to hold a specific volume of water and release the held water through a `Drain`.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -13445,6 +23131,22 @@ class StateSpaceMatrix(Matrix):
         definition=None,
     )
 
+_P_Vector_quantity_ = _PropertySpec(
+    name='quantity_',
+    predicate='http://qudt.org/schema/qudt/quantity',
+    kind='object',
+    label='quantity',
+    ranges=('Quantity',),
+    max_count=1,
+)
+
+_P_Vector_has_quantity_kinds_list = _PropertySpec(
+    name='has_quantity_kinds_list',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKindsList',
+    kind='object',
+    label='quantity kinds',
+)
+
 class Vector(Array):
     """Vector
     
@@ -13457,7 +23159,108 @@ class Vector(Array):
         registry=_REGISTRY,
         label='Vector',
         definition=None,
+        properties=(_P_Vector_quantity_, _P_Vector_has_quantity_kinds_list,),
     )
+
+    quantity_: _RelOne[Quantity] = _RelOne(_P_Vector_quantity_)
+    """quantity (http://qudt.org/schema/qudt/quantity)"""
+
+    has_quantity_kinds_list: _Rel[_EntityBase] = _Rel(_P_Vector_has_quantity_kinds_list)
+    """quantity kinds (http://qudt.org/schema/qudt/hasQuantityKindsList)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_quantity_kinds_list: _Iterable[_EntityBase] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_heterogeneous: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        quantity_: Quantity | None = None,
+        value: _Iterable[_EntityBase] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_quantity_kinds_list=has_quantity_kinds_list,
+                has_rule=has_rule,
+                id=id,
+                is_heterogeneous=is_heterogeneous,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                quantity_=quantity_,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class StateSpaceVector(Vector):
     """State Space Vector Type
@@ -13515,10 +23318,18 @@ class SteamInjector(Equipment):
         definition='A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.',
         cp_slots=(
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Water-Steam', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
         ),
     )
+
+_P_StringUTF16_member_datatype = _PropertySpec(
+    name='member_datatype',
+    predicate='http://qudt.org/schema/qudt/memberDatatype',
+    kind='object',
+    label='member datatype',
+    ranges=('CharacterType',),
+)
 
 class StringUTF16(TextStringType):
     """String UTF16
@@ -13532,7 +23343,127 @@ class StringUTF16(TextStringType):
         registry=_REGISTRY,
         label='String UTF16',
         definition=None,
+        properties=(_P_StringUTF16_member_datatype,),
     )
+
+    member_datatype: _Rel[CharacterType] = _Rel(_P_StringUTF16_member_datatype)
+    """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_byte_string: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        max_length: int | None = None,
+        member_datatype: _Iterable[CharacterType] = (),
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_byte_string=is_byte_string,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                max_length=max_length,
+                member_datatype=member_datatype,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_StringUTF8_member_datatype = _PropertySpec(
+    name='member_datatype',
+    predicate='http://qudt.org/schema/qudt/memberDatatype',
+    kind='object',
+    label='member datatype',
+    ranges=('CharacterType',),
+)
 
 class StringUTF8(TextStringType):
     """String UTF8 Type
@@ -13546,7 +23477,119 @@ class StringUTF8(TextStringType):
         registry=_REGISTRY,
         label='String UTF8 Type',
         definition=None,
+        properties=(_P_StringUTF8_member_datatype,),
     )
+
+    member_datatype: _Rel[CharacterType] = _Rel(_P_StringUTF8_member_datatype)
+    """member datatype (http://qudt.org/schema/qudt/memberDatatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_byte_string: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        max_length: int | None = None,
+        member_datatype: _Iterable[CharacterType] = (),
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_byte_string=is_byte_string,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                max_length=max_length,
+                member_datatype=member_datatype,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
 
 class Symbol(Concept_2):
     """Symbol
@@ -13647,13 +23690,22 @@ class Synchronization_Upsampling(DataProcessing_Synchronization):
         definition='Increase the sampling frequency of data to a higher rate',
     )
 
-_P_System_has_optional_connection_point = _PropertySpec(
-    name='has_optional_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
-    kind='object',
-    label='has optional connection point',
-    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
-    ranges=('ConnectionPoint',),
+_P_System_has_process = _PropertySpec(
+    name='has_process',
+    predicate='https://watermetadata.org/ontology/watr#hasProcess',
+    kind='class',
+    label='has process',
+    definition='Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape.',
+    ranges=('Process',),
+)
+
+_P_System_has_treatment_objective = _PropertySpec(
+    name='has_treatment_objective',
+    predicate='https://watermetadata.org/ontology/watr#hasTreatmentObjective',
+    kind='class',
+    label='has treatment objective',
+    definition='Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess.',
+    ranges=('TreatmentObjective',),
 )
 
 _P_System_has_role = _PropertySpec(
@@ -13665,12 +23717,12 @@ _P_System_has_role = _PropertySpec(
     enum_ranges=('http://data.ashrae.org/standard223#EnumerationKind-Role',),
 )
 
-_P_System_has_boundary_connection_point = _PropertySpec(
-    name='has_boundary_connection_point',
-    predicate='http://data.ashrae.org/standard223#hasBoundaryConnectionPoint',
+_P_System_has_optional_connection_point = _PropertySpec(
+    name='has_optional_connection_point',
+    predicate='http://data.ashrae.org/standard223#hasOptionalConnectionPoint',
     kind='object',
-    label='has boundary connection point',
-    definition='The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context.',
+    label='has optional connection point',
+    definition='The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context.',
     ranges=('ConnectionPoint',),
 )
 
@@ -13681,6 +23733,15 @@ _P_System_has_member = _PropertySpec(
     label='has member',
     definition='A `Relation` that associates a `System` with its component `Equipment` and/or `System`s.',
     required=True,
+)
+
+_P_System_has_boundary_connection_point = _PropertySpec(
+    name='has_boundary_connection_point',
+    predicate='http://data.ashrae.org/standard223#hasBoundaryConnectionPoint',
+    kind='object',
+    label='has boundary connection point',
+    definition='The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context.',
+    ranges=('ConnectionPoint',),
 )
 
 class System(Concept):
@@ -13695,20 +23756,26 @@ class System(Concept):
         registry=_REGISTRY,
         label='System',
         definition='A logical grouping of one or more pieces of `Equipment`, `Junction`s, or other `System`s for some functional purpose.',
-        properties=(_P_System_has_optional_connection_point, _P_System_has_role, _P_System_has_boundary_connection_point, _P_System_has_member,),
+        properties=(_P_System_has_process, _P_System_has_treatment_objective, _P_System_has_role, _P_System_has_optional_connection_point, _P_System_has_member, _P_System_has_boundary_connection_point,),
     )
 
-    has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_optional_connection_point)
-    """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
+    has_process: _Rel[type[Process]] = _Rel(_P_System_has_process)
+    """Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape. (https://watermetadata.org/ontology/watr#hasProcess)"""
+
+    has_treatment_objective: _Rel[type[TreatmentObjective]] = _Rel(_P_System_has_treatment_objective)
+    """Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess. (https://watermetadata.org/ontology/watr#hasTreatmentObjective)"""
 
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_System_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
 
-    has_boundary_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_boundary_connection_point)
-    """The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context. (http://data.ashrae.org/standard223#hasBoundaryConnectionPoint)"""
+    has_optional_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_optional_connection_point)
+    """The `hasOptionalConnectionPoint` relation means that the `ConnectionPoint` is optional and is not required to be connected. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in an integrated or non-integrated context. (http://data.ashrae.org/standard223#hasOptionalConnectionPoint)"""
 
     has_member: _Rel[_EntityBase] = _Rel(_P_System_has_member)
     """A `Relation` that associates a `System` with its component `Equipment` and/or `System`s. (http://data.ashrae.org/standard223#hasMember)"""
+
+    has_boundary_connection_point: _Rel[ConnectionPoint] = _Rel(_P_System_has_boundary_connection_point)
+    """The `hasBoundaryConnectionPoint` relation means the `ConnectionPoint` represents the boundary of a `System` (see {s223:System}) defined by the modeler, such as a model fragment provided by the vendor of a collection of equipment intended for integration with another model. The presence of this relation is used to indicate that such a "dangling connection point" should not generate a validation error in a non-integrated context but should generate an error in an integrated context. (http://data.ashrae.org/standard223#hasBoundaryConnectionPoint)"""
 
     def __init__(
         self,
@@ -13717,8 +23784,10 @@ class System(Concept):
         has_member: _Iterable[_EntityBase],
         has_boundary_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -13736,11 +23805,56 @@ class System(Concept):
                 has_member=has_member,
                 has_boundary_connection_point=has_boundary_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
+
+_P_SystemOfQuantityKinds_base_dimension_enumeration = _PropertySpec(
+    name='base_dimension_enumeration',
+    predicate='http://qudt.org/schema/qudt/baseDimensionEnumeration',
+    kind='object',
+    label='base dimension enumeration',
+    ranges=('Enumeration',),
+    max_count=1,
+)
+
+_P_SystemOfQuantityKinds_has_base_quantity_kind = _PropertySpec(
+    name='has_base_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasBaseQuantityKind',
+    kind='object',
+    label='has base quantity kind',
+    ranges=('QuantityKind',),
+)
+
+_P_SystemOfQuantityKinds_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+)
+
+_P_SystemOfQuantityKinds_has_unit_system = _PropertySpec(
+    name='has_unit_system',
+    predicate='http://qudt.org/schema/qudt/hasUnitSystem',
+    kind='object',
+    label='has unit system',
+    ranges=('SystemOfUnits',),
+    max_count=1,
+)
+
+_P_SystemOfQuantityKinds_system_derived_quantity_kind = _PropertySpec(
+    name='system_derived_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/systemDerivedQuantityKind',
+    kind='object',
+    label='system derived quantity kind',
+    ranges=('QuantityKind',),
+)
 
 class SystemOfQuantityKinds(Concept_2, Verifiable):
     """System of Quantity Kinds
@@ -13754,7 +23868,165 @@ class SystemOfQuantityKinds(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='System of Quantity Kinds',
         definition=None,
+        properties=(_P_SystemOfQuantityKinds_base_dimension_enumeration, _P_SystemOfQuantityKinds_has_base_quantity_kind, _P_SystemOfQuantityKinds_has_quantity_kind, _P_SystemOfQuantityKinds_has_unit_system, _P_SystemOfQuantityKinds_system_derived_quantity_kind,),
     )
+
+    base_dimension_enumeration: _RelOne[Enumeration] = _RelOne(_P_SystemOfQuantityKinds_base_dimension_enumeration)
+    """base dimension enumeration (http://qudt.org/schema/qudt/baseDimensionEnumeration)"""
+
+    has_base_quantity_kind: _Rel[QuantityKind] = _Rel(_P_SystemOfQuantityKinds_has_base_quantity_kind)
+    """has base quantity kind (http://qudt.org/schema/qudt/hasBaseQuantityKind)"""
+
+    has_quantity_kind: _Rel[QuantityKind | _TermValue] = _Rel(_P_SystemOfQuantityKinds_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    has_unit_system: _RelOne[SystemOfUnits] = _RelOne(_P_SystemOfQuantityKinds_has_unit_system)
+    """has unit system (http://qudt.org/schema/qudt/hasUnitSystem)"""
+
+    system_derived_quantity_kind: _Rel[QuantityKind] = _Rel(_P_SystemOfQuantityKinds_system_derived_quantity_kind)
+    """system derived quantity kind (http://qudt.org/schema/qudt/systemDerivedQuantityKind)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        base_dimension_enumeration: Enumeration | None = None,
+        code: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_base_quantity_kind: _Iterable[QuantityKind] = (),
+        has_quantity_kind: _Iterable[QuantityKind | _TermValue] = (),
+        has_rule: _Iterable[Rule] = (),
+        has_unit_system: SystemOfUnits | None = None,
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        system_derived_quantity_kind: _Iterable[QuantityKind] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                base_dimension_enumeration=base_dimension_enumeration,
+                code=code,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_base_quantity_kind=has_base_quantity_kind,
+                has_quantity_kind=has_quantity_kind,
+                has_rule=has_rule,
+                has_unit_system=has_unit_system,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                system_derived_quantity_kind=system_derived_quantity_kind,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_SystemOfUnits_applicable_physical_constant = _PropertySpec(
+    name='applicable_physical_constant',
+    predicate='http://qudt.org/schema/qudt/applicablePhysicalConstant',
+    kind='object',
+    label='applicable physical constant',
+    ranges=('PhysicalConstant',),
+)
+
+_P_SystemOfUnits_has_allowed_unit = _PropertySpec(
+    name='has_allowed_unit',
+    predicate='http://qudt.org/schema/qudt/hasAllowedUnit',
+    kind='object',
+    label='allowed unit',
+    ranges=('Unit',),
+)
+
+_P_SystemOfUnits_has_base_unit = _PropertySpec(
+    name='has_base_unit',
+    predicate='http://qudt.org/schema/qudt/hasBaseUnit',
+    kind='object',
+    label='base unit',
+    ranges=('Unit',),
+    inverse='base_unit_of_system',
+)
+
+_P_SystemOfUnits_has_coherent_unit = _PropertySpec(
+    name='has_coherent_unit',
+    predicate='http://qudt.org/schema/qudt/hasCoherentUnit',
+    kind='object',
+    label='coherent unit',
+    ranges=('Unit',),
+)
+
+_P_SystemOfUnits_has_defined_unit = _PropertySpec(
+    name='has_defined_unit',
+    predicate='http://qudt.org/schema/qudt/hasDefinedUnit',
+    kind='object',
+    label='defined unit',
+    ranges=('Unit',),
+    inverse='defined_unit_of_system',
+)
+
+_P_SystemOfUnits_has_derived_coherent_unit = _PropertySpec(
+    name='has_derived_coherent_unit',
+    predicate='http://qudt.org/schema/qudt/hasDerivedCoherentUnit',
+    kind='object',
+    label='derived coherent unit',
+    ranges=('Unit',),
+    inverse='derived_coherent_unit_of_system',
+)
+
+_P_SystemOfUnits_has_derived_unit = _PropertySpec(
+    name='has_derived_unit',
+    predicate='http://qudt.org/schema/qudt/hasDerivedUnit',
+    kind='object',
+    label='derived unit',
+    ranges=('Unit',),
+    inverse='derived_unit_of_system',
+)
+
+_P_SystemOfUnits_has_unit = _PropertySpec(
+    name='has_unit',
+    predicate='http://qudt.org/schema/qudt/hasUnit',
+    kind='object',
+    label='has unit',
+    definition='A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`.',
+    ranges=('Unit',),
+    inverse='unit_for',
+)
+
+_P_SystemOfUnits_prefix = _PropertySpec(
+    name='prefix',
+    predicate='http://qudt.org/schema/qudt/prefix',
+    kind='object',
+    label='prefix',
+    ranges=('Prefix',),
+)
 
 class SystemOfUnits(Concept_2, Verifiable):
     """System of Units
@@ -13768,7 +24040,117 @@ class SystemOfUnits(Concept_2, Verifiable):
         registry=_REGISTRY,
         label='System of Units',
         definition=None,
+        properties=(_P_SystemOfUnits_applicable_physical_constant, _P_SystemOfUnits_has_allowed_unit, _P_SystemOfUnits_has_base_unit, _P_SystemOfUnits_has_coherent_unit, _P_SystemOfUnits_has_defined_unit, _P_SystemOfUnits_has_derived_coherent_unit, _P_SystemOfUnits_has_derived_unit, _P_SystemOfUnits_has_unit, _P_SystemOfUnits_prefix,),
     )
+
+    applicable_physical_constant: _Rel[PhysicalConstant] = _Rel(_P_SystemOfUnits_applicable_physical_constant)
+    """applicable physical constant (http://qudt.org/schema/qudt/applicablePhysicalConstant)"""
+
+    has_allowed_unit: _Rel[Unit] = _Rel(_P_SystemOfUnits_has_allowed_unit)
+    """allowed unit (http://qudt.org/schema/qudt/hasAllowedUnit)"""
+
+    has_base_unit: _Rel[Unit] = _Rel(_P_SystemOfUnits_has_base_unit)
+    """base unit (http://qudt.org/schema/qudt/hasBaseUnit)"""
+
+    has_coherent_unit: _Rel[Unit] = _Rel(_P_SystemOfUnits_has_coherent_unit)
+    """coherent unit (http://qudt.org/schema/qudt/hasCoherentUnit)"""
+
+    has_defined_unit: _Rel[Unit] = _Rel(_P_SystemOfUnits_has_defined_unit)
+    """defined unit (http://qudt.org/schema/qudt/hasDefinedUnit)"""
+
+    has_derived_coherent_unit: _Rel[Unit] = _Rel(_P_SystemOfUnits_has_derived_coherent_unit)
+    """derived coherent unit (http://qudt.org/schema/qudt/hasDerivedCoherentUnit)"""
+
+    has_derived_unit: _Rel[Unit] = _Rel(_P_SystemOfUnits_has_derived_unit)
+    """derived unit (http://qudt.org/schema/qudt/hasDerivedUnit)"""
+
+    has_unit: _Rel[Unit | _TermValue] = _Rel(_P_SystemOfUnits_has_unit)
+    """A reference to the unit of measure of a `QuantifiableProperty` of interest, such as `DEG_C`. (http://qudt.org/schema/qudt/hasUnit)"""
+
+    prefix: _Rel[Prefix] = _Rel(_P_SystemOfUnits_prefix)
+    """prefix (http://qudt.org/schema/qudt/prefix)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        applicable_physical_constant: _Iterable[PhysicalConstant] = (),
+        code: _Iterable[_EntityBase] = (),
+        dbpedia_match: str | None = None,
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_allowed_unit: _Iterable[Unit] = (),
+        has_base_unit: _Iterable[Unit] = (),
+        has_coherent_unit: _Iterable[Unit] = (),
+        has_defined_unit: _Iterable[Unit] = (),
+        has_derived_coherent_unit: _Iterable[Unit] = (),
+        has_derived_unit: _Iterable[Unit] = (),
+        has_rule: _Iterable[Rule] = (),
+        has_unit: _Iterable[Unit | _TermValue] = (),
+        id: str | None = None,
+        informative_reference: _Iterable[_EntityBase] = (),
+        is_replaced_by: _EntityBase | None = None,
+        iso_normative_reference: str | None = None,
+        normative_reference: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        prefix: _Iterable[Prefix] = (),
+        wikidata_match: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                applicable_physical_constant=applicable_physical_constant,
+                code=code,
+                dbpedia_match=dbpedia_match,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_allowed_unit=has_allowed_unit,
+                has_base_unit=has_base_unit,
+                has_coherent_unit=has_coherent_unit,
+                has_defined_unit=has_defined_unit,
+                has_derived_coherent_unit=has_derived_coherent_unit,
+                has_derived_unit=has_derived_unit,
+                has_rule=has_rule,
+                has_unit=has_unit,
+                id=id,
+                informative_reference=informative_reference,
+                is_replaced_by=is_replaced_by,
+                iso_normative_reference=iso_normative_reference,
+                normative_reference=normative_reference,
+                plain_text_description=plain_text_description,
+                prefix=prefix,
+                wikidata_match=wikidata_match,
+            ),
+        )
+
+_P_TaggedEnumeration_code = _PropertySpec(
+    name='code',
+    predicate='http://www.linkedmodel.org/schema/dtype#code',
+    kind='object',
+    label='code',
+    definition='A unique value that is assigned to an enumeration member.',
+    required=True,
+    max_count=1,
+)
 
 class TaggedEnumeration(Enumeration):
     """Tagged Enumeration
@@ -13782,7 +24164,103 @@ class TaggedEnumeration(Enumeration):
         registry=_REGISTRY,
         label='Tagged Enumeration',
         definition=None,
+        properties=(_P_TaggedEnumeration_code,),
     )
+
+    code: _RelOne[_EntityBase] = _RelOne(_P_TaggedEnumeration_code)
+    """A unique value that is assigned to an enumeration member. (http://www.linkedmodel.org/schema/dtype#code)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        code: _EntityBase | None,
+        element: _Iterable[EnumeratedValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        default: EnumeratedValue | None = None,
+        default_value: _Iterable[EnumeratedValue] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        encoding: _EntityBase | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        value: _Iterable[EnumeratedValue] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                code=code,
+                element=element,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bits=bits,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                default=default,
+                default_value=default_value,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class Television(ElectronicDisplay):
     """An `ElectronicDisplay` that is designed primarily for the output of visual information supplied by a media broadcaster, and that typically has an integral tuner that is capable of selecting a single channel for display from the available input channel range.
@@ -13849,9 +24327,11 @@ class TemperatureSensor_2(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -13881,9 +24361,11 @@ class TemperatureSensor_2(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -13945,8 +24427,10 @@ class ThermalEnergyStorageUnit(Equipment):
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -13972,8 +24456,10 @@ class ThermalEnergyStorageUnit(Equipment):
                 has_connection_point=has_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -14063,8 +24549,10 @@ class ThreeWayValve_2(Valve_2):
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -14090,11 +24578,21 @@ class ThreeWayValve_2(Valve_2):
                 has_connection_point=has_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
+
+_P_Time_type_ = _PropertySpec(
+    name='type_',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    kind='object',
+    ranges=('TimeStringType',),
+    required=True,
+)
 
 class Time(ScalarDatatype):
     """Time
@@ -14108,7 +24606,111 @@ class Time(ScalarDatatype):
         registry=_REGISTRY,
         label='Time',
         definition=None,
+        properties=(_P_Time_type_,),
     )
+
+    type_: _Rel[TimeStringType] = _Rel(_P_Time_type_)
+    """type_ (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[TimeStringType],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                vb_name=vb_name,
+            ),
+        )
 
 class TimeDataType(Enumeration, ScalarDatatype):
     """Time data type
@@ -14124,6 +24726,124 @@ class TimeDataType(Enumeration, ScalarDatatype):
         definition=None,
     )
 
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        element: _Iterable[EnumeratedValue],
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        default: EnumeratedValue | None = None,
+        default_value: _Iterable[EnumeratedValue] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        value: _Iterable[EnumeratedValue] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                element=element,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                default=default,
+                default_value=default_value,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
+
+_P_TimeInterval_type_ = _PropertySpec(
+    name='type_',
+    predicate='http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+    kind='object',
+    ranges=('TimeStringType',),
+    required=True,
+)
+
 class TimeInterval(Concept_2):
     """Time interval
     
@@ -14136,7 +24856,55 @@ class TimeInterval(Concept_2):
         registry=_REGISTRY,
         label='Time interval',
         definition=None,
+        properties=(_P_TimeInterval_type_,),
     )
+
+    type_: _Rel[TimeStringType] = _Rel(_P_TimeInterval_type_)
+    """type_ (http://www.w3.org/1999/02/22-rdf-syntax-ns#type)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[TimeStringType],
+        abbreviation: str | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                plain_text_description=plain_text_description,
+            ),
+        )
 
 class TimeStringType(DateTimeStringType, TextStringType):
     """Time Type
@@ -14180,6 +24948,393 @@ class TransformType(EnumeratedValue):
         definition=None,
     )
 
+_P_TreatmentObjective_definition = _PropertySpec(
+    name='definition',
+    predicate='http://www.w3.org/2004/02/skos/core#definition',
+    kind='literal',
+    label='definition',
+    definition='A statement or formal explanation of the meaning of a concept.',
+    datatype=str,
+    required=True,
+    max_count=1,
+)
+
+class TreatmentObjective(_EntityBase):
+    """An objective that a piece of equipment or a system is intended to achieve.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Treatment Objective',
+        definition='An objective that a piece of equipment or a system is intended to achieve.',
+        properties=(_P_TreatmentObjective_definition,),
+    )
+
+    definition: _Lit[str] = _Lit(_P_TreatmentObjective_definition)
+    """A statement or formal explanation of the meaning of a concept. (http://www.w3.org/2004/02/skos/core#definition)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        definition: str | None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                definition=definition,
+            ),
+        )
+
+class TreatmentObjective_AmmoniaControl(TreatmentObjective):
+    """Reduction or conversion of ammonia in the treated stream, typically by nitrification. Distinct from nitrogen removal, which requires nitrogen to leave the water altogether; nitrification converts ammonia to nitrate and removes no nitrogen.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-AmmoniaControl
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-AmmoniaControl',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Ammonia Control',
+        definition='Reduction or conversion of ammonia in the treated stream, typically by nitrification. Distinct from nitrogen removal, which requires nitrogen to leave the water altogether; nitrification converts ammonia to nitrate and removes no nitrogen.',
+    )
+
+class TreatmentObjective_BiosolidsDisposal(TreatmentObjective):
+    """Final disposition of biosolids, by land application, landfilling, incineration or another route.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-BiosolidsDisposal
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-BiosolidsDisposal',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Biosolids Disposal',
+        definition='Final disposition of biosolids, by land application, landfilling, incineration or another route.',
+    )
+
+class TreatmentObjective_Clarification(TreatmentObjective):
+    """Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Clarification',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Clarification',
+        definition='Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by.',
+    )
+
+class TreatmentObjective_Dechlorination(TreatmentObjective):
+    """Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Dechlorination
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Dechlorination',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Dechlorination',
+        definition='Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage.',
+    )
+
+class TreatmentObjective_Desalination(TreatmentObjective):
+    """Reduction of the dissolved salt content of the treated stream, whether by a membrane, an electrical or a thermal process.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Desalination
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Desalination',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Desalination',
+        definition='Reduction of the dissolved salt content of the treated stream, whether by a membrane, an electrical or a thermal process.',
+    )
+
+class TreatmentObjective_Dewatering(TreatmentObjective):
+    """Removing water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Dewatering
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Dewatering',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Dewatering',
+        definition='Removing water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid.',
+    )
+
+class TreatmentObjective_Disinfection(TreatmentObjective):
+    """Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Disinfection
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Disinfection',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Disinfection',
+        definition='Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself.',
+    )
+
+class TreatmentObjective_Drying(TreatmentObjective_Dewatering):
+    """Removing water from biosolids beyond the cake stage, to a dry product.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Drying
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Drying',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Drying',
+        definition='Removing water from biosolids beyond the cake stage, to a dry product.',
+    )
+
+class TreatmentObjective_LandApplication(TreatmentObjective_BiosolidsDisposal):
+    """Final disposition of biosolids by beneficial reuse on agricultural or reclamation land.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-LandApplication
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-LandApplication',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Land Application',
+        definition='Final disposition of biosolids by beneficial reuse on agricultural or reclamation land.',
+    )
+
+class TreatmentObjective_Landfill(TreatmentObjective_BiosolidsDisposal):
+    """Final disposition of biosolids by landfilling.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Landfill
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Landfill',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Landfill',
+        definition='Final disposition of biosolids by landfilling.',
+    )
+
+class TreatmentObjective_MetalsRemoval(TreatmentObjective):
+    """Removal of dissolved metals from the treated stream, typically by raising pH or dosing sulfide so that they precipitate as hydroxides or sulfides and are then separated out.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-MetalsRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-MetalsRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Metals Removal',
+        definition='Removal of dissolved metals from the treated stream, typically by raising pH or dosing sulfide so that they precipitate as hydroxides or sulfides and are then separated out.',
+    )
+
+class TreatmentObjective_pHAdjustment(TreatmentObjective):
+    """Bringing the pH of the treated stream to a target value.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-pHAdjustment
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-pHAdjustment',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='pH Adjustment',
+        definition='Bringing the pH of the treated stream to a target value.',
+    )
+
+class TreatmentObjective_Neutralization(TreatmentObjective_pHAdjustment):
+    """pH adjustment to neutral, typically with a base, as in high-density sludge treatment.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Neutralization
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Neutralization',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Neutralization',
+        definition='pH adjustment to neutral, typically with a base, as in high-density sludge treatment.',
+    )
+
+class TreatmentObjective_NutrientRemoval(TreatmentObjective):
+    """Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-NutrientRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Nutrient Removal',
+        definition='Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another.',
+    )
+
+class TreatmentObjective_NitrogenRemoval(TreatmentObjective_NutrientRemoval):
+    """Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-NitrogenRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-NitrogenRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Nitrogen Removal',
+        definition='Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas.',
+    )
+
+class TreatmentObjective_OrganicsRemoval(TreatmentObjective):
+    """Net removal of biodegradable or dissolved organic material, measured as BOD, COD or TOC.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-OrganicsRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-OrganicsRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Organics Removal',
+        definition='Net removal of biodegradable or dissolved organic material, measured as BOD, COD or TOC.',
+    )
+
+class TreatmentObjective_PhosphorusRemoval(TreatmentObjective_NutrientRemoval):
+    """Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-PhosphorusRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-PhosphorusRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Phosphorus Removal',
+        definition='Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted.',
+    )
+
+class TreatmentObjective_SilicaRemoval(TreatmentObjective):
+    """Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SilicaRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-SilicaRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Silica Removal',
+        definition='Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling.',
+    )
+
+class TreatmentObjective_Softening(TreatmentObjective):
+    """Reduction of hardness by removing calcium and magnesium from the treated stream.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Softening
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Softening',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Softening',
+        definition='Reduction of hardness by removing calcium and magnesium from the treated stream.',
+    )
+
+class TreatmentObjective_SolidsRemoval(TreatmentObjective):
+    """Net removal of suspended or settleable solids from the treated stream.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SolidsRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-SolidsRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Solids Removal',
+        definition='Net removal of suspended or settleable solids from the treated stream.',
+    )
+
+class TreatmentObjective_Stabilization(TreatmentObjective):
+    """Reduction of the volatile solids, pathogen content and odour potential of biosolids so that they can be stored, used or disposed of.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Stabilization
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Stabilization',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Stabilization',
+        definition='Reduction of the volatile solids, pathogen content and odour potential of biosolids so that they can be stored, used or disposed of.',
+    )
+
+class TreatmentObjective_SulfateRemoval(TreatmentObjective):
+    """Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-SulfateRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-SulfateRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Sulfate Removal',
+        definition='Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite.',
+    )
+
+class TreatmentObjective_Thickening(TreatmentObjective):
+    """Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-Thickening
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-Thickening',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Thickening',
+        definition='Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product.',
+    )
+
+class TreatmentObjective_TurbidityRemoval(TreatmentObjective_SolidsRemoval):
+    """Reduction of the turbidity of the treated stream, the objective of polishing filtration.
+    
+    Ontology: WATR — https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval
+    """
+
+    _classinfo = _ClassInfo(
+        iri='https://watermetadata.org/ontology/watr#TreatmentObjective-TurbidityRemoval',
+        ontology=ONTOLOGY,
+        registry=_REGISTRY,
+        label='Turbidity Removal',
+        definition='Reduction of the turbidity of the treated stream, the objective of polishing filtration.',
+    )
+
 class TricklingFilter(Filter):
     """A filter system that treats wastewater by trickling it over a bed of rocks or plastic
     
@@ -14208,6 +25363,32 @@ class Triplet(ThreeTuple):
         definition=None,
     )
 
+_P_TupleType_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
+_P_TupleType_element_type_count = _PropertySpec(
+    name='element_type_count',
+    predicate='http://qudt.org/schema/qudt/elementTypeCount',
+    kind='literal',
+    label='element type count',
+    datatype=int,
+)
+
+_P_TupleType_length = _PropertySpec(
+    name='length',
+    predicate='http://qudt.org/schema/qudt/length',
+    kind='literal',
+    label='length',
+    datatype=int,
+    max_count=1,
+)
+
 class TupleType(CompositeDatatype):
     """Tuple Type
     
@@ -14220,7 +25401,105 @@ class TupleType(CompositeDatatype):
         registry=_REGISTRY,
         label='Tuple Type',
         definition=None,
+        properties=(_P_TupleType_element_datatype, _P_TupleType_element_type_count, _P_TupleType_length,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_TupleType_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    element_type_count: _Lit[int] = _Lit(_P_TupleType_element_type_count)
+    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
+
+    length: _Lit[int] = _Lit(_P_TupleType_length)
+    """length (http://qudt.org/schema/qudt/length)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class TurbidityMeter(Sensor):
     """A sensor used to measure the turbidity (clarity) of a fluid
@@ -14267,6 +25546,23 @@ class TwoPositionDamper(Damper):
         definition='A damper that can take two positions: fully open and fully closed.',
     )
 
+_P_TwoTupleType_element_datatype = _PropertySpec(
+    name='element_datatype',
+    predicate='http://qudt.org/schema/qudt/elementDatatype',
+    kind='object',
+    label='element datatype',
+    ranges=('Datatype', 'TupleMember'),
+    max_count=1,
+)
+
+_P_TwoTupleType_element_type_count = _PropertySpec(
+    name='element_type_count',
+    predicate='http://qudt.org/schema/qudt/elementTypeCount',
+    kind='literal',
+    label='element type count',
+    datatype=int,
+)
+
 class TwoTupleType(N_TupleType):
     """Two-Tuple Type
     
@@ -14279,7 +25575,102 @@ class TwoTupleType(N_TupleType):
         registry=_REGISTRY,
         label='Two-Tuple Type',
         definition=None,
+        properties=(_P_TwoTupleType_element_datatype, _P_TwoTupleType_element_type_count,),
     )
+
+    element_datatype: _RelOne[Datatype | TupleMember] = _RelOne(_P_TwoTupleType_element_datatype)
+    """element datatype (http://qudt.org/schema/qudt/elementDatatype)"""
+
+    element_type_count: _Lit[int] = _Lit(_P_TwoTupleType_element_type_count)
+    """element type count (http://qudt.org/schema/qudt/elementTypeCount)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alignment: _Iterable[AlignmentType] = (),
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | TupleMember | None = None,
+        element_type_count: int | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        padding: PaddingType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                alignment=alignment,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                element_datatype=element_datatype,
+                element_type_count=element_type_count,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                padding=padding,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                vb_name=vb_name,
+            ),
+        )
 
 class TwoWayValve(Valve_2):
     """A `Valve` that can divert a fluid in one of two directions.
@@ -14327,6 +25718,16 @@ class TypeMatrix(Matrix):
         definition=None,
     )
 
+_P_TypeVector_datatype = _PropertySpec(
+    name='datatype',
+    predicate='http://qudt.org/schema/qudt/datatype',
+    kind='object',
+    label='datatype',
+    ranges=('Datatype',),
+    required=True,
+    max_count=1,
+)
+
 class TypeVector(Vector):
     """Type vector
     
@@ -14339,7 +25740,105 @@ class TypeVector(Vector):
         registry=_REGISTRY,
         label='Type vector',
         definition=None,
+        properties=(_P_TypeVector_datatype,),
     )
+
+    datatype: _RelOne[Datatype] = _RelOne(_P_TypeVector_datatype)
+    """datatype (http://qudt.org/schema/qudt/datatype)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        datatype: Datatype | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bounded: bool | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        dimensionality: int | None = None,
+        dimensions: _Iterable[_EntityBase] = (),
+        element_datatype: Datatype | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_quantity_kinds_list: _Iterable[_EntityBase] = (),
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_heterogeneous: bool | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        matlab_name: str | None = None,
+        microsoft_sql_server_name: str | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        quantity_: Quantity | None = None,
+        value: _Iterable[_EntityBase] = (),
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                datatype=datatype,
+                type_=type_,
+                abbreviation=abbreviation,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bounded=bounded,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                dimensionality=dimensionality,
+                dimensions=dimensions,
+                element_datatype=element_datatype,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_quantity_kinds_list=has_quantity_kinds_list,
+                has_rule=has_rule,
+                id=id,
+                is_heterogeneous=is_heterogeneous,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                matlab_name=matlab_name,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                quantity_=quantity_,
+                value=value,
+                vb_name=vb_name,
+            ),
+        )
 
 class UCUMcs(_EntityBase):
     """case-sensitive UCUM code
@@ -14437,8 +25936,8 @@ class USBOutlet(Equipment):
         label='USB outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a USB communication network, typically via a USB cable.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=1),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-USB', medium_options=(), min_count=1, max_count=1),
         ),
     )
 
@@ -14498,6 +25997,15 @@ class UnsignedBigIntegerType(BigIntegerType, UnsignedIntegerType):
         definition=None,
     )
 
+_P_UnsignedLongIntegerType_literal = _PropertySpec(
+    name='literal',
+    predicate='http://www.linkedmodel.org/schema/dtype#literal',
+    kind='literal',
+    label='literal',
+    definition='',
+    datatype=str,
+)
+
 class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
     """Unsigned Long Integer Type
     
@@ -14510,7 +26018,117 @@ class UnsignedLongIntegerType(LongIntegerType, UnsignedIntegerType):
         registry=_REGISTRY,
         label='Unsigned Long Integer Type',
         definition=None,
+        properties=(_P_UnsignedLongIntegerType_literal,),
     )
+
+    literal: _Lit[str] = _Lit(_P_UnsignedLongIntegerType_literal)
+    """literal (http://www.linkedmodel.org/schema/dtype#literal)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        accuracy: int | None = None,
+        ansi_sql_name: str | None = None,
+        basis: Datatype | None = None,
+        bit_order: EndianType | None = None,
+        bits: int | None = None,
+        bounded: bool | None = None,
+        byte_order: EndianType | None = None,
+        bytes: int | None = None,
+        c_name: str | None = None,
+        cardinality: CardinalityType | None = None,
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        encoding: Encoding | None = None,
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        java_name: str | None = None,
+        js_name: str | None = None,
+        length: int | None = None,
+        literal: str | None = None,
+        matlab_name: str | None = None,
+        max_exclusive: str | None = None,
+        max_inclusive: _EntityBase | None = None,
+        microsoft_sql_server_name: str | None = None,
+        min_exclusive: _EntityBase | None = None,
+        min_inclusive: _EntityBase | None = None,
+        my_sql_name: str | None = None,
+        odbc_name: str | None = None,
+        ole_db_name: str | None = None,
+        oracle_sql_name: str | None = None,
+        ordered_type: OrderedType | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        protocol_buffers_name: str | None = None,
+        python_name: str | None = None,
+        rdfs_datatype: _EntityBase | None = None,
+        signedness: SignednessType | None = None,
+        vb_name: str | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                type_=type_,
+                abbreviation=abbreviation,
+                accuracy=accuracy,
+                ansi_sql_name=ansi_sql_name,
+                basis=basis,
+                bit_order=bit_order,
+                bits=bits,
+                bounded=bounded,
+                byte_order=byte_order,
+                bytes=bytes,
+                c_name=c_name,
+                cardinality=cardinality,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                encoding=encoding,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                java_name=java_name,
+                js_name=js_name,
+                length=length,
+                literal=literal,
+                matlab_name=matlab_name,
+                max_exclusive=max_exclusive,
+                max_inclusive=max_inclusive,
+                microsoft_sql_server_name=microsoft_sql_server_name,
+                min_exclusive=min_exclusive,
+                min_inclusive=min_inclusive,
+                my_sql_name=my_sql_name,
+                odbc_name=odbc_name,
+                ole_db_name=ole_db_name,
+                oracle_sql_name=oracle_sql_name,
+                ordered_type=ordered_type,
+                plain_text_description=plain_text_description,
+                protocol_buffers_name=protocol_buffers_name,
+                python_name=python_name,
+                rdfs_datatype=rdfs_datatype,
+                signedness=signedness,
+                vb_name=vb_name,
+            ),
+        )
 
 class UnsignedMediumIntegerType(UnsignedIntegerType):
     """Unsigned Medium Integer Type
@@ -14554,6 +26172,17 @@ class UnsignedVariableLengthIntegerType(UnsignedIntegerType, VariableLengthInteg
         definition=None,
     )
 
+_P_UserQuantityKind_has_quantity_kind = _PropertySpec(
+    name='has_quantity_kind',
+    predicate='http://qudt.org/schema/qudt/hasQuantityKind',
+    kind='object',
+    label='has quantity kind',
+    definition='A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`.',
+    ranges=('QuantityKind',),
+    required=True,
+    max_count=1,
+)
+
 class UserQuantityKind(AbstractQuantityKind):
     """User Quantity Kind
     
@@ -14566,7 +26195,65 @@ class UserQuantityKind(AbstractQuantityKind):
         registry=_REGISTRY,
         label='User Quantity Kind',
         definition=None,
+        properties=(_P_UserQuantityKind_has_quantity_kind,),
     )
+
+    has_quantity_kind: _RelOne[QuantityKind | _TermValue] = _RelOne(_P_UserQuantityKind_has_quantity_kind)
+    """A reference to the `QuantityKind` of a `QuantifiableProperty` of interest, such as `Temperature`. (http://qudt.org/schema/qudt/hasQuantityKind)"""
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        has_quantity_kind: QuantityKind | _TermValue | None,
+        type_: _Iterable[_EntityBase],
+        abbreviation: str | None = None,
+        alt_symbol: _Iterable[_EntityBase] = (),
+        broader: _Iterable[QuantityKind] = (),
+        code: _Iterable[_EntityBase] = (),
+        deprecated: bool | None = None,
+        deprecated_in_version: str | None = None,
+        description: _Iterable[_EntityBase] = (),
+        exact_match: _Iterable[Concept_2] = (),
+        guidance: str | None = None,
+        has_rule: _Iterable[Rule] = (),
+        id: str | None = None,
+        is_replaced_by: _EntityBase | None = None,
+        latex_symbol: str | None = None,
+        plain_text_description: _Iterable[_EntityBase] = (),
+        symbol: _EntityBase | None = None,
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                has_quantity_kind=has_quantity_kind,
+                type_=type_,
+                abbreviation=abbreviation,
+                alt_symbol=alt_symbol,
+                broader=broader,
+                code=code,
+                deprecated=deprecated,
+                deprecated_in_version=deprecated_in_version,
+                description=description,
+                exact_match=exact_match,
+                guidance=guidance,
+                has_rule=has_rule,
+                id=id,
+                is_replaced_by=is_replaced_by,
+                latex_symbol=latex_symbol,
+                plain_text_description=plain_text_description,
+                symbol=symbol,
+            ),
+        )
 
 class ValueReference(_EntityBase):
     """Value Reference
@@ -14620,8 +26307,8 @@ class VariableFrequencyDrive_2(Equipment):
         definition='A piece of `Equipment` that varies its output frequency to vary the rotating speed and torque of a motor, given a fixed input frequency. Used with fans or pumps to vary the flow in the system as a function of a maintained pressure.',
         properties=(_P_VariableFrequencyDrive_2_connected_to,),
         cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Constituent-Electricity', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -14643,8 +26330,10 @@ class VariableFrequencyDrive_2(Equipment):
         has_connection_point: _Iterable[ConnectionPoint] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -14670,8 +26359,10 @@ class VariableFrequencyDrive_2(Equipment):
                 has_connection_point=has_connection_point,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -14797,9 +26488,11 @@ class VoltageSensor(Sensor):
         has_measurement_resolution: _Iterable[QuantifiableProperty] = (),
         has_optional_connection_point: _Iterable[ConnectionPoint] = (),
         has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
         has_property: _Iterable[Property] = (),
         has_reference_location: _EntityBase | None = None,
         has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
         medium: _Iterable[_EntityBase] = (),
         label: str | None = None,
         comment: str | None = None,
@@ -14829,9 +26522,11 @@ class VoltageSensor(Sensor):
                 has_measurement_resolution=has_measurement_resolution,
                 has_optional_connection_point=has_optional_connection_point,
                 has_physical_location=has_physical_location,
+                has_process=has_process,
                 has_property=has_property,
                 has_reference_location=has_reference_location,
                 has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
                 medium=medium,
             ),
         )
@@ -14883,8 +26578,8 @@ class WaterToAirHeatPump(HeatPump):
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None),
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Air', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -14901,8 +26596,8 @@ class WaterToWaterHeatPump(HeatPump):
         label='Water-to-water heat pump',
         definition='A `HeatPump` that transfers thermal energy between two flows of water.',
         cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=2, max_count=None),
         ),
     )
 
@@ -14947,8 +26642,8 @@ class Window(Equipment):
         label='Window',
         definition='A piece of `Equipment` that provides a pathway for `EM-Light` or `Fluid-Air` (or both) to flow from a room to another room or the building exterior through a vertical or nearly vertical area of the room envelope.',
         cp_slots=(
-            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
+            _CPSlot(cp_class='InletConnectionPoint', direction='in', medium=None, medium_options=('http://data.ashrae.org/standard223#EM-Light', 'http://data.ashrae.org/standard223#Fluid-Air'), min_count=1, max_count=None),
         ),
     )
 
@@ -14979,8 +26674,8 @@ class WiredEthernetOutlet(Equipment):
         label='Wired Ethernet outlet',
         definition='A piece of `Equipment` that contains one or more receptacles for connecting electrical equipment to a wired Ethernet communication network, typically via a wired Ethernet cable.',
         cp_slots=(
-            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=None),
             _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=1),
+            _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Signal-WiredEthernet', medium_options=(), min_count=1, max_count=None),
         ),
     )
 
@@ -14998,15 +26693,6 @@ class YesNoType(EnumeratedValue):
         definition=None,
     )
 
-_P_Zone_has_zone = _PropertySpec(
-    name='has_zone',
-    predicate='http://data.ashrae.org/standard223#hasZone',
-    kind='object',
-    label='has zone',
-    definition='A `Relation` that associates a `Zone` with component `Zone`s.',
-    ranges=('Zone',),
-)
-
 _P_Zone_has_domain_space = _PropertySpec(
     name='has_domain_space',
     predicate='http://data.ashrae.org/standard223#hasDomainSpace',
@@ -15014,6 +26700,15 @@ _P_Zone_has_domain_space = _PropertySpec(
     label='has domain space',
     definition='A `Relation` that associates a `Zone` with its component `DomainSpace`s.',
     ranges=('DomainSpace',),
+)
+
+_P_Zone_has_zone = _PropertySpec(
+    name='has_zone',
+    predicate='http://data.ashrae.org/standard223#hasZone',
+    kind='object',
+    label='has zone',
+    definition='A `Relation` that associates a `Zone` with component `Zone`s.',
+    ranges=('Zone',),
 )
 
 _P_Zone_has_domain = _PropertySpec(
@@ -15039,14 +26734,14 @@ class Zone(Concept):
         registry=_REGISTRY,
         label='Zone',
         definition='A logical grouping of one or more `DomainSpace`s or other `Zone`s for some building service or control-related purpose. `Zone`s can have properties that are inputs or outputs to a `Function` (see {s223:Function}), which can be executed by `Controller`s (see {s223:Controller}) or other `Equipment`.',
-        properties=(_P_Zone_has_zone, _P_Zone_has_domain_space, _P_Zone_has_domain,),
+        properties=(_P_Zone_has_domain_space, _P_Zone_has_zone, _P_Zone_has_domain,),
     )
-
-    has_zone: _Rel[Zone] = _Rel(_P_Zone_has_zone)
-    """A `Relation` that associates a `Zone` with component `Zone`s. (http://data.ashrae.org/standard223#hasZone)"""
 
     has_domain_space: _Rel[DomainSpace] = _Rel(_P_Zone_has_domain_space)
     """A `Relation` that associates a `Zone` with its component `DomainSpace`s. (http://data.ashrae.org/standard223#hasDomainSpace)"""
+
+    has_zone: _Rel[Zone] = _Rel(_P_Zone_has_zone)
+    """A `Relation` that associates a `Zone` with component `Zone`s. (http://data.ashrae.org/standard223#hasZone)"""
 
     has_domain: _EnumOne[_EnumValue] = _EnumOne(_P_Zone_has_domain)
     """A `Relation` that associates a `Zone` or `DomainSpace` with an `EnumerationKind-Domain` (e.g., `Domain-HVAC`, `Domain-Lighting`). (http://data.ashrae.org/standard223#hasDomain)"""
@@ -15254,4 +26949,4 @@ _REGISTRY.containment.register('PhysicalSpace', 'Equipment', 'has_physical_locat
 _REGISTRY.containment.register('Equipment', 'Equipment', 'contains_', edge_from='container')
 
 
-__all__ = ["ONTOLOGY", 'Concept', 'Class_2', 'AbstractClass', 'Concept_2', 'Datatype', 'StructuredDatatype', 'AbstractDatatype', 'AbstractQuantityKind', 'DataProcessing_AccuracyMetrics', 'Accuracy_ExpandedUncertainty', 'Accuracy_PercentRecovery', 'Accuracy_RSquared', 'Accuracy_TotalUncertainty', 'Property', 'ActuatableProperty', 'Connectable', 'Equipment', 'Actuator', 'Tank', 'UnitProcess', 'Reactor', 'AerationBasin', 'Digester', 'AerobicDigester', 'CoordinateSystem', 'AerospaceCoordinateSystem', 'DataProcessing_Aggregate', 'Aggregate_Count', 'Aggregate_Max', 'Aggregate_Mean', 'Aggregate_Median', 'Aggregate_Min', 'Aggregate_Mode', 'Aggregate_Range', 'Aggregate_StdDev', 'Aggregate_Sum', 'Aggregate_Variance', 'AirHandlingUnit', 'AirHeatExchanger', 'Valve_2', 'AirReleaseValve', 'HeatPump', 'AirToAirHeatPump', 'AlgebraicDatatype', 'EnumeratedValue_2', 'Aspect', 'Verifiable', 'EnumeratedValue', 'AlignmentType', 'AnaerobicDigester', 'Unit', 'DimensionlessUnit', 'AngleUnit', 'Electrode', 'Anode', 'Array', 'DataItem', 'List', 'Array2DvalueList', 'ArrayDataOrder', 'CompositeDatatype', 'ArrayType', 'AspectClass', 'Dimension', 'Aspect_2', 'AssociativeArray', 'ModalCue', 'AuralCue', 'AxialOrientationType', 'ExternalReference', 'BACnetExternalReference', 'Graph', 'Tree', 'BalancedTree', 'BallValve', 'BaseDimensionMagnitude', 'Bathtub', 'Battery_2', 'Battery', 'DewateringUnit', 'BeltFilterPress', 'Thickener', 'BeltThickener', 'ConnectionPoint', 'BidirectionalConnectionPoint', 'ScalarDatatype', 'NumericType', 'OrdinalType', 'IntegerDatatype', 'BigIntegerType', 'Prefix', 'BinaryPrefix', 'BinaryTree', 'Filter_2', 'Filter', 'BiologicalAeratedFilter', 'Encoding', 'BitEncodingType', 'Boiler_2', 'Boiler', 'BooleanEncodingType', 'BooleanType', 'BooleanTypeEnumeratedValue', 'ButterflyValve', 'ByteEncodingType', 'CardinalityType', 'Tuple', 'Coordinates', 'CartesianCoordinates', 'CartesianCoordinatesType', 'CartridgeFiltrationUnit', 'Cathode', 'CentrifugalDewateringUnit', 'CentrifugalThickener', 'CharEncodingType', 'CharacterType', 'CheckValve', 'ChilledBeam', 'Coil', 'CoolingCoil', 'ChilledWaterCoil', 'ChilledWaterValve', 'Chiller', 'DisinfectionUnit', 'ChlorinationUnit', 'Citation', 'Class', 'ClothesWasher', 'CoagulationBasin', 'Connection', 'Waveguide', 'CoaxialCable', 'Enumeration_2', 'CodeList', 'CoffeeMaker', 'Cogenerator', 'Collection', 'VisualCue', 'ColorCue', 'Comment', 'CompositeCodeList', 'CompositeDataStructure', 'Table', 'CompositeTable', 'Function_2', 'CompositionFunction', 'CompositionTree', 'Compressor_2', 'Compressor', 'Computer', 'ComputerPrinter', 'Sensor', 'ConcentrationSensor_2', 'ConcentrationSensor', 'Condenser', 'Conditioner', 'ConductivitySensor', 'Conductor', 'Quantifiable', 'QuantityValue', 'ConstantValue', 'ContextualUnit', 'ContinuouslyStirredTankReactor', 'Controller_2', 'Controller', 'CoolingTower', 'Scale', 'NominalScale', 'CoordinateCenterKind', 'TupleMember', 'CoordinateMember', 'N_Tuple', 'TwoTuple', 'Coordinates_2D', 'Coordinates_2D_DoublePrecision', 'Coordinates_2D_SinglePrecision', 'ThreeTuple', 'Coordinates_3D', 'Coordinates_3D_DoublePrecision', 'Coordinates_3D_SinglePrecision', 'Coordinates_3D_Type', 'CopyMachine', 'LightSensor', 'CorrelatedColorTemperatureSensor', 'CountingUnit', 'Crystallizer', 'CurrencyUnit', 'DMERecoverySystem', 'Damper', 'Damper_2', 'DataEncoding', 'DataProcessing_ErrorMetrics', 'DataProcessing_Filter', 'DataProcessing_Interpolation', 'DataProcessing_Normalization', 'DataProcessing_PrecisionMetrics', 'DataProcessing_Synchronization', 'DataSetElement', 'StringType', 'DateTimeStringType', 'DateStringType', 'StringEncodingType', 'DateTimeStringEncodingType', 'DecimalPrefix', 'DerivedCodeList', 'DerivedUnit', 'Map', 'Dictionary', 'DigitalCurrencyUnit', 'DimensionalDatatype', 'Discipline', 'Discipline_2', 'DiscreteState', 'Dishwasher', 'DissolvedAirFlotationThickener', 'Domain', 'DomainSpace', 'Door', 'DoublePrecisionType', 'Drain', 'TerminalUnit', 'DualDuctTerminal', 'Duct', 'DuvSensor', 'EM', 'TrajectoryCoordinateSystem', 'EarthCoordinateSystem', 'EfficiencySensor', 'ElectricClothesDryer', 'ElectricCooktop', 'ElectricCurrentSensor', 'ElectricEnergyConverter', 'ElectricEnergyDCDCConverter', 'ElectricEnergyInverter', 'ElectricEnergyTransformer', 'ElectricResistanceElement', 'ElectricHeatingCoil', 'ElectricOven', 'ElectricWaterDispenser', 'ElectricallyConductingMembrane', 'ElectricityBreaker', 'ElectricityMeter', 'ElectricityOutlet', 'ElectroDialyticCrystallizer', 'ElectrocoagulationUnit', 'ElectrodialysisUnit', 'Electrolyzer', 'ElectromagneticFieldDevice', 'ElectronicDisplay', 'Elevator', 'EndianType', 'EngineeringValueTupleMember', 'EnumerableProperty', 'EnumeratedActuatableProperty', 'ObservableProperty', 'EnumeratedObservableProperty', 'EnumeratedQuantity', 'Enumeration', 'EnumerationScale', 'Error_AbsoluteError', 'Error_Bias', 'Error_MeanAbsoluteError', 'Error_MeanAbsolutePercentageError', 'Error_MeanSquaredError', 'Error_RelativeError', 'Error_RootMeanSquaredError', 'Escalator', 'EthernetCable', 'EthernetCable_Cat1', 'EthernetCable_Cat2', 'EthernetCable_Cat3', 'EthernetCable_Cat4', 'EthernetCable_Cat5', 'EthernetCable_Cat5e', 'EthernetCable_Cat6', 'EthernetCable_Cat6a', 'EthernetCable_Cat7', 'EthernetCable_Cat7a', 'EthernetCable_Cat8', 'EthernetPort', 'EthernetSwitch', 'Evaporator', 'FactorUnit', 'Fan', 'FanCoilUnit', 'FanPoweredTerminal', 'Fan_2', 'FanWithVFD', 'Faucet', 'FiberEthernetOutlet', 'FiberOpticCable', 'FiberOpticCable_OM1', 'FiberOpticCable_OM2', 'FiberOpticCable_OM3', 'FiberOpticCable_OM4', 'FiberOpticCable_OM5', 'FiberOpticCable_OS1', 'FiberOpticCable_OS2', 'FieldType', 'Figure', 'FileFormat', 'TimeSeriesArray', 'FixedIntervalTimeSeriesArray', 'TimeSeriesArrayType', 'FixedIntervalTimeSeriesArrayType', 'Flare', 'FloatingPointEncodingType', 'FlocculationBasin', 'FlowSensor_2', 'FlowSensor', 'FlushToilet', 'FrameType', 'Freezer', 'FrequencySensor', 'FumeHood', 'Function', 'FunctionDatatype', 'Furnace', 'Gate', 'PressureSensor_2', 'GaugePressureSensor', 'Generator', 'GlobeValve', 'GranularActivatedCarbonAdsorber', 'GraphMetaData', 'GraphRole', 'GravityThickener', 'GravityBeltThickener', 'Grinder', 'GritChamber', 'GroundCoordinateSystem', 'GroundToAirHeatPump', 'OrderedCollection', 'OrderedTree', 'Heap', 'HeatingCoil', 'HeterogenousArray', 'TextStringType', 'HexBinaryType', 'HomogeneousArray', 'HotWaterCoil', 'HotWaterValve', 'Humidifier', 'Humidistat', 'HumiditySensor', 'HydronicHeatExchanger', 'IceMaker', 'IconicCue', 'IlluminanceSensor', 'SeparationTank', 'SedimentationTank', 'SepticTank', 'ImhoffTank', 'ReferenceFrame', 'InertialReferenceFrame', 'InertialCoordinateFrame', 'InletConnectionPoint', 'IntegerEncodingType', 'IntegerListShape', 'InterpolatedTable', 'Interpolation_BackwardFill', 'Interpolation_ForwardFill', 'Interpolation_Linear', 'Interpolation_NearestNeighbor', 'Interpolation_Polynomial', 'Interpolation_Spline', 'IntervalScale', 'IonExchangeMembrane', 'Junction', 'KinestheticCue', 'LargeObject', 'LargeObjectType', 'LatexString', 'LevelSensor', 'LimitType', 'LocalCoordinateSystem', 'LogarithmicUnit', 'LongIntegerType', 'Luminaire', 'LunarCoordinateSystem', 'MajorMinorType', 'ManualMeasurementPort', 'MarsCoordinateSystem', 'MassPropertiesArray', 'MathsFunctionType', 'Matrix', 'MatrixElementOrder', 'MediaFiltrationUnit', 'MembraneAeratedBiofilmReaactor', 'MembraneBioreactor', 'MemoryOrderType', 'MicrofiltrationUnit', 'MicrowaveOven', 'MixingBasin', 'ModalEnumeration', 'MolybdenumSulfideBasedMembrane', 'Monitor', 'Motor', 'MovingBedBioreactor', 'MultiDimensionalArray', 'MultiDimensionalDataFormat', 'MultiModalEnumeration', 'MultiModalType', 'MultiSet', 'MultifunctionalMembrane', 'NIST_SP811_Comment', 'N_TupleType', 'NanofiltrationUnit', 'NonRotatingInertialFrame', 'Normalization_Decimal', 'Normalization_MinMax', 'Normalization_ZScore', 'OccupancySensor', 'OccupantCountSensor', 'OccupantMotionSensor', 'OccupantPresenceSensor', 'UnsignedType', 'UnsignedIntegerType', 'OctetType', 'OffOnStateTypeEnumeration', 'OnOffStateType', 'OnOffStateTypeEnumeration', 'OrderedType', 'OrdinalScale', 'Organization', 'PhysicalSpace', 'OutdoorPhysicalSpace', 'OutletConnectionPoint', 'OxidationDitch', 'OxygenDemandSensor', 'OxygenMeter', 'OzonationUnit', 'PaddingType', 'ParameterModifiabilityType', 'PartialArray', 'ParticulateSensor', 'Party', 'PersonalComputer', 'PhotovoltaicModule', 'PhysicalAddress', 'Quantity', 'PhysicalConstant', 'Pipe', 'PlaneAngleUnit', 'PlugFlowReactor', 'PlugValve', 'PolarCoordinates', 'PolarCoordinatesType', 'Polarity', 'Pond', 'PositiveBigIntegerType', 'PositiveIntegerType', 'PowerOverEthernetPort', 'PowerOverEthernetSwitch', 'Precision_CoefficientOfVariation', 'Precision_ConfidenceInterval', 'Precision_RepeatabilityStdDev', 'Precision_ReproducibilityStdDev', 'PressureExchanger', 'PressureSensor', 'Process', 'Process_BiologicalProcess', 'Process_PhysicalProcess', 'Process_Separation', 'Process_ActivatedSludge', 'Process_Denitrification', 'Process_Nitrification', 'Process_A2O', 'Process_AO', 'Process_Adsorption', 'Process_ChemicalProcess', 'Process_Oxidation', 'Process_AdvancedOxidation', 'Process_GasTransfer', 'Process_Aeration', 'Process_Digestion', 'Process_AerobicDigestion', 'Process_Cleaning', 'Process_AirScouring', 'Process_AnaerobicDigestion', 'Process_Backwashing', 'Process_Filtration', 'Process_Biofiltration', 'Process_BiologicallyActiveFiltration', 'Process_BiosolidsDisposal', 'Process_Centrifugation', 'Process_ChemicalAddition', 'Process_ChemicalPrecipitation', 'Process_Disinfection', 'Process_Chlorination', 'Process_MembraneProcess', 'Process_ReverseOsmosis', 'Process_ClosedCircuitReverseOsmosis', 'Process_Coagulation', 'Process_Combustion', 'Process_Cogeneration', 'Process_Comminution', 'Process_Composting', 'Process_Condensation', 'Process_Solidification', 'Process_Crystallization', 'Process_Dechlorination', 'Process_Dewatering', 'Process_Evaporation', 'Process_Drying', 'Process_Electrodialysis', 'Process_ElectroDialyticCrystallization', 'Process_Electrocoagulation', 'Process_Electrolysis', 'Process_Electrooxidation', 'Process_Elutriation', 'Process_FeedReversalReverseOsmosis', 'Process_FiveStageBardenpho', 'Process_Mixing', 'Process_Flocculation', 'Process_Flotation', 'Process_FluidizedBedIncineration', 'Process_FourStageBardenpho', 'Process_GranularActivatedCarbon', 'Process_HighDensitySludge', 'Process_Hydrolysis', 'Process_IonExchange', 'Process_LandApplication', 'Process_Landfill', 'Process_MLE', 'Process_MediaFiltration', 'Process_MembraneDistillation', 'Process_Microfiltration', 'Process_MultipleHearthIncineration', 'Process_pHAdjustment', 'Process_Neutralization', 'Process_OsmoticallyAssistedReverseOsmosis', 'Process_Ozonation', 'Process_Purging', 'Process_RapidSandFiltration', 'Process_Recirculation', 'Process_Reduction', 'Process_Screening', 'Process_Sedimentation', 'Process_SlowSandFiltration', 'Process_Softening', 'Process_SolventExtraction', 'Process_Stripping', 'Process_ThermalDisinfection', 'Process_ThermalHydrolysis', 'Process_Thickening', 'Process_TricklingFiltration', 'Process_UCT', 'Process_UVDisinfection', 'Process_Ultrafiltration', 'Pump_2', 'Pump', 'QuantifiableProperty', 'QuantifiableActuatableProperty', 'QuantifiableObservableProperty', 'QuantityKind', 'QuantityKindDimensionVector', 'QuantityKindDimensionVector_CGS', 'QuantityKindDimensionVector_CGS_EMU', 'QuantityKindDimensionVector_CGS_ESU', 'QuantityKindDimensionVector_CGS_GAUSS', 'QuantityKindDimensionVector_CGS_LH', 'QuantityKindDimensionVector_ISO', 'QuantityKindDimensionVector_Imperial', 'QuantityKindDimensionVector_SI', 'QuantityKindList', 'QuantityType', 'QuantityValueType', 'RFOutlet', 'RadiantHeater', 'Radiator', 'RapidSandFilter', 'RatioScale', 'RawValueTupleMember', 'RawValueTupleMemberType', 'RealDatatype', 'RealDoublePrecisionType', 'RealNumberType', 'SinglePrecisionType', 'RealSinglePrecisionType', 'Record', 'ReferenceDatatype', 'Refrigerator', 'Relation', 'RelationWithInverse', 'Reservoir', 'ReverseOsmosisMembrane', 'Role_NitrogenRemoval', 'Role_PhosphorusRemoval', 'RotaryDrumThickener', 'RotatingBiologicalContactor', 'RotatingReferenceFrame', 'RotationSensor', 'Rule', 'RuleType', 'ScalarDataItem', 'ScalarListShape', 'ScaleType', 'Screen', 'Sequence', 'SequencingBatchReactor', 'ServerComputer', 'Set', 'ShortIntegerType', 'Shower', 'SignedType', 'SignedIntegerType', 'SignedBigIntegerType', 'SignedLongIntegerType', 'SignedMediumIntegerType', 'SignedShortIntegerType', 'VariableLengthIntegerType', 'SignedVariableLengthIntegerType', 'SignednessType', 'SimpleCodeList', 'SingleDuctTerminal', 'Sink', 'SluiceGate', 'SolarThermalCollector', 'SolidAngleUnit', 'SolventExtractionSystem', 'SpeedSensor', 'SplineCalibrator', 'SplinePoint', 'StandardizedFlowCell', 'StateOfChargeSensor', 'StateSpaceMatrix', 'Vector', 'StateSpaceVector', 'Statement', 'StaticMixer', 'SteamInjector', 'StringUTF16', 'StringUTF8', 'Symbol', 'SymmetricRelation', 'SymmetricRelation_2', 'Synchronization_Downsampling', 'Synchronization_Resampling', 'Synchronization_TimeAlignment', 'Synchronization_Upsampling', 'System', 'SystemOfQuantityKinds', 'SystemOfUnits', 'TaggedEnumeration', 'Television', 'TemperatureSensor_2', 'TemperatureSensor', 'ThermalEnergyStorageUnit', 'Thermostat', 'ThreeBodyRotatingCoordinateSystem', 'ThreeWayValve', 'ThreeWayValve_2', 'Time', 'TimeDataType', 'TimeInterval', 'TimeStringType', 'TotalOrganicCompoundConcentrationSensor', 'TransformType', 'TricklingFilter', 'Triplet', 'TupleType', 'TurbidityMeter', 'Turbine', 'TwoPositionDamper', 'TwoTupleType', 'TwoWayValve', 'TypeList', 'TypeMatrix', 'TypeVector', 'UCUMcs', 'USBCable', 'USBOutlet', 'UVH2O2Reactor', 'UltrafiltrationUnit', 'UltravioletLightUnit', 'UnsignedBigIntegerType', 'UnsignedLongIntegerType', 'UnsignedMediumIntegerType', 'UnsignedShortIntegerType', 'UnsignedVariableLengthIntegerType', 'UserQuantityKind', 'ValueReference', 'Valve', 'VariableFrequencyDrive_2', 'VariableFrequencyDrive', 'VariableIntervalTimeSeriesArray', 'VariableIntervalTimeSeriesArrayType', 'VehicleCoordinateSystem', 'Viewpoint', 'VoltageSensor', 'VolumeSensor', 'WaterOutlet', 'WaterToAirHeatPump', 'WaterToWaterHeatPump', 'WetDryStateType', 'Wetland', 'Window', 'WindowShade', 'WiredEthernetOutlet', 'YesNoType', 'Zone', 'ZoneGroup', 'Zone_2', 'hexbinary', 'pHSensor']
+__all__ = ["ONTOLOGY", 'Concept', 'Class_2', 'AbstractClass', 'Concept_2', 'Datatype', 'StructuredDatatype', 'AbstractDatatype', 'AbstractQuantityKind', 'DataProcessing_AccuracyMetrics', 'Accuracy_ExpandedUncertainty', 'Accuracy_PercentRecovery', 'Accuracy_RSquared', 'Accuracy_TotalUncertainty', 'Property', 'ActuatableProperty', 'Connectable', 'Equipment', 'Actuator', 'Tank', 'UnitProcess', 'Reactor', 'AerationBasin', 'Digester', 'AerobicDigester', 'CoordinateSystem', 'AerospaceCoordinateSystem', 'DataProcessing_Aggregate', 'Aggregate_Count', 'Aggregate_Max', 'Aggregate_Mean', 'Aggregate_Median', 'Aggregate_Min', 'Aggregate_Mode', 'Aggregate_Range', 'Aggregate_StdDev', 'Aggregate_Sum', 'Aggregate_Variance', 'AirHandlingUnit', 'AirHeatExchanger', 'Valve_2', 'AirReleaseValve', 'SeparationTank', 'AirStripper', 'HeatPump', 'AirToAirHeatPump', 'AlgebraicDatatype', 'EnumeratedValue_2', 'Aspect', 'Verifiable', 'EnumeratedValue', 'AlignmentType', 'AnaerobicDigester', 'Unit', 'DimensionlessUnit', 'AngleUnit', 'Electrode', 'Anode', 'Array', 'DataItem', 'List', 'Array2DvalueList', 'ArrayDataOrder', 'CompositeDatatype', 'ArrayType', 'AspectClass', 'Dimension', 'Aspect_2', 'AssociativeArray', 'ModalCue', 'AuralCue', 'AxialOrientationType', 'ExternalReference', 'BACnetExternalReference', 'Graph', 'Tree', 'BalancedTree', 'BallValve', 'BaseDimensionMagnitude', 'Bathtub', 'Battery_2', 'Battery', 'DewateringUnit', 'BeltFilterPress', 'Thickener', 'BeltThickener', 'ConnectionPoint', 'BidirectionalConnectionPoint', 'ScalarDatatype', 'NumericType', 'OrdinalType', 'IntegerDatatype', 'BigIntegerType', 'Prefix', 'BinaryPrefix', 'BinaryTree', 'Filter_2', 'Filter', 'BiologicalAeratedFilter', 'Encoding', 'BitEncodingType', 'Boiler_2', 'Boiler', 'BooleanEncodingType', 'BooleanType', 'BooleanTypeEnumeratedValue', 'ButterflyValve', 'ByteEncodingType', 'CardinalityType', 'Tuple', 'Coordinates', 'CartesianCoordinates', 'CartesianCoordinatesType', 'CartridgeFiltrationUnit', 'Cathode', 'CentrifugalDewateringUnit', 'CentrifugalThickener', 'CharEncodingType', 'CharacterType', 'CheckValve', 'ChilledBeam', 'Coil', 'CoolingCoil', 'ChilledWaterCoil', 'ChilledWaterValve', 'Chiller', 'DisinfectionUnit', 'ChlorinationUnit', 'Citation', 'Class', 'ClothesWasher', 'CoagulationBasin', 'Connection', 'Waveguide', 'CoaxialCable', 'Enumeration_2', 'CodeList', 'CoffeeMaker', 'Cogenerator', 'Collection', 'VisualCue', 'ColorCue', 'Comment', 'CompositeCodeList', 'CompositeDataStructure', 'Table', 'CompositeTable', 'Function_2', 'CompositionFunction', 'CompositionTree', 'Compressor_2', 'Compressor', 'Computer', 'ComputerPrinter', 'Sensor', 'ConcentrationSensor_2', 'ConcentrationSensor', 'Condenser', 'Conditioner', 'ConductivitySensor', 'Conductor', 'Quantifiable', 'QuantityValue', 'ConstantValue', 'ContextualUnit', 'ContinuouslyStirredTankReactor', 'Controller_2', 'Controller', 'CoolingTower', 'Scale', 'NominalScale', 'CoordinateCenterKind', 'TupleMember', 'CoordinateMember', 'N_Tuple', 'TwoTuple', 'Coordinates_2D', 'Coordinates_2D_DoublePrecision', 'Coordinates_2D_SinglePrecision', 'ThreeTuple', 'Coordinates_3D', 'Coordinates_3D_DoublePrecision', 'Coordinates_3D_SinglePrecision', 'Coordinates_3D_Type', 'CopyMachine', 'LightSensor', 'CorrelatedColorTemperatureSensor', 'CountingUnit', 'Crystallizer', 'CurrencyUnit', 'DMERecoverySystem', 'Damper', 'Damper_2', 'DataEncoding', 'DataProcessing_ErrorMetrics', 'DataProcessing_Filter', 'DataProcessing_Interpolation', 'DataProcessing_Normalization', 'DataProcessing_PrecisionMetrics', 'DataProcessing_Synchronization', 'DataSetElement', 'StringType', 'DateTimeStringType', 'DateStringType', 'StringEncodingType', 'DateTimeStringEncodingType', 'DecimalPrefix', 'DerivedCodeList', 'DerivedUnit', 'Map', 'Dictionary', 'DigitalCurrencyUnit', 'DimensionalDatatype', 'Discipline', 'Discipline_2', 'DiscreteState', 'Dishwasher', 'DissolvedAirFlotationThickener', 'Domain', 'DomainSpace', 'Door', 'DoublePrecisionType', 'Drain', 'TerminalUnit', 'DualDuctTerminal', 'Duct', 'DuvSensor', 'EM', 'TrajectoryCoordinateSystem', 'EarthCoordinateSystem', 'EfficiencySensor', 'ElectricClothesDryer', 'ElectricCooktop', 'ElectricCurrentSensor', 'ElectricEnergyConverter', 'ElectricEnergyDCDCConverter', 'ElectricEnergyInverter', 'ElectricEnergyTransformer', 'ElectricResistanceElement', 'ElectricHeatingCoil', 'ElectricOven', 'ElectricWaterDispenser', 'ElectricallyConductingMembrane', 'ElectricityBreaker', 'ElectricityMeter', 'ElectricityOutlet', 'ElectroDialyticCrystallizer', 'ElectrocoagulationUnit', 'ElectrodialysisUnit', 'Electrolyzer', 'ElectromagneticFieldDevice', 'ElectronicDisplay', 'Elevator', 'EndianType', 'EngineeringValueTupleMember', 'EnumerableProperty', 'EnumeratedActuatableProperty', 'ObservableProperty', 'EnumeratedObservableProperty', 'EnumeratedQuantity', 'Enumeration', 'EnumerationScale', 'Error_AbsoluteError', 'Error_Bias', 'Error_MeanAbsoluteError', 'Error_MeanAbsolutePercentageError', 'Error_MeanSquaredError', 'Error_RelativeError', 'Error_RootMeanSquaredError', 'Escalator', 'EthernetCable', 'EthernetCable_Cat1', 'EthernetCable_Cat2', 'EthernetCable_Cat3', 'EthernetCable_Cat4', 'EthernetCable_Cat5', 'EthernetCable_Cat5e', 'EthernetCable_Cat6', 'EthernetCable_Cat6a', 'EthernetCable_Cat7', 'EthernetCable_Cat7a', 'EthernetCable_Cat8', 'EthernetPort', 'EthernetSwitch', 'Evaporator', 'FactorUnit', 'Fan', 'FanCoilUnit', 'FanPoweredTerminal', 'Fan_2', 'FanWithVFD', 'Faucet', 'FiberEthernetOutlet', 'FiberOpticCable', 'FiberOpticCable_OM1', 'FiberOpticCable_OM2', 'FiberOpticCable_OM3', 'FiberOpticCable_OM4', 'FiberOpticCable_OM5', 'FiberOpticCable_OS1', 'FiberOpticCable_OS2', 'FieldType', 'Figure', 'FileFormat', 'TimeSeriesArray', 'FixedIntervalTimeSeriesArray', 'TimeSeriesArrayType', 'FixedIntervalTimeSeriesArrayType', 'Flare', 'FloatingPointEncodingType', 'FlocculationBasin', 'FlowSensor_2', 'FlowSensor', 'FlushToilet', 'FrameType', 'Freezer', 'FrequencySensor', 'FumeHood', 'Function', 'FunctionDatatype', 'Furnace', 'Gate', 'PressureSensor_2', 'GaugePressureSensor', 'Generator', 'GlobeValve', 'GranularActivatedCarbonAdsorber', 'GraphMetaData', 'GraphRole', 'GravityBeltThickener', 'GravityThickener', 'Grinder', 'GritChamber', 'GroundCoordinateSystem', 'GroundToAirHeatPump', 'OrderedCollection', 'OrderedTree', 'Heap', 'HeatingCoil', 'HeterogenousArray', 'TextStringType', 'HexBinaryType', 'HomogeneousArray', 'HotWaterCoil', 'HotWaterValve', 'Humidifier', 'Humidistat', 'HumiditySensor', 'HydronicHeatExchanger', 'IceMaker', 'IconicCue', 'IlluminanceSensor', 'SedimentationTank', 'SepticTank', 'ImhoffTank', 'ReferenceFrame', 'InertialReferenceFrame', 'InertialCoordinateFrame', 'InletConnectionPoint', 'IntegerEncodingType', 'IntegerListShape', 'InterpolatedTable', 'Interpolation_BackwardFill', 'Interpolation_ForwardFill', 'Interpolation_Linear', 'Interpolation_NearestNeighbor', 'Interpolation_Polynomial', 'Interpolation_Spline', 'IntervalScale', 'IonExchangeMembrane', 'Junction', 'KinestheticCue', 'LargeObject', 'LargeObjectType', 'LatexString', 'LevelSensor', 'LimitType', 'LocalCoordinateSystem', 'LogarithmicUnit', 'LongIntegerType', 'Luminaire', 'LunarCoordinateSystem', 'MajorMinorType', 'ManualMeasurementPort', 'MarsCoordinateSystem', 'MassPropertiesArray', 'MathsFunctionType', 'Matrix', 'MatrixElementOrder', 'MediaFiltrationUnit', 'MembraneAeratedBiofilmReaactor', 'MembraneBioreactor', 'MemoryOrderType', 'MicrofiltrationUnit', 'MicrowaveOven', 'MixingBasin', 'ModalEnumeration', 'MolybdenumSulfideBasedMembrane', 'Monitor', 'Motor', 'MovingBedBioreactor', 'MultiDimensionalArray', 'MultiDimensionalDataFormat', 'MultiModalEnumeration', 'MultiModalType', 'MultiSet', 'MultifunctionalMembrane', 'NIST_SP811_Comment', 'N_TupleType', 'NanofiltrationUnit', 'NonRotatingInertialFrame', 'Normalization_Decimal', 'Normalization_MinMax', 'Normalization_ZScore', 'NumericListShape', 'OccupancySensor', 'OccupantCountSensor', 'OccupantMotionSensor', 'OccupantPresenceSensor', 'UnsignedType', 'UnsignedIntegerType', 'OctetType', 'OffOnStateTypeEnumeration', 'OnOffStateType', 'OnOffStateTypeEnumeration', 'OrderedType', 'OrdinalScale', 'Organization', 'PhysicalSpace', 'OutdoorPhysicalSpace', 'OutletConnectionPoint', 'OxidationDitch', 'OxygenDemandSensor', 'OxygenMeter', 'OzonationUnit', 'PaddingType', 'ParameterModifiabilityType', 'PartialArray', 'ParticulateSensor', 'Party', 'PersonalComputer', 'PhotovoltaicModule', 'PhysicalAddress', 'Quantity', 'PhysicalConstant', 'Pipe', 'PlaneAngleUnit', 'PlugFlowReactor', 'PlugValve', 'PolarCoordinates', 'PolarCoordinatesType', 'Polarity', 'Pond', 'PositiveBigIntegerType', 'PositiveIntegerType', 'PowerOverEthernetPort', 'PowerOverEthernetSwitch', 'Precision_CoefficientOfVariation', 'Precision_ConfidenceInterval', 'Precision_RepeatabilityStdDev', 'Precision_ReproducibilityStdDev', 'PressureExchanger', 'PressureSensor', 'Process', 'Process_BiologicalProcess', 'Process_ActivatedSludge', 'Process_A2O', 'Process_AO', 'Process_PhysicalProcess', 'Process_Adsorption', 'Process_ChemicalProcess', 'Process_Oxidation', 'Process_AdvancedOxidation', 'Process_GasTransfer', 'Process_Aeration', 'Process_Digestion', 'Process_AerobicDigestion', 'Process_Cleaning', 'Process_AirScouring', 'Process_AnaerobicDigestion', 'Process_Backwashing', 'Process_Separation', 'Process_Filtration', 'Process_Biofiltration', 'Process_BiologicallyActiveFiltration', 'Process_SolidLiquidSeparation', 'Process_Centrifugation', 'Process_ChemicalPrecipitation', 'Process_Dosing', 'Process_ChlorineDosing', 'Process_MembraneProcess', 'Process_ReverseOsmosis', 'Process_ClosedCircuitReverseOsmosis', 'Process_Coagulation', 'Process_Combustion', 'Process_Cogeneration', 'Process_Comminution', 'Process_Composting', 'Process_Condensation', 'Process_Solidification', 'Process_Crystallization', 'Process_Denitrification', 'Process_Electrodialysis', 'Process_ElectroDialyticCrystallization', 'Process_Electrocoagulation', 'Process_Electrolysis', 'Process_Electrooxidation', 'Process_Elutriation', 'Process_EnhancedBiologicalPhosphorusRemoval', 'Process_Evaporation', 'Process_FeedReversalReverseOsmosis', 'Process_FiveStageBardenpho', 'Process_Mixing', 'Process_Flocculation', 'Process_Flotation', 'Process_FluidizedBedIncineration', 'Process_FourStageBardenpho', 'Process_GranularActivatedCarbon', 'Process_HighDensitySludge', 'Process_Hydrolysis', 'Process_IonExchange', 'Process_MLE', 'Process_MediaFiltration', 'Process_MembraneDistillation', 'Process_Microfiltration', 'Process_MultipleHearthIncineration', 'Process_Nitrification', 'Process_OsmoticallyAssistedReverseOsmosis', 'Process_Ozonation', 'Process_Purging', 'Process_RapidSandFiltration', 'Process_Recirculation', 'Process_Reduction', 'Process_Screening', 'Process_Sedimentation', 'Process_SlowSandFiltration', 'Process_SolventExtraction', 'Process_Stripping', 'Process_ThermalHydrolysis', 'Process_ThermalTreatment', 'Process_TricklingFiltration', 'Process_UCT', 'Process_UVIrradiation', 'Process_Ultrafiltration', 'Pump_2', 'Pump', 'QuantifiableProperty', 'QuantifiableActuatableProperty', 'QuantifiableObservableProperty', 'QuantityKind', 'QuantityKindDimensionVector', 'QuantityKindDimensionVector_CGS', 'QuantityKindDimensionVector_CGS_EMU', 'QuantityKindDimensionVector_CGS_ESU', 'QuantityKindDimensionVector_CGS_GAUSS', 'QuantityKindDimensionVector_CGS_LH', 'QuantityKindDimensionVector_ISO', 'QuantityKindDimensionVector_Imperial', 'QuantityKindDimensionVector_SI', 'QuantityKindList', 'QuantityType', 'QuantityValueType', 'RFOutlet', 'RadiantHeater', 'Radiator', 'RapidSandFilter', 'RatioScale', 'RawValueTupleMember', 'RawValueTupleMemberType', 'RealDatatype', 'RealDoublePrecisionType', 'RealNumberType', 'SinglePrecisionType', 'RealSinglePrecisionType', 'Record', 'ReferenceDatatype', 'Refrigerator', 'Relation', 'RelationWithInverse', 'Reservoir', 'ReverseOsmosisMembrane', 'RotaryDrumThickener', 'RotatingBiologicalContactor', 'RotatingReferenceFrame', 'RotationSensor', 'Rule', 'RuleType', 'ScalarDataItem', 'ScalarListShape', 'ScaleType', 'Screen', 'Sequence', 'SequencingBatchReactor', 'ServerComputer', 'Set', 'ShortIntegerType', 'Shower', 'SignedType', 'SignedIntegerType', 'SignedBigIntegerType', 'SignedLongIntegerType', 'SignedMediumIntegerType', 'SignedShortIntegerType', 'VariableLengthIntegerType', 'SignedVariableLengthIntegerType', 'SignednessType', 'SimpleCodeList', 'SingleDuctTerminal', 'Sink', 'SluiceGate', 'SolarThermalCollector', 'SolidAngleUnit', 'SolventExtractionSystem', 'SpeedSensor', 'SplineCalibrator', 'SplinePoint', 'StandardizedFlowCell', 'StateOfChargeSensor', 'StateSpaceMatrix', 'Vector', 'StateSpaceVector', 'Statement', 'StaticMixer', 'SteamInjector', 'StringUTF16', 'StringUTF8', 'Symbol', 'SymmetricRelation', 'SymmetricRelation_2', 'Synchronization_Downsampling', 'Synchronization_Resampling', 'Synchronization_TimeAlignment', 'Synchronization_Upsampling', 'System', 'SystemOfQuantityKinds', 'SystemOfUnits', 'TaggedEnumeration', 'Television', 'TemperatureSensor_2', 'TemperatureSensor', 'ThermalEnergyStorageUnit', 'Thermostat', 'ThreeBodyRotatingCoordinateSystem', 'ThreeWayValve', 'ThreeWayValve_2', 'Time', 'TimeDataType', 'TimeInterval', 'TimeStringType', 'TotalOrganicCompoundConcentrationSensor', 'TransformType', 'TreatmentObjective', 'TreatmentObjective_AmmoniaControl', 'TreatmentObjective_BiosolidsDisposal', 'TreatmentObjective_Clarification', 'TreatmentObjective_Dechlorination', 'TreatmentObjective_Desalination', 'TreatmentObjective_Dewatering', 'TreatmentObjective_Disinfection', 'TreatmentObjective_Drying', 'TreatmentObjective_LandApplication', 'TreatmentObjective_Landfill', 'TreatmentObjective_MetalsRemoval', 'TreatmentObjective_pHAdjustment', 'TreatmentObjective_Neutralization', 'TreatmentObjective_NutrientRemoval', 'TreatmentObjective_NitrogenRemoval', 'TreatmentObjective_OrganicsRemoval', 'TreatmentObjective_PhosphorusRemoval', 'TreatmentObjective_SilicaRemoval', 'TreatmentObjective_Softening', 'TreatmentObjective_SolidsRemoval', 'TreatmentObjective_Stabilization', 'TreatmentObjective_SulfateRemoval', 'TreatmentObjective_Thickening', 'TreatmentObjective_TurbidityRemoval', 'TricklingFilter', 'Triplet', 'TupleType', 'TurbidityMeter', 'Turbine', 'TwoPositionDamper', 'TwoTupleType', 'TwoWayValve', 'TypeList', 'TypeMatrix', 'TypeVector', 'UCUMcs', 'USBCable', 'USBOutlet', 'UVH2O2Reactor', 'UltrafiltrationUnit', 'UltravioletLightUnit', 'UnsignedBigIntegerType', 'UnsignedLongIntegerType', 'UnsignedMediumIntegerType', 'UnsignedShortIntegerType', 'UnsignedVariableLengthIntegerType', 'UserQuantityKind', 'ValueReference', 'Valve', 'VariableFrequencyDrive_2', 'VariableFrequencyDrive', 'VariableIntervalTimeSeriesArray', 'VariableIntervalTimeSeriesArrayType', 'VehicleCoordinateSystem', 'Viewpoint', 'VoltageSensor', 'VolumeSensor', 'WaterOutlet', 'WaterToAirHeatPump', 'WaterToWaterHeatPump', 'WetDryStateType', 'Wetland', 'Window', 'WindowShade', 'WiredEthernetOutlet', 'YesNoType', 'Zone', 'ZoneGroup', 'Zone_2', 'hexbinary', 'pHSensor']

@@ -1,0 +1,3609 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix schema: <https://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+watr:Class a rdfs:Class,
+        sh:NodeShape ;
+    rdfs:label "Class" ;
+    rdfs:comment "This is a modeling construct. All classes defined in the watr ontology are instances of `watr:Class`." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf rdfs:Class ;
+    sh:message "Every term defined by the watr ontology must have an rdfs:comment or skos:definition." ;
+    sh:or ( [ sh:property [ sh:minCount 1 ;
+                        sh:path rdfs:comment ] ] [ sh:property [ sh:minCount 1 ;
+                        sh:path skos:definition ] ] ) ;
+    sh:property [ rdfs:comment "A `Class` must be associated with at least one label using the relation `rdfs:label`." ;
+            sh:message "Every term defined by the watr ontology must have an rdfs:label." ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ] .
+
+watr:UnitProcess a rdfs:Class ;
+    rdfs:label "Unit Process" ;
+    rdfs:comment "A unit process is a specific type of water treatment process that can be applied to water." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment ;
+    sh:property [ sh:class watr:Process ;
+            sh:message "A `Unit Process` must be associated with at least one water treatment process using the relation `watr:hasProcess`." ;
+            sh:minCount 1 ;
+            sh:path watr:hasProcess ] .
+
+watr:AerationBasin a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Aeration Basin" ;
+    rdfs:comment "A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of AerationBasin must have the aerobic or anoxic role." ;
+            sh:path s223:hasRole ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:in ( watr:Role-Aerobic watr:Role-Anoxic ) ] ],
+        [ sh:message "Instances of AerationBasin must have a Aeration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Aeration ] ] .
+
+watr:AerobicDigester a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Aerobic Digester" ;
+    rdfs:comment "A container to promote decomposition of organic waste in aerobic conditions" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Digester ;
+    sh:property [ sh:message "Instances of AerobicDigester must have a AerobicDigestion process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-AerobicDigestion ] ] .
+
+watr:AirReleaseValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Air Release Valve" ;
+    rdfs:comment "Valve for vent trapped air pockets" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:AirStripper a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Air Stripper" ;
+    rdfs:comment "A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:SeparationTank ;
+    sh:property [ sh:message "Instances of AirStripper must have a Stripping process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Stripping ] ] ;
+    watr:mayAlsoPerform watr:Process-Aeration .
+
+watr:AnaerobicDigester a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Anaerobic Digester" ;
+    rdfs:comment "A container to promote decomposition of organic waste in anaerobic conditions" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Digester ;
+    sh:property [ sh:message "Instances of AnaerobicDigester must have a AnaerobicDigestion process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-AnaerobicDigestion ] ] .
+
+watr:Anode a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Anode" ;
+    rdfs:comment "An electrode where oxidation occurs, often a sacrificial component in electrocoagulation." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Electrode .
+
+watr:BallValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Ball Valve" ;
+    rdfs:comment "A valve which operates using a spherical ball with a hole (also known as a bore) through the middle." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:Battery a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Battery" ;
+    rdfs:comment "A device that stores energy for later use" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Battery .
+
+watr:BeltFilterPress a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Belt Filter Press" ;
+    rdfs:comment "A dewatering unit that uses a belt system to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DewateringUnit ;
+    sh:property [ sh:message "Instances of BeltFilterPress must have a Filtration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ] .
+
+watr:BiologicalAeratedFilter a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Biological Aerated Filter (BAF)" ;
+    rdfs:comment "A filter that uses biological processes to remove contaminants." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter,
+        watr:Reactor ;
+    sh:property [ sh:message "Instances of BiologicalAeratedFilter must have a BiologicallyActiveFiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-BiologicallyActiveFiltration ] ] .
+
+watr:Boiler a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Boiler" ;
+    rdfs:comment "A device for heating water" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Boiler,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Boiler must have a Combustion process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Combustion ] ] .
+
+watr:ButterflyValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Butterfly Valve" ;
+    rdfs:comment "A quarter-turn rotary valve used to isolate, start, stop, or regulate the flow of fluids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:CartridgeFiltrationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Cartridge Filtration Unit" ;
+    rdfs:comment "A filter system using a cartridge to remove contaminants from fluids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter .
+
+watr:Cathode a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Cathode" ;
+    rdfs:comment "An electrode where reduction occurs." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Electrode .
+
+watr:CentrifugalDewateringUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Centrifugal Dewatering Unit" ;
+    rdfs:comment "A dewatering unit that uses centrifugal force to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DewateringUnit ;
+    sh:property [ sh:message "Instances of CentrifugalDewateringUnit must have a Centrifugation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Centrifugation ] ] .
+
+watr:CentrifugalThickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Centrifugal Thickener" ;
+    rdfs:comment "A thickener that uses centrifugal force to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Thickener ;
+    sh:property [ sh:message "Instances of CentrifugalThickener must have a Centrifugation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Centrifugation ] ] .
+
+watr:CheckValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Check Valve" ;
+    rdfs:comment "A valve that normally allows fluid (liquid or gas) to flow through it in only one direction" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:ChlorinationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Chlorination Unit" ;
+    rdfs:comment "A unit that uses chlorine or chlorine compounds for disinfection." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DisinfectionUnit ;
+    sh:property [ sh:message "Instances of ChlorinationUnit must have a Chlorination process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-ChlorineDosing ] ] .
+
+watr:ClassDefaultsRule a sh:NodeShape ;
+    rdfs:label "Class defaults" ;
+    rdfs:comment "Materializes watr:hasProcess and watr:hasTreatmentObjective onto an instance from the qualified requirements of its class and that class's ancestors." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:rule [ a sh:SPARQLRule ;
+            rdfs:label "Infer required process and treatment objective from the class" ;
+            sh:construct """
+            CONSTRUCT { $this ?pred ?value . }
+            WHERE {
+                VALUES ?pred { watr:hasProcess watr:hasTreatmentObjective }
+                $this rdf:type/rdfs:subClassOf* ?cls .
+                ?cls sh:property ?ps .
+                ?ps sh:path ?pred ;
+                    sh:qualifiedValueShape/sh:class ?value ;
+                    sh:qualifiedMinCount ?min .
+                FILTER ( ?min > 0 )
+                FILTER NOT EXISTS {
+                    $this ?pred ?existing .
+                    ?existing rdfs:subClassOf* ?value .
+                }
+            }
+        """ ;
+            sh:prefixes <https://watermetadata.org/ontology/watr> ] ;
+    sh:targetClass s223:Equipment .
+
+watr:CoagulationBasin a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Coagulation Basin" ;
+    rdfs:comment "A basin where coagulation occurs to destabilize particles in water" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of CoagulationBasin must have a Coagulation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Coagulation ] ] .
+
+watr:Cogenerator a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Cogenerator" ;
+    rdfs:comment "An equipment that produces both electricity and heat from the same energy source" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Cogenerator must have a Cogeneration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Cogeneration ] ] .
+
+watr:CompositionComplementRule a sh:NodeShape ;
+    rdfs:label "Composition Complement Rule" ;
+    rdfs:comment "Completes a percent composition that leaves exactly one constituent unquantified: that fraction is inferred to be the remainder of the others, 100 minus their sum. A medium declared as 12% salt plus a water fraction with no value gains an inferred water value of 88. The fraction may be a blank node or a named one. The rule stays silent when more than one fraction is unquantified, when none is quantified, when any quantified fraction is a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), and when the remainder would be negative; watr:CompositionPercentageShape reports that last case." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:rule [ a sh:SPARQLRule ;
+            rdfs:label "Infer the remaining constituent's percentage" ;
+            sh:construct """
+            CONSTRUCT {
+                ?unquantified s223:hasValue ?complement .
+            }
+            WHERE {
+                $this s223:composedOf ?unquantified .
+                ?unquantified s223:ofConstituent ?constituent ;
+                              qudt:hasUnit unit:PERCENT .
+                FILTER NOT EXISTS { ?unquantified s223:hasValue ?existingValue }
+                FILTER NOT EXISTS { ?unquantified s223:hasAspect ?anyAspect }
+
+                # The remainder can only be attributed to a single constituent,
+                # so bail out if another fraction is unquantified too.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?sibling .
+                    ?sibling s223:ofConstituent ?siblingConstituent ;
+                             qudt:hasUnit unit:PERCENT .
+                    FILTER NOT EXISTS { ?sibling s223:hasValue ?siblingValue }
+                    FILTER (?sibling != ?unquantified)
+                }
+
+                # A composition stated as ranges has no single complement.
+                FILTER NOT EXISTS {
+                    $this s223:composedOf ?ranged .
+                    ?ranged qudt:hasUnit unit:PERCENT ;
+                            s223:hasValue ?rangedValue ;
+                            s223:hasAspect ?limit .
+                    FILTER (?limit IN (s223:Aspect-LowLimit, s223:Aspect-HighLimit))
+                }
+
+                # No rows when nothing is quantified, so a composition that names
+                # its constituents without values is left alone.
+                {
+                    SELECT $this (SUM(?value) AS ?total)
+                    WHERE {
+                        $this s223:composedOf ?quantified .
+                        ?quantified s223:ofConstituent ?quantifiedConstituent ;
+                                    qudt:hasUnit unit:PERCENT ;
+                                    s223:hasValue ?value .
+                    }
+                    GROUP BY $this
+                }
+                BIND (100 - ?total AS ?complement)
+                FILTER (?complement >= 0)
+            }
+        """ ] ;
+    sh:targetSubjectsOf s223:composedOf .
+
+watr:CompositionPercentageShape a sh:NodeShape ;
+    rdfs:label "Composition Percentage Shape" ;
+    rdfs:comment "A medium's constituent mass or volume fractions expressed in percent cannot add up to more than 100%. Where a constituent is given as a range (s223:Aspect-LowLimit / s223:Aspect-HighLimit), the lowest declared percentage for that constituent is the one that counts, since only the lower bounds must all be simultaneously satisfiable." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "The constituent percentages of {$this} add up to {?total}%, which exceeds 100%." ;
+            sh:select """
+            SELECT $this ?total
+            WHERE {
+                {
+                    SELECT $this (SUM(?lowest) AS ?total)
+                    WHERE {
+                        {
+                            SELECT $this ?constituent (MIN(?value) AS ?lowest)
+                            WHERE {
+                                $this s223:composedOf ?fraction .
+                                ?fraction s223:ofConstituent ?constituent ;
+                                          qudt:hasUnit unit:PERCENT ;
+                                          s223:hasValue ?value .
+                            }
+                            GROUP BY $this ?constituent
+                        }
+                    }
+                    GROUP BY $this
+                }
+                FILTER (?total > 100)
+            }
+        """ ;
+            sh:severity sh:Violation ] ;
+    sh:targetSubjectsOf s223:composedOf .
+
+watr:Compressor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Compressor" ;
+    rdfs:comment "An equipment that increases the pressure of a gas" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Compressor .
+
+watr:Condenser a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Condenser" ;
+    rdfs:comment "A device used to condense a gaseous substance back into a liquid" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:HeatExchanger,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Condenser must have a Condensation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Condensation ] ] .
+
+watr:Conditioner a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Conditioner" ;
+    rdfs:comment "An equipment used to prepare raw biogas from a digester by removing impurities" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:ConductivitySensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Conductivity Sensor" ;
+    rdfs:comment "A sensor used to measure the electrical conductivity of a solution" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:ContinuouslyStirredTankReactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "ContinuouslyStirredTankReactor" ;
+    rdfs:comment "A reactor in which contents are well mixed and reactants are added continuously" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor .
+
+watr:Controller a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Controller" ;
+    rdfs:comment "A piece of equipment for regulation of a system or component in normal operation, which executes one or more `Function`s." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Controller .
+
+watr:Crystallizer a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Crystallizer" ;
+    rdfs:comment "An equipment used to produce solid crystals from a solution" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Crystallizer must have a Crystallization process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Crystallization ] ] .
+
+watr:DMERecoverySystem a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Dimethyl Ether (DME) Recovery System" ;
+    rdfs:comment "A system designed to recover a high percentage of Dimethyl Ether solvent in solvent-driven processes." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:DissolvedAirFlotationThickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Dissolved Air Flotation Thickener" ;
+    rdfs:comment "A thickener that uses dissolved air to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Thickener ;
+    sh:property [ sh:message "Instances of DissolvedAirFlotationThickener must have a Flotation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Flotation ] ] .
+
+watr:EfficiencySensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Efficiency Sensor" ;
+    rdfs:comment "A sensor used to measure the efficiency of a system or equipment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:ElectricallyConductingMembrane a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electrically Conducting Membrane" ;
+    rdfs:comment "A membrane capable of conducting electricity, used for in-situ cleaning or electro-oxidation processes." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter .
+
+watr:ElectroDialyticCrystallizer a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electro-Dialytic Crystallizer (EDC)" ;
+    rdfs:comment "A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of ElectroDialyticCrystallizer must have a Electrodialysis process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ] ],
+        [ sh:message "Instances of ElectroDialyticCrystallizer must have a Crystallization process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Crystallization ] ] .
+
+watr:ElectrocoagulationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electrocoagulation Unit" ;
+    rdfs:comment "A unit that uses electrocoagulation for contaminant removal." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:Reactor ;
+    sh:property [ sh:message "Instances of ElectrocoagulationUnit must have a Electrocoagulation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Electrocoagulation ] ] .
+
+watr:ElectrodialysisUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electrodialysis" ;
+    rdfs:comment "A unit that uses electricity to drive ion movement through a membrane" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of ElectrodialysisUnit must have the Desalination treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Desalination ] ],
+        [ sh:message "Instances of ElectrodialysisUnit must have a Electrodialysis process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Electrodialysis ] ] .
+
+watr:Electrolyzer a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electrolyzer" ;
+    rdfs:comment "An equipment that uses electricity to split liquids into constituent elements" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Electrolyzer must have a Electrolysis process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Electrolysis ] ] .
+
+watr:ElectromagneticFieldDevice a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electromagnetic Field (EMF) Device" ;
+    rdfs:comment "A device that generates an electromagnetic field, used as a pretreatment method for membrane scaling and fouling control." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:EnumerationKind-DataProcessing a s223:EnumerationKind-DataQuality,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "DataQuality" ;
+    rdfs:comment "This EnumerationKind describes methods of data processing, aggregation, or imputation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind .
+
+watr:EnumerationKind-Runtime a s223:EnumerationKind,
+        s223:EnumerationKind-Runtime,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Runtime" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind .
+
+watr:Evaporator a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Evaporator" ;
+    rdfs:comment "A device used to turn the liquid form of a substance into its gaseous form" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:HeatExchanger,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Evaporator must have a Evaporation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Evaporation ] ] .
+
+watr:Flare a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Flare" ;
+    rdfs:comment "A device used to burn off unwanted gas" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:FlocculationBasin a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Flocculation Basin" ;
+    rdfs:comment "A tank where flocculation occurs to aggregate particles in water" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of FlocculationBasin must have a Flocculation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Flocculation ] ] .
+
+watr:FlowSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Flow Sensor" ;
+    rdfs:comment "A sensor used to measure the flow rate of liquids or gases" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:FlowSensor .
+
+watr:FrequencySensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Frequency Sensor" ;
+    rdfs:comment "A sensor used to measure the frequency of a signal or mechanical vibration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:GlobeValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Globe Valve" ;
+    rdfs:comment "A linear-motion valve primarily used for stopping, starting, and regulating (throttling) fluid flow" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:GranularActivatedCarbonAdsorber a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Granular Activated Carbon (GAC) Adsorber" ;
+    rdfs:comment "A unit that uses granulated activated carbon to adsorb impurities from water." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of GranularActivatedCarbonAdsorber must have the OrganicsRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-OrganicsRemoval ] ],
+        [ sh:message "Instances of GranulatedActivatedCarbonAdsorber must have a GranularActivatedCarbon process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-GranularActivatedCarbon ] ] .
+
+watr:GravityBeltThickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Gravity Belt Thickener" ;
+    rdfs:comment "A belt thickener in which gravity drains water through a porous moving belt. It uses filtration rather than the sedimentation mechanism of a conventional gravity thickener." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:BeltThickener .
+
+watr:GravityThickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Gravity Thickener" ;
+    rdfs:comment "A thickener that uses gravity to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Thickener ;
+    sh:property [ sh:message "Instances of GravityThickener must have a Sedimentation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ] .
+
+watr:Grinder a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Grinder" ;
+    rdfs:comment "Machine that shreds solid waste into tiny particles" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Grinder must have the Comminution process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Comminution ] ] .
+
+watr:GritChamber a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Grit Chamber" ;
+    rdfs:comment "A chamber used to remove grit from wastewater" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of GritChamber must have the SolidsRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SolidsRemoval ] ],
+        [ sh:message "Instances of GritChamber must have a Sedimentation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ] .
+
+watr:ImhoffTank a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Imhoff Tank" ;
+    rdfs:comment "A sedimentation tank specifically designed for septic treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:SepticTank .
+
+watr:IonExchangeMembrane a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Ion Exchange Membrane" ;
+    rdfs:comment "A membrane that selectively allows ions to pass through while blocking other substances" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of IonExchangeMembrane must have a IonExchange process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-IonExchange ] ] .
+
+watr:LevelSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Level Sensor" ;
+    rdfs:comment "A sensor used to detect the level of liquids or solids in a tank" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:ManualMeasurementPort a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Manual Measurement Port" ;
+    rdfs:comment "A location where manual measurements are taken" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:MembraneAeratedBiofilmReaactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Membrane Aerated Biofilm Reactor" ;
+    rdfs:comment "A reactor that grows biofilm on membranes supplied with air" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of MembraneAeratedBiofilmReactor must have a Aeration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Aeration ] ] .
+
+watr:MembraneBioreactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Membrane Bioreactor" ;
+    rdfs:comment "A filter system that combines a membrane process like microfiltration with a biological reactor" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter,
+        watr:Reactor,
+        watr:SeparationTank ;
+    sh:property [ sh:message "Instances of MembraneBioreactor must have a Biofiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ] ],
+        [ sh:message "Instances of MembraneBioreactor must have either the Microfiltration or Ultrafiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMaxCount 1 ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:in ( watr:Process-Microfiltration watr:Process-Ultrafiltration ) ] ] .
+
+watr:MicrofiltrationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Microfiltration Unit" ;
+    rdfs:comment "A filter system which removes contaminants from a liquid by passing it through a microporous membrane" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [ sh:message "Instances of MicrofiltrationUnit must have a Microfiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Microfiltration ] ] .
+
+watr:MixingBasin a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Mixing Basin" ;
+    rdfs:comment "A tank where mixed liquor is stirred without aeration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of MixingBasin must have a Mixing process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Mixing ] ],
+        [ sh:message "Instances of MixingBasin must have the anoxic or anaerobic role." ;
+            sh:path s223:hasRole ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:in ( watr:Role-Anoxic watr:Role-Anaerobic ) ] ] .
+
+watr:MolybdenumSulfideBasedMembrane a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Molybdenum Sulfide (MoS2)-based Membrane" ;
+    rdfs:comment "A specific material demonstrating effectiveness in removing heavy metals and oxyanions with high selectivity." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter .
+
+watr:MovingBedBioreactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Moving Bed Bioreactor (MBBR)" ;
+    rdfs:comment "MBBR process using suspended growth media a tank" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter,
+        watr:Reactor ;
+    sh:property [ sh:message "Instances of MovingBedBioreactor must have a Biofiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ] ] .
+
+watr:MultifunctionalMembrane a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Multifunctional Membrane" ;
+    rdfs:comment "A membrane integrating multiple processes (e.g., reduction, adsorption, filtration) for selective removal and recovery of contaminants." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter .
+
+watr:NanofiltrationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Nanofiltration Unit" ;
+    rdfs:comment "A filter system that uses a membrane to soften water and remove organic contaminants" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [ sh:message "Instances of NanofiltrationUnit must have the Softening treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Softening ] ] .
+
+watr:OxidationDitch a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Oxidation Ditch" ;
+    rdfs:comment "Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of OxidationDitch must have the OrganicsRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-OrganicsRemoval ] ],
+        [ sh:message "Instances of OxidationDitch must have a ActivatedSludge process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ] ] .
+
+watr:OxygenDemandSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "OxygenDemand Sensor" ;
+    rdfs:comment "A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:OxygenMeter a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Oxygen Meter" ;
+    rdfs:comment "A sensor used to measure the concentration of oxygen" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:ConcentrationSensor .
+
+watr:OzonationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Ozonation Unit" ;
+    rdfs:comment "A unit that uses ozone for water treatment." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:UnitProcess ;
+    sh:property [ sh:message "Instances of OzonationUnit must have a Ozonation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Ozonation ] ] .
+
+watr:PlugFlowReactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "PlugFlowReactor" ;
+    rdfs:comment "A type of reactor where the fluid flows in one direction through the tube" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ rdfs:comment "A plug flow reactor has at least one outlet fluid connection point" ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:property [ sh:class s223:Mix-Fluid ;
+                            sh:path s223:hasMedium ] ] ],
+        [ rdfs:comment "A plug flow reactor has at least one inlet fluid connection point" ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:property [ sh:class s223:Mix-Fluid ;
+                            sh:path s223:hasMedium ] ] ] .
+
+watr:PlugValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Plug Valve" ;
+    rdfs:comment "A valve with cylindrical or conically tapered plugs which can be rotated inside the valve body to control flow through the valve" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:Pond a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Pond" ;
+    rdfs:comment "A body of still water smaller than a lake, used for treatment or storage." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:PressureExchanger a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "PressureExchanger" ;
+    rdfs:comment "A device used to transfer pressure energy from one fluid to another" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:PressureSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Pressure Sensor" ;
+    rdfs:comment "A sensor used to measure pressure" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:PressureSensor .
+
+watr:ProcessAndRoleConstraintsReferenceDefinedClasses a sh:NodeShape ;
+    rdfs:label "Process and role constraints reference defined classes" ;
+    rdfs:comment "Every class named by a watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint must be defined." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:message "A watr:hasProcess, watr:hasTreatmentObjective or s223:hasRole constraint names a class that is not defined anywhere (check for a rename)." ;
+    sh:or ( [ sh:not [ sh:property [ sh:in ( watr:hasProcess watr:hasTreatmentObjective s223:hasRole ) ;
+                                sh:minCount 1 ;
+                                sh:path sh:path ] ] ] [ sh:property [ sh:node watr:DefinedClassShape ;
+                        sh:path sh:hasValue ],
+                    [ sh:node watr:DefinedClassShape ;
+                        sh:path ( sh:qualifiedValueShape sh:in [ sh:zeroOrMorePath rdf:rest ] rdf:first ) ],
+                    [ sh:node watr:DefinedClassShape ;
+                        sh:path ( sh:qualifiedValueShape sh:class ) ],
+                    [ sh:node watr:DefinedClassShape ;
+                        sh:path ( sh:in [ sh:zeroOrMorePath rdf:rest ] rdf:first ) ],
+                    [ sh:node watr:DefinedClassShape ;
+                        sh:path sh:class ] ] ) ;
+    sh:targetSubjectsOf sh:path .
+
+watr:ProcessBearerShape a sh:NodeShape ;
+    rdfs:label "Process bearers are equipment or systems" ;
+    rdfs:comment "watr:hasProcess and watr:hasTreatmentObjective may only be asserted on an s223:Equipment or an s223:System." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:message "watr:hasProcess and watr:hasTreatmentObjective may only be asserted on s223:Equipment or s223:System. A process is performed by a machine or by a collection of them." ;
+    sh:or ( [ sh:class s223:Equipment ] [ sh:class s223:System ] ) ;
+    sh:targetSubjectsOf watr:hasProcess,
+        watr:hasTreatmentObjective .
+
+watr:ProcessPlausibilityShape a sh:NodeShape ;
+    rdfs:label "Process plausibility" ;
+    rdfs:comment "Warns when equipment declares a process that its family neither requires nor permits via watr:mayAlsoPerform." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:severity sh:Warning ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "{$this} declares {?value}, which its equipment class neither requires nor lists via watr:mayAlsoPerform. If this is legitimate, add a watr:mayAlsoPerform statement to the appropriate equipment class." ;
+            sh:prefixes <https://watermetadata.org/ontology/watr> ;
+            sh:select """
+            SELECT $this ?value
+            WHERE {
+                $this watr:hasProcess ?value .
+
+                # Only judge equipment whose family says something about processes.
+                FILTER EXISTS {
+                    $this rdf:type/rdfs:subClassOf* ?known .
+                    {
+                        ?known sh:property ?kps .
+                        ?kps sh:path watr:hasProcess .
+                        {
+                            ?kps sh:qualifiedValueShape/sh:class ?k .
+                        } UNION {
+                            ?kps sh:class ?k .
+                        } UNION {
+                            ?kps sh:qualifiedValueShape/sh:in/rdf:rest*/rdf:first ?k .
+                        }
+                    } UNION {
+                        ?known watr:mayAlsoPerform ?k .
+                    }
+                    FILTER ( ?k != watr:Process )
+                }
+
+                # Flag values outside the union of required and permitted.
+                FILTER NOT EXISTS {
+                    $this rdf:type/rdfs:subClassOf* ?anc .
+                    {
+                        ?anc sh:property ?ps .
+                        ?ps sh:path watr:hasProcess .
+                        {
+                            ?ps sh:qualifiedValueShape/sh:class ?allowed .
+                        } UNION {
+                            ?ps sh:class ?allowed .
+                        } UNION {
+                            ?ps sh:qualifiedValueShape/sh:in/rdf:rest*/rdf:first ?allowed .
+                        }
+                    } UNION {
+                        ?anc watr:mayAlsoPerform ?allowed .
+                    }
+                    FILTER ( ?allowed != watr:Process )
+                    ?value rdfs:subClassOf* ?allowed .
+                }
+            }
+        """ ] ;
+    sh:targetSubjectsOf watr:hasProcess .
+
+watr:ProcessValueShape a sh:NodeShape ;
+    rdfs:label "Process values are water processes" ;
+    rdfs:comment "Every object of watr:hasProcess must be a watr:Process." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:class watr:Process ;
+    sh:message "Every value of watr:hasProcess must be a watr:Process. An objective belongs on watr:hasTreatmentObjective." ;
+    sh:targetObjectsOf watr:hasProcess .
+
+watr:Pump a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Pump" ;
+    rdfs:comment "A device used to move fluids by mechanical action" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Pump .
+
+watr:RapidSandFilter a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Rapid Sand Filter" ;
+    rdfs:comment "A type of media filter that uses sand as the filter medium and operates at high filtration rates." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:MediaFiltrationUnit ;
+    sh:property [ sh:message "Instances of RapidSandFilter must have a RapidSandFiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-RapidSandFiltration ] ] .
+
+watr:Reservoir a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Reservoir" ;
+    rdfs:comment "A large natural or artificial body of water used for water supply" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:ReverseOsmosisMembrane a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Reverse Osmosis Membrane" ;
+    rdfs:comment "A membrane used for reverse osmosis" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [ sh:message "Instances of ReverseOsmosisMembrane must have the Desalination treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Desalination ] ],
+        [ sh:message "Instances of ReverseOsmosisMembrane must have a ReverseOsmosis process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-ReverseOsmosis ] ] .
+
+watr:RotaryDrumThickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Rotary Drum Thickener" ;
+    rdfs:comment "A thickener that uses a rotating drum to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Thickener ;
+    sh:property [ sh:message "Instances of RotaryDrumThickener must have a Filtration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ] .
+
+watr:RotatingBiologicalContactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Rotating Biological Contactor (RBC)" ;
+    rdfs:comment "Fixed-film process using a slowly rotating discs partially submerged in a tank" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter,
+        watr:Reactor ;
+    sh:property [ sh:message "Instances of RotatingBiologicalContactor must have a Biofiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Biofiltration ] ] .
+
+watr:RotationSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Rotation Sensor" ;
+    rdfs:comment "A sensor used to measure the rotational speed or position of an object" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:Screen a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Screen" ;
+    rdfs:comment "An equipment used for separation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Screen must have a Screening process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Screening ] ],
+        [ sh:message "Instances of Screen must have the SolidsRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-SolidsRemoval ] ] .
+
+watr:SequencingBatchReactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "SequencingBatchReactor" ;
+    rdfs:comment "A type of activated sludge process for wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor,
+        watr:SeparationTank ;
+    sh:property [ sh:message "Instances of SequencingBatchReactor must have a ActivatedSludge process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-ActivatedSludge ] ],
+        [ sh:message "Instances of SequencingBatchReactor must have the OrganicsRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-OrganicsRemoval ] ],
+        [ rdfs:comment "A SBR has at least 1 sludge return point" ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:property [ sh:class watr:Fluid-Sludge ;
+                            sh:path s223:hasMedium ] ] ],
+        [ sh:message "Instances of SequencingBatchReactor must have a Sedimentation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ] ;
+    sh:xone ( [ sh:property [ rdfs:comment "A SBR has at least 1 inlet fluid connection point" ;
+                        sh:path s223:hasConnectionPoint ;
+                        sh:qualifiedMinCount 1 ;
+                        sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                                sh:property [ sh:class s223:Mix-Fluid ;
+                                        sh:path s223:hasMedium ] ] ],
+                    [ rdfs:comment "A SBR has at least 1 outlet fluid connection point" ;
+                        sh:path s223:hasConnectionPoint ;
+                        sh:qualifiedMinCount 1 ;
+                        sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                                sh:property [ sh:class s223:Mix-Fluid ;
+                                        sh:path s223:hasMedium ] ] ] ] [ sh:property [ rdfs:comment "A SBR has at least 1 bidirectional fluid connection point" ;
+                        sh:path s223:hasConnectionPoint ;
+                        sh:qualifiedMinCount 1 ;
+                        sh:qualifiedValueShape [ sh:class s223:BidirectionalConnectionPoint ;
+                                sh:property [ sh:class s223:Mix-Fluid ;
+                                        sh:path s223:hasMedium ] ] ] ] ) .
+
+watr:SluiceGate a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Sluice Gate" ;
+    rdfs:comment "Large gate that slide vertically to control flow in channels, reservoirs, or treatment basins" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Gate .
+
+watr:SolventExtractionSystem a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Solvent Extraction System" ;
+    rdfs:comment "A system that uses a solvent to selectively extract water from highly saline brines." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of SolventExtractionSystem must have a SolventExtraction process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-SolventExtraction ] ] .
+
+watr:SpeedSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Speed Sensor" ;
+    rdfs:comment "A sensor used to measure the speed of an object or fluid" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:StandardizedFlowCell a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Standardized Flow Cell" ;
+    rdfs:comment "An experimental apparatus developed for research experiments, for example in Electrocoagulation (EC), in continuous flow mode." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:StateOfChargeSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "State of Charge Sensor" ;
+    rdfs:comment "A sensor used to measure the remaining charge in a battery or energy storage system" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:StaticMixer a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "StaticMixer" ;
+    rdfs:comment "A device for mixing liquids without moving components" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of StaticMixer must have a Mixing process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Mixing ] ] .
+
+watr:SystemProcessCoverageShape a sh:NodeShape ;
+    rdfs:label "System process coverage" ;
+    rdfs:comment "Warns when a system claims a compound process but nothing in it performs one of the constituent processes." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:severity sh:Warning ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "{$this} claims a process that includes {?missing}, but neither it nor any member performs that process." ;
+            sh:prefixes <https://watermetadata.org/ontology/watr> ;
+            sh:select """
+            SELECT $this ?missing
+            WHERE {
+                $this watr:hasProcess ?claimed .
+                ?claimed rdfs:subClassOf*/watr:includesProcess ?missing .
+                FILTER NOT EXISTS {
+                    $this s223:hasMember* ?performer .
+                    ?performer watr:hasProcess ?actual .
+                    ?actual rdfs:subClassOf* ?missing .
+                }
+            }
+        """ ] ;
+    sh:targetClass s223:System .
+
+watr:TemperatureSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Temperature Sensor" ;
+    rdfs:comment "A sensor used to measure temperature" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:TemperatureSensor .
+
+watr:ThreeWayValve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Three Way Valve" ;
+    rdfs:comment "A valve that features three ports (connections)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:TotalOrganicCompoundConcentrationSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "TOC Sensor" ;
+    rdfs:comment "A sensor used to measure the total organic compound concentration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:ConcentrationSensor .
+
+watr:TreatmentObjectiveCompletenessShape a sh:NodeShape ;
+    rdfs:label "Stated processes imply stated treatment objectives" ;
+    rdfs:comment "Warns when equipment performs a process that achieves a treatment objective the equipment does not state." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:severity sh:Warning ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "{$this} performs {?process}, which achieves treatment objective {?objective}, but does not state it. Add watr:hasTreatmentObjective {?objective}." ;
+            sh:prefixes <https://watermetadata.org/ontology/watr> ;
+            sh:select """
+            SELECT $this ?process ?objective
+            WHERE {
+                $this watr:hasProcess ?process .
+                ?process rdfs:subClassOf*/watr:achievesTreatmentObjective ?objective .
+                FILTER NOT EXISTS {
+                    $this watr:hasTreatmentObjective ?stated .
+                    { ?stated rdfs:subClassOf* ?objective }
+                    UNION
+                    { ?objective rdfs:subClassOf* ?stated }
+                }
+            }
+        """ ] ;
+    sh:targetSubjectsOf watr:hasProcess .
+
+watr:TreatmentObjectiveRequiresProcessShape a sh:NodeShape ;
+    rdfs:label "A treatment objective is reached by a process" ;
+    rdfs:comment "Equipment declaring watr:hasTreatmentObjective must also declare the watr:hasProcess by which it reaches it." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:property watr:TreatmentObjectiveRequiresProcessProperty ;
+    sh:targetSubjectsOf watr:hasTreatmentObjective .
+
+watr:TreatmentObjectiveValueShape a sh:NodeShape ;
+    rdfs:label "Treatment objective values are treatment objectives" ;
+    rdfs:comment "Every object of watr:hasTreatmentObjective must be a watr:TreatmentObjective." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:class watr:TreatmentObjective ;
+    sh:message "Every value of watr:hasTreatmentObjective must be a watr:TreatmentObjective. An activity belongs on watr:hasProcess." ;
+    sh:targetObjectsOf watr:hasTreatmentObjective .
+
+watr:TricklingFilter a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Trickling Filter" ;
+    rdfs:comment "A filter system that treats wastewater by trickling it over a bed of rocks or plastic" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [ sh:message "Instances of TricklingFilter must have a TricklingFiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-TricklingFiltration ] ] .
+
+watr:TurbidityMeter a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Turbidity Meter" ;
+    rdfs:comment "A sensor used to measure the turbidity (clarity) of a fluid" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:UVH2O2Reactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "UV/H2O2 Reactor" ;
+    rdfs:comment "A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of UVH2O2Reactor must have the OrganicsRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-OrganicsRemoval ] ],
+        [ sh:message "Instances of UVH2O2Reactor must have a AdvancedOxidation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-AdvancedOxidation ] ] .
+
+watr:UltrafiltrationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Ultrafiltration Unit" ;
+    rdfs:comment "A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [ sh:message "Instances of UltrafiltrationUnit must have a Ultrafiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Ultrafiltration ] ] .
+
+watr:UltravioletLightUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Ultravioletlight Unit" ;
+    rdfs:comment "A unit using ultraviolet light for disinfection" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DisinfectionUnit ;
+    sh:property [ sh:message "Instances of UltravioletLightUnit must have a UVDisinfection process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-UVIrradiation ] ] .
+
+watr:Valve a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Valve" ;
+    rdfs:comment "A device that regulates, directs or controls the flow of a fluid (gases or liquids) by opening, closing, or partially obstructing various passageways." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:VariableFrequencyDrive a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Variable Frequency Drive" ;
+    rdfs:comment "A type of AC motor drive that controls speed and torque by varying the frequency of the input electricity." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:VariableFrequencyDrive .
+
+watr:VolumeSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Volume Sensor" ;
+    rdfs:comment "A sensor used to measure the volume of a substance" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Sensor .
+
+watr:Wetland a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Wetland" ;
+    rdfs:comment "A marsh or bog-like area that is permanently or seasonally saturated with water, used for pre- or post-treatment." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:achievesTreatmentObjective a rdf:Property ;
+    rdfs:label "achieves treatment objective" ;
+    rdfs:comment "Relates a process type to the treatment objective it achieves wherever it is performed. Used to derive an equipment's treatment objective from its process." ;
+    rdfs:domain watr:Class ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:range watr:Class .
+
+watr:includesProcess a rdf:Property ;
+    rdfs:label "includes process" ;
+    rdfs:comment "Relates a compound process to a constituent process that a system performing it is expected to carry out, typically through a member. Used to check coverage, not validity." ;
+    rdfs:domain watr:Class ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:range watr:Class .
+
+watr:mayAlsoPerform a rdf:Property ;
+    rdfs:label "may also perform" ;
+    rdfs:comment "Relates an equipment class to a process it may perform in addition to the process it requires. Used for plausibility warnings, not validity." ;
+    rdfs:domain watr:Class ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:range watr:Class .
+
+watr:pHSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "pH Sensor" ;
+    rdfs:comment "A sensor used to measure the pH of a solution" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:ConcentrationSensor .
+
+watr:Accuracy-ExpandedUncertainty a sh:NodeShape,
+        watr:Accuracy-ExpandedUncertainty,
+        watr:Class ;
+    rdfs:label "Expanded Uncertainty" ;
+    rdfs:comment "Total uncertainty multiplied by coverage factor" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics .
+
+watr:Accuracy-PercentRecovery a sh:NodeShape,
+        watr:Accuracy-PercentRecovery,
+        watr:Class ;
+    rdfs:label "Percent Recovery" ;
+    rdfs:comment "Ratio of measured to known value (for spike/recovery tests)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics .
+
+watr:Accuracy-RSquared a sh:NodeShape,
+        watr:Accuracy-RSquared,
+        watr:Class ;
+    rdfs:label "R-Squared" ;
+    rdfs:comment "Coefficient of determination for calibration curves" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics .
+
+watr:Accuracy-TotalUncertainty a sh:NodeShape,
+        watr:Accuracy-TotalUncertainty,
+        watr:Class ;
+    rdfs:label "Total Uncertainty" ;
+    rdfs:comment "Combined standard uncertainty from all sources" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-AccuracyMetrics .
+
+watr:Aggregate-Count a sh:NodeShape,
+        watr:Aggregate-Count,
+        watr:Class ;
+    rdfs:label "Count" ;
+    rdfs:comment "Count of data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Max a sh:NodeShape,
+        watr:Aggregate-Max,
+        watr:Class ;
+    rdfs:label "Maximum" ;
+    rdfs:comment "Maximum value from data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Mean a sh:NodeShape,
+        watr:Aggregate-Mean,
+        watr:Class ;
+    rdfs:label "Mean" ;
+    rdfs:comment "Arithmetic mean (average) of data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Median a sh:NodeShape,
+        watr:Aggregate-Median,
+        watr:Class ;
+    rdfs:label "Median" ;
+    rdfs:comment "Middle value of sorted data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Min a sh:NodeShape,
+        watr:Aggregate-Min,
+        watr:Class ;
+    rdfs:label "Minimum" ;
+    rdfs:comment "Minimum value from data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Mode a sh:NodeShape,
+        watr:Aggregate-Mode,
+        watr:Class ;
+    rdfs:label "Mode" ;
+    rdfs:comment "Most frequently occurring value in data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Range a sh:NodeShape,
+        watr:Aggregate-Range,
+        watr:Class ;
+    rdfs:label "Range" ;
+    rdfs:comment "Difference between maximum and minimum values" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-StdDev a sh:NodeShape,
+        watr:Aggregate-StdDev,
+        watr:Class ;
+    rdfs:label "Standard Deviation" ;
+    rdfs:comment "Standard deviation of data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Sum a sh:NodeShape,
+        watr:Aggregate-Sum,
+        watr:Class ;
+    rdfs:label "Sum" ;
+    rdfs:comment "Sum of all data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregate-Variance a sh:NodeShape,
+        watr:Aggregate-Variance,
+        watr:Class ;
+    rdfs:label "Variance" ;
+    rdfs:comment "Variance of data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Aggregate .
+
+watr:Aggregation-Count a sh:NodeShape,
+        watr:Aggregation-Count,
+        watr:Class ;
+    rdfs:label "Count" ;
+    rdfs:comment "The associated property represents a count over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Max a sh:NodeShape,
+        watr:Aggregation-Max,
+        watr:Class ;
+    rdfs:label "Maximum" ;
+    rdfs:comment "The associated property represents the maximum value over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Mean a sh:NodeShape,
+        watr:Aggregation-Mean,
+        watr:Class ;
+    rdfs:label "Mean" ;
+    rdfs:comment "The associated property represents the arithmetic mean over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Median a sh:NodeShape,
+        watr:Aggregation-Median,
+        watr:Class ;
+    rdfs:label "Median" ;
+    rdfs:comment "The associated property represents the median value over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Min a sh:NodeShape,
+        watr:Aggregation-Min,
+        watr:Class ;
+    rdfs:label "Minimum" ;
+    rdfs:comment "The associated property represents the minimum value over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Mode a sh:NodeShape,
+        watr:Aggregation-Mode,
+        watr:Class ;
+    rdfs:label "Mode" ;
+    rdfs:comment "The associated property represents the most frequently occurring value over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Percentile a sh:NodeShape,
+        watr:Aggregation-Percentile,
+        watr:Class ;
+    rdfs:label "Percentile" ;
+    rdfs:comment "The associated property represents the percentile value over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Range a sh:NodeShape,
+        watr:Aggregation-Range,
+        watr:Class ;
+    rdfs:label "Range" ;
+    rdfs:comment "The associated property represents the difference between maximum and minimum over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-StandardDeviation a sh:NodeShape,
+        watr:Aggregation-StandardDeviation,
+        watr:Class ;
+    rdfs:label "Standard Deviation" ;
+    rdfs:comment "The associated property represents the standard deviation over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Sum a sh:NodeShape,
+        watr:Aggregation-Sum,
+        watr:Class ;
+    rdfs:label "Sum" ;
+    rdfs:comment "The associated property represents the sum over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:Aggregation-Total a sh:NodeShape,
+        watr:Aggregation-Total,
+        watr:Class ;
+    rdfs:label "Total" ;
+    rdfs:comment "The associated property represents the total amount of the characterized quantity or substance." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation ;
+    owl:equivalentClass s223:Aspect-Total .
+
+watr:Aggregation-Variance a sh:NodeShape,
+        watr:Aggregation-Variance,
+        watr:Class ;
+    rdfs:label "Variance" ;
+    rdfs:comment "The associated property represents the variance over an aggregation scope." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:EnumerationKind-Aggregation .
+
+watr:BeltThickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Belt Thickener" ;
+    rdfs:comment "A thickener that uses a belt system to separate solids from liquids" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Thickener ;
+    sh:property [ sh:message "Instances of BeltThickener must have a Filtration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ] .
+
+watr:Coagulant-Alum a sh:NodeShape,
+        watr:Class,
+        watr:Coagulant-Alum ;
+    rdfs:label "Alum" ;
+    rdfs:comment "Aluminum sulfate (alum), a common coagulant" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Coagulant .
+
+watr:Coagulant-FerricChloride a sh:NodeShape,
+        watr:Class,
+        watr:Coagulant-FerricChloride ;
+    rdfs:label "Ferric Chloride" ;
+    rdfs:comment "Ferric chloride, a coagulant for wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Coagulant .
+
+watr:Coagulant-PolyaluminumChloride a sh:NodeShape,
+        watr:Class,
+        watr:Coagulant-PolyaluminumChloride ;
+    rdfs:label "Polyaluminum Chloride" ;
+    rdfs:comment "Polyaluminum chloride (PAC), a coagulant" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Coagulant .
+
+watr:Constituent-Ammonia a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Ammonia ;
+    rdfs:label "Ammonia" ;
+    rdfs:comment "Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Bacteria a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Bacteria ;
+    rdfs:label "Constituent Bacteria" ;
+    rdfs:comment "Bacteria: Microscopic single-celled organisms that can be found in water" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Cyanide a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Cyanide ;
+    rdfs:label "Constituent Cyanide" ;
+    rdfs:comment "Cyanide: A highly toxic chemical compound that can be harmful to aquatic life" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-DissolvedOxygen a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-DissolvedOxygen ;
+    rdfs:label "Dissolved Oxygen" ;
+    rdfs:comment "Molecular oxygen dissolved in a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-InorganicCarbon a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-InorganicCarbon ;
+    rdfs:label "Inorganic Carbon" ;
+    rdfs:comment "Inorganic carbon species present as constituents of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Inorganics a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Inorganics ;
+    rdfs:label "Constituent-Inorganics" ;
+    rdfs:comment "Inorganic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Metals a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Metals ;
+    rdfs:label "Constituent-Metals" ;
+    rdfs:comment "Constituent-Metals" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Nitrate a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Nitrate ;
+    rdfs:label "Nitrate" ;
+    rdfs:comment "Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Nitrite a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Nitrite ;
+    rdfs:label "Nitrite" ;
+    rdfs:comment "Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-NitrogenOxides a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-NitrogenOxides ;
+    rdfs:label "Nitrogen Oxides" ;
+    rdfs:comment "Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-OrganicCarbon a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-OrganicCarbon ;
+    rdfs:label "Organic Carbon" ;
+    rdfs:comment "Organic carbon present as a constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Constituent-Organics .
+
+watr:DataProcessing-Filter a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-Filter ;
+    rdfs:label "Filter" ;
+    rdfs:comment "Parent class for filtering methods to remove outliers or unwanted data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:Disinfectant-Chlorine a sh:NodeShape,
+        watr:Class,
+        watr:Disinfectant-Chlorine ;
+    rdfs:label "Chlorine" ;
+    rdfs:comment "Chlorine, a common disinfectant" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Disinfectant .
+
+watr:Disinfectant-Ozone a sh:NodeShape,
+        watr:Class,
+        watr:Disinfectant-Ozone ;
+    rdfs:label "Ozone" ;
+    rdfs:comment "Ozone, an advanced disinfectant" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Disinfectant .
+
+watr:Error-AbsoluteError a sh:NodeShape,
+        watr:Class,
+        watr:Error-AbsoluteError ;
+    rdfs:label "Absolute Error" ;
+    rdfs:comment "Absolute difference between measured and true/reference value" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Error-Bias a sh:NodeShape,
+        watr:Class,
+        watr:Error-Bias ;
+    rdfs:label "Bias" ;
+    rdfs:comment "Systematic deviation from true value (trueness measure)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Error-MeanAbsoluteError a sh:NodeShape,
+        watr:Class,
+        watr:Error-MeanAbsoluteError ;
+    rdfs:label "Mean Absolute Error (MAE)" ;
+    rdfs:comment "Average of absolute errors across multiple measurements" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Error-MeanAbsolutePercentageError a sh:NodeShape,
+        watr:Class,
+        watr:Error-MeanAbsolutePercentageError ;
+    rdfs:label "Mean Absolute Percentage Error (MAPE)" ;
+    rdfs:comment "Average of absolute percentage errors" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Error-MeanSquaredError a sh:NodeShape,
+        watr:Class,
+        watr:Error-MeanSquaredError ;
+    rdfs:label "Mean Squared Error (MSE)" ;
+    rdfs:comment "Average of squared errors" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Error-RelativeError a sh:NodeShape,
+        watr:Class,
+        watr:Error-RelativeError ;
+    rdfs:label "Relative Error" ;
+    rdfs:comment "Error expressed as a percentage of the true/reference value" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Error-RootMeanSquaredError a sh:NodeShape,
+        watr:Class,
+        watr:Error-RootMeanSquaredError ;
+    rdfs:label "Root Mean Squared Error (RMSE)" ;
+    rdfs:comment "Square root of MSE, in same units as measurements" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-ErrorMetrics .
+
+watr:Flocculant-Polyacrylamide a sh:NodeShape,
+        watr:Class,
+        watr:Flocculant-Polyacrylamide ;
+    rdfs:label "Polyacrylamide" ;
+    rdfs:comment "Polyacrylamide, a common flocculant" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Flocculant-Polymer .
+
+watr:Gate a s223:Class,
+        sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Gate" ;
+    rdfs:comment "Tool to control water flow and isolate sections" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Valve .
+
+watr:HeavyMetalRemovalAgent-SodiumSulfide a sh:NodeShape,
+        watr:Class,
+        watr:HeavyMetalRemovalAgent-SodiumSulfide ;
+    rdfs:label "Sodium Sulfide" ;
+    rdfs:comment "Sodium sulfide, used to precipitate heavy metals" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:HeavyMetalRemovalAgent .
+
+watr:HighPurityOxygen a sh:NodeShape,
+        watr:Class,
+        watr:HighPurityOxygen ;
+    rdfs:label "High Purity Oxygen" ;
+    rdfs:comment "Class for high purity oxygen used in wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:Interpolation-BackwardFill a sh:NodeShape,
+        watr:Class,
+        watr:Interpolation-BackwardFill ;
+    rdfs:label "Backward Fill" ;
+    rdfs:comment "Propagate next valid observation backward to fill gaps" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation .
+
+watr:Interpolation-ForwardFill a sh:NodeShape,
+        watr:Class,
+        watr:Interpolation-ForwardFill ;
+    rdfs:label "Forward Fill" ;
+    rdfs:comment "Propagate last valid observation forward to fill gaps" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation .
+
+watr:Interpolation-Linear a sh:NodeShape,
+        watr:Class,
+        watr:Interpolation-Linear ;
+    rdfs:label "Linear Interpolation" ;
+    rdfs:comment "Linear interpolation between two adjacent data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation .
+
+watr:Interpolation-NearestNeighbor a sh:NodeShape,
+        watr:Class,
+        watr:Interpolation-NearestNeighbor ;
+    rdfs:label "Nearest Neighbor" ;
+    rdfs:comment "Use the value of the nearest known data point" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation .
+
+watr:Interpolation-Polynomial a sh:NodeShape,
+        watr:Class,
+        watr:Interpolation-Polynomial ;
+    rdfs:label "Polynomial Interpolation" ;
+    rdfs:comment "Polynomial interpolation using multiple data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation .
+
+watr:Interpolation-Spline a sh:NodeShape,
+        watr:Class,
+        watr:Interpolation-Spline ;
+    rdfs:label "Spline Interpolation" ;
+    rdfs:comment "Cubic spline interpolation for smooth curves" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Interpolation .
+
+watr:MediaFiltrationUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "MediaFiltration Unit" ;
+    rdfs:comment "A filter system that uses a bed of material to filter out contaminants" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Filter ;
+    sh:property [ sh:message "Instances of MediaFiltrationUnit must have the TurbidityRemoval treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-TurbidityRemoval ] ],
+        [ sh:message "Instances of MediaFiltrationUnit must have at least one MediaFiltration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-MediaFiltration ] ] .
+
+watr:Normalization-Decimal a sh:NodeShape,
+        watr:Class,
+        watr:Normalization-Decimal ;
+    rdfs:label "Decimal Scaling" ;
+    rdfs:comment "Normalize by moving the decimal point of values" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Normalization .
+
+watr:Normalization-MinMax a sh:NodeShape,
+        watr:Class,
+        watr:Normalization-MinMax ;
+    rdfs:label "Min-Max Normalization" ;
+    rdfs:comment "Scale data to a fixed range, typically [0, 1]" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Normalization .
+
+watr:Normalization-ZScore a sh:NodeShape,
+        watr:Class,
+        watr:Normalization-ZScore ;
+    rdfs:label "Z-Score Normalization" ;
+    rdfs:comment "Standardize data to have mean=0 and standard deviation=1" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Normalization .
+
+watr:OdorControlAgent-ActivatedCarbon a sh:NodeShape,
+        watr:Class,
+        watr:OdorControlAgent-ActivatedCarbon ;
+    rdfs:label "Activated Carbon" ;
+    rdfs:comment "Activated carbon, used to absorb odors" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:OdorControlAgent .
+
+watr:OxidizingAgent-HydrogenPeroxide a sh:NodeShape,
+        watr:Class,
+        watr:OxidizingAgent-HydrogenPeroxide ;
+    rdfs:label "Hydrogen Peroxide" ;
+    rdfs:comment "Hydrogen peroxide, an oxidizing agent commonly used in advanced oxidation processes" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:OxidizingAgent .
+
+watr:Precision-CoefficientOfVariation a sh:NodeShape,
+        watr:Class,
+        watr:Precision-CoefficientOfVariation ;
+    rdfs:label "Coefficient of Variation" ;
+    rdfs:comment "Ratio of standard deviation to mean (relative precision)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics .
+
+watr:Precision-ConfidenceInterval a sh:NodeShape,
+        watr:Class,
+        watr:Precision-ConfidenceInterval ;
+    rdfs:label "Confidence Interval" ;
+    rdfs:comment "Range within which true value likely falls with specified confidence level" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics .
+
+watr:Precision-RepeatabilityStdDev a sh:NodeShape,
+        watr:Class,
+        watr:Precision-RepeatabilityStdDev ;
+    rdfs:label "Repeatability Standard Deviation" ;
+    rdfs:comment "Standard deviation under repeatability conditions (same operator, equipment, short time)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics .
+
+watr:Precision-ReproducibilityStdDev a sh:NodeShape,
+        watr:Class,
+        watr:Precision-ReproducibilityStdDev ;
+    rdfs:label "Reproducibility Standard Deviation" ;
+    rdfs:comment "Standard deviation under reproducibility conditions (different operators, equipment, time)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-PrecisionMetrics .
+
+watr:Process-AirScouring a watr:Class,
+        watr:Process-AirScouring ;
+    rdfs:label "Air Scouring" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Cleaning ;
+    skos:definition "A cleaning process that uses injected air to dislodge accumulated foulants or solids from filter media or membrane surfaces." .
+
+watr:Process-Backwashing a watr:Class,
+        watr:Process-Backwashing ;
+    rdfs:label "Backwashing" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Cleaning ;
+    skos:definition "A cleaning process in which water, and sometimes air, is driven backward through a filter or membrane system to remove accumulated solids." .
+
+watr:Process-ChemicalPrecipitation a watr:Class,
+        watr:Process-ChemicalPrecipitation ;
+    rdfs:label "Chemical Precipitation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "Addition of a reagent that converts a dissolved constituent into an insoluble solid, so that it can be separated from the water. Which constituent it targets depends on the reagent, which is why the objective is stated on the equipment rather than here." .
+
+watr:Process-ClosedCircuitReverseOsmosis a watr:Class,
+        watr:Process-ClosedCircuitReverseOsmosis ;
+    rdfs:label "Closed Circuit Reverse Osmosis (CCRO)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ReverseOsmosis ;
+    skos:definition "Reverse osmosis operated as a batch, with the concentrate recirculated to the feed side of the same module until a target recovery is reached and then displaced, rather than run as a once-through stage." .
+
+watr:Process-Composting a watr:Class,
+        watr:Process-Composting ;
+    rdfs:label "Composting" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess ;
+    skos:definition "Biological degradation of organic materials under controlled aerobic conditions." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal,
+        watr:TreatmentObjective-Stabilization .
+
+watr:Process-ElectroDialyticCrystallization a watr:Class,
+        watr:Process-ElectroDialyticCrystallization ;
+    rdfs:label "Electro-Dialytic Crystallization (EDC)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Crystallization,
+        watr:Process-Electrodialysis ;
+    skos:definition "A novel integrated process combining electrodialysis and crystallization for energy-efficient Zero-Liquid Discharge (ZLD) by maintaining a saturated brine stream." .
+
+watr:Process-Electrooxidation a watr:Class,
+        watr:Process-Electrooxidation ;
+    rdfs:label "Electrooxidation (EO)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Oxidation,
+        watr:Process-PhysicalProcess ;
+    skos:definition "Oxidation of contaminants at the surface of an anode, and by oxidants generated there, under an applied electric current rather than by a dosed reagent." .
+
+watr:Process-Elutriation a watr:Class,
+        watr:Process-Elutriation ;
+    rdfs:label "Elutriation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Separation ;
+    skos:definition "A process that uses a stream of fluid flowing upward to separate a mixture of particles based on their size, shape, and density." .
+
+watr:Process-FeedReversalReverseOsmosis a watr:Class,
+        watr:Process-FeedReversalReverseOsmosis ;
+    rdfs:label "Feed Reversal Reverse Osmosis (FRRO)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ReverseOsmosis ;
+    skos:definition "Reverse osmosis in which the direction of feed flow through the train is periodically reversed, so that the elements which saw the most concentrated water see the feed next and scale that has begun to form is redissolved." .
+
+watr:Process-FiveStageBardenpho a watr:Class,
+        watr:Process-FiveStageBardenpho ;
+    rdfs:label "Five-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    skos:definition "A five-stage biological nutrient removal process specifically designed for nitrogen and phosphorus." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval,
+        watr:TreatmentObjective-PhosphorusRemoval ;
+    watr:includesProcess watr:Process-Denitrification,
+        watr:Process-EnhancedBiologicalPhosphorusRemoval,
+        watr:Process-Nitrification,
+        watr:Process-Recirculation .
+
+watr:Process-FluidizedBedIncineration a watr:Class,
+        watr:Process-FluidizedBedIncineration ;
+    rdfs:label "Fluidized Bed Incineration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Combustion ;
+    skos:definition "A process that combusts a constantly moving bed of biosolids." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal .
+
+watr:Process-FourStageBardenpho a watr:Class,
+        watr:Process-FourStageBardenpho ;
+    rdfs:label "Four-Stage BARDENPHO (BARnard DENitrification and PHOsphorus removal)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    skos:definition "A four-stage biological nutrient removal process with two anoxic and two aerobic zones." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    watr:includesProcess watr:Process-Denitrification,
+        watr:Process-Nitrification,
+        watr:Process-Recirculation .
+
+watr:Process-HighDensitySludge a watr:Class,
+        watr:Process-HighDensitySludge ;
+    rdfs:label "High-Density Sludge (HDS) Process" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess,
+        watr:Process-PhysicalProcess ;
+    skos:definition "Lime neutralization of an acidic stream, typically acid mine drainage, in which previously formed sludge is recycled into the reaction so that metal hydroxides precipitate onto existing particles and settle as a denser sludge." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Neutralization .
+
+watr:Process-MLE a watr:Class,
+        watr:Process-MLE ;
+    rdfs:label "Modified Ludzack-Ettinger (MLE)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-AO ;
+    skos:definition "Modification of AO with an internal recycle returning nitrate to the anoxic zone." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    watr:includesProcess watr:Process-Recirculation .
+
+watr:Process-MembraneDistillation a watr:Class,
+        watr:Process-MembraneDistillation ;
+    rdfs:label "Membrane Distillation (MD)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-MembraneProcess ;
+    skos:definition "Separation driven by a vapour pressure difference across a hydrophobic membrane: water evaporates on the warm feed side, crosses the membrane as vapour, and condenses on the cool permeate side, while the liquid feed is held back." .
+
+watr:Process-MultipleHearthIncineration a watr:Class,
+        watr:Process-MultipleHearthIncineration ;
+    rdfs:label "Multiple Hearth Incineration (MHI)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Combustion ;
+    skos:definition "A process that combusts biosolids as they move through a series of stacked hearths with controlled air flow." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-BiosolidsDisposal .
+
+watr:Process-OsmoticallyAssistedReverseOsmosis a watr:Class,
+        watr:Process-OsmoticallyAssistedReverseOsmosis ;
+    rdfs:label "Osmotically Assisted Reverse Osmosis (OARO)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ReverseOsmosis ;
+    skos:definition "Reverse osmosis in which a saline sweep stream on the permeate side lowers the osmotic pressure difference across the membrane, so that a hypersaline feed can be concentrated further than the applied pressure would otherwise allow." .
+
+watr:Process-Purging a watr:Class,
+        watr:Process-Purging ;
+    rdfs:label "Purging" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Cleaning ;
+    skos:definition "A process that flushes retained liquid, solids, or gas from equipment or piping to restore operating conditions or prepare for another cycle." .
+
+watr:Process-Reduction a watr:Class,
+        watr:Process-Reduction ;
+    rdfs:label "Chemical Reduction" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "Mechanism by which contaminants are transformed through the gain of electrons." .
+
+watr:Process-SlowSandFiltration a watr:Class,
+        watr:Process-SlowSandFiltration ;
+    rdfs:label "Slow Sand Filtration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-MediaFiltration ;
+    skos:definition "A filtration process that uses a bed of sand to remove impurities at low flow rates." .
+
+watr:Process-ThermalHydrolysis a watr:Class,
+        watr:Process-ThermalHydrolysis ;
+    rdfs:label "Thermal Hydrolysis" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Hydrolysis ;
+    skos:definition "A process that breaks down complex organic matter into soluble compounds using heat and pressure." .
+
+watr:Process-ThermalTreatment a watr:Class,
+        watr:Process-ThermalTreatment ;
+    rdfs:label "Thermal Treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "Heating of water or biosolids, as in pasteurization. The process alone does not establish whether the intended treatment objective is disinfection, drying, hydrolysis, or another thermal result." .
+
+watr:Process-UCT a watr:Class,
+        watr:Process-UCT ;
+    rdfs:label "University of Cape Town (UCT)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-A2O ;
+    skos:definition "Variant of A2O with modified recycle streams for phosphorus removal." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval,
+        watr:TreatmentObjective-PhosphorusRemoval .
+
+watr:ReducingAgent a sh:NodeShape,
+        watr:Class,
+        watr:ReducingAgent ;
+    rdfs:label "Reducing Agent" ;
+    rdfs:comment "Class for reducing agents used in water treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:Role-Backwash a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Backwash ;
+    rdfs:label "Role-Backwash" ;
+    rdfs:comment "Deprecated. Model backwashing as watr:hasProcess watr:Process-Backwashing on the equipment or system that performs it." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role ;
+    owl:deprecated true .
+
+watr:Role-Containment a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Containment ;
+    rdfs:label "Containment" ;
+    rdfs:comment "The equipment confines a spill or an off-specification stream to keep it out of the rest of the plant." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Detention a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Detention ;
+    rdfs:label "Detention" ;
+    rdfs:comment "The equipment holds flow for a designed interval, typically to allow a reaction or settling to complete." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Equalization a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Equalization ;
+    rdfs:label "Equalization" ;
+    rdfs:comment "The equipment buffers variation in flow or load so that the processes downstream of it see a steadier stream." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Extended a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Extended ;
+    rdfs:label "Extended" ;
+    rdfs:comment "The equipment is operated at an extended solids retention time." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Feed a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Feed ;
+    rdfs:label "Feed" ;
+    rdfs:comment "A connection point that admits the stream a process acts on." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-MakeUp a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-MakeUp ;
+    rdfs:label "MakeUp" ;
+    rdfs:comment "A connection point that admits water to replace what a process consumes or loses." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Permeate a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Permeate ;
+    rdfs:label "Permeate" ;
+    rdfs:comment "A connection point carrying the stream that has passed through a membrane." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Posttreatment a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Posttreatment ;
+    rdfs:label "Posttreatment" ;
+    rdfs:comment "The equipment sits after the main treatment train and conditions the effluent for discharge or reuse." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Pretreatment a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Pretreatment ;
+    rdfs:label "Pretreatment" ;
+    rdfs:comment "The equipment sits ahead of the main treatment train and conditions the influent for it." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Primary a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Primary ;
+    rdfs:label "Primary" ;
+    rdfs:comment "Primary treatment: the equipment belongs to the stage that removes settleable and floatable solids ahead of biological treatment. Not to be confused with s223:Role-Primary, which denotes a primary loop." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Retention a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Retention ;
+    rdfs:label "Retention" ;
+    rdfs:comment "The equipment holds flow to attenuate a peak, typically stormwater, and releases it at a controlled rate." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Secondary a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Secondary ;
+    rdfs:label "Secondary" ;
+    rdfs:comment "Secondary treatment: the equipment belongs to the stage that removes biodegradable organics and suspended solids, typically biologically. Not to be confused with s223:Role-Secondary, which denotes a secondary loop." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Stepfeed a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Stepfeed ;
+    rdfs:label "Stepfeed" ;
+    rdfs:comment "The equipment is fed at multiple points along its length rather than only at its head." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Storage a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Storage ;
+    rdfs:label "Storage" ;
+    rdfs:comment "The equipment holds water or sludge for later use rather than acting on it." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Tertiary a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Tertiary ;
+    rdfs:label "Tertiary" ;
+    rdfs:comment "Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:SedimentationTank a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Sedimentation Tank" ;
+    rdfs:comment "A tank used to remove solids from liquids through sedimentation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:SeparationTank ;
+    sh:property [ sh:message "Instances of SedimentationTank must have a Sedimentation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Sedimentation ] ],
+        [ sh:message "Instances of SedimentationTank must have the Clarification treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Clarification ] ] .
+
+watr:SepticTank a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Septic Tank" ;
+    rdfs:comment "A septic tank for on-site wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:SedimentationTank .
+
+watr:Sludge-MixedLiquor a sh:NodeShape,
+        watr:Class,
+        watr:Sludge-MixedLiquor ;
+    rdfs:label "Sludge-MixedLiquor" ;
+    s223:composedOf [ a s223:QuantifiableProperty ;
+            rdfs:label "Suspended Solids Fraction" ;
+            s223:ofConstituent watr:Constituent-SuspendedSolids ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ],
+        [ a s223:QuantifiableProperty ;
+            rdfs:label "Water Fraction" ;
+            s223:ofConstituent s223:Constituent-H2O ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ] ;
+    rdfs:comment "Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Fluid-Sludge .
+
+watr:Synchronization-Downsampling a sh:NodeShape,
+        watr:Class,
+        watr:Synchronization-Downsampling ;
+    rdfs:label "Downsampling" ;
+    rdfs:comment "Decrease the sampling frequency of data to a lower rate" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization .
+
+watr:Synchronization-Resampling a sh:NodeShape,
+        watr:Class,
+        watr:Synchronization-Resampling ;
+    rdfs:label "Resampling" ;
+    rdfs:comment "Resample data to a different frequency or time interval" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization .
+
+watr:Synchronization-TimeAlignment a sh:NodeShape,
+        watr:Class,
+        watr:Synchronization-TimeAlignment ;
+    rdfs:label "Time Alignment" ;
+    rdfs:comment "Align data points from different sources to common timestamps" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization .
+
+watr:Synchronization-Upsampling a sh:NodeShape,
+        watr:Class,
+        watr:Synchronization-Upsampling ;
+    rdfs:label "Upsampling" ;
+    rdfs:comment "Increase the sampling frequency of data to a higher rate" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:DataProcessing-Synchronization .
+
+watr:TreatmentObjective-Dechlorination a watr:Class,
+        watr:TreatmentObjective-Dechlorination ;
+    rdfs:label "Dechlorination" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Removal of the free and combined chlorine residual left by disinfection, before discharge or before a downstream process that the residual would damage." .
+
+watr:TreatmentObjective-Drying a watr:Class,
+        watr:TreatmentObjective-Drying ;
+    rdfs:label "Drying" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-Dewatering ;
+    skos:definition "Removing water from biosolids beyond the cake stage, to a dry product." .
+
+watr:TreatmentObjective-LandApplication a watr:Class,
+        watr:TreatmentObjective-LandApplication ;
+    rdfs:label "Land Application" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-BiosolidsDisposal ;
+    skos:definition "Final disposition of biosolids by beneficial reuse on agricultural or reclamation land." .
+
+watr:TreatmentObjective-Landfill a watr:Class,
+        watr:TreatmentObjective-Landfill ;
+    rdfs:label "Landfill" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-BiosolidsDisposal ;
+    skos:definition "Final disposition of biosolids by landfilling." .
+
+watr:TreatmentObjective-MetalsRemoval a watr:Class,
+        watr:TreatmentObjective-MetalsRemoval ;
+    rdfs:label "Metals Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Removal of dissolved metals from the treated stream, typically by raising pH or dosing sulfide so that they precipitate as hydroxides or sulfides and are then separated out." .
+
+watr:TreatmentObjective-SilicaRemoval a watr:Class,
+        watr:TreatmentObjective-SilicaRemoval ;
+    rdfs:label "Silica Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Reduction of the dissolved silica content of the treated stream, generally to protect downstream membranes from silica scaling." .
+
+watr:TreatmentObjective-SulfateRemoval a watr:Class,
+        watr:TreatmentObjective-SulfateRemoval ;
+    rdfs:label "Sulfate Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Reduction of the dissolved sulfate content of the treated stream, as in acid mine drainage treatment where it is precipitated as gypsum or ettringite." .
+
+watr:TreatmentObjectiveRequiresProcessProperty a sh:PropertyShape ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:message "watr:hasTreatmentObjective says what the equipment is for, so the process it does to get there must be stated with watr:hasProcess as well." ;
+    sh:minCount 1 ;
+    sh:path watr:hasProcess .
+
+watr:Water-Brackish a sh:NodeShape,
+        watr:Class,
+        watr:Water-Brackish ;
+    rdfs:label "Water-Brackish" ;
+    s223:composedOf [ a s223:QuantifiableProperty ;
+            rdfs:label "Water fraction" ;
+            s223:ofConstituent s223:Constituent-H2O ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ],
+        [ a s223:QuantifiableProperty ;
+            rdfs:label "Salt fraction" ;
+            s223:ofConstituent watr:Salt-NaCl ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ] ;
+    rdfs:comment "Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Fluid-Water .
+
+watr:Water-Brine a sh:NodeShape,
+        watr:Class,
+        watr:Water-Brine ;
+    rdfs:label "Water-Brine" ;
+    s223:composedOf [ a s223:QuantifiableProperty ;
+            rdfs:label "Water fraction" ;
+            s223:ofConstituent s223:Constituent-H2O ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ],
+        [ a s223:QuantifiableProperty ;
+            rdfs:label "Salt fraction" ;
+            s223:ofConstituent watr:Salt-NaCl ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ] ;
+    rdfs:comment "Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Fluid-Water .
+
+watr:Water-Freshwater a sh:NodeShape,
+        watr:Class,
+        watr:Water-Freshwater ;
+    rdfs:label "Water-Freshwater" ;
+    s223:composedOf [ a s223:QuantifiableProperty ;
+            rdfs:label "Water fraction" ;
+            s223:ofConstituent s223:Constituent-H2O ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ] ;
+    rdfs:comment "Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Fluid-Water .
+
+watr:Water-Seawater a sh:NodeShape,
+        watr:Class,
+        watr:Water-Seawater ;
+    rdfs:label "Water-Seawater" ;
+    s223:composedOf [ a s223:QuantifiableProperty ;
+            rdfs:label "Salt fraction" ;
+            s223:ofConstituent watr:Salt-NaCl ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ],
+        [ a s223:QuantifiableProperty ;
+            rdfs:label "Water fraction" ;
+            s223:ofConstituent s223:Constituent-H2O ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ] ;
+    rdfs:comment "Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Fluid-Water .
+
+watr:hasAccuracy a rdf:Property ;
+    rdfs:label "has accuracy" ;
+    rdfs:comment "The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasAggregation a rdf:Property ;
+    rdfs:label "has aggregation" ;
+    rdfs:comment "The `hasAggregation` relation associates a property with water-specific aggregation semantics such as total, mean, maximum, or minimum." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasBias a rdf:Property ;
+    rdfs:label "has bias" ;
+    rdfs:comment "The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasCalibrationCurve a rdf:Property ;
+    rdfs:label "has calibration curve" ;
+    rdfs:comment "The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasDropRate a rdf:Property ;
+    rdfs:label "has drop rate" ;
+    rdfs:comment "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasNumericRange a rdf:Property ;
+    rdfs:label "has numeric range" ;
+    rdfs:comment "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measurable values in engineering units." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasNumericResolution a rdf:Property ;
+    rdfs:label "has numeric resolution" ;
+    rdfs:comment "The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasPrecision a rdf:Property ;
+    rdfs:label "has precision" ;
+    rdfs:comment "The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasProcessedData a rdf:Property ;
+    rdfs:label "has processed data" ;
+    rdfs:comment "The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasResponseTime a rdf:Property ;
+    rdfs:label "has response time" ;
+    rdfs:comment "The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasTemporalRange a rdf:Property ;
+    rdfs:label "has temporal range" ;
+    rdfs:comment "The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasTemporalResolution a rdf:Property ;
+    rdfs:label "has temporal resolution" ;
+    rdfs:comment "The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:hasVariableRange a rdf:Property ;
+    rdfs:label "has variable range" ;
+    rdfs:comment "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation for the measured variable under normal operating conditions." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:pHAdjuster-Lime a sh:NodeShape,
+        watr:Class,
+        watr:pHAdjuster-Lime ;
+    rdfs:label "Lime" ;
+    rdfs:comment "Calcium hydroxide (lime), used to increase pH" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:pHAdjuster .
+
+watr:pHAdjuster-SulfuricAcid a sh:NodeShape,
+        watr:Class,
+        watr:pHAdjuster-SulfuricAcid ;
+    rdfs:label "Sulfuric Acid" ;
+    rdfs:comment "Sulfuric acid, used to decrease pH" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:pHAdjuster .
+
+watr:ConcentrationSensor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Concentration Sensor" ;
+    rdfs:comment "A sensor used to measure the concentration of specific substances (e.g., Total Dissolved Solids)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:ConcentrationSensor .
+
+watr:Constituent-Organics a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Organics ;
+    rdfs:label "Constituent-Organics" ;
+    rdfs:comment "Organic chemical matter present as a constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Particles a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Particles ;
+    rdfs:label "Constituent-Particles" ;
+    rdfs:comment "Particulate matter present as a constituent of a medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-Salt a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Salt ;
+    rdfs:label "Constituent-Salt" ;
+    rdfs:comment "Constituent-Salt" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+watr:Constituent-SuspendedSolids a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-SuspendedSolids ;
+    rdfs:label "Constituent-SuspendedSolids" ;
+    rdfs:comment "Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Constituent-Solids .
+
+watr:DewateringUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Dewatering Unit" ;
+    rdfs:comment "A unit used to remove water from solid material" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of DewateringUnit must have the Dewatering treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Dewatering ] ] .
+
+watr:Digester a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Digester" ;
+    rdfs:comment "A container to promote decomposition of organic waste" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Digester must have at least one Digestion process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Digestion ] ],
+        [ sh:message "Instances of Digester must have the Stabilization treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Stabilization ] ] ;
+    watr:mayAlsoPerform watr:Process-GasTransfer .
+
+watr:DisinfectionUnit a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Disinfection Unit" ;
+    rdfs:comment "A unit used to eliminate or reduce harmful microorganisms" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Reactor ;
+    sh:property [ sh:message "Instances of DisinfectionUnit must have the Disinfection treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Disinfection ] ] .
+
+watr:Electrode a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Electrode" ;
+    rdfs:comment "A component where electrochemical reactions occur in electrified processes." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment .
+
+watr:Flocculant a sh:NodeShape,
+        watr:Class,
+        watr:Flocculant ;
+    rdfs:label "Flocculant" ;
+    rdfs:comment "Class for flocculants used in wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:Flocculant-Polymer a sh:NodeShape,
+        watr:Class,
+        watr:Flocculant-Polymer ;
+    rdfs:label "Polymer Flocculant" ;
+    rdfs:comment "Flocculant that is a type of polymer" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Flocculant .
+
+watr:HeavyMetalRemovalAgent a sh:NodeShape,
+        watr:Class,
+        watr:HeavyMetalRemovalAgent ;
+    rdfs:label "Heavy Metal Removal Agent" ;
+    rdfs:comment "Class for chemicals used to remove heavy metals" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:OdorControlAgent a sh:NodeShape,
+        watr:Class,
+        watr:OdorControlAgent ;
+    rdfs:label "Odor Control Agent" ;
+    rdfs:comment "Class for chemicals used for odor control" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:OxidizingAgent a sh:NodeShape,
+        watr:Class,
+        watr:OxidizingAgent ;
+    rdfs:label "Oxidizing Agent" ;
+    rdfs:comment "Class for oxidizing agents used in water treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:Process-A2O a watr:Class,
+        watr:Process-A2O ;
+    rdfs:label "Anaerobic-Anoxic-Oxic (A2O)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    skos:definition "Anaerobic-anoxic-aerobic process for simultaneous biological nitrogen and phosphorus removal." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval,
+        watr:TreatmentObjective-PhosphorusRemoval ;
+    watr:includesProcess watr:Process-Denitrification,
+        watr:Process-EnhancedBiologicalPhosphorusRemoval,
+        watr:Process-Nitrification,
+        watr:Process-Recirculation .
+
+watr:Process-AO a watr:Class,
+        watr:Process-AO ;
+    rdfs:label "Anoxic-Aerobic" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ActivatedSludge ;
+    skos:definition "Two-stage process with anoxic zone followed by aerobic zone for biological nitrogen removal." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval ;
+    watr:includesProcess watr:Process-Denitrification,
+        watr:Process-Nitrification .
+
+watr:Process-Adsorption a watr:Class,
+        watr:Process-Adsorption ;
+    rdfs:label "Adsorption" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A process by which substances bind to a surface." .
+
+watr:Process-AdvancedOxidation a watr:Class,
+        watr:Process-AdvancedOxidation ;
+    rdfs:label "Advanced Oxidation Process (AOP)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Oxidation ;
+    skos:definition "Processes combining UV light with oxidants (e.g., UV-AOP) to destroy contaminants." .
+
+watr:Process-AerobicDigestion a watr:Class,
+        watr:Process-AerobicDigestion ;
+    rdfs:label "Aerobic Digestion" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Digestion ;
+    skos:definition "A biological process that breaks down organic matter in the presence of oxygen." .
+
+watr:Process-AnaerobicDigestion a watr:Class,
+        watr:Process-AnaerobicDigestion ;
+    rdfs:label "Anaerobic Digestion" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Digestion ;
+    skos:definition "A biological process that breaks down organic matter in the absence of oxygen." .
+
+watr:Process-BiologicallyActiveFiltration a watr:Class,
+        watr:Process-BiologicallyActiveFiltration ;
+    rdfs:label "Biologically Active Filtration (BAF)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Biofiltration ;
+    skos:definition "A biologically activated filtration column." .
+
+watr:Process-ChlorineDosing a watr:Class,
+        watr:Process-ChlorineDosing ;
+    rdfs:label "Chlorine Dosing" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Dosing ;
+    skos:definition "Dosing of chlorine or chlorine compounds into water." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
+
+watr:Process-Cogeneration a watr:Class,
+        watr:Process-Cogeneration ;
+    rdfs:label "Cogeneration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Combustion ;
+    skos:definition "A process that combusts biosolids or biogas to produce electricity and heat simultaneously." .
+
+watr:Process-Comminution a watr:Class,
+        watr:Process-Comminution ;
+    rdfs:label "Comminution" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "Process of reducing solid materials into smaller particles through mechanical forces such as crushing, grinding, impact, shear, or compression." .
+
+watr:Process-Condensation a watr:Class,
+        watr:Process-Condensation ;
+    rdfs:label "Condensation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A process of turning a vapor into a liquid." .
+
+watr:Process-Electrocoagulation a watr:Class,
+        watr:Process-Electrocoagulation ;
+    rdfs:label "Electrocoagulation (EC)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Coagulation,
+        watr:Process-PhysicalProcess ;
+    skos:definition "An electrified pretreatment technology using sacrificial anodes to release coagulant precursors for contaminant removal." .
+
+watr:Process-Electrolysis a watr:Class,
+        watr:Process-Electrolysis ;
+    rdfs:label "Electrolysis" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "A process that uses a direct electric current to drive an otherwise non-spontaneous chemical reaction." .
+
+watr:Process-Evaporation a watr:Class,
+        watr:Process-Evaporation ;
+    rdfs:label "Evaporation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A process of turning a liquid into a vapor." .
+
+watr:Process-Flocculation a watr:Class,
+        watr:Process-Flocculation ;
+    rdfs:label "Flocculation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess,
+        watr:Process-Mixing ;
+    skos:definition "A unit process that gently mixes water to allow coagulated particles to form larger clumps." .
+
+watr:Process-Flotation a watr:Class,
+        watr:Process-Flotation ;
+    rdfs:label "Flotation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-SolidLiquidSeparation ;
+    skos:definition "A unit process that uses buoyancy to separate solids from water, often using air bubbles." .
+
+watr:Process-GranularActivatedCarbon a watr:Class,
+        watr:Process-GranularActivatedCarbon ;
+    rdfs:label "Granular Activated Carbon (GAC)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Adsorption,
+        watr:Process-Filtration ;
+    skos:definition "A process that uses an activated carbon filter to adsorb impurities from water." .
+
+watr:Process-Hydrolysis a watr:Class,
+        watr:Process-Hydrolysis ;
+    rdfs:label "Hydrolysis" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "A process reaction in which a water molecule is consumed to split a larger molecule into smaller fragments." .
+
+watr:Process-IonExchange a watr:Class,
+        watr:Process-IonExchange ;
+    rdfs:label "Ion Exchange" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess,
+        watr:Process-PhysicalProcess ;
+    skos:definition "A process in which ions are exchanged between a solution and an ion-exchange resin or membrane." .
+
+watr:Process-Ozonation a watr:Class,
+        watr:Process-Ozonation ;
+    rdfs:label "Ozonation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Oxidation ;
+    skos:definition "A water treatment process that uses ozone as an oxidant. The process alone does not establish whether the intended treatment objective is disinfection, oxidation of a contaminant, or taste-and-odour control." .
+
+watr:Process-RapidSandFiltration a watr:Class,
+        watr:Process-RapidSandFiltration ;
+    rdfs:label "Rapid Sand Filtration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-MediaFiltration ;
+    skos:definition "A filtration process that uses a bed of sand to remove impurities at high flow rates." .
+
+watr:Process-Screening a watr:Class,
+        watr:Process-Screening ;
+    rdfs:label "Screening" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Separation ;
+    skos:definition "A unit process that removes large solids from water, such as leaves, branches, and other debris." .
+
+watr:Process-Solidification a watr:Class,
+        watr:Process-Solidification ;
+    rdfs:label "Solidification" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A process of turning a liquid into a solid (e.g., freezing)." .
+
+watr:Process-SolventExtraction a watr:Class,
+        watr:Process-SolventExtraction ;
+    rdfs:label "Solvent-Based Extraction" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "A non-membrane, non-thermal method using a solvent to selectively extract water from highly saline brines." .
+
+watr:Process-Stripping a watr:Class,
+        watr:Process-Stripping ;
+    rdfs:label "Stripping" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Separation ;
+    skos:definition "Gas stripping for removal of dissolved gases such as ammonia and volatile organic compounds." .
+
+watr:Process-TricklingFiltration a watr:Class,
+        watr:Process-TricklingFiltration ;
+    rdfs:label "TricklingFiltration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Biofiltration ;
+    skos:definition "Trickling filter using any media (e.g., plastic, sand, gravel, etc.)" .
+
+watr:Process-UVIrradiation a watr:Class,
+        watr:Process-UVIrradiation ;
+    rdfs:label "Ultraviolet Irradiation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "Exposure of water to ultraviolet light. Named for what it does rather than what it is for: the same irradiation serves disinfection and, combined with an oxidant, advanced oxidation." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Disinfection .
+
+watr:Role-Aerobic a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Aerobic ;
+    rdfs:label "Aerobic" ;
+    rdfs:comment "The zone is commissioned to run in an aerobic regime, with dissolved oxygen present. A design claim, not a reading: a basin whose blowers are off still carries it." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Anaerobic a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Anaerobic ;
+    rdfs:label "Anaerobic" ;
+    rdfs:comment "The zone is commissioned to run in an anaerobic regime, without dissolved oxygen or nitrate." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Overflow a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Overflow ;
+    rdfs:label "Role-Overflow" ;
+    rdfs:comment "A connection point that discharges liquid above a tank's working level." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Role-Discharge .
+
+watr:Tank a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Tank" ;
+    rdfs:comment "A flow-through vessel with at least one fluid inlet and one fluid outlet. Names a connection-point pattern rather than a geometry: in-line devices such as static mixers qualify." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment ;
+    sh:property [ rdfs:comment "A tank's overflow connection point, if it has one, is a fluid outlet" ;
+            sh:message "An overflow connection point on a Tank must be an outlet carrying a fluid." ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMaxCount 0 ;
+            sh:qualifiedValueShape [ sh:not [ sh:class s223:OutletConnectionPoint ;
+                            sh:property [ sh:class s223:Mix-Fluid ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasMedium ] ] ;
+                    sh:property [ sh:hasValue watr:Role-Overflow ;
+                            sh:minCount 1 ;
+                            sh:path s223:hasRole ] ] ],
+        [ rdfs:comment "A tank's drain connection point, if it has one, is a fluid outlet" ;
+            sh:message "A drain connection point on a Tank must be an outlet carrying a fluid." ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMaxCount 0 ;
+            sh:qualifiedValueShape [ sh:not [ sh:class s223:OutletConnectionPoint ;
+                            sh:property [ sh:class s223:Mix-Fluid ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasMedium ] ] ;
+                    sh:property [ sh:hasValue watr:Role-Drain ;
+                            sh:minCount 1 ;
+                            sh:path s223:hasRole ] ] ],
+        [ rdfs:comment "A tank has an inlet fluid connection point" ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:InletConnectionPoint ;
+                    sh:property [ sh:class s223:Mix-Fluid ;
+                            sh:path s223:hasMedium ] ] ],
+        [ rdfs:comment "A tank has an outlet fluid connection point" ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:not [ sh:property [ sh:hasValue watr:Role-Drain ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasRole ] ] ;
+                    sh:property [ sh:class s223:Mix-Fluid ;
+                            sh:path s223:hasMedium ] ] ] ;
+    watr:mayAlsoPerform watr:Process-Cleaning .
+
+watr:TreatmentObjective-AmmoniaControl a watr:Class,
+        watr:TreatmentObjective-AmmoniaControl ;
+    rdfs:label "Ammonia Control" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:altLabel "Ammonia Removal" ;
+    skos:definition "Reduction or conversion of ammonia in the treated stream, typically by nitrification. Distinct from nitrogen removal, which requires nitrogen to leave the water altogether; nitrification converts ammonia to nitrate and removes no nitrogen." .
+
+watr:TreatmentObjective-Clarification a watr:Class,
+        watr:TreatmentObjective-Clarification ;
+    rdfs:label "Clarification" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Production of a clarified liquid stream by removing suspended solids from it. The objective of every clarifier, whatever the stage it serves and whatever mechanism it separates by." .
+
+watr:TreatmentObjective-Neutralization a watr:Class,
+        watr:TreatmentObjective-Neutralization ;
+    rdfs:label "Neutralization" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-pHAdjustment ;
+    skos:definition "pH adjustment to neutral, typically with a base, as in high-density sludge treatment." .
+
+watr:TreatmentObjective-Softening a watr:Class,
+        watr:TreatmentObjective-Softening ;
+    rdfs:label "Softening" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Reduction of hardness by removing calcium and magnesium from the treated stream." .
+
+watr:TreatmentObjective-Thickening a watr:Class,
+        watr:TreatmentObjective-Thickening ;
+    rdfs:label "Thickening" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Raising the solids concentration of a sludge or slurry while it remains pumpable. Distinguished from dewatering by the state of the product." .
+
+watr:TreatmentObjective-TurbidityRemoval a watr:Class,
+        watr:TreatmentObjective-TurbidityRemoval ;
+    rdfs:label "Turbidity Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-SolidsRemoval ;
+    skos:definition "Reduction of the turbidity of the treated stream, the objective of polishing filtration." .
+
+watr:TreatmentObjective-pHAdjustment a watr:Class,
+        watr:TreatmentObjective-pHAdjustment ;
+    rdfs:label "pH Adjustment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Bringing the pH of the treated stream to a target value." .
+
+watr:hasMeasurementRange a rdf:Property ;
+    rdfs:label "has measurement range" ;
+    rdfs:comment "The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the expected range of variation that can physically be measured, e.g. by a sensor." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> .
+
+watr:Constituent-Solids a sh:NodeShape,
+        watr:Class,
+        watr:Constituent-Solids ;
+    rdfs:label "Constituent-Solids" ;
+    rdfs:comment "Solid material present as a constituent of a treatment medium." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Constituent-Particles .
+
+watr:Disinfectant a sh:NodeShape,
+        watr:Class,
+        watr:Disinfectant ;
+    rdfs:label "Disinfectant" ;
+    rdfs:comment "Class for disinfectants used in wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:Fluid-Sludge a sh:NodeShape,
+        watr:Class,
+        watr:Fluid-Sludge ;
+    rdfs:label "Sludge" ;
+    s223:composedOf [ a s223:QuantifiableProperty ;
+            s223:ofConstituent watr:Constituent-Solids ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ],
+        [ a s223:QuantifiableProperty ;
+            s223:ofConstituent s223:Constituent-H2O ;
+            qudt:hasQuantityKind quantitykind:MassFraction ;
+            qudt:hasUnit unit:PERCENT ] ;
+    rdfs:comment "A semi-solid slurry composed of water and solids." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Fluid-Water,
+        s223:Mix-Fluid .
+
+watr:Process-Centrifugation a watr:Class,
+        watr:Process-Centrifugation ;
+    rdfs:label "Centrifugation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-SolidLiquidSeparation ;
+    skos:definition "A process that uses centrifugal force to separate substances of different densities." .
+
+watr:Process-Coagulation a watr:Class,
+        watr:Process-Coagulation ;
+    rdfs:label "Coagulation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Dosing ;
+    skos:definition "A unit process that adds chemicals to water to cause small particles to clump together." .
+
+watr:Process-Dosing a watr:Class,
+        watr:Process-Dosing ;
+    rdfs:label "Dosing" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "Metered addition of a reagent to water, such as chlorine, coagulant, polymer, acid, base, or sulfite." .
+
+watr:Process-GasTransfer a watr:Class,
+        watr:Process-GasTransfer ;
+    rdfs:label "Gas Transfer" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A unit process that transfers gases, such as oxygen or carbon dioxide, into or out of water." .
+
+watr:Process-Microfiltration a watr:Class,
+        watr:Process-Microfiltration ;
+    rdfs:label "Microfiltration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-MembraneProcess,
+        watr:Process-SolidLiquidSeparation ;
+    skos:definition "Membrane filtration at a pore size of roughly 0.1 to 1 micron, retaining suspended solids, bacteria and larger colloids. The pore-size range characterizes the method; a model states its intended treatment objective separately." .
+
+watr:Process-Ultrafiltration a watr:Class,
+        watr:Process-Ultrafiltration ;
+    rdfs:label "Ultrafiltration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-MembraneProcess,
+        watr:Process-SolidLiquidSeparation ;
+    skos:definition "Membrane filtration at a pore size of roughly 0.01 to 0.1 micron, retaining colloids and macromolecules as well as the suspended solids microfiltration retains. The pore-size range characterizes the method; a model states its intended treatment objective separately." .
+
+watr:Role-Anoxic a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Anoxic ;
+    rdfs:label "Anoxic" ;
+    rdfs:comment "The zone is commissioned to run in an anoxic regime, without dissolved oxygen and with nitrate present." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Role .
+
+watr:Role-Drain a s223:EnumerationKind-Role,
+        sh:NodeShape,
+        watr:Class,
+        watr:Role-Drain ;
+    rdfs:label "Role-Drain" ;
+    rdfs:comment "A connection point that empties a vessel below its working level, for maintenance or solids removal." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Role-Discharge .
+
+watr:TreatmentObjective-Desalination a watr:Class,
+        watr:TreatmentObjective-Desalination ;
+    rdfs:label "Desalination" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Reduction of the dissolved salt content of the treated stream, whether by a membrane, an electrical or a thermal process." .
+
+watr:TreatmentObjective-Dewatering a watr:Class,
+        watr:TreatmentObjective-Dewatering ;
+    rdfs:label "Dewatering" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Removing water from a sludge or slurry to the point that the product is a handleable cake rather than a pumpable liquid." .
+
+watr:TreatmentObjective-NutrientRemoval a watr:Class,
+        watr:TreatmentObjective-NutrientRemoval ;
+    rdfs:label "Nutrient Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Net removal of nitrogen or phosphorus from the treated stream, as opposed to its conversion from one form to another." .
+
+watr:pHAdjuster a sh:NodeShape,
+        watr:Class,
+        watr:pHAdjuster ;
+    rdfs:label "pH Adjuster" ;
+    rdfs:comment "Class for pH adjusters used in wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:Coagulant a sh:NodeShape,
+        watr:Class,
+        watr:Coagulant ;
+    rdfs:label "Coagulant" ;
+    rdfs:comment "Class for coagulants used in wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:WastewaterTreatmentChemical .
+
+watr:DataProcessing-Normalization a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-Normalization ;
+    rdfs:label "Normalization" ;
+    rdfs:comment "Parent class for normalization methods to scale data to a standard range" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:Process-Crystallization a watr:Class,
+        watr:Process-Crystallization ;
+    rdfs:label "Crystallization" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Solidification ;
+    skos:definition "A process of forming solid crystals from a solution." .
+
+watr:Process-Digestion a watr:Class,
+        watr:Process-Digestion ;
+    rdfs:label "Digestion" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess ;
+    skos:definition "A biological process that breaks down organic matter over a long duration in a tank." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-Stabilization .
+
+watr:Process-Electrodialysis a watr:Class,
+        watr:Process-Electrodialysis ;
+    rdfs:label "Electrodialysis" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess,
+        watr:Process-PhysicalProcess ;
+    skos:definition "A process that uses ion-exchange membranes and an electric potential to separate ions from water." .
+
+watr:Process-EnhancedBiologicalPhosphorusRemoval a watr:Class,
+        watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    rdfs:label "Enhanced Biological Phosphorus Removal (EBPR)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess ;
+    skos:definition "Uptake of phosphorus into biomass beyond ordinary metabolic requirements, achieved by cycling the biomass through anaerobic and aerobic conditions." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-PhosphorusRemoval .
+
+watr:Process-MediaFiltration a watr:Class,
+        watr:Process-MediaFiltration ;
+    rdfs:label "Media Filtration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Filtration,
+        watr:Process-SolidLiquidSeparation ;
+    skos:definition "A filtration process that uses a bed of media (as opposed to a membrane-based process)." .
+
+watr:Process-Oxidation a watr:Class,
+        watr:Process-Oxidation ;
+    rdfs:label "Oxidation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess ;
+    skos:definition "A unit process that adds oxidizing agents to water to remove contaminants or improve water quality." .
+
+watr:Salt-NaCl a sh:NodeShape,
+        watr:Class,
+        watr:Salt-NaCl ;
+    rdfs:label "Salt-NaCl" ;
+    rdfs:comment "Salt-NaCl" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Constituent-Salt .
+
+watr:SeparationTank a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Separation Tank" ;
+    rdfs:comment "A tank that has at least two outlets (e.g. overflow and underflow)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Tank,
+        watr:UnitProcess ;
+    sh:property [ rdfs:comment "A separation tank has at least two outlet connection points" ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMinCount 2 ;
+            sh:qualifiedValueShape [ sh:class s223:OutletConnectionPoint ;
+                    sh:property [ sh:class s223:Mix-Fluid ;
+                            sh:path s223:hasMedium ] ] ],
+        [ sh:message "Instances of SeparationTank must have at least one Separation process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Separation ] ] ;
+    watr:mayAlsoPerform watr:Process-Recirculation .
+
+watr:TreatmentObjective-Disinfection a watr:Class,
+        watr:TreatmentObjective-Disinfection ;
+    rdfs:label "Disinfection" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Inactivation or removal of pathogenic organisms from the treated stream. Reached by chlorination, ozonation, ultraviolet irradiation or thermal treatment, none of which is the outcome itself." .
+
+watr:TreatmentObjective-SolidsRemoval a watr:Class,
+        watr:TreatmentObjective-SolidsRemoval ;
+    rdfs:label "Solids Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Net removal of suspended or settleable solids from the treated stream." .
+
+watr:TreatmentObjective-Stabilization a watr:Class,
+        watr:TreatmentObjective-Stabilization ;
+    rdfs:label "Stabilization" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Reduction of the volatile solids, pathogen content and odour potential of biosolids so that they can be stored, used or disposed of." .
+
+watr:DataProcessing-AccuracyMetrics a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-AccuracyMetrics ;
+    rdfs:label "Accuracy Metrics" ;
+    rdfs:comment "Combined accuracy measures (precision and trueness)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:DataProcessing-PrecisionMetrics a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-PrecisionMetrics ;
+    rdfs:label "Precision Metrics" ;
+    rdfs:comment "Metrics for precision and repeatability measurements" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:DataProcessing-Synchronization a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-Synchronization ;
+    rdfs:label "Synchronization" ;
+    rdfs:comment "Parent class for synchronization methods to align data from multiple sources to common time intervals" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:DefinedClassShape a sh:NodeShape ;
+    rdfs:label "Defined class" ;
+    rdfs:comment "A class that exists: it carries at least one rdf:type." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    sh:property [ sh:message "This class is referenced by a shape but is never defined." ;
+            sh:minCount 1 ;
+            sh:path rdf:type ] .
+
+watr:Process-Combustion a watr:Class,
+        watr:Process-Combustion ;
+    rdfs:label "Combustion" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-ChemicalProcess,
+        watr:Process-PhysicalProcess ;
+    skos:definition "A process that combusts biosolids or biogas." .
+
+watr:Process-MembraneProcess a watr:Class,
+        watr:Process-MembraneProcess ;
+    rdfs:label "Membrane Process" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Filtration ;
+    skos:definition "A process that uses a semi-permeable membrane to separate substances." .
+
+watr:Process-Mixing a watr:Class,
+        watr:Process-Mixing ;
+    rdfs:label "Mixing" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A unit process that mixes water with chemicals or other substances to achieve a desired effect." .
+
+watr:Process-ReverseOsmosis a watr:Class,
+        watr:Process-ReverseOsmosis ;
+    rdfs:label "Reverse Osmosis (RO)" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-MembraneProcess ;
+    skos:definition "Separation across a semi-permeable membrane under an applied pressure greater than the osmotic pressure of the feed, so that water passes and dissolved salts are retained." .
+
+watr:Process-Sedimentation a watr:Class,
+        watr:Process-Sedimentation ;
+    rdfs:label "Sedimentation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-SolidLiquidSeparation ;
+    skos:definition "A unit process that allows solids to settle out of water by gravity." .
+
+watr:Thickener a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Thickener" ;
+    rdfs:comment "A device used to increase the solids concentration of a slurry" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Equipment,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Thickener must have the Thickening treatment objective." ;
+            sh:path watr:hasTreatmentObjective ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:TreatmentObjective-Thickening ] ] .
+
+watr:TreatmentObjective-PhosphorusRemoval a watr:Class,
+        watr:TreatmentObjective-PhosphorusRemoval ;
+    rdfs:label "Phosphorus Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-NutrientRemoval ;
+    skos:definition "Net removal of phosphorus from the treated stream, by taking it into biomass or precipitating it into a solid that is then wasted." .
+
+watr:Process a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Water Process" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    skos:definition "A physical, chemical, or biological activity performed by a piece of equipment or by a system." ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "A human-readable label for the process type." ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "A human-readable definition of the process type." ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path skos:definition ] .
+
+watr:Process-Aeration a watr:Class,
+        watr:Process-Aeration ;
+    rdfs:label "Aeration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-GasTransfer ;
+    skos:definition "A unit process that aerates (i.e., transfers oxygen into water)." .
+
+watr:Process-Biofiltration a watr:Class,
+        watr:Process-Biofiltration ;
+    rdfs:label "Biofiltration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess,
+        watr:Process-Filtration ;
+    skos:definition "A filtration method that uses biological processes to remove contaminants." .
+
+watr:Process-Cleaning a watr:Class,
+        watr:Process-Cleaning ;
+    rdfs:label "Cleaning" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A maintenance-oriented process that removes accumulated solids, foulants, or residual materials from water treatment equipment." .
+
+watr:Process-Denitrification a watr:Class,
+        watr:Process-Denitrification ;
+    rdfs:label "Denitrification" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess ;
+    skos:definition "Process by which nitrate is deoxidized to nitrogen gas and nitrogen oxides." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
+
+watr:Process-Nitrification a watr:Class,
+        watr:Process-Nitrification ;
+    rdfs:label "Nitrification" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess ;
+    skos:definition "Process by which ammonia is oxidized to nitrite and subsequently nitrate." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-AmmoniaControl .
+
+watr:TreatmentObjective-BiosolidsDisposal a watr:Class,
+        watr:TreatmentObjective-BiosolidsDisposal ;
+    rdfs:label "Biosolids Disposal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Final disposition of biosolids, by land application, landfilling, incineration or another route." .
+
+watr:TreatmentObjective-OrganicsRemoval a watr:Class,
+        watr:TreatmentObjective-OrganicsRemoval ;
+    rdfs:label "Organics Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective ;
+    skos:definition "Net removal of biodegradable or dissolved organic material, measured as BOD, COD or TOC." .
+
+watr:DataProcessing-Interpolation a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-Interpolation ;
+    rdfs:label "Interpolation" ;
+    rdfs:comment "Parent class for interpolation methods to estimate values between known data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:Process-ActivatedSludge a watr:Class,
+        watr:Process-ActivatedSludge ;
+    rdfs:label "Activated Sludge" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-BiologicalProcess ;
+    skos:definition "Suspended-growth biological treatment in which biomass is aerated and subsequently separated from the treated water." ;
+    watr:achievesTreatmentObjective watr:TreatmentObjective-OrganicsRemoval ;
+    watr:includesProcess watr:Process-Aeration,
+        watr:Process-SolidLiquidSeparation .
+
+watr:Process-Recirculation a watr:Class,
+        watr:Process-Recirculation ;
+    rdfs:label "Recirculation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "A process that returns a portion of a treated or intermediate flow back upstream to maintain hydraulic, solids, or biological performance." .
+
+watr:Process-Separation a watr:Class,
+        watr:Process-Separation ;
+    rdfs:label "Separation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-PhysicalProcess ;
+    skos:definition "The most generic process for separation of any two constituents." .
+
+watr:DataProcessing-ErrorMetrics a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-ErrorMetrics ;
+    rdfs:label "Error Metrics" ;
+    rdfs:comment "Parent class for error and uncertainty measurements" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:Process-BiologicalProcess a watr:Class,
+        watr:Process-BiologicalProcess ;
+    rdfs:label "Biological Process" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process ;
+    skos:definition "A unit process that utilizes biological activity for water treatment." .
+
+watr:Process-SolidLiquidSeparation a watr:Class,
+        watr:Process-SolidLiquidSeparation ;
+    rdfs:label "Solid-Liquid Separation" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Separation ;
+    skos:definition "Separation of suspended solids from the liquid carrying them, by settling, flotation, filtration or centrifugal force. Distinguished from separations that act on dissolved or gaseous constituents." .
+
+watr:TreatmentObjective-NitrogenRemoval a watr:Class,
+        watr:TreatmentObjective-NitrogenRemoval ;
+    rdfs:label "Nitrogen Removal" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:TreatmentObjective-NutrientRemoval ;
+    skos:definition "Net removal of nitrogen from the treated stream, typically by converting nitrate to nitrogen gas so that it leaves as a gas." .
+
+watr:Process-Filtration a watr:Class,
+        watr:Process-Filtration ;
+    rdfs:label "Filtration" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process-Separation ;
+    skos:definition "A unit process that separates constituents from water by passing it through a filter or membrane, retaining what will not pass." .
+
+watr:WastewaterTreatmentChemical a sh:NodeShape,
+        watr:Class,
+        watr:WastewaterTreatmentChemical ;
+    rdfs:label "Wastewater Treatment Chemical" ;
+    rdfs:comment "Base class for all chemicals used in wastewater treatment" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Medium-Constituent .
+
+s223:Sensor sh:property [ rdfs:comment "The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the maximum or minimum that can physically be measured, e.g. by a sensor." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasMeasurementRange ] .
+
+watr:DataProcessing-Aggregate a sh:NodeShape,
+        watr:Class,
+        watr:DataProcessing-Aggregate ;
+    rdfs:label "Aggregate" ;
+    rdfs:comment "Parent class for aggregation functions that combine multiple data points" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-DataProcessing .
+
+watr:Process-ChemicalProcess a watr:Class,
+        watr:Process-ChemicalProcess ;
+    rdfs:label "Chemical Process" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process ;
+    skos:definition "A unit process that uses chemical reaction, chemical addition, or both to achieve a desired effect." .
+
+watr:EnumerationKind-Aggregation a sh:NodeShape,
+        watr:Class,
+        watr:EnumerationKind-Aggregation ;
+    rdfs:label "Aggregation" ;
+    rdfs:comment "EnumerationKind for aggregation semantics carried by a property, such as total, mean, maximum, or minimum." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:EnumerationKind-Aspect .
+
+watr:Filter a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Filter" ;
+    rdfs:comment "An equipment used to remove impurities from liquids or gases" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf s223:Filter,
+        watr:UnitProcess ;
+    sh:property [ sh:message "Instances of Filter must have at least one Filtration process." ;
+            sh:path watr:hasProcess ;
+            sh:qualifiedMinCount 1 ;
+            sh:qualifiedValueShape [ sh:class watr:Process-Filtration ] ] ;
+    watr:mayAlsoPerform watr:Process-Cleaning .
+
+watr:Reactor a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Reactor" ;
+    rdfs:comment "A vessel in which a reaction or biological/chemical treatment process takes place" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Tank,
+        watr:UnitProcess ;
+    sh:property [ rdfs:comment "A reactor's recirculation or return connection points, if any, are fluid outlets" ;
+            sh:message "A recirculation or return connection point on a Reactor must be an outlet carrying a fluid." ;
+            sh:path s223:hasConnectionPoint ;
+            sh:qualifiedMaxCount 0 ;
+            sh:qualifiedValueShape [ sh:not [ sh:class s223:OutletConnectionPoint ;
+                            sh:property [ sh:class s223:Mix-Fluid ;
+                                    sh:minCount 1 ;
+                                    sh:path s223:hasMedium ] ] ;
+                    sh:property [ sh:path s223:hasRole ;
+                            sh:qualifiedMinCount 1 ;
+                            sh:qualifiedValueShape [ sh:in ( s223:Role-Recirculating s223:Role-Return ) ] ] ] ] ;
+    watr:mayAlsoPerform watr:Process-Aeration,
+        watr:Process-Denitrification,
+        watr:Process-EnhancedBiologicalPhosphorusRemoval,
+        watr:Process-Mixing,
+        watr:Process-Nitrification,
+        watr:Process-Recirculation .
+
+watr:Process-PhysicalProcess a watr:Class,
+        watr:Process-PhysicalProcess ;
+    rdfs:label "Physical Process" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:subClassOf watr:Process ;
+    skos:definition "A unit process that relies on physical forces to separate or treat water." .
+
+watr:TreatmentObjective a sh:NodeShape,
+        watr:Class ;
+    rdfs:label "Treatment Objective" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    skos:definition "An objective that a piece of equipment or a system is intended to achieve." ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "A human-readable label for the treatment objective." ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "A human-readable definition of the treatment objective." ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path skos:definition ] .
+
+watr:hasTreatmentObjective a rdf:Property ;
+    rdfs:label "has treatment objective" ;
+    rdfs:comment "Associates a piece of equipment or a system with the treatment objective it is intended to achieve. What it does to achieve that is watr:hasProcess." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    schema:domainIncludes s223:Equipment,
+        s223:System ;
+    schema:rangeIncludes watr:TreatmentObjective .
+
+s223:QuantifiableProperty sh:property [ rdfs:comment "The `hasMeasurementRange` relation is used to link to a numerical `Property` whose value indicates the maximum or minimum that can physically be measured, e.g. by a sensor." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasMeasurementRange ],
+        [ rdfs:comment "If present, `hasAggregation` associates a quantifiable property with one aggregation semantics such as total, mean, maximum, or minimum." ;
+            sh:class watr:EnumerationKind-Aggregation ;
+            sh:maxCount 1 ;
+            sh:path watr:hasAggregation ],
+        [ rdfs:comment "The `hasTemporalRange` relation is used to link to a numerical `Property` whose value indicates the start and end times for which data has been recorded." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasTemporalRange ],
+        [ rdfs:comment "The `hasVariableRange` relation is used to link to a numerical `Property` whose value indicates the maximum or minimum for the measured variable during normal operation." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasVariableRange ],
+        [ rdfs:comment "The `hasNumericRange` relation is used to link to a numerical `Property` whose value indicates the span between the minimum and maximum measured values." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasNumericRange ],
+        [ rdfs:comment "The `hasDropRate` relation is used to link to a `Property` describes the amount of data points lost within a range of time due to latencies or other factors." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasDropRate ],
+        [ rdfs:comment "The `hasBias` relation is used to link to a numerical `Property` whose value indicates the systematic offset or drift in measurements relative to the true value." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasBias ],
+        [ rdfs:comment "The `hasProcessedData` relation is used to link to a `Property` that describes any data processing, filtering, or transformation applied to the raw measurement values." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasProcessedData ],
+        [ rdfs:comment "The `hasTemporalResolution` relation is used to link to a numerical `Property` whose value indicates the minimum time interval between successive measurements or data points." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasTemporalResolution ],
+        [ rdfs:comment "The `hasNumericResolution` relation is used to link to a numerical `Property` whose value indicates the smallest distinguishable difference between two measured values in engineering units." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasNumericResolution ],
+        [ rdfs:comment "The `hasAccuracy` relation is used to link to a numerical `Property` whose value indicates the maximum expected deviation between the measured value and the true value in engineering units." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasAccuracy ],
+        [ rdfs:comment "The `hasResponseTime` relation is used to link to a numerical `Property` whose value indicates the time required for the sensor or measurement system to respond to a step change in the measured variable." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasResponseTime ],
+        [ rdfs:comment "The `hasCalibrationCurve` relation is used to link to a `Property` that describes the mathematical relationship or lookup table between raw sensor output and calibrated engineering units." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasCalibrationCurve ],
+        [ rdfs:comment "The `hasPrecision` relation is used to link to a numerical `Property` whose value indicates the repeatability or reproducibility of measurements under identical conditions." ;
+            sh:class s223:QuantifiableProperty ;
+            sh:path watr:hasPrecision ] .
+
+watr:hasProcess a rdf:Property ;
+    rdfs:label "has process" ;
+    rdfs:comment "Associates a water treatment process with the entity that performs it: a piece of Equipment, or an s223:System where the process is performed by the collection and by no individual member (backwashing, or a treatment train such as an MLE). See watr:ProcessBearerShape and watr:ProcessValueShape." ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    schema:domainIncludes s223:Equipment,
+        s223:System ;
+    schema:rangeIncludes watr:Process .
+
+<https://watermetadata.org/ontology/watr> a owl:Ontology ;
+    rdfs:label "NAWI Water Ontology - Version 0.2" ;
+    dcterms:description "An ontology for describing water and wastewater treatment systems, built on ASHRAE Standard 223P." ;
+    dcterms:license <https://github.com/DataDrivenCPS/water-ontology/blob/main/LICENSE> ;
+    dcterms:modified "2026-09-29"^^xsd:date ;
+    dcterms:title "NAWI Water Ontology" ;
+    rdfs:isDefinedBy <https://watermetadata.org/ontology/watr> ;
+    rdfs:seeAlso <https://watermetadata.org> ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all>,
+        <http://qudt.org/3.3.0/vocab/quantitykind>,
+        <http://qudt.org/3.3.0/vocab/unit>,
+        sh: ;
+    owl:versionIRI <https://watermetadata.org/ontology/watr> ;
+    owl:versionInfo "0.2" ;
+    sh:declare [ sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ;
+            sh:prefix "rdfs" ],
+        [ sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ;
+            sh:prefix "s223" ],
+        [ sh:namespace "https://watermetadata.org/ontology/watr#"^^xsd:anyURI ;
+            sh:prefix "watr" ],
+        [ sh:namespace "http://www.w3.org/ns/shacl#"^^xsd:anyURI ;
+            sh:prefix "sh" ],
+        [ sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ;
+            sh:prefix "rdf" ] .
+
+[] sh:namespace "http://qudt.org/schema/qudt/"^^xsd:anyURI ;
+    sh:prefix "qudt" .
+
+[] sh:namespace "http://data.ashrae.org/standard223#"^^xsd:anyURI ;
+    sh:prefix "s223" .
+
+[] sh:namespace "http://qudt.org/vocab/unit/"^^xsd:anyURI ;
+    sh:prefix "unit" .
+

@@ -80,3 +80,7 @@ print(loaded["transfer-pump"].type)
 print(loaded["transfer-pump"].meta.ontology.version)
 assert loaded["transfer-pump"].type == "Pump"
 ```
+
+The path describes physical connections. To describe treatment intent, add
+`has_process`, `has_treatment_objective`, and `has_role` to equipment or systems.
+Continue with [Author WaTr processes, objectives, and roles](../how-to/watr-processes.md).

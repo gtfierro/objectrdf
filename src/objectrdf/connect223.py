@@ -69,6 +69,16 @@ class S223Connector:
                     and getattr(cp, "medium") is not None
                     and getattr(cp, "medium").is_a(medium)
                 )
+                already += sum(
+                    1 for port in entity.meta.model._port_intents
+                    if port.owner is entity
+                    and slot.direction in (
+                        (port.direction,) if isinstance(port.direction, str)
+                        else port.direction
+                    )
+                    and port.medium is not None and port.medium.is_a(medium)
+                    and (slot.label is None or port.label == slot.label)
+                )
                 for _ in range(max(slot.min_count - already, 0)):
                     cp = slot_cls(
                         self._free_name(entity, f"{entity.name}-{slot.direction}"),
@@ -88,11 +98,17 @@ class S223Connector:
         name: str | None = None,
     ) -> ConnectionHandle:
         """Record a deferred connection intention and return its handle."""
+        from .core.entity import Entity
+
         if isinstance(a, PointRef):
             a = a._port
         if isinstance(b, PointRef):
             b = b._port
         a_owner = a.owner if isinstance(a, (PortHandle, PointGroupRef)) else a
+        if isinstance(a_owner, Entity):
+            point_owner = getattr(a_owner, "owner", None)
+            if isinstance(point_owner, Entity):
+                a_owner = point_owner
         return a_owner.meta.model._defer_connection(
             a,
             b,

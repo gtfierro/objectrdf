@@ -1,0 +1,1462 @@
+@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
+@prefix ex: <https://w3id.org/objectrdf/seawater-ro#> .
+@prefix kind: <http://qudt.org/vocab/quantitykind/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex: a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    codegen:baseModule "objectrdf.watr" .
+
+ex:AdvancedOxidationStageShape a sh:NodeShape ;
+    sh:node ex:UVDesignShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#AdvancedOxidationStageShape/hasProcess/0> ;
+    sh:targetClass ex:AdvancedOxidationStage .
+
+ex:BackwashSeparatorShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/2>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/3>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/4>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasProcess/0> ;
+    sh:targetClass ex:BackwashSeparator .
+
+ex:BackwashStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#BackwashStageShape/hasProcess/0> ;
+    sh:targetClass ex:BackwashStage .
+
+ex:BoosterPumpShape a sh:NodeShape ;
+    sh:node ex:PumpDesignShape ;
+    sh:targetClass ex:BoosterPump .
+
+ex:CartridgeFiltrationStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0> ;
+    sh:targetClass ex:CartridgeFiltrationStage .
+
+ex:ChlorinationStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> ;
+    sh:targetClass ex:ChlorinationStage .
+
+ex:CoagulationStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#CoagulationStageShape/hasProcess/0> ;
+    sh:targetClass ex:CoagulationStage .
+
+ex:DosingStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#DosingStageShape/hasProcess/0> ;
+    sh:targetClass ex:DosingStage .
+
+ex:EnergyRecoveryExchangerShape a sh:NodeShape ;
+    sh:node ex:PressureExchangerDesignShape ;
+    sh:targetClass ex:EnergyRecoveryExchanger .
+
+ex:FeedSplitterShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/2>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/3>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/4>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasMedium/0> ;
+    sh:targetClass ex:FeedSplitter .
+
+ex:HighPressurePumpShape a sh:NodeShape ;
+    sh:node ex:HighPressurePumpDesignShape ;
+    sh:targetClass ex:HighPressurePump .
+
+ex:IntakePumpShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#IntakePumpShape/hasRole/0> ;
+    sh:targetClass ex:IntakePump .
+
+ex:LandfillShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#LandfillShape/hasConnectionPoint/0>,
+        <https://w3id.org/objectrdf/seawater-ro#LandfillShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#LandfillShape/hasConnectionPoint/2> ;
+    sh:targetClass ex:Landfill .
+
+ex:MediaFilterShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/4>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasProcess/0> ;
+    sh:targetClass ex:MediaFilter .
+
+ex:MediaFiltrationStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MediaFiltrationStageShape/hasProcess/0> ;
+    sh:targetClass ex:MediaFiltrationStage .
+
+ex:MixingStageShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MixingStageShape/hasProcess/0> ;
+    sh:targetClass ex:MixingStage .
+
+ex:PermeateConnectionShape a sh:NodeShape ;
+    sh:node ex:PermeateStateShape ;
+    sh:targetClass ex:PermeateConnection .
+
+ex:ROFeedMixerShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/2>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/3>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/4>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasProcess/0> ;
+    sh:targetClass ex:ROFeedMixer .
+
+ex:ROStageShape a sh:NodeShape ;
+    sh:node ex:MembraneDesignShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/2>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/3>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/4>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasProcess/0> ;
+    sh:targetClass ex:ROStage .
+
+ex:SeawaterFeedShape a sh:NodeShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasConnectionPoint/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasConnectionPoint/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasRole/0> ;
+    sh:targetClass ex:SeawaterFeed .
+
+ex:StorageTankShape a sh:NodeShape ;
+    sh:node ex:ResidenceTimeDesignShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#StorageTankShape/hasRole/0> ;
+    sh:targetClass ex:StorageTank .
+
+ex:AdvancedOxidationStage a owl:Class ;
+    rdfs:label "Advanced Oxidation Stage" ;
+    rdfs:comment "Advanced Oxidation Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:UVH2O2Reactor .
+
+<https://w3id.org/objectrdf/seawater-ro#AdvancedOxidationStageShape/hasProcess/0> sh:hasValue watr:Process-AdvancedOxidation ;
+    sh:path watr:hasProcess .
+
+ex:BackwashSeparator a owl:Class ;
+    rdfs:label "Backwash Separator" ;
+    rdfs:comment "Backwash Separator configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:UnitProcess .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/1> sh:name "inlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:BackwashSeparator_inletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/2> sh:name "treated" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:BackwashSeparator_treatedPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/3> sh:name "byproduct" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:BackwashSeparator_byproductPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasConnectionPoint/4> sh:maxCount 3 ;
+    sh:minCount 3 ;
+    sh:path s223:hasConnectionPoint .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasProcess/0> sh:hasValue watr:Process-Separation ;
+    sh:path watr:hasProcess .
+
+ex:BackwashSeparator_byproductPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_byproductPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_byproductPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_byproductPointShape/hasMedium/0> sh:hasValue watr:Fluid-Sludge ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_byproductPointShape/label/1> sh:hasValue "byproduct" ;
+    sh:path rdfs:label .
+
+ex:BackwashSeparator_inletPointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_inletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_inletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_inletPointShape/label/1> sh:hasValue "inlet" ;
+    sh:path rdfs:label .
+
+ex:BackwashSeparator_treatedPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_treatedPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_treatedPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_treatedPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashSeparator_treatedPointShape/label/1> sh:hasValue "treated" ;
+    sh:path rdfs:label .
+
+ex:BackwashStage a owl:Class ;
+    rdfs:label "Backwash Stage" ;
+    rdfs:comment "Backwash Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:UnitProcess .
+
+<https://w3id.org/objectrdf/seawater-ro#BackwashStageShape/hasProcess/0> sh:hasValue watr:Process-Backwashing ;
+    sh:path watr:hasProcess .
+
+ex:BoosterPump a owl:Class ;
+    rdfs:label "Booster Pump" ;
+    rdfs:comment "Booster Pump configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:Pump .
+
+ex:CartridgeFiltrationStage a owl:Class ;
+    rdfs:label "Cartridge Filtration Stage" ;
+    rdfs:comment "Cartridge Filtration Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:CartridgeFiltrationUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#CartridgeFiltrationStageShape/hasProcess/0> sh:hasValue watr:Process-Filtration ;
+    sh:path watr:hasProcess .
+
+ex:ChlorinationStage a owl:Class ;
+    rdfs:label "Chlorination Stage" ;
+    rdfs:comment "Chlorination Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:ChlorinationUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> sh:hasValue watr:Process-ChlorineDosing ;
+    sh:path watr:hasProcess .
+
+ex:CoagulationStage a owl:Class ;
+    rdfs:label "Coagulation Stage" ;
+    rdfs:comment "Coagulation Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:CoagulationBasin .
+
+<https://w3id.org/objectrdf/seawater-ro#CoagulationStageShape/hasProcess/0> sh:hasValue watr:Process-Coagulation ;
+    sh:path watr:hasProcess .
+
+ex:DosingStage a owl:Class ;
+    rdfs:label "Dosing Stage" ;
+    rdfs:comment "Dosing Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:Reactor .
+
+<https://w3id.org/objectrdf/seawater-ro#DosingStageShape/hasProcess/0> sh:hasValue watr:Process-Dosing ;
+    sh:path watr:hasProcess .
+
+ex:EnergyRecoveryExchanger a owl:Class ;
+    rdfs:label "Energy Recovery Exchanger" ;
+    rdfs:comment "Energy Recovery Exchanger configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:PressureExchanger .
+
+ex:FeedSplitter a owl:Class ;
+    rdfs:label "Feed Splitter" ;
+    rdfs:comment "Feed Splitter configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf s223:Junction .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/1> sh:name "inlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:FeedSplitter_inletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/2> sh:name "pump" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:FeedSplitter_pumpPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/3> sh:name "pressure_exchanger" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:FeedSplitter_pressure_exchangerPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasConnectionPoint/4> sh:maxCount 3 ;
+    sh:minCount 3 ;
+    sh:path s223:hasConnectionPoint .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+ex:FeedSplitter_inletPointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#FeedSplitter_inletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitter_inletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitter_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitter_inletPointShape/label/1> sh:hasValue "inlet" ;
+    sh:path rdfs:label .
+
+ex:FeedSplitter_pressure_exchangerPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pressure_exchangerPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pressure_exchangerPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pressure_exchangerPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pressure_exchangerPointShape/label/1> sh:hasValue "pressure_exchanger" ;
+    sh:path rdfs:label .
+
+ex:FeedSplitter_pumpPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pumpPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pumpPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pumpPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#FeedSplitter_pumpPointShape/label/1> sh:hasValue "pump" ;
+    sh:path rdfs:label .
+
+ex:HighPressurePump a owl:Class ;
+    rdfs:label "High Pressure Pump" ;
+    rdfs:comment "High Pressure Pump configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:Pump .
+
+ex:HighPressurePumpDesignShape a sh:NodeShape ;
+    sh:description "HighPressurePumpDesign quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesignShape/hasProperty/0>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesignShape/hasProperty/1> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "HighPressurePumpDesign" .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesignShape/hasProperty/0> sh:description "Pump efficiency" ;
+    sh:name "efficiency" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:HighPressurePumpDesign_efficiencyShape ;
+    codegen:localName "efficiency" .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesignShape/hasProperty/1> sh:description "Operating pressure" ;
+    sh:name "operating_pressure" ;
+    sh:order 1 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:HighPressurePumpDesign_operating_pressureShape ;
+    codegen:localName "operating-pressure" .
+
+ex:HighPressurePumpDesign_efficiencyShape rdfs:label "Pump efficiency" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasQuantityKind/1> sh:hasValue kind:Efficiency ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasUnit/2> sh:defaultValue unit:UNITLESS ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasUnit/2/allowedUnits> rdf:first unit:UNITLESS ;
+    rdf:rest () .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1e+00 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_efficiencyShape/label/0> sh:hasValue "Pump efficiency" ;
+    sh:path rdfs:label .
+
+ex:HighPressurePumpDesign_operating_pressureShape rdfs:label "Operating pressure" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasQuantityKind/1> sh:hasValue kind:Pressure ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasUnit/2> sh:defaultValue unit:PA ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasUnit/2/allowedUnits> rdf:first unit:PA ;
+    rdf:rest ( unit:KiloPA unit:BAR unit:PSI ) .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#HighPressurePumpDesign_operating_pressureShape/label/0> sh:hasValue "Operating pressure" ;
+    sh:path rdfs:label .
+
+ex:IntakePump a owl:Class ;
+    rdfs:label "Intake Pump" ;
+    rdfs:comment "Intake Pump configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:Pump .
+
+<https://w3id.org/objectrdf/seawater-ro#IntakePumpShape/hasRole/0> sh:hasValue watr:Role-Feed ;
+    sh:path s223:hasRole .
+
+ex:Landfill a owl:Class ;
+    rdfs:label "Landfill" ;
+    rdfs:comment "Landfill configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf s223:Equipment .
+
+<https://w3id.org/objectrdf/seawater-ro#LandfillShape/hasConnectionPoint/0> sh:name "inlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:Landfill_inletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#LandfillShape/hasConnectionPoint/1> sh:name "outlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:Landfill_outletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#LandfillShape/hasConnectionPoint/2> sh:maxCount 2 ;
+    sh:minCount 2 ;
+    sh:path s223:hasConnectionPoint .
+
+ex:Landfill_inletPointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#Landfill_inletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#Landfill_inletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#Landfill_inletPointShape/hasMedium/0> sh:hasValue watr:Fluid-Sludge ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#Landfill_inletPointShape/label/1> sh:hasValue "inlet" ;
+    sh:path rdfs:label .
+
+ex:Landfill_outletPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#Landfill_outletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#Landfill_outletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#Landfill_outletPointShape/hasMedium/0> sh:hasValue watr:Fluid-Sludge ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#Landfill_outletPointShape/label/1> sh:hasValue "outlet" ;
+    sh:path rdfs:label .
+
+ex:MediaFilter a owl:Class ;
+    rdfs:label "Media Filter" ;
+    rdfs:comment "Media Filter configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:UnitProcess .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/1> sh:name "inlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MediaFilter_inletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/2> sh:name "product" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MediaFilter_productPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/3> sh:name "backwash" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MediaFilter_backwashPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasConnectionPoint/4> sh:maxCount 3 ;
+    sh:minCount 3 ;
+    sh:path s223:hasConnectionPoint .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasProcess/0> sh:hasValue watr:Process-MediaFiltration ;
+    sh:path watr:hasProcess .
+
+ex:MediaFilter_backwashPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MediaFilter_backwashPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilter_backwashPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilter_backwashPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilter_backwashPointShape/label/1> sh:hasValue "backwash" ;
+    sh:path rdfs:label .
+
+ex:MediaFilter_inletPointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MediaFilter_inletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilter_inletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilter_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilter_inletPointShape/label/1> sh:hasValue "inlet" ;
+    sh:path rdfs:label .
+
+ex:MediaFilter_productPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MediaFilter_productPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#MediaFilter_productPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilter_productPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFilter_productPointShape/label/1> sh:hasValue "product" ;
+    sh:path rdfs:label .
+
+ex:MediaFiltrationStage a owl:Class ;
+    rdfs:label "Media Filtration Stage" ;
+    rdfs:comment "Media Filtration Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:UnitProcess .
+
+<https://w3id.org/objectrdf/seawater-ro#MediaFiltrationStageShape/hasProcess/0> sh:hasValue watr:Process-MediaFiltration ;
+    sh:path watr:hasProcess .
+
+ex:MembraneDesignShape a sh:NodeShape ;
+    sh:description "MembraneDesign quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/0>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/4> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "MembraneDesign" .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/0> sh:description "Membrane area" ;
+    sh:name "membrane_area" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MembraneDesign_membrane_areaShape ;
+    codegen:localName "membrane-area" .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/1> sh:description "Feed spacer porosity" ;
+    sh:name "spacer_porosity" ;
+    sh:order 1 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MembraneDesign_spacer_porosityShape ;
+    codegen:localName "spacer-porosity" .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/2> sh:description "Membrane channel height" ;
+    sh:name "channel_height" ;
+    sh:order 2 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MembraneDesign_channel_heightShape ;
+    codegen:localName "channel-height" .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/3> sh:description "Membrane width per stage" ;
+    sh:name "stage_width" ;
+    sh:order 3 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MembraneDesign_stage_widthShape ;
+    codegen:localName "stage-width" .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesignShape/hasProperty/4> sh:description "Salt permeability coefficient" ;
+    sh:name "salt_permeability" ;
+    sh:order 4 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:MembraneDesign_salt_permeabilityShape ;
+    codegen:localName "salt-permeability" .
+
+ex:MembraneDesign_channel_heightShape rdfs:label "Membrane channel height" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasQuantityKind/1> sh:hasValue kind:Length ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasUnit/2> sh:defaultValue unit:M ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasUnit/2/allowedUnits> rdf:first unit:M ;
+    rdf:rest ( unit:FT unit:CentiM unit:MilliM ) .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_channel_heightShape/label/0> sh:hasValue "Membrane channel height" ;
+    sh:path rdfs:label .
+
+ex:MembraneDesign_membrane_areaShape rdfs:label "Membrane area" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasQuantityKind/1> sh:hasValue kind:Area ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasUnit/2> sh:defaultValue unit:M2 ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasUnit/2/allowedUnits> rdf:first unit:M2 ;
+    rdf:rest ( unit:FT2 ) .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_membrane_areaShape/label/0> sh:hasValue "Membrane area" ;
+    sh:path rdfs:label .
+
+ex:MembraneDesign_salt_permeabilityShape rdfs:label "Salt permeability coefficient" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasQuantityKind/1> sh:hasValue kind:Velocity ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasUnit/2> sh:defaultValue unit:M-PER-SEC ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasUnit/2/allowedUnits> rdf:first unit:M-PER-SEC ;
+    rdf:rest ( unit:FT-PER-SEC ) .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_salt_permeabilityShape/label/0> sh:hasValue "Salt permeability coefficient" ;
+    sh:path rdfs:label .
+
+ex:MembraneDesign_spacer_porosityShape rdfs:label "Feed spacer porosity" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasQuantityKind/1> sh:hasValue kind:DimensionlessRatio ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasUnit/2> sh:defaultValue unit:UNITLESS ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasUnit/2/allowedUnits> rdf:first unit:UNITLESS ;
+    rdf:rest () .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1e+00 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_spacer_porosityShape/label/0> sh:hasValue "Feed spacer porosity" ;
+    sh:path rdfs:label .
+
+ex:MembraneDesign_stage_widthShape rdfs:label "Membrane width per stage" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasQuantityKind/1> sh:hasValue kind:Length ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasUnit/2> sh:defaultValue unit:M ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasUnit/2/allowedUnits> rdf:first unit:M ;
+    rdf:rest ( unit:FT unit:CentiM unit:MilliM ) .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#MembraneDesign_stage_widthShape/label/0> sh:hasValue "Membrane width per stage" ;
+    sh:path rdfs:label .
+
+ex:MixingStage a owl:Class ;
+    rdfs:label "Mixing Stage" ;
+    rdfs:comment "Mixing Stage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:StaticMixer .
+
+<https://w3id.org/objectrdf/seawater-ro#MixingStageShape/hasProcess/0> sh:hasValue watr:Process-Mixing ;
+    sh:path watr:hasProcess .
+
+ex:PermeateConnection a owl:Class ;
+    rdfs:label "Permeate Connection" ;
+    rdfs:comment "Permeate Connection configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf s223:Pipe .
+
+ex:PermeateStateShape a sh:NodeShape ;
+    sh:description "PermeateState quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#PermeateStateShape/hasProperty/0> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "PermeateState" .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateStateShape/hasProperty/0> sh:description "Nominal permeate-side pressure" ;
+    sh:name "pressure" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:PermeateState_pressureShape ;
+    codegen:localName "side-pressure" .
+
+ex:PermeateState_pressureShape rdfs:label "Nominal permeate-side pressure" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasQuantityKind/1> sh:hasValue kind:Pressure ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasUnit/2> sh:defaultValue unit:PA ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasUnit/2/allowedUnits> rdf:first unit:PA ;
+    rdf:rest ( unit:KiloPA unit:BAR unit:PSI ) .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#PermeateState_pressureShape/label/0> sh:hasValue "Nominal permeate-side pressure" ;
+    sh:path rdfs:label .
+
+ex:PressureExchangerDesignShape a sh:NodeShape ;
+    sh:description "PressureExchangerDesign quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesignShape/hasProperty/0> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "PressureExchangerDesign" .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesignShape/hasProperty/0> sh:description "Pressure-exchanger efficiency" ;
+    sh:name "efficiency" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:PressureExchangerDesign_efficiencyShape ;
+    codegen:localName "efficiency" .
+
+ex:PressureExchangerDesign_efficiencyShape rdfs:label "Pressure-exchanger efficiency" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasQuantityKind/1> sh:hasValue kind:Efficiency ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasUnit/2> sh:defaultValue unit:UNITLESS ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasUnit/2/allowedUnits> rdf:first unit:UNITLESS ;
+    rdf:rest () .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1e+00 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#PressureExchangerDesign_efficiencyShape/label/0> sh:hasValue "Pressure-exchanger efficiency" ;
+    sh:path rdfs:label .
+
+ex:PumpDesignShape a sh:NodeShape ;
+    sh:description "PumpDesign quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#PumpDesignShape/hasProperty/0> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "PumpDesign" .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesignShape/hasProperty/0> sh:description "Pump efficiency" ;
+    sh:name "efficiency" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:PumpDesign_efficiencyShape ;
+    codegen:localName "efficiency" .
+
+ex:PumpDesign_efficiencyShape rdfs:label "Pump efficiency" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasQuantityKind/1> sh:hasValue kind:Efficiency ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasUnit/2> sh:defaultValue unit:UNITLESS ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasUnit/2/allowedUnits> rdf:first unit:UNITLESS ;
+    rdf:rest () .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1e+00 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#PumpDesign_efficiencyShape/label/0> sh:hasValue "Pump efficiency" ;
+    sh:path rdfs:label .
+
+ex:ROFeedMixer a owl:Class ;
+    rdfs:label "ROFeed Mixer" ;
+    rdfs:comment "ROFeed Mixer configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:StaticMixer .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/1> sh:name "high_pressure" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ROFeedMixer_high_pressurePointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/2> sh:name "booster" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ROFeedMixer_boosterPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/3> sh:name "outlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ROFeedMixer_outletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasConnectionPoint/4> sh:maxCount 3 ;
+    sh:minCount 3 ;
+    sh:path s223:hasConnectionPoint .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasProcess/0> sh:hasValue watr:Process-Mixing ;
+    sh:path watr:hasProcess .
+
+ex:ROFeedMixer_boosterPointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_boosterPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_boosterPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_boosterPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_boosterPointShape/label/1> sh:hasValue "booster" ;
+    sh:path rdfs:label .
+
+ex:ROFeedMixer_high_pressurePointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_high_pressurePointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_high_pressurePointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_high_pressurePointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_high_pressurePointShape/label/1> sh:hasValue "high_pressure" ;
+    sh:path rdfs:label .
+
+ex:ROFeedMixer_outletPointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_outletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_outletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_outletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#ROFeedMixer_outletPointShape/label/1> sh:hasValue "outlet" ;
+    sh:path rdfs:label .
+
+ex:ROStage a owl:Class ;
+    rdfs:label "ROStage" ;
+    rdfs:comment "ROStage configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:ReverseOsmosisMembrane .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/1> sh:name "inlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ROStage_inletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/2> sh:name "permeate" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ROStage_permeatePointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/3> sh:name "concentrate" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ROStage_concentratePointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasConnectionPoint/4> sh:maxCount 3 ;
+    sh:minCount 3 ;
+    sh:path s223:hasConnectionPoint .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasProcess/0> sh:hasValue watr:Process-ReverseOsmosis ;
+    sh:path watr:hasProcess .
+
+ex:ROStage_concentratePointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROStage_concentratePointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStage_concentratePointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStage_concentratePointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStage_concentratePointShape/label/1> sh:hasValue "concentrate" ;
+    sh:path rdfs:label .
+
+ex:ROStage_inletPointShape sh:class s223:InletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROStage_inletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStage_inletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStage_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStage_inletPointShape/label/1> sh:hasValue "inlet" ;
+    sh:path rdfs:label .
+
+ex:ROStage_permeatePointShape sh:class s223:OutletConnectionPoint ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ROStage_permeatePointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#ROStage_permeatePointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStage_permeatePointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#ROStage_permeatePointShape/label/1> sh:hasValue "permeate" ;
+    sh:path rdfs:label .
+
+ex:ResidenceTimeDesignShape a sh:NodeShape ;
+    sh:description "ResidenceTimeDesign quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesignShape/hasProperty/0> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "ResidenceTimeDesign" .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesignShape/hasProperty/0> sh:description "Nominal residence time" ;
+    sh:name "residence_time" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:ResidenceTimeDesign_residence_timeShape ;
+    codegen:localName "residence-time" .
+
+ex:ResidenceTimeDesign_residence_timeShape rdfs:label "Nominal residence time" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasQuantityKind/1> sh:hasValue kind:Time ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasUnit/2> sh:defaultValue unit:HR ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasUnit/2/allowedUnits> rdf:first unit:HR ;
+    rdf:rest ( unit:SEC unit:MIN ) .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#ResidenceTimeDesign_residence_timeShape/label/0> sh:hasValue "Nominal residence time" ;
+    sh:path rdfs:label .
+
+ex:SeawaterFeed a owl:Class ;
+    rdfs:label "Seawater Feed" ;
+    rdfs:comment "Seawater Feed configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf s223:Equipment .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasConnectionPoint/1> sh:name "outlet" ;
+    sh:path s223:hasConnectionPoint ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:SeawaterFeed_outletPointShape .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasConnectionPoint/2> sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path s223:hasConnectionPoint .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasRole/0> sh:hasValue watr:Role-Feed ;
+    sh:path s223:hasRole .
+
+ex:SeawaterFeedStateShape a sh:NodeShape ;
+    sh:description "SeawaterFeedState quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/3>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/4> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "SeawaterFeedState" .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/0> sh:description "Influent flow rate" ;
+    sh:name "flow_rate" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:SeawaterFeedState_flow_rateShape ;
+    codegen:localName "flow-rate" .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/1> sh:description "Influent total dissolved solids concentration" ;
+    sh:name "total_dissolved_solids" ;
+    sh:order 1 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:SeawaterFeedState_total_dissolved_solidsShape ;
+    codegen:localName "tds-concentration" .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/2> sh:description "Influent total suspended solids concentration" ;
+    sh:name "total_suspended_solids" ;
+    sh:order 2 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:SeawaterFeedState_total_suspended_solidsShape ;
+    codegen:localName "tss-concentration" .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/3> sh:description "Influent temperature" ;
+    sh:name "temperature" ;
+    sh:order 3 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:SeawaterFeedState_temperatureShape ;
+    codegen:localName "temperature" .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedStateShape/hasProperty/4> sh:description "Influent pressure" ;
+    sh:name "pressure" ;
+    sh:order 4 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:SeawaterFeedState_pressureShape ;
+    codegen:localName "pressure" .
+
+ex:SeawaterFeedState_flow_rateShape rdfs:label "Influent flow rate" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasValue/5>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/label/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/ofMedium/4> .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasQuantityKind/1> sh:hasValue kind:VolumeFlowRate ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasUnit/2> sh:defaultValue unit:GAL_US-PER-DAY ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasUnit/2/allowedUnits> rdf:first unit:GAL_US-PER-DAY ;
+    rdf:rest ( unit:M3-PER-DAY unit:L-PER-SEC unit:M3-PER-SEC ) .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/hasValue/5> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/label/0> sh:hasValue "Influent flow rate" ;
+    sh:path rdfs:label .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_flow_rateShape/ofMedium/4> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:ofMedium .
+
+ex:SeawaterFeedState_pressureShape rdfs:label "Influent pressure" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasValue/5>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/label/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/ofMedium/4> .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasQuantityKind/1> sh:hasValue kind:Pressure ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasUnit/2> sh:defaultValue unit:PA ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasUnit/2/allowedUnits> rdf:first unit:PA ;
+    rdf:rest ( unit:KiloPA unit:BAR unit:PSI ) .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/hasValue/5> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/label/0> sh:hasValue "Influent pressure" ;
+    sh:path rdfs:label .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_pressureShape/ofMedium/4> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:ofMedium .
+
+ex:SeawaterFeedState_temperatureShape rdfs:label "Influent temperature" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasValue/5>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/label/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/ofMedium/4> .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasQuantityKind/1> sh:hasValue kind:Temperature ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasUnit/2> sh:defaultValue unit:K ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasUnit/2/allowedUnits> rdf:first unit:K ;
+    rdf:rest ( unit:DEG_C ) .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/hasValue/5> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/label/0> sh:hasValue "Influent temperature" ;
+    sh:path rdfs:label .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_temperatureShape/ofMedium/4> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:ofMedium .
+
+ex:SeawaterFeedState_total_dissolved_solidsShape rdfs:label "Influent total dissolved solids concentration" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasValue/6>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/label/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/ofMedium/4>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/ofSubstance/5> .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasQuantityKind/1> sh:hasValue kind:MassConcentration ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasUnit/2> sh:defaultValue unit:GM-PER-L ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasUnit/2/allowedUnits> rdf:first unit:GM-PER-L ;
+    rdf:rest ( unit:GM-PER-M3 unit:KiloGM-PER-M3 unit:MilliGM-PER-L ) .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/hasValue/6> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/label/0> sh:hasValue "Influent total dissolved solids concentration" ;
+    sh:path rdfs:label .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/ofMedium/4> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:ofMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_dissolved_solidsShape/ofSubstance/5> sh:hasValue watr:Constituent-Salt ;
+    sh:path s223:ofSubstance .
+
+ex:SeawaterFeedState_total_suspended_solidsShape rdfs:label "Influent total suspended solids concentration" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasValue/6>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/label/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/ofMedium/4>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/ofSubstance/5> .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasQuantityKind/1> sh:hasValue kind:MassConcentration ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasUnit/2> sh:defaultValue unit:GM-PER-L ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasUnit/2/allowedUnits> rdf:first unit:GM-PER-L ;
+    rdf:rest ( unit:GM-PER-M3 unit:KiloGM-PER-M3 unit:MilliGM-PER-L ) .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/hasValue/6> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/label/0> sh:hasValue "Influent total suspended solids concentration" ;
+    sh:path rdfs:label .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/ofMedium/4> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:ofMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeedState_total_suspended_solidsShape/ofSubstance/5> sh:hasValue watr:Constituent-SuspendedSolids ;
+    sh:path s223:ofSubstance .
+
+ex:SeawaterFeed_outletPointShape sh:class s223:OutletConnectionPoint ;
+    sh:node ex:SeawaterFeedStateShape ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#SeawaterFeed_outletPointShape/hasMedium/0>,
+        <https://w3id.org/objectrdf/seawater-ro#SeawaterFeed_outletPointShape/label/1> .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeed_outletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+    sh:path s223:hasMedium .
+
+<https://w3id.org/objectrdf/seawater-ro#SeawaterFeed_outletPointShape/label/1> sh:hasValue "outlet" ;
+    sh:path rdfs:label .
+
+ex:StorageTank a owl:Class ;
+    rdfs:label "Storage Tank" ;
+    rdfs:comment "Storage Tank configuration defined by the seawater RO shapes." ;
+    rdfs:subClassOf watr:Tank .
+
+<https://w3id.org/objectrdf/seawater-ro#StorageTankShape/hasRole/0> sh:hasValue watr:Role-Storage ;
+    sh:path s223:hasRole .
+
+ex:UVDesignShape a sh:NodeShape ;
+    sh:description "UVDesign quantities with nominal aspects and shape-declared default units." ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#UVDesignShape/hasProperty/0>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesignShape/hasProperty/1> ;
+    codegen:projection codegen:PropertySchema ;
+    codegen:pythonName "UVDesign" .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesignShape/hasProperty/0> sh:description "Reduction-equivalent UV dose" ;
+    sh:name "reduction_equivalent_dose" ;
+    sh:order 0 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:UVDesign_reduction_equivalent_doseShape ;
+    codegen:localName "reduction-equivalent-dose" .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesignShape/hasProperty/1> sh:description "UV transmittance" ;
+    sh:name "transmittance" ;
+    sh:order 1 ;
+    sh:path s223:hasProperty ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedMinCount 1 ;
+    sh:qualifiedValueShape ex:UVDesign_transmittanceShape ;
+    codegen:localName "transmittance" .
+
+ex:UVDesign_reduction_equivalent_doseShape rdfs:label "Reduction-equivalent UV dose" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasQuantityKind/1> sh:hasValue kind:EnergyPerArea ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasUnit/2> sh:defaultValue unit:J-PER-CentiM2 ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasUnit/2/allowedUnits> rdf:first unit:J-PER-CentiM2 ;
+    rdf:rest ( unit:J-PER-M2 ) .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_reduction_equivalent_doseShape/label/0> sh:hasValue "Reduction-equivalent UV dose" ;
+    sh:path rdfs:label .
+
+ex:UVDesign_transmittanceShape rdfs:label "UV transmittance" ;
+    sh:class s223:QuantifiableProperty ;
+    sh:property <https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasAspect/3>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasQuantityKind/1>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasUnit/2>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasValue/4>,
+        <https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/label/0> .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasAspect/3> sh:hasValue s223:Aspect-Nominal ;
+    sh:path s223:hasAspect .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasQuantityKind/1> sh:hasValue kind:Transmittance ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasQuantityKind .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasUnit/2> sh:defaultValue unit:UNITLESS ;
+    sh:in <https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasUnit/2/allowedUnits> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path qudt:hasUnit .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasUnit/2/allowedUnits> rdf:first unit:UNITLESS ;
+    rdf:rest () .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/hasValue/4> sh:datatype xsd:double ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1e+00 ;
+    sh:minCount 1 ;
+    sh:minInclusive 0e+00 ;
+    sh:path s223:hasValue .
+
+<https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape/label/0> sh:hasValue "UV transmittance" ;
+    sh:path rdfs:label .
+

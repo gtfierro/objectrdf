@@ -1,0 +1,113 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+# Local additions to the custom WaTr snapshot for WaterTAP's ASM2d component
+# pools. These are model components, not claims about pure chemical species.
+# Their punned self-types follow the S223 medium-constituent convention.
+
+watr:Constituent-ASM2d-S_F
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-S_F ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+    rdfs:label "ASM2d fermentable substrates" ;
+    rdfs:comment "S_F: soluble, readily biodegradable fermentable organic substrate pool in ASM2d, expressed on a COD basis." ;
+    skos:notation "S_F" .
+
+watr:Constituent-ASM2d-S_A
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-S_A ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+    rdfs:label "ASM2d fermentation products" ;
+    rdfs:comment "S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration." ;
+    skos:notation "S_A" .
+
+watr:Constituent-ASM2d-S_I
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-S_I ;
+    rdfs:subClassOf watr:Constituent-Organics ;
+    rdfs:label "ASM2d inert soluble organics" ;
+    rdfs:comment "S_I: inert soluble organic material pool in ASM2d." ;
+    skos:notation "S_I" .
+
+watr:Constituent-ASM2d-S_NH4
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-S_NH4 ;
+    rdfs:subClassOf watr:Constituent-Ammonia ;
+    rdfs:label "ASM2d ammonia and ammonium nitrogen" ;
+    rdfs:comment "S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass." ;
+    skos:notation "S_NH4" .
+
+watr:Constituent-ASM2d-S_NO3
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-S_NO3 ;
+    rdfs:subClassOf watr:Constituent-Inorganics ;
+    rdfs:label "ASM2d nitrate and nitrite nitrogen" ;
+    rdfs:comment "S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone." ;
+    skos:notation "S_NO3" .
+
+watr:Constituent-ASM2d-S_PO4
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-S_PO4 ;
+    rdfs:subClassOf watr:Constituent-Inorganics ;
+    rdfs:label "ASM2d soluble inorganic phosphorus" ;
+    rdfs:comment "S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus." ;
+    skos:notation "S_PO4" .
+
+watr:Constituent-ASM2d-X_I
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_I ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+    rdfs:label "ASM2d inert particulate organics" ;
+    rdfs:comment "X_I: inert particulate organic material pool in ASM2d." ;
+    skos:notation "X_I" .
+
+watr:Constituent-ASM2d-X_S
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_S ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+    rdfs:label "ASM2d slowly biodegradable substrates" ;
+    rdfs:comment "X_S: slowly biodegradable particulate substrate pool in ASM2d." ;
+    skos:notation "X_S" .
+
+watr:Constituent-ASM2d-X_H
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_H ;
+    rdfs:subClassOf watr:Constituent-Bacteria ;
+    rdfs:label "ASM2d heterotrophic organisms" ;
+    rdfs:comment "X_H: heterotrophic organism biomass pool in ASM2d." ;
+    skos:notation "X_H" .
+
+watr:Constituent-ASM2d-X_PAO
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_PAO ;
+    rdfs:subClassOf watr:Constituent-Bacteria ;
+    rdfs:label "ASM2d phosphate-accumulating organisms" ;
+    rdfs:comment "X_PAO: phosphate-accumulating organism biomass pool in ASM2d." ;
+    skos:notation "X_PAO" .
+
+watr:Constituent-ASM2d-X_PP
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_PP ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+    rdfs:label "ASM2d stored polyphosphate" ;
+    rdfs:comment "X_PP: intracellular polyphosphate storage pool of phosphate-accumulating organisms in ASM2d." ;
+    skos:notation "X_PP" .
+
+watr:Constituent-ASM2d-X_PHA
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_PHA ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+    rdfs:label "ASM2d stored polyhydroxyalkanoates" ;
+    rdfs:comment "X_PHA: intracellular polyhydroxyalkanoate storage pool of phosphate-accumulating organisms in ASM2d." ;
+    skos:notation "X_PHA" .
+
+watr:Constituent-ASM2d-X_AUT
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_AUT ;
+    rdfs:subClassOf watr:Constituent-Bacteria ;
+    rdfs:label "ASM2d autotrophic nitrifying organisms" ;
+    rdfs:comment "X_AUT: autotrophic nitrifying organism biomass pool in ASM2d." ;
+    skos:notation "X_AUT" .
+
+watr:Constituent-ASM2d-X_MeOH
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_MeOH ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+    rdfs:label "ASM2d metal hydroxides" ;
+    rdfs:comment "X_MeOH: metal hydroxide particulate pool in ASM2d." ;
+    skos:notation "X_MeOH" .
+
+watr:Constituent-ASM2d-X_MeP
+    a watr:Class, sh:NodeShape, watr:Constituent-ASM2d-X_MeP ;
+    rdfs:subClassOf watr:Constituent-SuspendedSolids ;
+    rdfs:label "ASM2d metal phosphates" ;
+    rdfs:comment "X_MeP: metal phosphate particulate pool in ASM2d." ;
+    skos:notation "X_MeP" .

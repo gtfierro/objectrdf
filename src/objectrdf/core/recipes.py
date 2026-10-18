@@ -2,10 +2,16 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Any, Generic, TypeVar
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING, Any, Generic, Literal, TypeVar, cast, overload
+
+if TYPE_CHECKING:
+    from .entity import Entity
+    from .property_schema import PropertySchema, PropertySet, QuantityAmount
+    from .terms import TermValue
 
 T = TypeVar("T")
+P = TypeVar("P")
 
 
 @dataclass(frozen=True)
@@ -38,13 +44,26 @@ def choose(*values: T) -> Policy[T]:
 
 
 @dataclass(frozen=True)
-class PointDeclaration:
+class PointDeclaration(Generic[P]):
     """Class-level declaration of one or more deferred connection points."""
 
     count: int = 1
     medium: Policy[Any] | Any | None = None
     direction: Policy[str] | str = "choose"
     label: Policy[str] | str | None = None
+    _name: str = field(default="", init=False, compare=False)
+
+    def __set_name__(self, owner: type, name: str) -> None:
+        object.__setattr__(self, "_name", name)
+
+    @overload
+    def __get__(self, obj: None, owner: type | None = None) -> PointDeclaration[P]: ...
+
+    @overload
+    def __get__(self, obj: object, owner: type | None = None) -> P: ...
+
+    def __get__(self, obj: Any, owner: type | None = None) -> PointDeclaration[P] | P:
+        return self if obj is None else cast(P, obj._recipe_points[self._name])
 
     def __post_init__(self) -> None:
         if self.count < 1:
@@ -72,6 +91,29 @@ class PointRef:
 
     def __repr__(self) -> str:
         return f"<PointRef {self.owner.name}.{self.name}>"
+
+    def apply_properties(
+        self, schema: PropertySchema, *, prefix: str | None = None
+    ) -> PropertySet:
+        """Attach values to this exact authored or hydrated point."""
+        from .property_schema import apply_properties
+
+        return apply_properties(self, schema, prefix=prefix)
+
+    def quantity(
+        self, name: str, value: float | QuantityAmount, *,
+        kind: TermValue, unit: TermValue | None = None,
+        capability: Literal["static", "observable", "actuatable"] = "static",
+        mode: Literal["nominal", "observable", "actuatable"] | None = None,
+        label: str | None = None, **properties: Any,
+    ) -> Entity:
+        """Create a scalar property on this exact authored or hydrated point."""
+        from objectrdf.qudt import _attached_quantity
+
+        return _attached_quantity(
+            self._port, name, value, unit=unit, kind=kind,
+            capability=capability, mode=mode, label=label, **properties,
+        )
 
 
 class PointGroupRef:
@@ -117,13 +159,31 @@ class RecipeConnectionPoint:
     """Typed ``declare`` constructor mixed into generated S223 points."""
 
     @staticmethod
+    @overload
+    def declare(
+        *, count: Literal[1] = 1,
+        medium: Policy[Any] | Any | None = None,
+        direction: Policy[str] | str = "choose",
+        label: Policy[str] | str | None = None,
+    ) -> PointDeclaration[PointRef]: ...
+
+    @staticmethod
+    @overload
+    def declare(
+        *, count: int,
+        medium: Policy[Any] | Any | None = None,
+        direction: Policy[str] | str = "choose",
+        label: Policy[str] | str | None = None,
+    ) -> PointDeclaration[PointGroupRef]: ...
+
+    @staticmethod
     def declare(
         *,
         count: int = 1,
         medium: Policy[Any] | Any | None = None,
         direction: Policy[str] | str = "choose",
         label: Policy[str] | str | None = None,
-    ) -> PointDeclaration:
+    ) -> PointDeclaration[Any]:
         return PointDeclaration(
             count=count, medium=medium, direction=direction, label=label
         )

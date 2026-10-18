@@ -23,7 +23,7 @@ from typing import TextIO
 class EnumValue:
     """One enumeration member (a punned class/individual in the ontology)."""
 
-    __slots__ = ("iri", "label", "definition", "parent", "_children")
+    __slots__ = ("iri", "label", "definition", "parent", "parents", "_children")
 
     def __init__(
         self,
@@ -37,17 +37,29 @@ class EnumValue:
         self.label = label
         self.definition = definition
         self.parent = parent
+        self.parents: tuple[EnumValue, ...] = (parent,) if parent is not None else ()
         self._children: dict[str, EnumValue] = {}
         if parent is not None:
             parent._children[_segment(iri)] = self
 
+    def _add_parent(self, parent: EnumValue) -> None:
+        """Register an additional ontology superclass after module creation."""
+        if parent not in self.parents:
+            self.parents += (parent,)
+            parent._children[_segment(self.iri)] = self
+
     def is_a(self, other: EnumValue) -> bool:
         """True if this value is ``other`` or a descendant of it."""
-        node: EnumValue | None = self
-        while node is not None:
+        frontier: list[EnumValue] = [self]
+        seen: set[str] = set()
+        while frontier:
+            node = frontier.pop()
             if node.iri == other.iri:
                 return True
-            node = node.parent
+            if node.iri in seen:
+                continue
+            seen.add(node.iri)
+            frontier.extend(node.parents)
         return False
 
     @property
@@ -64,9 +76,17 @@ class EnumValue:
     def descendants(self) -> tuple[EnumValue, ...]:
         """All values below this one, in depth-first hierarchy order."""
         values: list[EnumValue] = []
-        for child in self.children:
-            values.append(child)
-            values.extend(child.descendants)
+        seen: set[str] = set()
+
+        def walk(node: EnumValue) -> None:
+            for child in node.children:
+                if child.iri in seen:
+                    continue
+                seen.add(child.iri)
+                values.append(child)
+                walk(child)
+
+        walk(self)
         return tuple(values)
 
     def __getitem__(self, name_or_iri: str) -> EnumValue:
@@ -157,7 +177,7 @@ class EnumValue:
         """Show public metadata and direct children for interactive completion."""
         return sorted(
             {
-                "iri", "label", "definition", "parent", "children",
+                "iri", "label", "definition", "parent", "parents", "children",
                 "descendants", "is_a", "tree", "tree_text", *self._children,
             }
         )
