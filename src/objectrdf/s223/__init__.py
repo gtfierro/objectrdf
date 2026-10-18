@@ -25,7 +25,6 @@ from objectrdf.core import (
     Model as _Model,
     OntologyInfo as _OntologyInfo,
     PropertySpec as _PropertySpec,
-    PropertyAlias as _PropertyAlias,
     Registry as _Registry,
     Rel as _Rel,
     RelOne as _RelOne,
@@ -41,12 +40,11 @@ ONTOLOGY = _OntologyInfo(
 )
 
 _REGISTRY = _Registry(ONTOLOGY)
+REGISTRY = _REGISTRY
 
 from . import enums as enums
 
 _REGISTRY.register_enums(enums)
-
-from objectrdf.core.recipes import RecipeConnectionPoint as _RecipeConnectionPoint
 
 _P_Concept_medium = _PropertySpec(
     name='medium',
@@ -82,8 +80,6 @@ class Concept(_EntityBase):
 
     medium: _Rel[_EntityBase] = _Rel(_P_Concept_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
 
     has_property: _Rel[Property] = _Rel(_P_Concept_has_property)
     """A `Relation` that associates a `Concept` with a `Property`. (http://data.ashrae.org/standard223#hasProperty)"""
@@ -1059,7 +1055,7 @@ _P_ConnectionPoint_has_electrical_phase = _PropertySpec(
     max_count=1,
 )
 
-class ConnectionPoint(Concept, _RecipeConnectionPoint):
+class ConnectionPoint(Concept):
     """A `ConnectionPoint` is an abstract modeling construct used to represent the fact that one connectable thing can be connected to another connectable thing using a `Connection`. It is the abstract representation of the flange, wire terminal, or other physical feature where a connection is made. `Equipment`, `DomainSpace`s and `Junction`s can have one or more `ConnectionPoint`s (see {s223:Connectable}).
     
     A `ConnectionPoint` is constrained to relate to a specific medium such as air, water, or electricity which determines what other things can be connected to it. For example, constraining a `ConnectionPoint` to be for air means it cannot be used for an electrical connection.
@@ -1086,12 +1082,8 @@ class ConnectionPoint(Concept, _RecipeConnectionPoint):
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_ConnectionPoint_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
     owner: _RelOne[Connectable] = _RelOne(_P_ConnectionPoint_owner)
     """One of two `Relation`s that associates a `ConnectionPoint` with a `Connectable` thing. It is the inverse of the relation `hasConnectionPoint` (see {s223:hasConnectionPoint}). (http://data.ashrae.org/standard223#isConnectionPointOf)"""
-
-    is_connection_point_of: _PropertyAlias = _PropertyAlias('owner')
 
     maps_to: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
@@ -1099,12 +1091,8 @@ class ConnectionPoint(Concept, _RecipeConnectionPoint):
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
-    paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
-
     connection: _RelOne[Connection] = _RelOne(_P_ConnectionPoint_connection)
     """A `Relation` that associates a `ConnectionPoint` with a `Connection`, without regard to the direction of flow. (http://data.ashrae.org/standard223#connectsThrough)"""
-
-    connects_through: _PropertyAlias = _PropertyAlias('connection')
 
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_ConnectionPoint_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
@@ -1185,8 +1173,6 @@ class BidirectionalConnectionPoint(ConnectionPoint):
 
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_BidirectionalConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-
-    paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
 
     maps_to: _RelOne[BidirectionalConnectionPoint | ConnectionPoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
@@ -1539,8 +1525,6 @@ class Connection(Concept):
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Connection_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
     has_role: _EnumSet[_EnumValue] = _EnumSet(_P_Connection_has_role)
     """A `Relation` that associates a role with of a piece of `Equipment`, a `Connection`, `ConnectionPoint`, or `System` within a building (e.g., a heating coil might be associated with `Role-Heating`). Possible values are defined in `EnumerationKind-Role` (see {s223:EnumerationKind-Role}). (http://data.ashrae.org/standard223#hasRole)"""
 
@@ -1609,8 +1593,6 @@ class Waveguide(Connection):
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Waveguide_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
     def __init__(
         self,
         name: str | None = None,
@@ -1675,8 +1657,6 @@ class CoaxialCable(Waveguide):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_CoaxialCable_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
 
     def __init__(
         self,
@@ -2073,8 +2053,6 @@ class Conductor(Connection):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Conductor_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
 
     def __init__(
         self,
@@ -2729,8 +2707,6 @@ class EM(Connection):
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_EM_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
     def __init__(
         self,
         name: str | None = None,
@@ -3287,8 +3263,6 @@ class EthernetCable(Conductor):
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_EthernetCable_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
     def __init__(
         self,
         name: str | None = None,
@@ -3673,8 +3647,6 @@ class FiberOpticCable(Waveguide):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_FiberOpticCable_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
 
     def __init__(
         self,
@@ -4608,8 +4580,6 @@ class InletConnectionPoint(ConnectionPoint):
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_InletConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
-    paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
-
     def __init__(
         self,
         name: str | None = None,
@@ -4704,8 +4674,6 @@ class Junction(Connectable):
 
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_Junction_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
-
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
 
     def __init__(
         self,
@@ -5211,8 +5179,6 @@ class OutletConnectionPoint(ConnectionPoint):
 
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_OutletConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
-
-    paired_connection_point: _PropertyAlias = _PropertyAlias('paired_with')
 
     def __init__(
         self,
@@ -6398,8 +6364,6 @@ class USBCable(Conductor):
     medium: _EnumOne[_EnumValue] = _EnumOne(_P_USBCable_medium)
     """The relation `hasMedium` is used to indicate what medium is flowing through the connection (e.g., air, water, electricity). The possible values are defined in `Substance-Medium` (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#hasMedium)"""
 
-    has_medium: _PropertyAlias = _PropertyAlias('medium')
-
     def __init__(
         self,
         name: str | None = None,
@@ -6958,4 +6922,4 @@ _REGISTRY.containment.register('PhysicalSpace', 'Equipment', 'has_physical_locat
 _REGISTRY.containment.register('Equipment', 'Equipment', 'contains_', edge_from='container')
 
 
-__all__ = ["ONTOLOGY", 'Concept', 'Class', 'AbstractClass', 'Property', 'ActuatableProperty', 'Connectable', 'Equipment', 'Actuator', 'AirHandlingUnit', 'AirHeatExchanger', 'HeatPump', 'AirToAirHeatPump', 'ExternalReference', 'BACnetExternalReference', 'Bathtub', 'Battery', 'ConnectionPoint', 'BidirectionalConnectionPoint', 'Boiler', 'ChilledBeam', 'Coil', 'CoolingCoil', 'ChilledWaterCoil', 'Valve', 'ChilledWaterValve', 'Chiller', 'ClothesWasher', 'Connection', 'Waveguide', 'CoaxialCable', 'CoffeeMaker', 'Compressor', 'Computer', 'ComputerPrinter', 'Sensor', 'ConcentrationSensor', 'Conductor', 'Controller', 'CoolingTower', 'CopyMachine', 'LightSensor', 'CorrelatedColorTemperatureSensor', 'Damper', 'Damper_2', 'Dishwasher', 'DomainSpace', 'Door', 'Drain', 'TerminalUnit', 'DualDuctTerminal', 'Duct', 'DuvSensor', 'EM', 'ElectricClothesDryer', 'ElectricCooktop', 'ElectricCurrentSensor', 'ElectricEnergyConverter', 'ElectricEnergyDCDCConverter', 'ElectricEnergyInverter', 'ElectricEnergyTransformer', 'ElectricResistanceElement', 'ElectricHeatingCoil', 'ElectricOven', 'ElectricWaterDispenser', 'ElectricityBreaker', 'ElectricityMeter', 'ElectricityOutlet', 'ElectronicDisplay', 'Elevator', 'EnumerableProperty', 'EnumeratedActuatableProperty', 'ObservableProperty', 'EnumeratedObservableProperty', 'Escalator', 'EthernetCable', 'EthernetCable_Cat1', 'EthernetCable_Cat2', 'EthernetCable_Cat3', 'EthernetCable_Cat4', 'EthernetCable_Cat5', 'EthernetCable_Cat5e', 'EthernetCable_Cat6', 'EthernetCable_Cat6a', 'EthernetCable_Cat7', 'EthernetCable_Cat7a', 'EthernetCable_Cat8', 'EthernetPort', 'EthernetSwitch', 'Fan', 'FanCoilUnit', 'FanPoweredTerminal', 'Fan_2', 'FanWithVFD', 'Faucet', 'FiberEthernetOutlet', 'FiberOpticCable', 'FiberOpticCable_OM1', 'FiberOpticCable_OM2', 'FiberOpticCable_OM3', 'FiberOpticCable_OM4', 'FiberOpticCable_OM5', 'FiberOpticCable_OS1', 'FiberOpticCable_OS2', 'Filter', 'FlowSensor', 'FlushToilet', 'Freezer', 'FumeHood', 'Function', 'Furnace', 'PressureSensor', 'GaugePressureSensor', 'Generator', 'GroundToAirHeatPump', 'HeatingCoil', 'HotWaterCoil', 'HotWaterValve', 'Humidifier', 'Humidistat', 'HumiditySensor', 'HydronicHeatExchanger', 'IceMaker', 'IlluminanceSensor', 'InletConnectionPoint', 'Junction', 'Luminaire', 'MicrowaveOven', 'Monitor', 'Motor', 'OccupancySensor', 'OccupantCountSensor', 'OccupantMotionSensor', 'OccupantPresenceSensor', 'PhysicalSpace', 'OutdoorPhysicalSpace', 'OutletConnectionPoint', 'ParticulateSensor', 'PersonalComputer', 'PhotovoltaicModule', 'Pipe', 'PowerOverEthernetPort', 'PowerOverEthernetSwitch', 'Pump', 'QuantifiableProperty', 'QuantifiableActuatableProperty', 'QuantifiableObservableProperty', 'RFOutlet', 'RadiantHeater', 'Radiator', 'Refrigerator', 'Relation', 'RelationWithInverse', 'ServerComputer', 'Shower', 'SingleDuctTerminal', 'Sink', 'SolarThermalCollector', 'SteamInjector', 'SymmetricRelation', 'System', 'Television', 'TemperatureSensor', 'ThermalEnergyStorageUnit', 'Thermostat', 'ThreeWayValve', 'Turbine', 'TwoPositionDamper', 'TwoWayValve', 'USBCable', 'USBOutlet', 'VariableFrequencyDrive', 'VoltageSensor', 'WaterOutlet', 'WaterToAirHeatPump', 'WaterToWaterHeatPump', 'Window', 'WindowShade', 'WiredEthernetOutlet', 'Zone', 'ZoneGroup', 'Zone_2']
+__all__ = ["ONTOLOGY", "REGISTRY", 'Concept', 'Class', 'AbstractClass', 'Property', 'ActuatableProperty', 'Connectable', 'Equipment', 'Actuator', 'AirHandlingUnit', 'AirHeatExchanger', 'HeatPump', 'AirToAirHeatPump', 'ExternalReference', 'BACnetExternalReference', 'Bathtub', 'Battery', 'ConnectionPoint', 'BidirectionalConnectionPoint', 'Boiler', 'ChilledBeam', 'Coil', 'CoolingCoil', 'ChilledWaterCoil', 'Valve', 'ChilledWaterValve', 'Chiller', 'ClothesWasher', 'Connection', 'Waveguide', 'CoaxialCable', 'CoffeeMaker', 'Compressor', 'Computer', 'ComputerPrinter', 'Sensor', 'ConcentrationSensor', 'Conductor', 'Controller', 'CoolingTower', 'CopyMachine', 'LightSensor', 'CorrelatedColorTemperatureSensor', 'Damper', 'Damper_2', 'Dishwasher', 'DomainSpace', 'Door', 'Drain', 'TerminalUnit', 'DualDuctTerminal', 'Duct', 'DuvSensor', 'EM', 'ElectricClothesDryer', 'ElectricCooktop', 'ElectricCurrentSensor', 'ElectricEnergyConverter', 'ElectricEnergyDCDCConverter', 'ElectricEnergyInverter', 'ElectricEnergyTransformer', 'ElectricResistanceElement', 'ElectricHeatingCoil', 'ElectricOven', 'ElectricWaterDispenser', 'ElectricityBreaker', 'ElectricityMeter', 'ElectricityOutlet', 'ElectronicDisplay', 'Elevator', 'EnumerableProperty', 'EnumeratedActuatableProperty', 'ObservableProperty', 'EnumeratedObservableProperty', 'Escalator', 'EthernetCable', 'EthernetCable_Cat1', 'EthernetCable_Cat2', 'EthernetCable_Cat3', 'EthernetCable_Cat4', 'EthernetCable_Cat5', 'EthernetCable_Cat5e', 'EthernetCable_Cat6', 'EthernetCable_Cat6a', 'EthernetCable_Cat7', 'EthernetCable_Cat7a', 'EthernetCable_Cat8', 'EthernetPort', 'EthernetSwitch', 'Fan', 'FanCoilUnit', 'FanPoweredTerminal', 'Fan_2', 'FanWithVFD', 'Faucet', 'FiberEthernetOutlet', 'FiberOpticCable', 'FiberOpticCable_OM1', 'FiberOpticCable_OM2', 'FiberOpticCable_OM3', 'FiberOpticCable_OM4', 'FiberOpticCable_OM5', 'FiberOpticCable_OS1', 'FiberOpticCable_OS2', 'Filter', 'FlowSensor', 'FlushToilet', 'Freezer', 'FumeHood', 'Function', 'Furnace', 'PressureSensor', 'GaugePressureSensor', 'Generator', 'GroundToAirHeatPump', 'HeatingCoil', 'HotWaterCoil', 'HotWaterValve', 'Humidifier', 'Humidistat', 'HumiditySensor', 'HydronicHeatExchanger', 'IceMaker', 'IlluminanceSensor', 'InletConnectionPoint', 'Junction', 'Luminaire', 'MicrowaveOven', 'Monitor', 'Motor', 'OccupancySensor', 'OccupantCountSensor', 'OccupantMotionSensor', 'OccupantPresenceSensor', 'PhysicalSpace', 'OutdoorPhysicalSpace', 'OutletConnectionPoint', 'ParticulateSensor', 'PersonalComputer', 'PhotovoltaicModule', 'Pipe', 'PowerOverEthernetPort', 'PowerOverEthernetSwitch', 'Pump', 'QuantifiableProperty', 'QuantifiableActuatableProperty', 'QuantifiableObservableProperty', 'RFOutlet', 'RadiantHeater', 'Radiator', 'Refrigerator', 'Relation', 'RelationWithInverse', 'ServerComputer', 'Shower', 'SingleDuctTerminal', 'Sink', 'SolarThermalCollector', 'SteamInjector', 'SymmetricRelation', 'System', 'Television', 'TemperatureSensor', 'ThermalEnergyStorageUnit', 'Thermostat', 'ThreeWayValve', 'Turbine', 'TwoPositionDamper', 'TwoWayValve', 'USBCable', 'USBOutlet', 'VariableFrequencyDrive', 'VoltageSensor', 'WaterOutlet', 'WaterToAirHeatPump', 'WaterToWaterHeatPump', 'Window', 'WindowShade', 'WiredEthernetOutlet', 'Zone', 'ZoneGroup', 'Zone_2']

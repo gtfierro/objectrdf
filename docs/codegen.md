@@ -101,9 +101,7 @@ requirements from ranking evidence.
   `pairedConnectionPoint` → `paired_with`. The mapping is scoped to the S223
   IRIs; equivalent local names in Brick and other ontologies keep their normal
   snake_case names. `PropertySpec.predicate` always retains the RDF predicate.
-- Generated classes expose the previous S223 spellings as descriptors that
-  delegate to the canonical property, so both spellings share one value and
-  serialize as one predicate. New code should use the canonical spelling.
+- Generated classes expose only the canonical S223 spellings.
 - Collisions with reserved Entity API (`name`, `label`, `comment`, `meta`,
   `model`, `contains`) or keywords get a trailing `_`.
 - Distinct IRIs mapping to one name are suffixed `_2`, `_3`, ... in sorted-IRI

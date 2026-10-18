@@ -1,0 +1,45 @@
+@prefix ex: <urn:test:named-points#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
+
+ex: a owl:Ontology ;
+    owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
+    codegen:baseModule "objectrdf.s223" .
+
+ex:GroupedPump a owl:Class ; rdfs:subClassOf s223:Pump .
+ex:GroupedPumpShape a sh:NodeShape ; sh:targetClass ex:GroupedPump ;
+    sh:property [ sh:path s223:hasConnectionPoint ; sh:name "inlets" ;
+        sh:qualifiedMinCount 2 ; sh:qualifiedMaxCount 2 ;
+        sh:qualifiedValueShape ex:GroupedInlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "outlet" ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:qualifiedValueShape ex:Outlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:minCount 3 ; sh:maxCount 3 ] .
+ex:GroupedInlet sh:class s223:InletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "inlets" ] .
+ex:Outlet sh:class s223:OutletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "outlet" ] .
+
+ex:BranchedPump a owl:Class ; rdfs:subClassOf s223:Pump .
+ex:BranchedPumpShape a sh:NodeShape ; sh:targetClass ex:BranchedPump ;
+    sh:property [ sh:path s223:hasConnectionPoint ; sh:name "primary" ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:qualifiedValueShape ex:PrimaryInlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "secondary" ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:qualifiedValueShape ex:SecondaryInlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "outlet" ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:qualifiedValueShape ex:Outlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:minCount 3 ; sh:maxCount 3 ] .
+ex:PrimaryInlet sh:class s223:InletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "primary" ] .
+ex:SecondaryInlet sh:class s223:InletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "secondary" ] .

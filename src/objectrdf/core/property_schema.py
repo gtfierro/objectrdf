@@ -14,7 +14,7 @@ from .terms import TermValue
 if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
-    from .recipes import PointRef
+    from .points import PointRef
     from .resolution import ConnectionHandle, PortHandle
 
 
@@ -186,9 +186,9 @@ def apply_properties(
 ) -> PropertySet:
     """Atomically attach a generated schema to its exact authored subject."""
     from .entity import Entity
-    from .recipes import PointRef
+    from .points import PointRef
     from .resolution import ConnectionHandle, PortHandle
-    from objectrdf.qudt import _quantity_class, quantity
+    from objectrdf.qudt import _quantity_class, _create_quantity
 
     if not isinstance(schema, PropertySchema):
         raise TypeError("properties must be an instance of a generated PropertySchema")
@@ -238,7 +238,7 @@ def apply_properties(
                 if definition.property_class is not None
                 else _quantity_class(registry, "static")
             )
-            prop = quantity(
+            prop = _create_quantity(
                 cls,
                 name,
                 value,

@@ -28,8 +28,13 @@ if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
     from .meta import Registry
-    from .recipes import PointGroupRef, PointRef
-    from .resolution import ConnectionHandle, PortHandle, ResolutionReport, ResolvedModel
+    from .points import PointGroupRef, PointRef
+    from .resolution import (
+        ConnectionHandle,
+        PortHandle,
+        ResolutionReport,
+        ResolvedModel,
+    )
     from .validation import ValidationReport
 
 #: The ambient model set by ``with Model(...)`` blocks.
@@ -93,26 +98,27 @@ class Model:
     @contextmanager
     def _atomic(self) -> Iterator[None]:
         """Roll back a compound authoring operation, including existing links."""
-        from .recipes import copy_default
 
         self._assert_mutable()
-        loaded_triples = set(self._loaded_graph) if self._loaded_graph is not None else None
+        loaded_triples = (
+            set(self._loaded_graph) if self._loaded_graph is not None else None
+        )
         attributes = {
-            key: copy_default(value)
-            for key, value in self.__dict__.items()
+            key: _copy_collections(value) for key, value in self.__dict__.items()
         }
         entities = {
-            item: (copy_default(item._data), dict(item._rels),
-                   {key: list(store._items) for key, store in item._rels.items()},
-                   item.label, item.comment)
+            item: (
+                _copy_collections(item._data),
+                dict(item._rels),
+                {key: list(store._items) for key, store in item._rels.items()},
+                item.label,
+                item.comment,
+            )
             for item in self.entities
         }
-        ports = {
-            port: copy_default(port.__dict__)
-            for port in self._port_intents
-        }
+        ports = {port: _copy_collections(port.__dict__) for port in self._port_intents}
         assignments = {
-            handle: copy_default(handle.__dict__)
+            handle: _copy_collections(handle.__dict__)
             for handle in self._connection_intents
         }
         try:
@@ -259,10 +265,14 @@ class Model:
                 "graph-backed model; edit its concrete Connection and "
                 "ConnectionPoint objects instead"
             )
-        from .recipes import PointGroupRef
+        from .points import PointGroupRef
 
-        source_owner = source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
-        target_owner = target.owner if isinstance(target, (PortHandle, PointGroupRef)) else target
+        source_owner = (
+            source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+        )
+        target_owner = (
+            target.owner if isinstance(target, (PortHandle, PointGroupRef)) else target
+        )
         if isinstance(source_owner, Entity):
             point_owner = getattr(source_owner, "owner", None)
             if isinstance(point_owner, Entity):
@@ -278,7 +288,9 @@ class Model:
         suffix = 2
         while reserved in self._by_name or reserved in self._reserved_names:
             if name is not None:
-                raise ModelingError(f"an entity or connection named {name!r} already exists")
+                raise ModelingError(
+                    f"an entity or connection named {name!r} already exists"
+                )
             reserved = f"{base}_{suffix}"
             suffix += 1
         handle = ConnectionHandle(
@@ -305,7 +317,6 @@ class Model:
         medium: EnumValue | None,
         label: str | None = None,
         fixed_medium: bool = False,
-        medium_options: tuple[EnumValue, ...] = (),
     ) -> PortHandle:
         """Record a named connection point without choosing its medium."""
         from .resolution import PortHandle
@@ -318,15 +329,21 @@ class Model:
             )
         directions = (direction,) if isinstance(direction, str) else direction
         if not directions or not set(directions).issubset({"in", "out", "bi"}):
-            raise ValueError("port direction must be 'in', 'out', 'bi', or a non-empty tuple thereof")
+            raise ValueError(
+                "port direction must be 'in', 'out', 'bi', or a non-empty tuple thereof"
+            )
         if owner.meta.model is not self:
             raise ModelingError("port owner must belong to this Model")
         if name in self._by_name or name in self._reserved_names:
             raise ModelingError(f"an entity, port, or connection named {name!r} exists")
         port = PortHandle(
-            self, owner, name, direction, medium=medium, label=label,
+            self,
+            owner,
+            name,
+            direction,
+            medium=medium,
+            label=label,
             fixed_medium=fixed_medium,
-            medium_options=medium_options,
         )
         self._port_intents.append(port)
         self._reserved_names.add(name)
@@ -402,7 +419,8 @@ class Model:
         When ``registries`` is omitted, the loader selects installed ontology
         packages from the graph's ``owl:imports`` declarations. Pass a registry
         explicitly for graphs without those declarations or for custom
-        packages, for example ``Fan.meta.registry``. When ``infer`` is true,
+        packages, for example ``objectrdf.watr.drinking_water.REGISTRY``.
+        When ``infer`` is true,
         shifty applies SHACL-AF rules before objects and their relationships
         are materialized. Mutating generated attributes writes through to the
         graph; RDF outside the generated object projection is preserved.
@@ -502,9 +520,7 @@ class Model:
                 if spec.kind == "class":
                     obj = URIRef(value.meta.iri)
                 elif spec.kind == "object":
-                    obj = URIRef(
-                        value.iri if hasattr(value, "iri") else value._iri
-                    )
+                    obj = URIRef(value.iri if hasattr(value, "iri") else value._iri)
                 elif spec.kind in {"enum", "term"}:
                     obj = URIRef(value.iri)
                 elif spec.kind == "value":
@@ -536,7 +552,7 @@ class Model:
         return g
 
     def export_ontology(self, destination: str | Path | None = None) -> rdflib.Graph:
-        """Return the portable schema graph for recipe classes in this model.
+        """Return the portable schema graph for generated configurations in this model.
 
         The extension ontology graph is stored with the generated registry and
         includes class identities, parent links, and imports. When ``destination``
@@ -544,7 +560,8 @@ class Model:
         """
         graph = rdflib.Graph()
         registries = {
-            entity.meta.registry for entity in self.entities
+            entity.meta.registry
+            for entity in self.entities
             if getattr(entity.meta.registry, "schema_graph", None) is not None
         }
         for registry in registries:
@@ -719,3 +736,16 @@ def _split_namespace(class_iri: str) -> str | None:
         if sep in class_iri:
             return class_iri.rsplit(sep, 1)[0] + sep
     return None
+
+
+def _copy_collections(value: Any) -> Any:
+    """Copy mutable containers while preserving entity and vocabulary identity."""
+    if isinstance(value, list):
+        return [_copy_collections(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_copy_collections(item) for item in value)
+    if isinstance(value, dict):
+        return {key: _copy_collections(item) for key, item in value.items()}
+    if isinstance(value, set):
+        return set(value)
+    return value

@@ -14,7 +14,21 @@ from objectrdf.gen import compile_modules
 from objectrdf.qudt import QuantityAmount as Q, units
 from objectrdf.s223 import AirHandlingUnit, enums as s223_enums
 from objectrdf.s223.hvac import AirWaterCoolingCoil
-from objectrdf.watr import Connection, OutletConnectionPoint, Sensor, enums
+from objectrdf.watr import (
+    ChlorinationUnit,
+    CoagulationBasin,
+    Connection,
+    FlocculationBasin,
+    OutletConnectionPoint,
+    Pipe,
+    RapidSandFilter,
+    SedimentationTank,
+    Sensor,
+    System,
+    drinking_water,
+    enums,
+)
+from objectrdf.watr.drinking_water import ClarificationStage, CoagulationStage
 from objectrdf.watr.seawater_ro import MembraneDesign, ROStage
 
 ROOT = Path(__file__).parents[1]
@@ -38,6 +52,7 @@ def example(relative: str):
     [
         ("hvac.ttl", "HVAC", "s223/hvac"),
         ("seawater-ro.ttl", "SeawaterRO", "watr/seawater_ro"),
+        ("drinking-water.ttl", "DrinkingWater", "watr/drinking_water"),
     ],
 )
 def test_example_domain_regeneration_is_deterministic(source, name, package):
@@ -63,6 +78,83 @@ def test_generated_coil_inherits_containment_and_restores_all_four_ports():
     assert restored.air_inlet.medium is s223_enums.values.Fluid_Air
     assert restored.water_outlet.medium is s223_enums.values.Fluid_Water
     assert set(loaded.graph()) == set(resolved.graph())
+
+
+def test_conventional_treatment_train_uses_watr_equipment_and_separates_residuals():
+    model = example("watr/treatment/watr_quickstart.py").build_model()
+    resolved = model.compile()
+    plant = resolved["treatment-system"]
+    assert isinstance(plant, System)
+    expected = {
+        "coagulation": (CoagulationBasin, "Process_Coagulation"),
+        "flocculation": (FlocculationBasin, "Process_Flocculation"),
+        "clarifier": (SedimentationTank, "Process_Sedimentation"),
+        "sand-filter": (RapidSandFilter, "Process_RapidSandFiltration"),
+        "chlorination-contact": (ChlorinationUnit, "Process_ChlorineDosing"),
+    }
+    assert {member.name for member in plant.has_member} == set(expected)
+    for name, (equipment, process) in expected.items():
+        stage = resolved[name]
+        assert isinstance(stage, equipment)
+        assert {term.__name__ for term in stage.has_process} == {process}
+        assert stage.has_treatment_objective
+
+    expected_links = {
+        "coagulated-water": ("coagulation-outlet", "flocculation-inlet"),
+        "flocculated-water": ("flocculation-outlet", "clarifier-inlet"),
+        "clarified-water": ("clarifier-clarified_water", "sand-filter-inlet"),
+        "filtered-water": (
+            "sand-filter-filtered_water",
+            "chlorination-contact-inlet",
+        ),
+    }
+    pipes = [item for item in resolved if isinstance(item, Pipe)]
+    assert {pipe.name for pipe in pipes} == set(expected_links)
+    for pipe in pipes:
+        assert {point.name for point in pipe.connects_at} == set(
+            expected_links[pipe.name]
+        )
+        assert pipe.medium is enums.values.Fluid_Water
+    assert {point.name for point in plant.has_boundary_connection_point} == {
+        "coagulation-inlet",
+        "chlorination-contact-outlet",
+        "clarifier-sludge",
+        "sand-filter-backwash_supply",
+        "sand-filter-backwash_waste",
+    }
+    assert resolved["clarifier"].sludge.medium is enums.values.Fluid_Sludge
+    assert resolved["sand-filter"].backwash_supply.medium is enums.values.Fluid_Water
+    assert resolved["sand-filter"].backwash_waste.medium is enums.values.Fluid_Water
+
+    graph = resolved.graph()
+    assert "REGISTRY" in drinking_water.__all__
+    loaded = Model.from_graph(graph, registries=drinking_water.REGISTRY)
+    clarifier = loaded["clarifier"]
+    assert isinstance(clarifier, ClarificationStage)
+    assert clarifier.sludge.medium is enums.values.Fluid_Sludge
+    assert set(loaded.graph()) == set(graph)
+
+
+def test_treatment_stage_source_constraints_are_enforced_after_loading():
+    model = example("watr/treatment/watr_quickstart.py").build_model()
+    assert model.validate(infer=False).ok
+    graph = model.graph()
+    graph.remove(
+        (
+            URIRef("urn:example/treatment#clarifier"),
+            URIRef("https://watermetadata.org/ontology/watr#hasProcess"),
+            None,
+        )
+    )
+    loaded = Model.from_graph(graph, registries=CoagulationStage.meta.registry)
+    # Hydration must preserve authored facts, not silently restore required
+    # process terms from the configuration's constructive defaults.
+    clarifier = loaded["clarifier"]
+    assert isinstance(clarifier, ClarificationStage)
+    assert not clarifier.has_process
+    # WaTr's own SHACL-AF rules can infer class-required processes. Disable
+    # those rules here to validate only the facts supplied in the graph.
+    assert not loaded.validate(infer=False).ok
 
 
 def test_quantity_shape_fixed_labels_distinguish_same_kind_fields():

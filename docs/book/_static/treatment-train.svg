@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 265" role="img" aria-labelledby="title desc">
+  <title id="title">Conventional surface-water treatment train</title>
+  <desc id="desc">Raw water flows through coagulation, flocculation, clarification, sand filtration, and chlorination with contact, then leaves as finished water. Sludge leaves clarification. Backwash supply enters the sand filter and spent backwash leaves it.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#34495e"/></marker></defs>
+  <rect width="960" height="265" fill="white"/>
+  <g fill="#edf6fb" stroke="#286080" stroke-width="1.5">
+    <rect x="90" y="90" width="130" height="60" rx="7"/>
+    <rect x="250" y="90" width="130" height="60" rx="7"/>
+    <rect x="410" y="90" width="130" height="60" rx="7"/>
+    <rect x="570" y="90" width="130" height="60" rx="7"/>
+    <rect x="730" y="90" width="140" height="60" rx="7"/>
+  </g>
+  <g fill="none" stroke="#34495e" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M15 120H88"/><path d="M220 120H248"/><path d="M380 120H408"/>
+    <path d="M540 120H568"/><path d="M700 120H728"/><path d="M870 120H945"/>
+    <path d="M475 150V210"/><path d="M635 40V88"/><path d="M635 150V210"/>
+  </g>
+  <g fill="#172e40" font-family="sans-serif" font-size="15" text-anchor="middle">
+    <text x="155" y="125">Coagulation</text><text x="315" y="125">Flocculation</text>
+    <text x="475" y="125">Clarification</text><text x="635" y="125">Sand filtration</text>
+    <text x="800" y="115">Chlorination</text><text x="800" y="135">and contact</text>
+    <text x="50" y="96" font-size="13">Raw water</text>
+    <text x="911" y="80" font-size="13">Finished</text><text x="911" y="96" font-size="13">water</text>
+    <text x="475" y="235">Sludge</text><text x="635" y="235">Spent backwash</text>
+    <text x="635" y="27">Clean backwash supply</text>
+  </g>
+</svg>

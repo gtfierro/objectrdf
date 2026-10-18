@@ -9,11 +9,12 @@ from objectrdf.core import (Entity as _Entity, ClassInfo as _ClassInfo, CPSlot a
     PropertySpec as _PropertySpec, TermOne as _TermOne, Lit as _Lit,
     PropertySchema as _PropertySchema, QuantityDefinition as _QuantityDefinition,
     QuantityAmount as _QuantityAmount, TermValue as _TermValue, EnumValue as _EnumValue)
-from objectrdf.core.recipes import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef, fixed as _fixed
+from objectrdf.core.points import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef
 from objectrdf.core.shape_constraints import ShapeValues as _ShapeValues
 from objectrdf.qudt import units as _units, quantity_kinds as _kinds
 ONTOLOGY = _OntologyInfo('SeawaterRO', 'https://w3id.org/objectrdf/seawater-ro#', source='ontology/seawater-ro.ttl')
 _REGISTRY = _Registry(ONTOLOGY)
+REGISTRY = _REGISTRY
 _REGISTRY.by_name.update(_BASE._REGISTRY.by_name)
 _REGISTRY.by_iri.update(_BASE._REGISTRY.by_iri)
 _REGISTRY.enums_by_iri.update(_BASE._REGISTRY.enums_by_iri)
@@ -57,8 +58,8 @@ class AdvancedOxidationStage(_BASE.UVH2O2Reactor):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -90,9 +91,9 @@ class BackwashSeparator(_BASE.UnitProcess):
         _ShapeValues('has_process', 'https://w3id.org/objectrdf/seawater-ro#BackwashSeparatorShape/hasProcess/0', required=(_BASE.Process_Separation,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    byproduct = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge']), direction=_fixed('out'), label=_fixed('byproduct'))
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    treated = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('treated'))
+    byproduct = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge'], direction='out', label='byproduct')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    treated = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='treated')
     _point_declarations = {
         'byproduct': byproduct,
         'inlet': inlet,
@@ -117,8 +118,8 @@ class BackwashSeparator(_BASE.UnitProcess):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -167,8 +168,8 @@ class BackwashStage(_BASE.UnitProcess):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -214,8 +215,8 @@ class BoosterPump(_BASE.Pump):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -264,8 +265,8 @@ class CartridgeFiltrationStage(_BASE.CartridgeFiltrationUnit):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -314,8 +315,8 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -364,8 +365,8 @@ class CoagulationStage(_BASE.CoagulationBasin):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -414,8 +415,8 @@ class DosingStage(_BASE.Reactor):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -461,8 +462,8 @@ class EnergyRecoveryExchanger(_BASE.PressureExchanger):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -494,9 +495,9 @@ class FeedSplitter(_BASE.Junction):
         _ShapeValues('medium', 'https://w3id.org/objectrdf/seawater-ro#FeedSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=0, maximum=1),
     )
     _shape_max_ports = 3
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    pressure_exchanger = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('pressure_exchanger'))
-    pump = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('pump'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    pressure_exchanger = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='pressure_exchanger')
+    pump = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='pump')
     _point_declarations = {
         'inlet': inlet,
         'pressure_exchanger': pressure_exchanger,
@@ -514,8 +515,8 @@ class FeedSplitter(_BASE.Junction):
         medium: _EnumValue | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -554,8 +555,8 @@ class HighPressurePump(_BASE.Pump):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -604,8 +605,8 @@ class IntakePump(_BASE.Pump):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -634,8 +635,8 @@ class Landfill(_BASE.Equipment):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_max_ports = 2
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge']), direction=_fixed('in'), label=_fixed('inlet'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge']), direction=_fixed('out'), label=_fixed('outlet'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge'], direction='in', label='inlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Fluid-Sludge'], direction='out', label='outlet')
     _point_declarations = {
         'inlet': inlet,
         'outlet': outlet,
@@ -659,8 +660,8 @@ class Landfill(_BASE.Equipment):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -692,9 +693,9 @@ class MediaFilter(_BASE.UnitProcess):
         _ShapeValues('has_process', 'https://w3id.org/objectrdf/seawater-ro#MediaFilterShape/hasProcess/0', required=(_BASE.Process_MediaFiltration,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    backwash = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('backwash'))
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    product = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('product'))
+    backwash = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='backwash')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    product = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='product')
     _point_declarations = {
         'backwash': backwash,
         'inlet': inlet,
@@ -719,8 +720,8 @@ class MediaFilter(_BASE.UnitProcess):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -769,8 +770,8 @@ class MediaFiltrationStage(_BASE.UnitProcess):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -819,8 +820,8 @@ class MixingStage(_BASE.StaticMixer):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -858,8 +859,8 @@ class PermeateConnection(_BASE.Pipe):
         medium: _EnumValue | None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'connects_from': connects_from,
             'connects_at': connects_at,
             'has_thermodynamic_phase': has_thermodynamic_phase,
@@ -883,9 +884,9 @@ class ROFeedMixer(_BASE.StaticMixer):
         _ShapeValues('has_process', 'https://w3id.org/objectrdf/seawater-ro#ROFeedMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    booster = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('booster'))
-    high_pressure = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('high_pressure'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    booster = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='booster')
+    high_pressure = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='high_pressure')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'booster': booster,
         'high_pressure': high_pressure,
@@ -910,8 +911,8 @@ class ROFeedMixer(_BASE.StaticMixer):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -943,9 +944,9 @@ class ROStage(_BASE.ReverseOsmosisMembrane):
         _ShapeValues('has_process', 'https://w3id.org/objectrdf/seawater-ro#ROStageShape/hasProcess/0', required=(_BASE.Process_ReverseOsmosis,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    concentrate = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('concentrate'))
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    permeate = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('permeate'))
+    concentrate = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='concentrate')
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    permeate = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='permeate')
     _point_declarations = {
         'concentrate': concentrate,
         'inlet': inlet,
@@ -970,8 +971,8 @@ class ROStage(_BASE.ReverseOsmosisMembrane):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -1003,7 +1004,7 @@ class SeawaterFeed(_BASE.Equipment):
         _ShapeValues('has_role', 'https://w3id.org/objectrdf/seawater-ro#SeawaterFeedShape/hasRole/0', required=(_BASE._REGISTRY.enums_by_iri['https://watermetadata.org/ontology/watr#Role-Feed'],), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 1
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'outlet': outlet,
     }
@@ -1026,8 +1027,8 @@ class SeawaterFeed(_BASE.Equipment):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -1076,8 +1077,8 @@ class StorageTank(_BASE.Tank):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -1204,4 +1205,4 @@ class UVDesign(_PropertySchema):
     transmittance: float | _QuantityAmount
     'UV transmittance; ; default unit http://qudt.org/vocab/unit/UNITLESS; source https://w3id.org/objectrdf/seawater-ro#UVDesign_transmittanceShape'
 
-__all__ = ['ONTOLOGY', 'AdvancedOxidationStage', 'BackwashSeparator', 'BackwashStage', 'BoosterPump', 'CartridgeFiltrationStage', 'ChlorinationStage', 'CoagulationStage', 'DosingStage', 'EnergyRecoveryExchanger', 'FeedSplitter', 'HighPressurePump', 'IntakePump', 'Landfill', 'MediaFilter', 'MediaFiltrationStage', 'MixingStage', 'PermeateConnection', 'ROFeedMixer', 'ROStage', 'SeawaterFeed', 'StorageTank', 'HighPressurePumpDesign', 'MembraneDesign', 'PermeateState', 'PressureExchangerDesign', 'PumpDesign', 'ResidenceTimeDesign', 'SeawaterFeedState', 'UVDesign']
+__all__ = ['ONTOLOGY', 'REGISTRY', 'AdvancedOxidationStage', 'BackwashSeparator', 'BackwashStage', 'BoosterPump', 'CartridgeFiltrationStage', 'ChlorinationStage', 'CoagulationStage', 'DosingStage', 'EnergyRecoveryExchanger', 'FeedSplitter', 'HighPressurePump', 'IntakePump', 'Landfill', 'MediaFilter', 'MediaFiltrationStage', 'MixingStage', 'PermeateConnection', 'ROFeedMixer', 'ROStage', 'SeawaterFeed', 'StorageTank', 'HighPressurePumpDesign', 'MembraneDesign', 'PermeateState', 'PressureExchangerDesign', 'PumpDesign', 'ResidenceTimeDesign', 'SeawaterFeedState', 'UVDesign']

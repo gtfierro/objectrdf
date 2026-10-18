@@ -1,0 +1,127 @@
+@prefix dw: <https://w3id.org/objectrdf/drinking-water#> .
+@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
+
+# A teaching configuration of conventional surface-water treatment. The unit
+# processes and equipment classes are WaTr terms; the extension selects their
+# named port layouts and installation-specific treatment objectives.
+dw: a owl:Ontology ;
+    owl:imports <https://watermetadata.org/ontology/watr> ;
+    rdfs:label "Conventional drinking-water treatment configurations" ;
+    rdfs:comment "Five treatment stages with separate clarification sludge and filter backwash boundaries." ;
+    rdfs:seeAlso <https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html> ;
+    codegen:baseModule "objectrdf.watr" .
+
+# Shared main-path port shapes are reused by several stages. Water stays a
+# broad medium: process labels do not assert measured water quality.
+dw:Inlet sh:class s223:InletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "inlet" ] .
+dw:Outlet sh:class s223:OutletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "outlet" ] .
+
+dw:TwoPortWaterStageShape a sh:NodeShape ;
+    sh:property [ sh:path s223:hasConnectionPoint ; sh:name "inlet" ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:qualifiedValueShape dw:Inlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "outlet" ;
+        sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+        sh:qualifiedValueShape dw:Outlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:minCount 2 ; sh:maxCount 2 ] .
+
+dw:CoagulationStage a owl:Class ;
+    rdfs:subClassOf watr:CoagulationBasin ;
+    rdfs:label "Coagulation stage" ;
+    rdfs:comment "Coagulant addition and particle destabilization ahead of flocculation." .
+dw:CoagulationStageShape a sh:NodeShape ;
+    sh:targetClass dw:CoagulationStage ;
+    sh:node dw:TwoPortWaterStageShape ;
+    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-Coagulation ],
+        [ sh:path watr:hasTreatmentObjective ;
+          sh:hasValue watr:TreatmentObjective-TurbidityRemoval ] .
+
+dw:FlocculationStage a owl:Class ;
+    rdfs:subClassOf watr:FlocculationBasin ;
+    rdfs:label "Flocculation stage" ;
+    rdfs:comment "Gentle mixing to form flocs that can settle in the clarifier." .
+dw:FlocculationStageShape a sh:NodeShape ;
+    sh:targetClass dw:FlocculationStage ;
+    sh:node dw:TwoPortWaterStageShape ;
+    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-Flocculation ],
+        [ sh:path watr:hasTreatmentObjective ;
+          sh:hasValue watr:TreatmentObjective-TurbidityRemoval ] .
+
+dw:ClarificationStage a owl:Class ;
+    rdfs:subClassOf watr:SedimentationTank ;
+    rdfs:label "Clarification stage" ;
+    rdfs:comment "Settles flocs and separates clarified water from a sludge withdrawal." .
+dw:ClarificationStageShape a sh:NodeShape ;
+    sh:targetClass dw:ClarificationStage ;
+    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-Sedimentation ],
+        [ sh:path watr:hasTreatmentObjective ;
+          sh:hasValue watr:TreatmentObjective-Clarification ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "inlet" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:Inlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "clarified_water" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:ClarifiedWater ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "sludge" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:Sludge ],
+        [ sh:path s223:hasConnectionPoint ; sh:minCount 3 ; sh:maxCount 3 ] .
+dw:ClarifiedWater sh:class s223:OutletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "clarified_water" ] .
+dw:Sludge sh:class s223:OutletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue watr:Fluid-Sludge ],
+        [ sh:path rdfs:label ; sh:hasValue "sludge" ] .
+
+dw:RapidSandFiltrationStage a owl:Class ;
+    rdfs:subClassOf watr:RapidSandFilter ;
+    rdfs:label "Rapid sand filtration stage" ;
+    rdfs:comment "Filters clarified water through sand; spent backwash leaves separately during cleaning." .
+dw:RapidSandFiltrationStageShape a sh:NodeShape ;
+    sh:targetClass dw:RapidSandFiltrationStage ;
+    sh:property [ sh:path watr:hasProcess ;
+          sh:hasValue watr:Process-RapidSandFiltration ],
+        [ sh:path watr:hasTreatmentObjective ;
+          sh:hasValue watr:TreatmentObjective-TurbidityRemoval ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "inlet" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:Inlet ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "filtered_water" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:FilteredWater ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "backwash_waste" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:BackwashWaste ],
+        [ sh:path s223:hasConnectionPoint ; sh:name "backwash_supply" ;
+          sh:qualifiedMinCount 1 ; sh:qualifiedMaxCount 1 ;
+          sh:qualifiedValueShape dw:BackwashSupply ],
+        [ sh:path s223:hasConnectionPoint ; sh:minCount 4 ; sh:maxCount 4 ] .
+dw:FilteredWater sh:class s223:OutletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "filtered_water" ] .
+dw:BackwashWaste sh:class s223:OutletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "backwash_waste" ] .
+dw:BackwashSupply sh:class s223:InletConnectionPoint ;
+    sh:property [ sh:path s223:hasMedium ; sh:hasValue s223:Fluid-Water ],
+        [ sh:path rdfs:label ; sh:hasValue "backwash_supply" ] .
+
+dw:ChlorinationStage a owl:Class ;
+    rdfs:subClassOf watr:ChlorinationUnit ;
+    rdfs:label "Chlorination and contact stage" ;
+    rdfs:comment "Chlorine dosing and a contact stage with the objective of disinfection." .
+dw:ChlorinationStageShape a sh:NodeShape ;
+    sh:targetClass dw:ChlorinationStage ;
+    sh:node dw:TwoPortWaterStageShape ;
+    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-ChlorineDosing ],
+        [ sh:path watr:hasTreatmentObjective ;
+          sh:hasValue watr:TreatmentObjective-Disinfection ] .

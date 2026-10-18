@@ -38,16 +38,18 @@ def test_enum_hierarchical_access():
     assert enums.values.Substance_Medium.Mix.Fluid.Air is enums.values.Fluid_Air
 
 
-def test_legacy_generated_package_exposes_canonical_point_properties():
+def test_generated_package_exposes_canonical_point_properties():
     with Model("urn:test/s223-names#"):
         fan = s223.Fan("fan")
         point = next(
-            cp for cp in fan.has_connection_point if isinstance(cp, s223.InletConnectionPoint)
+            cp
+            for cp in fan.has_connection_point
+            if isinstance(cp, s223.InletConnectionPoint)
         )
 
-    assert point.medium is point.has_medium is enums.values.Fluid_Air
-    assert point.owner is point.is_connection_point_of is fan
-    point.has_medium = enums.values.Fluid_Water
+    assert point.medium is enums.values.Fluid_Air
+    assert point.owner is fan
+    point.medium = enums.values.Fluid_Water
     assert point.medium is enums.values.Fluid_Water
 
 
@@ -313,10 +315,7 @@ def test_unsat_core_uses_authored_connection_name(m):
 
 def test_sparse_components_resolve_independently():
     with Model("urn:test/sparse#") as model:
-        handles = [
-            connect(s223.Damper(f"d{i}"), s223.Fan(f"f{i}"))
-            for i in range(30)
-        ]
+        handles = [connect(s223.Damper(f"d{i}"), s223.Fan(f"f{i}")) for i in range(30)]
     assert model.check().status == "complete"
     resolved = model.resolve()
     assert all(isinstance(resolved.connection(h), s223.Duct) for h in handles)
@@ -357,9 +356,7 @@ def test_serialization_produces_223_triples(m):
 
 def test_cp_cannot_belong_to_two_connectables(m):
     f1, f2 = s223.Fan("f1"), s223.Fan("f2")
-    cp = s223.OutletConnectionPoint(
-        "cp", medium=enums.values.Fluid_Air, owner=f1
-    )
+    cp = s223.OutletConnectionPoint("cp", medium=enums.values.Fluid_Air, owner=f1)
     with pytest.raises(ModelingError, match="already"):
         f2.has_connection_point.add(cp)
 
@@ -416,7 +413,7 @@ def test_system_scope_collects_members_and_resolved_boundaries(m):
     system = resolved["transfer-system"]
     assert scope.entity is not None
     assert {member.name for member in system.has_member} == {"pump-1", "pump-2"}
-    assert {
-        point.owner.name
-        for point in system.has_boundary_connection_point
-    } == {"pump-1", "pump-2"}
+    assert {point.owner.name for point in system.has_boundary_connection_point} == {
+        "pump-1",
+        "pump-2",
+    }

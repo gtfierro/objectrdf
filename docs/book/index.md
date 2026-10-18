@@ -6,12 +6,15 @@ relations, resolves deferred connections, validates against SHACL, and emits
 RDF.
 
 Start with [an S223 air path](tutorials/s223-air-path.md), then build a
-[WaTr treatment path](tutorials/watr-treatment.md). Each tutorial is an
-executable MyST notebook page. Run the book build to see current output.
+[conventional WaTr treatment train](tutorials/watr-treatment.md). Each tutorial is an
+executable MyST notebook page. Continue with
+[generated configurations and quantity schemas](tutorials/domain-configurations.md)
+to build a domain model from supplied RDF/SHACL definitions.
 
 Use the task guides to [explore classes](how-to/explore-classes.md),
 [explore enums](how-to/explore-enums.md),
 [inspect port requirements](how-to/inspect-port-contracts.md),
+[generate a domain API](how-to/generate-domain-api.md),
 [diagnose a model](how-to/diagnose-resolution.md), or
 [validate and query RDF](how-to/validate-and-query.md). The
 [lifecycle explanation](explanation/lifecycle.md) shows where Z3 and shifty

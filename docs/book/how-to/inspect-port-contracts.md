@@ -49,7 +49,7 @@ exact point. Without `ports="new"`, the resolver chooses compatible points.
 
 RDF/SHACL-generated configurations can also expose named references such as
 `stage.outlet`. Their `describe_ports()` summaries include these names. See
-[SHACL configurations](../../shacl-configurations.md).
+[domain API generation](generate-domain-api.md).
 
 The count applies to points satisfying that row, not to the number of named
 handles you must create. The summary labels unconditional slots separately

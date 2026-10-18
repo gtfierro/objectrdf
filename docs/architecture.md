@@ -61,7 +61,7 @@ the exact code to write.
 
 ## Compiler (`src/objectrdf/gen/`)
 
-Three stages, strictly separated:
+The compiler separates extraction, emission, and package policy:
 
 1. **`schema.py`** — all RDF interpretation. Produces a plain-dataclass IR:
    classes (topologically ordered, MRO-repaired), properties (domain- and
@@ -102,6 +102,26 @@ is deterministic).
   CP-slot extraction, and the
   medium-domain extraction, and the mutually-required-cycle demotion
   documented in [s223.md](s223.md).
+
+## Domain configurations and property schemas
+
+`gen/configurations.py` compiles RDF extensions linked to an installed base
+package. SHACL supplies required members, replaceable defaults, finite choices,
+named ports, and quantity semantics. Generated constructors and frozen
+`PropertySchema` dataclasses expose those requirements to Python tooling.
+The exact source graph ships with each package for validation and hydration.
+
+`core/points.py` supplies descriptors and references for shape-defined ports.
+`core/shape_constraints.py` enforces constructive values on equipment.
+`core/property_schema.py` validates quantities and atomically creates independent
+properties on equipment, points, or connections. `QuantityAmount` carries an
+explicit unit; compiled QUDT dimension metadata checks compatibility without
+implicit conversion. Capability and interpretation are independent.
+
+Both `apply_properties(...)` and scalar `quantity(...)` share quantity creation.
+`Model.system(...)` collects equipment and junction members and records explicit
+boundary points. Connection names do not change port selection; `ports="new"`
+requests fresh allocation while preserving shape limits.
 
 ## Later phases
 

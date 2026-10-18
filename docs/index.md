@@ -44,13 +44,10 @@ oad >> Fan("supply-fan")    # media negotiated, Duct created, inverses set
 - [Code generation](codegen.md) — how ontologies become Python packages
 - [Architecture](architecture.md) — how the runtime works inside
 - [DESIGN.md](../DESIGN.md) — the full design rationale and roadmap
-- [Quantities and nominal stream state](quantities.md)
+- [Quantities and property schemas](quantities.md)
 - [Current implementation roadmap](roadmap.md)
-- [Portable recipe implementation plan](recipe-implementation-plan.md)
-- [ASM2d authoring API design and implementation plan](asm2d-api-design-plan.md)
-- [ASM2d example with generated configurations](asm2d-proposed-example.md)
+- [ASM2d example with generated configurations](asm2d-example.md)
 - [Generate domain APIs from SHACL](shacl-configurations.md)
-- [Portable recipe classes](recipes.md)
 
 ## Status
 

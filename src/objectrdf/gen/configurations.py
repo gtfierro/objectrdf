@@ -240,13 +240,16 @@ def _quantity(graph: rdflib.Graph, prop: rdflib.term.Node) -> QuantityIR:
         minimum=minimum,
         maximum=maximum,
         choices=choices,
-        label=str(
-            fixed_label
-            or graph.value(prop, SH.description)
-            or graph.value(shape, RDFS.label)
-            or ""
-        )
-        or None,
+        label=(
+            str(fixed_label)
+            if fixed_label is not None
+            else str(
+                graph.value(prop, SH.description)
+                or graph.value(shape, RDFS.label)
+                or ""
+            )
+            or None
+        ),
         description=str(
             graph.value(shape, SH.description) or graph.value(shape, RDFS.comment) or ""
         )
@@ -318,6 +321,7 @@ def _configuration(
                     or medium is None
                     or count is None
                     or count != maximum
+                    or int(str(count)) < 1
                 ):
                     raise ValueError(
                         f"{prop}: named ports need a direction, exact medium, and exact count"
@@ -485,6 +489,9 @@ def compile_configurations(
             known[iri] = _configuration(graph, pending.pop(iri), registry, known)
     configurations = list(known.values())
     local_names = {item.iri: item.name for item in configurations}
+    for item in configurations:
+        if item.name in naming.MODULE_RESERVED:
+            raise ValueError(f"{item.iri}: generated name collision {item.name}")
     terms: dict[str, str] = {}
 
     def reference(node: rdflib.term.Node | str) -> str:
@@ -519,7 +526,7 @@ def compile_configurations(
         group_name = _name(
             graph, group, naming.class_name(str(group)).removesuffix("Shape")
         )
-        if group_name in {*local_names.values(), *group_names, "ONTOLOGY"}:
+        if group_name in {*local_names.values(), *group_names, *naming.MODULE_RESERVED}:
             raise ValueError(f"{group}: generated name collision {group_name}")
         group_names.append(group_name)
         fields = []
@@ -641,11 +648,12 @@ def compile_configurations(
         "    PropertySpec as _PropertySpec, TermOne as _TermOne, Lit as _Lit,",
         "    PropertySchema as _PropertySchema, QuantityDefinition as _QuantityDefinition,",
         "    QuantityAmount as _QuantityAmount, TermValue as _TermValue, EnumValue as _EnumValue)",
-        "from objectrdf.core.recipes import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef, fixed as _fixed",
+        "from objectrdf.core.points import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef",
         "from objectrdf.core.shape_constraints import ShapeValues as _ShapeValues",
         "from objectrdf.qudt import units as _units, quantity_kinds as _kinds",
         f"ONTOLOGY = _OntologyInfo({name!r}, {str(ontology)!r}, source={source!r})",
         "_REGISTRY = _Registry(ONTOLOGY)",
+        "REGISTRY = _REGISTRY",
         "_REGISTRY.by_name.update(_BASE._REGISTRY.by_name)",
         "_REGISTRY.by_iri.update(_BASE._REGISTRY.by_iri)",
         "_REGISTRY.enums_by_iri.update(_BASE._REGISTRY.enums_by_iri)",
@@ -661,7 +669,7 @@ def compile_configurations(
         + "})",
         "",
         *body,
-        f"__all__ = {['ONTOLOGY', *local_names.values(), *group_names]!r}",
+        f"__all__ = {['ONTOLOGY', 'REGISTRY', *local_names.values(), *group_names]!r}",
     ]
     return {"__init__.py": "\n".join(lines) + "\n"}
 
@@ -735,9 +743,9 @@ def _emit_configuration(
     if item.points:
         for point in item.points:
             annotation = "_PointRef" if point.count == 1 else "_PointGroupRef"
-            label = f"_fixed({point.label!r})" if point.label else "None"
+            label = repr(point.label)
             lines.append(
-                f"    {point.name} = _PointDeclaration[{annotation}](count={point.count}, medium=_fixed({ref(point.medium)}), direction=_fixed({point.direction!r}), label={label})"
+                f"    {point.name} = _PointDeclaration[{annotation}](count={point.count}, medium={ref(point.medium)}, direction={point.direction!r}, label={label})"
             )
         lines.append("    _point_declarations = {")
         lines.extend(f"        {point.name!r}: {point.name}," for point in item.points)

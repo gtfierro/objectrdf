@@ -12,13 +12,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .core import CPSlot, ConnectionHandle, EnumValue, PortHandle
-from .core.recipes import PointGroupRef, PointRef
+from .core.points import PointGroupRef, PointRef
 from .core import containment as _containment
 
 if TYPE_CHECKING:
     from .core import Entity, Registry
 
 S223 = "http://data.ashrae.org/standard223#"
+
 
 class S223Connector:
     """Negotiates ``a >> b`` for a generated 223-style package.
@@ -70,13 +71,17 @@ class S223Connector:
                     and getattr(cp, "medium").is_a(medium)
                 )
                 already += sum(
-                    1 for port in entity.meta.model._port_intents
+                    1
+                    for port in entity.meta.model._port_intents
                     if port.owner is entity
-                    and slot.direction in (
-                        (port.direction,) if isinstance(port.direction, str)
+                    and slot.direction
+                    in (
+                        (port.direction,)
+                        if isinstance(port.direction, str)
                         else port.direction
                     )
-                    and port.medium is not None and port.medium.is_a(medium)
+                    and port.medium is not None
+                    and port.medium.is_a(medium)
                     and (slot.label is None or port.label == slot.label)
                 )
                 for _ in range(max(slot.min_count - already, 0)):

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Iterator, Literal, Mapping
+from typing import TYPE_CHECKING, Any, Iterator, Literal
 
 from .errors import ModelingError
 from .terms import TermValue
@@ -14,9 +14,8 @@ if TYPE_CHECKING:
     from .entity import Entity
     from .enums import EnumValue
     from .model import Model
-    from .property_bundle import PropertyBundle
     from .property_schema import PropertySchema, PropertySet, QuantityAmount
-    from .recipes import PointGroupRef
+    from .points import PointGroupRef
 
 
 class PortHandle:
@@ -32,7 +31,6 @@ class PortHandle:
         medium: EnumValue | None = None,
         label: str | None = None,
         fixed_medium: bool = False,
-        medium_options: tuple[EnumValue, ...] = (),
     ) -> None:
         self._model = model
         self.owner = owner
@@ -41,7 +39,6 @@ class PortHandle:
         self._medium = medium
         self.label = label
         self._fixed_medium = fixed_medium
-        self.medium_options = medium_options
         self.symmetry_key: str | None = None
         self._paired_with: PortHandle | None = None
         self.roles: list[EnumValue] = []
@@ -87,7 +84,6 @@ class PortHandle:
         unit: TermValue | None = None,
         kind: TermValue,
         capability: Literal["static", "observable", "actuatable"] = "static",
-        mode: Literal["nominal", "observable", "actuatable"] | None = None,
         label: str | None = None,
         **properties: Any,
     ) -> Entity:
@@ -95,19 +91,15 @@ class PortHandle:
         from objectrdf.qudt import _attached_quantity
 
         return _attached_quantity(
-            self, name, value, unit=unit, kind=kind,
-            capability=capability, mode=mode, label=label, **properties,
+            self,
+            name,
+            value,
+            unit=unit,
+            kind=kind,
+            capability=capability,
+            label=label,
+            **properties,
         )
-
-    def apply_property_block(
-        self,
-        block: PropertyBundle,
-        *,
-        prefix: str | None = None,
-        values: Mapping[str, float] | None = None,
-    ) -> dict[str, Entity]:
-        """Stage fresh bundle properties on this port's eventual point."""
-        return block.apply(self, prefix=prefix, values=values)
 
     def apply_properties(
         self, schema: PropertySchema, *, prefix: str | None = None
@@ -213,9 +205,7 @@ class ConnectionHandle:
         """Expose generated Connection properties as staged values."""
         descriptor = self._connection_descriptor(name)
         if descriptor is None:
-            raise AttributeError(
-                f"{type(self).__name__!s} has no attribute {name!r}"
-            )
+            raise AttributeError(f"{type(self).__name__!s} has no attribute {name!r}")
         if _is_many_descriptor(descriptor):
             return _StagedCollection(self, name)
         return self._assignments.get(name)
@@ -229,27 +219,39 @@ class ConnectionHandle:
         return apply_properties(self, schema, prefix=prefix)
 
     def quantity(
-        self, name: str, value: float | QuantityAmount, *,
-        kind: TermValue, unit: TermValue | None = None,
+        self,
+        name: str,
+        value: float | QuantityAmount,
+        *,
+        kind: TermValue,
+        unit: TermValue | None = None,
         capability: Literal["static", "observable", "actuatable"] = "static",
-        mode: Literal["nominal", "observable", "actuatable"] | None = None,
-        label: str | None = None, **properties: Any,
+        label: str | None = None,
+        **properties: Any,
     ) -> Entity:
         """Create a scalar property on the eventual connection."""
         from objectrdf.qudt import _attached_quantity
 
         return _attached_quantity(
-            self, name, value, unit=unit, kind=kind,
-            capability=capability, mode=mode, label=label, **properties,
+            self,
+            name,
+            value,
+            unit=unit,
+            kind=kind,
+            capability=capability,
+            label=label,
+            **properties,
         )
 
     def _connection_type(self) -> type[Entity]:
         if self._connection_class is not None:
             return self._connection_class
-        from .recipes import PointGroupRef
+        from .points import PointGroupRef
 
         source = self.source
-        owner = source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+        owner = (
+            source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+        )
         return owner.meta.registry.resolve("Connection")
 
     def __setattr__(self, name: str, value: Any) -> None:
@@ -268,6 +270,7 @@ class ConnectionHandle:
         if _is_many_descriptor(descriptor):
             from .enums import EnumValue
             from .entity import Entity
+
             if isinstance(value, (EnumValue, Entity, TermValue, str, bytes)):
                 raise TypeError(f"{name} is multi-valued; assign an iterable")
             try:
@@ -292,7 +295,7 @@ class ConnectionHandle:
     def _connection_descriptor(self, name: str) -> object | None:
         connection_cls = self._connection_class
         if connection_cls is None:
-            from .recipes import PointGroupRef
+            from .points import PointGroupRef
 
             source = (
                 self.source.owner
@@ -444,11 +447,13 @@ class ResolvedModel:
         try:
             return self._connections[handle.identifier]
         except KeyError:
-            raise KeyError("connection handle does not belong to this snapshot") from None
+            raise KeyError(
+                "connection handle does not belong to this snapshot"
+            ) from None
 
     def point(self, reference: Any) -> Any:
-        """Resolve a recipe point reference to its concrete snapshot point."""
-        from .recipes import PointGroupRef, PointRef
+        """Resolve a named point reference to its concrete snapshot point."""
+        from .points import PointGroupRef, PointRef
         from .entity import Entity
 
         if isinstance(reference, PointGroupRef):
@@ -461,7 +466,9 @@ class ResolvedModel:
         for point in getattr(owner, "has_connection_point"):
             if point.name == reference._port.name:
                 return point
-        raise KeyError(f"point {reference.owner.name}.{reference.name} was not resolved")
+        raise KeyError(
+            f"point {reference.owner.name}.{reference.name} was not resolved"
+        )
 
     def explain(
         self,
@@ -476,12 +483,14 @@ class ResolvedModel:
         if not isinstance(handle, ConnectionHandle):
             if target is None:
                 raise TypeError("explain() needs a handle or both connection endpoints")
-            from .recipes import PointGroupRef, PointRef
+            from .points import PointGroupRef, PointRef
 
             source = handle._port if isinstance(handle, PointRef) else handle
             destination = target._port if isinstance(target, PointRef) else target
             source_owner = (
-                source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
+                source.owner
+                if isinstance(source, (PortHandle, PointGroupRef))
+                else source
             )
             target_owner = (
                 destination.owner
@@ -503,14 +512,16 @@ class ResolvedModel:
         try:
             return self._explanations[handle.identifier]
         except KeyError:
-            raise KeyError("connection handle does not belong to this snapshot") from None
+            raise KeyError(
+                "connection handle does not belong to this snapshot"
+            ) from None
 
     def graph(self) -> rdflib.Graph:
         return self._model._graph_unresolved()
 
 
 def _endpoint_owner(endpoint: Any) -> Any:
-    from .recipes import PointGroupRef
+    from .points import PointGroupRef
 
     if isinstance(endpoint, (PortHandle, PointGroupRef)):
         return endpoint.owner

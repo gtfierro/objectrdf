@@ -22,14 +22,25 @@ import re
 #: Attribute/method names owned by the Entity base class.
 RESERVED = frozenset(
     {
-        "name", "type", "label", "comment", "meta", "model", "contains",
-        "ports", "describe_ports",
-        "apply_properties", "quantity", "apply_property_block", "boundary", "port",
+        "name",
+        "type",
+        "label",
+        "comment",
+        "meta",
+        "model",
+        "contains",
+        "ports",
+        "describe_ports",
+        "apply_properties",
+        "quantity",
+        "boundary",
+        "port",
     }
 ) | frozenset(keyword.kwlist)
 
 _CAMEL_BOUNDARY = re.compile(r"(?<=[a-z0-9])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])")
 _INVALID = re.compile(r"[^0-9A-Za-z_]")
+MODULE_RESERVED = frozenset({"ONTOLOGY", "REGISTRY"})
 
 # Python-facing names for the S223 point properties most commonly used by
 # equipment authors. Keep this mapping IRI-scoped so unrelated ontologies
@@ -39,12 +50,6 @@ _S223_POINT_NAMES = {
     "http://data.ashrae.org/standard223#isConnectionPointOf": "owner",
     "http://data.ashrae.org/standard223#connectsThrough": "connection",
     "http://data.ashrae.org/standard223#pairedConnectionPoint": "paired_with",
-}
-_LEGACY_S223_POINT_NAMES = {
-    "medium": "has_medium",
-    "owner": "is_connection_point_of",
-    "connection": "connects_through",
-    "paired_with": "paired_connection_point",
 }
 
 
@@ -60,7 +65,8 @@ def local_name(iri: str) -> str:
 
 def class_name(iri: str) -> str:
     """Python class name for an ontology class IRI."""
-    return _sanitize(local_name(iri))
+    name = _sanitize(local_name(iri))
+    return name + "_" if name in MODULE_RESERVED else name
 
 
 def property_name(iri: str) -> str:
@@ -69,13 +75,6 @@ def property_name(iri: str) -> str:
         return _S223_POINT_NAMES[iri]
     snake = _CAMEL_BOUNDARY.sub("_", local_name(iri)).lower()
     return _sanitize(snake)
-
-
-def legacy_property_name(iri: str) -> str | None:
-    """Return a temporary compatibility name for a canonicalized predicate."""
-    if iri not in _S223_POINT_NAMES:
-        return None
-    return _LEGACY_S223_POINT_NAMES[_S223_POINT_NAMES[iri]]
 
 
 def _sanitize(name: str) -> str:

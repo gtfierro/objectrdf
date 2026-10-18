@@ -9,8 +9,15 @@ adds the component pools used by the WaTr base package.
 `seawater-ro.ttl` defines reusable RO and pretreatment process configurations,
 branched port layouts, and quantity schemas for feed, membrane, pumps, storage,
 pressure recovery, permeate pressure, and UV. `hvac.ttl` defines the air/water
-cooling coil shared by the S223 examples. All three domain packages regenerate
-offline with `uv run python scripts/generate_example_domains.py`.
+cooling coil shared by the S223 examples.
+
+`drinking-water.ttl` defines a conventional surface-water treatment train using
+WaTr coagulation, flocculation, sedimentation, sand filtration, and chlorination
+equipment and processes. Its stage configurations include separate sludge and
+filter backwash ports. The sequence follows
+[CDC's treatment overview](https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html);
+the port layouts are this repository's teaching configuration. All four domain
+packages regenerate offline with `uv run python scripts/generate_example_domains.py`.
 
 `qudt-catalog-extras.ttl` preserves reference terms from the pinned QUDT catalog
 that are absent from WaTr's bundled import closure. It is included by

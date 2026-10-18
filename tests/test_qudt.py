@@ -6,9 +6,8 @@ from rdflib import OWL, Literal, URIRef
 
 from objectrdf import Model, connect, s223
 from objectrdf.qudt import (
-    quantity,
+    QuantityAmount as Q,
     quantity_kinds,
-    stream_state,
     units,
 )
 from objectrdf.s223 import enums
@@ -22,19 +21,24 @@ def test_compiled_qudt_terms_are_external_instances():
     assert quantity_kinds.Pressure.is_instance_of(f"{QUDT}QuantityKind")
 
 
-def test_quantity_helper_emits_s223_qudt_pattern():
+def test_s223_validation_uses_compiled_vocabulary_reference_types():
+    with Model("urn:test:reference-types#") as model:
+        chiller = s223.Chiller("chiller")
+        connect(chiller, s223.Pump("pump"))
+        chiller.quantity("pressure", Q(7.0, units.BAR), kind=quantity_kinds.Pressure)
+    assert model.validate().ok
+
+
+def test_scalar_quantity_emits_s223_qudt_pattern():
     with Model("urn:test/quantity#") as model:
         pump = s223.Pump("pump")
-        pressure = quantity(
-            s223.QuantifiableProperty,
+        pressure = pump.quantity(
             "operating-pressure",
-            7_000_000,
-            units.PA,
-            quantity_kinds.Pressure,
-            of=pump,
+            Q(7_000_000, units.PA),
+            kind=quantity_kinds.Pressure,
         )
 
-    assert pressure.has_value == 7_000_000
+    assert getattr(pressure, "has_value") == 7_000_000
     graph = model.graph()
     pressure_iri = URIRef("urn:test/quantity#operating-pressure")
     assert (
@@ -50,7 +54,7 @@ def test_quantity_helper_emits_s223_qudt_pattern():
     assert (
         pressure_iri,
         URIRef("http://data.ashrae.org/standard223#hasValue"),
-        Literal(7_000_000),
+        Literal(7_000_000.0),
     ) in graph
     assert (
         URIRef("urn:test/quantity"),
@@ -77,18 +81,16 @@ def test_quantifiable_property_accepts_simple_fixed_value():
     ) in model.graph()
 
 
-def test_stream_state_stages_medium_qualified_property_on_connection():
+def test_connection_quantity_retains_medium_qualification():
     with Model("urn:test/stream#") as model:
         handle = connect(s223.Chiller("source"), s223.Pump("pump"))
-        state = stream_state(handle, medium=enums.values.Fluid_Water)
-        flow = state.quantity(
-            s223.QuantifiableProperty,
+        flow = handle.quantity(
             "design-flow",
-            0.25,
-            units.M3_PER_SEC,
-            quantity_kinds.VolumeFlowRate,
+            Q(0.25, units.M3_PER_SEC),
+            kind=quantity_kinds.VolumeFlowRate,
+            of_medium=enums.values.Fluid_Water,
         )
 
     connection = model.resolve().connection(handle)
-    assert flow.of_medium is enums.values.Fluid_Water
+    assert getattr(flow, "of_medium") is enums.values.Fluid_Water
     assert {prop.name for prop in connection.has_property} == {"design-flow"}

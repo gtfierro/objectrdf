@@ -87,8 +87,6 @@ scalar `hasValue` and identifies its QUDT quantity kind and unit. A
 QUDT form, but it is not required for a fixed S223 property value. If a QUDT
 term is also declared as a class (punned), the compiled named individual is
 still used; authoring never creates a new local unit or quantity-kind instance.
-The lower-level `objectrdf.qudt.quantity(...)` helper remains available for
-code that needs to choose a property class explicitly.
 
 ## Reusable schemas from RDF and SHACL
 
@@ -118,11 +116,9 @@ chooses a different naming stem; duplicate names fail atomically. Attach a value
 to the point or connection it describes, rather than moving it onto equipment.
 
 See [SHACL configurations](shacl-configurations.md) for schema authoring and
-[ASM2d](asm2d-proposed-example.md) for a complete model. Existing `PropertyBundle`,
-`apply_property_block`, `stream_state`, and `mode=` APIs remain available for
-compatibility. New domain APIs should use generated schemas; use `capability=`
-and explicit aspects for individual quantities. Legacy `mode="nominal"` adds
-the nominal aspect to a static property.
+[ASM2d](asm2d-example.md) for a complete model. Use `capability=` and explicit
+aspects for individual quantities. Property schemas obtain both their property
+class and their aspects from SHACL.
 
 ## Medium and substance qualifications
 
@@ -160,9 +156,9 @@ a connection:
 
 They are not sufficient to distinguish several operating points or samples
 for the same stream. A companion ontology is needed before the framework
-should serialize a real `StreamState`. It should define:
+should serialize a distinct operating point. It should define:
 
-- `StreamState` (or `OperatingPoint`) and the relation to its connection;
+- an operating-point class and its relation to the connection;
 - whether a state is nominal, calculated, measured, or constrained;
 - time/scenario/run identity and validity interval;
 - cardinality and ownership of its properties;

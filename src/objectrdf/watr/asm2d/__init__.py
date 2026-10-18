@@ -9,11 +9,12 @@ from objectrdf.core import (Entity as _Entity, ClassInfo as _ClassInfo, CPSlot a
     PropertySpec as _PropertySpec, TermOne as _TermOne, Lit as _Lit,
     PropertySchema as _PropertySchema, QuantityDefinition as _QuantityDefinition,
     QuantityAmount as _QuantityAmount, TermValue as _TermValue, EnumValue as _EnumValue)
-from objectrdf.core.recipes import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef, fixed as _fixed
+from objectrdf.core.points import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef
 from objectrdf.core.shape_constraints import ShapeValues as _ShapeValues
 from objectrdf.qudt import units as _units, quantity_kinds as _kinds
 ONTOLOGY = _OntologyInfo('ASM2d', 'https://w3id.org/objectrdf/asm2d#', source='ontology/asm2d.ttl')
 _REGISTRY = _Registry(ONTOLOGY)
+REGISTRY = _REGISTRY
 _REGISTRY.by_name.update(_BASE._REGISTRY.by_name)
 _REGISTRY.by_iri.update(_BASE._REGISTRY.by_iri)
 _REGISTRY.enums_by_iri.update(_BASE._REGISTRY.enums_by_iri)
@@ -44,8 +45,8 @@ class AerobicStage(_BASE.AerationBasin):
         _ShapeValues('has_treatment_objective', 'https://w3id.org/objectrdf/asm2d#AerobicStageShape/ammonia-objective', required=(_BASE.TreatmentObjective_AmmoniaControl, _BASE.TreatmentObjective_NitrogenRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'inlet': inlet,
         'outlet': outlet,
@@ -69,8 +70,8 @@ class AerobicStage(_BASE.AerationBasin):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -104,8 +105,8 @@ class AnaerobicStage(_BASE.Reactor):
         _ShapeValues('has_treatment_objective', 'https://w3id.org/objectrdf/asm2d#AnaerobicStageShape/hasTreatmentObjective/1', required=(_BASE.TreatmentObjective_PhosphorusRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'inlet': inlet,
         'outlet': outlet,
@@ -129,8 +130,8 @@ class AnaerobicStage(_BASE.Reactor):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -164,8 +165,8 @@ class AnoxicStage(_BASE.Reactor):
         _ShapeValues('has_treatment_objective', 'https://w3id.org/objectrdf/asm2d#AnoxicStageShape/hasTreatmentObjective/1', required=(_BASE.TreatmentObjective_NitrogenRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'inlet': inlet,
         'outlet': outlet,
@@ -189,8 +190,8 @@ class AnoxicStage(_BASE.Reactor):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -222,9 +223,9 @@ class InfluentMixer(_BASE.StaticMixer):
         _ShapeValues('has_process', 'https://w3id.org/objectrdf/asm2d#InfluentMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    feed_water = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('feed_water'))
-    recycle = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('recycle'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    feed_water = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='feed_water')
+    recycle = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='recycle')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'feed_water': feed_water,
         'recycle': recycle,
@@ -249,8 +250,8 @@ class InfluentMixer(_BASE.StaticMixer):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -282,9 +283,9 @@ class InternalRecycleSplitter(_BASE.Junction):
         _ShapeValues('medium', 'https://w3id.org/objectrdf/asm2d#InternalRecycleSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=0, maximum=1),
     )
     _shape_max_ports = 3
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    overflow = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('overflow'))
-    underflow = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('underflow'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    overflow = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='overflow')
+    underflow = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='underflow')
     _point_declarations = {
         'inlet': inlet,
         'overflow': overflow,
@@ -302,8 +303,8 @@ class InternalRecycleSplitter(_BASE.Junction):
         medium: _EnumValue | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -328,9 +329,9 @@ class RecycleMixer(_BASE.StaticMixer):
         _ShapeValues('has_process', 'https://w3id.org/objectrdf/asm2d#RecycleMixerShape/hasProcess/0', required=(_BASE.Process_Mixing,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    reactor = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('reactor'))
-    internal_recycle = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('internal_recycle'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    reactor = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='reactor')
+    internal_recycle = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='internal_recycle')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'reactor': reactor,
         'internal_recycle': internal_recycle,
@@ -355,8 +356,8 @@ class RecycleMixer(_BASE.StaticMixer):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -385,8 +386,8 @@ class RecyclePump(_BASE.Pump):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_max_ports = 2
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    outlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('outlet'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    outlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='outlet')
     _point_declarations = {
         'inlet': inlet,
         'outlet': outlet,
@@ -410,8 +411,8 @@ class RecyclePump(_BASE.Pump):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -445,9 +446,9 @@ class SecondaryClarifier(_BASE.SedimentationTank):
         _ShapeValues('has_treatment_objective', 'https://w3id.org/objectrdf/asm2d#SecondaryClarifierShape/hasTreatmentObjective/1', required=(_BASE.TreatmentObjective_Clarification,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    effluent = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('effluent'))
-    underflow = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('underflow'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    effluent = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='effluent')
+    underflow = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='underflow')
     _point_declarations = {
         'inlet': inlet,
         'effluent': effluent,
@@ -472,8 +473,8 @@ class SecondaryClarifier(_BASE.SedimentationTank):
         medium: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -505,9 +506,9 @@ class SludgeSplitter(_BASE.Junction):
         _ShapeValues('medium', 'https://w3id.org/objectrdf/asm2d#SludgeSplitterShape/hasMedium/0', required=(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'],), defaults=(), choices=(), minimum=0, maximum=1),
     )
     _shape_max_ports = 3
-    inlet = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('in'), label=_fixed('inlet'))
-    recycle = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('recycle'))
-    waste = _PointDeclaration[_PointRef](count=1, medium=_fixed(_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water']), direction=_fixed('out'), label=_fixed('waste'))
+    inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
+    recycle = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='recycle')
+    waste = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='waste')
     _point_declarations = {
         'inlet': inlet,
         'recycle': recycle,
@@ -525,8 +526,8 @@ class SludgeSplitter(_BASE.Junction):
         medium: _EnumValue | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_optional_connection_point': has_optional_connection_point,
             'connected_to': connected_to,
             'has_connection_point': has_connection_point,
@@ -588,8 +589,8 @@ class SplitFraction(_BASE.QuantifiableProperty):
         value: _Iterable[_Entity] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
-            'medium': medium,
             'has_property': has_property,
+            'medium': medium,
             'has_value': has_value,
             'has_aspect': has_aspect,
             'has_external_reference': has_external_reference,
@@ -763,4 +764,4 @@ class ReactorDesign(_PropertySchema):
     volume: float | _QuantityAmount
     'Volume; ; default unit http://qudt.org/vocab/unit/M3; source https://w3id.org/objectrdf/asm2d#ReactorVolumeShape'
 
-__all__ = ['ONTOLOGY', 'AerobicStage', 'AnaerobicStage', 'AnoxicStage', 'InfluentMixer', 'InternalRecycleSplitter', 'RecycleMixer', 'RecyclePump', 'SecondaryClarifier', 'SludgeSplitter', 'SplitFraction', 'ASM2dState', 'AerobicDesign', 'ClarifierEffluentSplit', 'OverallFlowSplit', 'OxygenOutletState', 'PressureState', 'ReactorDesign']
+__all__ = ['ONTOLOGY', 'REGISTRY', 'AerobicStage', 'AnaerobicStage', 'AnoxicStage', 'InfluentMixer', 'InternalRecycleSplitter', 'RecycleMixer', 'RecyclePump', 'SecondaryClarifier', 'SludgeSplitter', 'SplitFraction', 'ASM2dState', 'AerobicDesign', 'ClarifierEffluentSplit', 'OverallFlowSplit', 'OxygenOutletState', 'PressureState', 'ReactorDesign']

@@ -23,7 +23,7 @@ from .core.relations import RelSet
 if TYPE_CHECKING:
     from .connect223 import S223Connector
     from .core import ConnectionHandle, Entity, EnumValue, Model
-    from .core.recipes import PointGroupRef
+    from .core.points import PointGroupRef
 
 
 @dataclass
@@ -99,9 +99,7 @@ def resolve_model(model: Model) -> ResolvedModel:
         if result.report.status == "underconstrained":
             raise AmbiguousModelError(
                 "; ".join(issue.message for issue in result.report.issues),
-                alternatives=tuple(
-                    issue.message for issue in result.report.issues
-                ),
+                alternatives=tuple(issue.message for issue in result.report.issues),
             )
         assert result.plan is not None
         plans.append(result.plan)
@@ -156,7 +154,6 @@ def _component_key(
                         port.name,
                         f"deferred-{port.direction}",
                         port.medium.iri if port.medium is not None else None,
-                        tuple(value.iri for value in port.medium_options),
                         port.paired_with.name if port.paired_with is not None else None,
                     )
                 )
@@ -182,7 +179,9 @@ def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]
     """Partition intentions by shared endpoint for sparse-model scaling."""
     handles = list(model._connection_intents)
     if not handles:
-        return [([], {entity}) for entity in model.entities if _has_recipe_work(entity)]
+        return [
+            ([], {entity}) for entity in model.entities if _has_named_points(entity)
+        ]
     parent: dict[Entity, Entity] = {}
 
     def find(entity: Entity) -> Entity:
@@ -207,50 +206,23 @@ def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]
     result.extend(
         ([], {entity})
         for entity in model.entities
-        if entity not in connected and _has_recipe_work(entity)
+        if entity not in connected and _has_named_points(entity)
     )
     return result
 
 
-def _has_recipe_work(entity: Entity) -> bool:
-    return bool(
-        getattr(type(entity), "_point_declarations", {})
-        or any(
-            policy.kind == "choose" and len(policy.values) > 1
-            for policy in getattr(type(entity), "_property_policies", {}).values()
-        )
-    )
+def _has_named_points(entity: Entity) -> bool:
+    return bool(type(entity)._point_declarations)
 
 
 def _solve_component(
-    handles: list[ConnectionHandle], *, materialize: bool,
+    handles: list[ConnectionHandle],
+    *,
+    materialize: bool,
     standalone: set[Entity] | None = None,
 ) -> _ComponentResult:
-    entities = {
-        _owner(endpoint)
-        for h in handles
-        for endpoint in (h.source, h.target)
-    }
+    entities = {_owner(endpoint) for h in handles for endpoint in (h.source, h.target)}
     entities.update(standalone or ())
-    unresolved: list[str] = []
-    for entity in entities:
-        for name, policy in type(entity)._property_policies.items():
-            if policy.kind != "choose":
-                continue
-            value = getattr(entity, name, None)
-            if value is None or value == [] or value == ():
-                unresolved.append(f"{entity.name}.{name}={policy.values!r}")
-    if unresolved:
-        return _ComponentResult(
-            ResolutionReport(
-                "underconstrained",
-                (ResolutionIssue(
-                    "choose a value for recipe properties: " + ", ".join(unresolved),
-                    tuple(unresolved),
-                ),),
-            ),
-            None,
-        )
     connector = (
         _owner(handles[0].source)._CONNECTOR
         if handles
@@ -285,7 +257,9 @@ def _solve_component(
                 authored_groups.setdefault(point.authored, []).append(point.active)
         for authored, alternatives in authored_groups.items():
             if len(alternatives) > 1:
-                solver.add(z3.PbEq([(alternative, 1) for alternative in alternatives], 1))
+                solver.add(
+                    z3.PbEq([(alternative, 1) for alternative in alternatives], 1)
+                )
         for point in entity_points:
             solver.add(point.medium >= 0, point.medium < len(enum_values))
             roots = _point_roots(point)
@@ -293,9 +267,7 @@ def _solve_component(
                 solver.add(
                     z3.Implies(
                         point.active,
-                        _medium_in_roots(
-                            point.medium, roots, enum_values, enum_ids
-                        ),
+                        _medium_in_roots(point.medium, roots, enum_values, enum_ids),
                     )
                 )
             if point.existing is not None:
@@ -305,13 +277,6 @@ def _solve_component(
                     solver.add(point.medium == enum_ids[existing_medium.iri])
             if point.authored is not None and point.authored.medium is not None:
                 solver.add(point.medium == enum_ids[point.authored.medium.iri])
-            if point.authored is not None and point.authored.medium_options:
-                allowed = [
-                    point.medium == enum_ids[value.iri]
-                    for value in point.authored.medium_options
-                    if value.iri in enum_ids
-                ]
-                solver.add(z3.Or(allowed))
         for slot_index, slot in enumerate(_all_slots(type(entity))):
             tracked(
                 _slot_expr(entity_points, slot, enum_values, enum_ids),
@@ -321,18 +286,16 @@ def _solve_component(
         maximum_ports = type(entity)._shape_max_ports
         if maximum_ports is not None:
             tracked(
-                z3.Sum([z3.If(point.active, 1, 0) for point in entity_points]) <= maximum_ports,
-                entity.name, "shape maximum connection-point count",
+                z3.Sum([z3.If(point.active, 1, 0) for point in entity_points])
+                <= maximum_ports,
+                entity.name,
+                "shape maximum connection-point count",
             )
-        for constraint_index, constraint in enumerate(
-            _all_constraints(type(entity))
-        ):
+        for constraint_index, constraint in enumerate(_all_constraints(type(entity))):
             if _contains_opaque(constraint):
                 continue
             tracked(
-                _constraint_expr(
-                    entity_points, constraint, enum_values, enum_ids
-                ),
+                _constraint_expr(entity_points, constraint, enum_values, enum_ids),
                 entity.name,
                 f"boolean connection layout {constraint_index}",
             )
@@ -370,7 +333,10 @@ def _solve_component(
             )
         source_candidates = _eligible(points, handle.source, "out")
         target_candidates = _eligible(points, handle.target, "in")
-        for side, candidates in (("source", source_candidates), ("target", target_candidates)):
+        for side, candidates in (
+            ("source", source_candidates),
+            ("target", target_candidates),
+        ):
             choices: list[z3.BoolRef] = []
             for point in candidates:
                 key = (handle.identifier, points.index(point))
@@ -445,7 +411,7 @@ def _solve_component(
                 "underconstrained",
                 (
                     ResolutionIssue(
-                        f"connection or recipe point choices remain ambiguous: {names}; "
+                        f"connection or named point choices remain ambiguous: {names}; "
                         "fix a point direction or medium, or connect it to equipment "
                         "that determines the choice",
                         differences,
@@ -486,8 +452,6 @@ def _relevant_media(
         for port in entity.meta.model._port_intents:
             if port.owner is entity and port.medium is not None:
                 values[port.medium.iri] = port.medium
-            if port.owner is entity:
-                values.update({value.iri: value for value in port.medium_options})
     for handle in handles:
         if handle.medium is not None:
             values[handle.medium.iri] = handle.medium
@@ -522,7 +486,9 @@ def _make_points(
     for port in entity.meta.model._port_intents:
         if port.owner is not entity:
             continue
-        directions = (port.direction,) if isinstance(port.direction, str) else port.direction
+        directions = (
+            (port.direction,) if isinstance(port.direction, str) else port.direction
+        )
         for direction_index, direction in enumerate(directions):
             cls_name = {
                 "in": "InletConnectionPoint",
@@ -534,7 +500,9 @@ def _make_points(
                     entity,
                     registry.resolve(cls_name),
                     port.name,
-                    z3.BoolVal(True) if len(directions) == 1 else z3.Bool(
+                    z3.BoolVal(True)
+                    if len(directions) == 1
+                    else z3.Bool(
                         f"authored_{_safe(port.name)}_{direction_index}_active"
                     ),
                     z3.Int(f"authored_{_safe(port.name)}_medium"),
@@ -552,7 +520,11 @@ def _make_points(
     if not classes:
         for direction in ("in", "out"):
             if incident[direction]:
-                name = "InletConnectionPoint" if direction == "in" else "OutletConnectionPoint"
+                name = (
+                    "InletConnectionPoint"
+                    if direction == "in"
+                    else "OutletConnectionPoint"
+                )
                 classes[registry.resolve(name)] = incident[direction]
     existing_names = {point.name for point in points}
     for cls, count in sorted(classes.items(), key=lambda item: item[0].__name__):
@@ -574,8 +546,12 @@ def _make_points(
                     entity,
                     cls,
                     name,
-                    z3.Bool(f"point_{_safe(entity.name)}_{_safe(cls.__name__)}_{offset}"),
-                    z3.Int(f"point_{_safe(entity.name)}_{_safe(cls.__name__)}_{offset}_medium"),
+                    z3.Bool(
+                        f"point_{_safe(entity.name)}_{_safe(cls.__name__)}_{offset}"
+                    ),
+                    z3.Int(
+                        f"point_{_safe(entity.name)}_{_safe(cls.__name__)}_{offset}_medium"
+                    ),
                 )
             )
     return points
@@ -594,11 +570,15 @@ def _slot_expr(
         if issubclass(point.cls, slot_cls)
         and (
             slot.label is None
-            or point.authored is not None and point.authored.label == slot.label
-            or point.existing is not None and point.existing.label == slot.label
+            or point.authored is not None
+            and point.authored.label == slot.label
+            or point.existing is not None
+            and point.existing.label == slot.label
         )
     ]
-    count = z3.Sum([z3.If(item, 1, 0) for item in matching]) if matching else z3.IntVal(0)
+    count = (
+        z3.Sum([z3.If(item, 1, 0) for item in matching]) if matching else z3.IntVal(0)
+    )
     terms = [count >= slot.min_count]
     if slot.max_count is not None:
         terms.append(count <= slot.max_count)
@@ -647,7 +627,7 @@ def _medium_allowed(
 def _eligible(
     points: list[_Point], endpoint: Entity | PortHandle | PointGroupRef, direction: str
 ) -> list[_Point]:
-    from .core.recipes import PointGroupRef
+    from .core.points import PointGroupRef
 
     names = {
         "out": {"OutletConnectionPoint", "BidirectionalConnectionPoint"},
@@ -661,10 +641,7 @@ def _eligible(
             not isinstance(endpoint, PointGroupRef)
             or point.authored in {reference._port for reference in endpoint.points}
         )
-        and (
-            not isinstance(endpoint, PortHandle)
-            or point.authored is endpoint
-        )
+        and (not isinstance(endpoint, PortHandle) or point.authored is endpoint)
         and (
             isinstance(endpoint, (PortHandle, PointGroupRef))
             or getattr(endpoint, "owner", None) is None
@@ -715,8 +692,7 @@ def _point_roots(point: _Point) -> set[str]:
     registry = point.owner.meta.registry
     return {
         root
-        for slot in _all_slots(type(point.owner))
-        + _constraint_slots(type(point.owner))
+        for slot in _all_slots(type(point.owner)) + _constraint_slots(type(point.owner))
         if issubclass(point.cls, registry.resolve(slot.cp_class))
         for root in _slot_roots(slot)
     }
@@ -762,9 +738,7 @@ def _minimize_active(solver: z3.Solver, points: list[_Point]) -> None:
 def _minimize_expression(solver: z3.Solver, expression: z3.ArithRef) -> None:
     """Constrain an integer objective to its minimum using the core solver."""
     while solver.check() == z3.sat:
-        evaluated = z3.simplify(
-            solver.model().eval(expression, model_completion=True)
-        )
+        evaluated = z3.simplify(solver.model().eval(expression, model_completion=True))
         value = evaluated.as_long()
         solver.push()
         solver.add(expression < value)
@@ -801,7 +775,7 @@ def _observable_expressions(
                         if point.owner is entity and point.cls is cls
                     ]
                 )
-                )
+            )
     for handle in handles:
         for side_endpoint in (handle.source, handle.target):
             side_owner = _owner(side_endpoint)
@@ -815,7 +789,13 @@ def _observable_expressions(
                 expressions.append(
                     z3.Sum(
                         [
-                            z3.If(selections.get((handle.identifier, index), z3.BoolVal(False)), 1, 0)
+                            z3.If(
+                                selections.get(
+                                    (handle.identifier, index), z3.BoolVal(False)
+                                ),
+                                1,
+                                0,
+                            )
                             for index in indexes
                         ]
                     )
@@ -877,9 +857,13 @@ def _extract_plan(
             index for index in selected if points[index].owner is target_owner
         )
         medium = by_id[
-            model.eval(intent_mediums[handle.identifier], model_completion=True).as_long()
+            model.eval(
+                intent_mediums[handle.identifier], model_completion=True
+            ).as_long()
         ]
-        connection_class = handle.connection_class or _connection_class(connector, medium)
+        connection_class = handle.connection_class or _connection_class(
+            connector, medium
+        )
         intent_results.append(
             _IntentResult(
                 handle,
@@ -920,7 +904,11 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 point.name,
                 medium=point.medium,
                 owner=owner,
-                label=(point.authored.label if point.authored and point.authored.label else None),
+                label=(
+                    point.authored.label
+                    if point.authored and point.authored.label
+                    else None
+                ),
                 model=snapshot,
             )
             if point.authored is not None:
@@ -967,11 +955,11 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 point = point_entities[(id(boundary.owner), boundary.name)]
                 getattr(system, "has_boundary_connection_point").add(point)
     snapshot._resolving = False
-    from .core.query import _restore_recipe_points
+    from .core.query import _restore_named_points
 
     for entity in snapshot.entities:
         if type(entity)._point_declarations:
-            _restore_recipe_points(entity, type(entity)._point_declarations, strict=True)
+            _restore_named_points(entity, type(entity)._point_declarations, strict=True)
     return ResolvedModel(
         snapshot,
         connection_entities,
@@ -1071,8 +1059,7 @@ def _result_roots(point: _PointResult) -> set[str]:
     registry = point.owner.meta.registry
     return {
         root
-        for slot in _all_slots(type(point.owner))
-        + _constraint_slots(type(point.owner))
+        for slot in _all_slots(type(point.owner)) + _constraint_slots(type(point.owner))
         if issubclass(point.cls, registry.resolve(slot.cp_class))
         for root in _slot_roots(slot)
     }
@@ -1080,7 +1067,7 @@ def _result_roots(point: _PointResult) -> set[str]:
 
 def _owner(endpoint: Entity | PortHandle | PointGroupRef) -> Entity:
     from .core.entity import Entity
-    from .core.recipes import PointGroupRef
+    from .core.points import PointGroupRef
 
     if isinstance(endpoint, (PortHandle, PointGroupRef)):
         return endpoint.owner
@@ -1107,7 +1094,7 @@ def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
         copied._comment = entity.comment
         copied._data = {}
         copied._rels = {}
-        copied._recipe_points = {}
+        copied._named_points = {}
         copied._iri = ""
         copied._model = clone
         clone._bind(copied)

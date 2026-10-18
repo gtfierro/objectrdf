@@ -46,6 +46,20 @@ def test_regeneration_is_byte_identical_across_fresh_parses():
         assert (output / filename).read_text() == text
 
 
+@pytest.mark.parametrize("node", [EX.AerobicStage, EX.AerobicDesignShape])
+def test_explicit_names_cannot_shadow_the_package_registry(node):
+    graph = Graph().parse(SOURCE)
+    graph.set(
+        (
+            node,
+            URIRef("https://w3id.org/objectrdf/codegen#pythonName"),
+            Literal("REGISTRY"),
+        )
+    )
+    with pytest.raises(ValueError, match="generated name collision REGISTRY"):
+        compile_modules(graph, name="Invalid")
+
+
 def test_shape_default_edit_changes_generated_constructor(tmp_path):
     graph = Graph().parse(SOURCE)
     prop = next(

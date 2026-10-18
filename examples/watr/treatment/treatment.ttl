@@ -1,78 +1,162 @@
 @prefix : <urn:example/treatment#> .
+@prefix drinkingwater: <https://w3id.org/objectrdf/drinking-water#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
 
 <urn:example/treatment> a owl:Ontology ;
-    owl:imports <https://watermetadata.org/ontology/watr> .
+    rdfs:label "Conventional surface-water treatment train" ;
+    owl:imports drinkingwater:,
+        <https://watermetadata.org/ontology/watr> .
 
 :treatment-system a s223:System ;
     rdfs:label "treatment-system" ;
-    s223:hasMember :product-tank,
-        :transfer-pump,
-        :water-source .
+    s223:hasBoundaryConnectionPoint :chlorination-contact-outlet,
+        :clarifier-sludge,
+        :coagulation-inlet,
+        :sand-filter-backwash_supply,
+        :sand-filter-backwash_waste ;
+    s223:hasMember :chlorination-contact,
+        :clarifier,
+        :coagulation,
+        :flocculation,
+        :sand-filter .
 
 <https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
 
-:product-tank-out a s223:OutletConnectionPoint ;
-    rdfs:label "product-tank-out" ;
+:chlorination-contact-inlet a s223:InletConnectionPoint ;
+    rdfs:label "inlet" ;
+    s223:connectsThrough :filtered-water ;
     s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :product-tank .
+    s223:isConnectionPointOf :chlorination-contact .
 
-:water-source-in a s223:InletConnectionPoint ;
-    rdfs:label "water-source-in" ;
+:chlorination-contact-outlet a s223:OutletConnectionPoint ;
+    rdfs:label "outlet" ;
     s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :water-source .
+    s223:isConnectionPointOf :chlorination-contact .
 
-:product-tank-in a s223:InletConnectionPoint ;
-    rdfs:label "product-tank-in" ;
-    s223:connectsThrough :transfer-pump--product-tank ;
-    s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :product-tank .
-
-:transfer-pump--product-tank a s223:Pipe ;
-    rdfs:label "transfer-pump--product-tank" ;
-    s223:connectsAt :product-tank-in,
-        :transfer-pump-out ;
+:clarified-water a s223:Pipe ;
+    rdfs:label "clarified-water" ;
+    s223:connectsAt :clarifier-clarified_water,
+        :sand-filter-inlet ;
     s223:hasMedium s223:Fluid-Water .
 
-:transfer-pump-in a s223:InletConnectionPoint ;
-    rdfs:label "transfer-pump-in" ;
-    s223:connectsThrough :water-source--transfer-pump ;
+:clarifier-clarified_water a s223:OutletConnectionPoint ;
+    rdfs:label "clarified_water" ;
+    s223:connectsThrough :clarified-water ;
     s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :transfer-pump .
+    s223:isConnectionPointOf :clarifier .
 
-:transfer-pump-out a s223:OutletConnectionPoint ;
-    rdfs:label "transfer-pump-out" ;
-    s223:connectsThrough :transfer-pump--product-tank ;
+:clarifier-inlet a s223:InletConnectionPoint ;
+    rdfs:label "inlet" ;
+    s223:connectsThrough :flocculated-water ;
     s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :transfer-pump .
+    s223:isConnectionPointOf :clarifier .
 
-:water-source--transfer-pump a s223:Pipe ;
-    rdfs:label "water-source--transfer-pump" ;
-    s223:connectsAt :transfer-pump-in,
-        :water-source-out ;
+:clarifier-sludge a s223:OutletConnectionPoint ;
+    rdfs:label "sludge" ;
+    s223:hasMedium watr:Fluid-Sludge ;
+    s223:isConnectionPointOf :clarifier .
+
+:coagulated-water a s223:Pipe ;
+    rdfs:label "coagulated-water" ;
+    s223:connectsAt :coagulation-outlet,
+        :flocculation-inlet ;
     s223:hasMedium s223:Fluid-Water .
 
-:water-source-out a s223:OutletConnectionPoint ;
-    rdfs:label "water-source-out" ;
-    s223:connectsThrough :water-source--transfer-pump ;
+:coagulation-inlet a s223:InletConnectionPoint ;
+    rdfs:label "inlet" ;
     s223:hasMedium s223:Fluid-Water ;
-    s223:isConnectionPointOf :water-source .
+    s223:isConnectionPointOf :coagulation .
 
-:product-tank a watr:Tank ;
-    rdfs:label "product-tank" ;
-    s223:hasConnectionPoint :product-tank-in,
-        :product-tank-out .
+:coagulation-outlet a s223:OutletConnectionPoint ;
+    rdfs:label "outlet" ;
+    s223:connectsThrough :coagulated-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :coagulation .
 
-:transfer-pump a watr:Pump ;
-    rdfs:label "transfer-pump" ;
-    s223:hasConnectionPoint :transfer-pump-in,
-        :transfer-pump-out .
+:filtered-water a s223:Pipe ;
+    rdfs:label "filtered-water" ;
+    s223:connectsAt :chlorination-contact-inlet,
+        :sand-filter-filtered_water ;
+    s223:hasMedium s223:Fluid-Water .
 
-:water-source a s223:Chiller ;
-    rdfs:label "water-source" ;
-    s223:hasConnectionPoint :water-source-in,
-        :water-source-out .
+:flocculated-water a s223:Pipe ;
+    rdfs:label "flocculated-water" ;
+    s223:connectsAt :clarifier-inlet,
+        :flocculation-outlet ;
+    s223:hasMedium s223:Fluid-Water .
+
+:flocculation-inlet a s223:InletConnectionPoint ;
+    rdfs:label "inlet" ;
+    s223:connectsThrough :coagulated-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :flocculation .
+
+:flocculation-outlet a s223:OutletConnectionPoint ;
+    rdfs:label "outlet" ;
+    s223:connectsThrough :flocculated-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :flocculation .
+
+:sand-filter-backwash_supply a s223:InletConnectionPoint ;
+    rdfs:label "backwash_supply" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :sand-filter .
+
+:sand-filter-backwash_waste a s223:OutletConnectionPoint ;
+    rdfs:label "backwash_waste" ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :sand-filter .
+
+:sand-filter-filtered_water a s223:OutletConnectionPoint ;
+    rdfs:label "filtered_water" ;
+    s223:connectsThrough :filtered-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :sand-filter .
+
+:sand-filter-inlet a s223:InletConnectionPoint ;
+    rdfs:label "inlet" ;
+    s223:connectsThrough :clarified-water ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :sand-filter .
+
+:chlorination-contact a drinkingwater:ChlorinationStage ;
+    rdfs:label "chlorination-contact" ;
+    s223:hasConnectionPoint :chlorination-contact-inlet,
+        :chlorination-contact-outlet ;
+    watr:hasProcess watr:Process-ChlorineDosing ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
+
+:coagulation a drinkingwater:CoagulationStage ;
+    rdfs:label "coagulation" ;
+    s223:hasConnectionPoint :coagulation-inlet,
+        :coagulation-outlet ;
+    watr:hasProcess watr:Process-Coagulation ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-TurbidityRemoval .
+
+:flocculation a drinkingwater:FlocculationStage ;
+    rdfs:label "flocculation" ;
+    s223:hasConnectionPoint :flocculation-inlet,
+        :flocculation-outlet ;
+    watr:hasProcess watr:Process-Flocculation ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-TurbidityRemoval .
+
+:clarifier a drinkingwater:ClarificationStage ;
+    rdfs:label "clarifier" ;
+    s223:hasConnectionPoint :clarifier-clarified_water,
+        :clarifier-inlet,
+        :clarifier-sludge ;
+    watr:hasProcess watr:Process-Sedimentation ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Clarification .
+
+:sand-filter a drinkingwater:RapidSandFiltrationStage ;
+    rdfs:label "sand-filter" ;
+    s223:hasConnectionPoint :sand-filter-backwash_supply,
+        :sand-filter-backwash_waste,
+        :sand-filter-filtered_water,
+        :sand-filter-inlet ;
+    watr:hasProcess watr:Process-RapidSandFiltration ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-TurbidityRemoval .
 

@@ -166,6 +166,20 @@ def test_ontology_info(mini):
     assert Path(mini.__file__).with_name("_shapes.ttl").exists()
 
 
+def test_package_registry_loads_generated_types(mini, m):
+    mini.Fan("fan", has_sensor=[mini.Sensor("sensor")])
+    assert "REGISTRY" in mini.__all__
+    assert mini.REGISTRY is mini.Fan.meta.registry
+    loaded = Model.from_graph(m.graph(), registries=mini.REGISTRY)
+    assert isinstance(loaded["fan"], mini.Fan)
+    assert isinstance(loaded["sensor"], mini.Sensor)
+
+
+@pytest.mark.parametrize("name", ["ONTOLOGY", "REGISTRY"])
+def test_class_names_preserve_package_metadata_exports(name):
+    assert naming.class_name(f"urn:test#{name}") == name + "_"
+
+
 def test_docstrings_carry_ontology_documentation(mini):
     assert "Moves air using rotating blades." in mini.Fan.__doc__
     assert "urn:mini#Fan" in mini.Fan.__doc__  # provenance in the docstring
@@ -186,22 +200,25 @@ def test_property_names_are_snake_cased(mini, m):
 
 
 def test_s223_point_property_names_are_canonical_and_iri_scoped():
-    assert naming.property_name(
-        "http://data.ashrae.org/standard223#hasMedium"
-    ) == "medium"
-    assert naming.property_name(
-        "http://data.ashrae.org/standard223#isConnectionPointOf"
-    ) == "owner"
-    assert naming.property_name(
-        "http://data.ashrae.org/standard223#connectsThrough"
-    ) == "connection"
-    assert naming.property_name(
-        "http://data.ashrae.org/standard223#pairedConnectionPoint"
-    ) == "paired_with"
+    assert (
+        naming.property_name("http://data.ashrae.org/standard223#hasMedium") == "medium"
+    )
+    assert (
+        naming.property_name("http://data.ashrae.org/standard223#isConnectionPointOf")
+        == "owner"
+    )
+    assert (
+        naming.property_name("http://data.ashrae.org/standard223#connectsThrough")
+        == "connection"
+    )
+    assert (
+        naming.property_name("http://data.ashrae.org/standard223#pairedConnectionPoint")
+        == "paired_with"
+    )
     assert naming.property_name("https://example.test/Brick#hasMedium") == "has_medium"
 
 
-def test_emitter_keeps_one_canonical_descriptor_with_a_legacy_alias():
+def test_emitter_exposes_only_the_canonical_point_descriptor():
     graph = rdflib.Graph()
     s223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
     graph.add((s223.ConnectionPoint, rdflib.RDF.type, rdflib.OWL.Class))
@@ -213,7 +230,8 @@ def test_emitter_keeps_one_canonical_descriptor_with_a_legacy_alias():
     assert "name='medium'" in source
     assert "predicate='http://data.ashrae.org/standard223#hasMedium'" in source
     assert "medium: _Rel[_EntityBase]" in source
-    assert "medium: _PropertyAlias = _PropertyAlias('medium')" in source
+    assert "PropertyAlias" not in source
+    assert "has_medium" not in source
 
 
 def test_shacl_min_count_becomes_required(mini, m):
@@ -486,7 +504,7 @@ def test_generated_source_type_checks(mini, tmp_path):
     import subprocess
 
     result = subprocess.run(
-        ["uv", "run", "ty", "check", mini.__file__],
+        [str(Path(sys.executable).with_name("ty")), "check", mini.__file__],
         capture_output=True,
         text=True,
         cwd=Path(__file__).parent.parent,

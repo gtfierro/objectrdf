@@ -5,11 +5,13 @@ parts:
     chapters:
       - file: tutorials/s223-air-path
       - file: tutorials/watr-treatment
+      - file: tutorials/domain-configurations
   - caption: How-to guides
     chapters:
       - file: how-to/explore-classes
       - file: how-to/explore-enums
       - file: how-to/watr-processes
+      - file: how-to/generate-domain-api
       - file: how-to/inspect-port-contracts
       - file: how-to/diagnose-resolution
       - file: how-to/validate-and-query

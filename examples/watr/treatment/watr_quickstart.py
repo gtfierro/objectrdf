@@ -1,37 +1,77 @@
-"""Build a small WaTr treatment path and compile its S223 topology."""
+"""Model a conventional surface-water treatment train with WaTr equipment.
+
+The generated configurations select WaTr processes, treatment objectives, and
+named water/sludge ports from ontology/drinking-water.ttl.
+
+Source: https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html
+Run: uv run python examples/watr/treatment/watr_quickstart.py
+"""
 
 from pathlib import Path
 
 from objectrdf import Model, connect
-from objectrdf.watr import Chiller, Pump, Tank
-from objectrdf.watr import enums
+from objectrdf.watr import Pipe, System
+from objectrdf.watr.drinking_water import (
+    ChlorinationStage,
+    ClarificationStage,
+    CoagulationStage,
+    FlocculationStage,
+    RapidSandFiltrationStage,
+)
 
 
-with Model(
-    "urn:example/treatment#",
-    prefixes={
-        "s223": "http://data.ashrae.org/standard223#",
-        "watr": "https://watermetadata.org/ontology/watr#",
-    },
-) as model:
-    with model.system("treatment-system"):
-        # WaTr extends S223, so imported S223 equipment and WaTr-specific classes
-        # participate in one connection component. The source establishes water;
-        # water is permitted across the WaTr pump and the tank's Mix-Fluid domain,
-        # so the optimizer prefers one coherent water assignment.
-        source = Chiller("water-source")
-        pump = Pump("transfer-pump")
-        product = Tank("product-tank")
+def build_model() -> Model:
+    """Describe the main treatment path and its external water/residual ports."""
+    with Model(
+        "urn:example/treatment#",
+        name="Conventional surface-water treatment train",
+        prefixes={
+            "s223": "http://data.ashrae.org/standard223#",
+            "watr": "https://watermetadata.org/ontology/watr#",
+        },
+    ) as model:
+        with model.system("treatment-system") as system:
+            coagulation = CoagulationStage("coagulation")
+            flocculation = FlocculationStage("flocculation")
+            clarifier = ClarificationStage("clarifier")
+            sand_filter = RapidSandFiltrationStage("sand-filter")
+            disinfection = ChlorinationStage("chlorination-contact")
 
-        source_to_pump = connect(source, pump)
-        pump_to_product = connect(pump, product)
+            connect(coagulation.outlet, flocculation.inlet, name="coagulated-water")
+            connect(flocculation.outlet, clarifier.inlet, name="flocculated-water")
+            connect(
+                clarifier.clarified_water, sand_filter.inlet, name="clarified-water"
+            )
+            connect(
+                sand_filter.filtered_water, disinfection.inlet, name="filtered-water"
+            )
 
-resolved = model.resolve()
-assert resolved.connection(source_to_pump).medium is enums.values.Fluid_Water
-assert resolved.connection(pump_to_product).medium is enums.values.Fluid_Water
-out = Path(__file__).with_name("treatment.ttl")
-model.save(out)
+            # Source water and finished water cross the plant boundary. Sludge
+            # leaves for residuals handling; filter cleaning has its own supply
+            # and waste points, rather than sharing the production outlets.
+            system.boundary(
+                coagulation.inlet,
+                disinfection.outlet,
+                clarifier.sludge,
+                sand_filter.backwash_supply,
+                sand_filter.backwash_waste,
+            )
+    return model
 
-print(f"wrote {out}: {len(resolved)} resolved entities")
-print(f"  inlet: {resolved.connection(source_to_pump).medium}")
-print(f"  outlet: {resolved.connection(pump_to_product).medium}")
+
+def main() -> None:
+    model = build_model()
+    resolved = model.compile()
+    out = Path(__file__).with_name("treatment.ttl")
+    model.save(out)
+    plant = resolved["treatment-system"]
+    assert isinstance(plant, System)
+    print(f"wrote {out}: {len(plant.has_member)} treatment stages")
+    for pipe in resolved:
+        if isinstance(pipe, Pipe):
+            print(f"  {pipe.name}: {pipe.medium}")
+    print(f"  boundary points: {len(plant.has_boundary_connection_point)}")
+
+
+if __name__ == "__main__":
+    main()

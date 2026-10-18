@@ -70,14 +70,14 @@ static type checking.
 
 ## Find every available class
 
-Each generated package has a registry. You can reach it from any class in the
-package. `registry.classes` includes generated classes and any recipe classes
-registered while your program runs.
+Each generated package exports its own `REGISTRY`, so you can browse available
+classes without selecting a class first. A domain package's registry includes its generated
+configurations and linked base types. The base registry remains unchanged.
 
 ```{code-cell} python3
-from objectrdf.watr import Equipment
+from objectrdf import watr
 
-registry = Equipment.meta.registry
+registry = watr.REGISTRY
 print(len(registry.classes), "registered classes")
 print(registry.resolve("Process_ReverseOsmosis") is Process_ReverseOsmosis)
 ```

@@ -38,7 +38,9 @@ def load_graph(
     registry_list = (
         _discover_registries(graph)
         if registries is None
-        else (registries,) if isinstance(registries, Registry) else tuple(registries)
+        else (registries,)
+        if isinstance(registries, Registry)
+        else tuple(registries)
     )
     if not registry_list:
         raise ValueError("at least one generated package registry is required")
@@ -77,16 +79,14 @@ def load_graph(
         entity._comment = str(comment_node) if comment_node is not None else None
         entity._data = {}
         entity._rels = {}
-        entity._recipe_points = {}
+        entity._named_points = {}
         name = _local_name(str(subject))
         if entity._label is None:
             entity._label = name
         model._bind_loaded(entity, str(subject), name)
         by_node[subject] = entity
         managed = model._managed_triples.setdefault(str(subject), set())
-        managed.add(
-            (subject, RDF.type, URIRef(entity_type.meta.iri))
-        )
+        managed.add((subject, RDF.type, URIRef(entity_type.meta.iri)))
         if label_node is not None:
             managed.add((subject, RDFS.label, label_node))
         if comment_node is not None:
@@ -129,7 +129,7 @@ def load_graph(
     for entity in model.entities:
         declarations = getattr(type(entity), "_point_declarations", {})
         if declarations:
-            _restore_recipe_points(entity, declarations, strict=strict)
+            _restore_named_points(entity, declarations, strict=strict)
     return model
 
 
@@ -149,8 +149,12 @@ def _discover_registries(graph: rdflib.Graph) -> tuple[Registry, ...]:
         if ontology_iri not in imports:
             continue
         declared_versions = (
-            {str(version) for version in graph.objects(URIRef(identity.iri), OWL.versionInfo)}
-            if identity.iri else set()
+            {
+                str(version)
+                for version in graph.objects(URIRef(identity.iri), OWL.versionInfo)
+            }
+            if identity.iri
+            else set()
         )
         if declared_versions and identity.version not in declared_versions:
             raise ValueError(
@@ -168,18 +172,17 @@ def _discover_registries(graph: rdflib.Graph) -> tuple[Registry, ...]:
         registry
         for registry in candidates
         if not any(
-            registry is not other
-            and set(registry.by_iri) < set(other.by_iri)
+            registry is not other and set(registry.by_iri) < set(other.by_iri)
             for other in candidates
         )
     )
 
 
-def _restore_recipe_points(
+def _restore_named_points(
     entity: Entity, declarations: Mapping[str, Any], *, strict: bool
 ) -> None:
-    """Rebuild recipe references from RDF-observable point facts."""
-    from .recipes import PointGroupRef, PointRef, Policy
+    """Rebuild generated references from RDF-observable point facts."""
+    from .points import PointGroupRef, PointRef
 
     candidates = list(getattr(entity, "has_connection_point"))
     used: set[Entity] = set()
@@ -189,47 +192,39 @@ def _restore_recipe_points(
         "bi": "BidirectionalConnectionPoint",
     }
     for name, declaration in declarations.items():
-        direction = declaration.direction
-        directions = direction.values if isinstance(direction, Policy) else (direction,)
+        direction = direction_classes[declaration.direction]
         medium = declaration.medium
-        media = (
-            medium.values
-            if isinstance(medium, Policy) and medium.kind == "fixed"
-            else () if isinstance(medium, Policy) else (medium,)
-        )
-        expected_media = {
-            value.iri for value in media if hasattr(value, "iri")
-        }
         label = declaration.label
-        labels = (
-            label.values
-            if isinstance(label, Policy) and label.kind == "fixed"
-            else () if isinstance(label, Policy) else (label,)
-        )
-        expected_labels = {value for value in labels if isinstance(value, str)}
         matching = [
             point
             for point in candidates
             if point not in used
-            and type(point).__name__ in {direction_classes[item] for item in directions}
+            and type(point).__name__ == direction
             and (
-                not expected_media
+                medium is None
                 or getattr(point, "medium", None) is not None
-                and getattr(point, "medium").iri in expected_media
+                and getattr(point, "medium").iri == medium.iri
             )
-            and (not expected_labels or point.label in expected_labels)
+            and (label is None or point.label == label)
         ]
         if len(matching) != declaration.count:
             if strict and (matching or declaration.count):
                 raise ModelingError(
-                    f"cannot identify recipe point {entity.name}.{name} uniquely "
+                    f"cannot identify named point {entity.name}.{name} uniquely "
                     f"from RDF facts (expected {declaration.count}, found {len(matching)})"
                 )
             continue
         used.update(matching)
-        refs = tuple(PointRef(entity, name, point) for point in matching)
-        entity._recipe_points[name] = refs[0] if len(refs) == 1 else PointGroupRef(
-            entity, name, refs
+        refs = tuple(
+            PointRef(
+                entity, name if declaration.count == 1 else f"{name}-{index + 1}", point
+            )
+            for index, point in enumerate(
+                sorted(matching, key=lambda point: point.name)
+            )
+        )
+        entity._named_points[name] = (
+            refs[0] if len(refs) == 1 else PointGroupRef(entity, name, refs)
         )
 
 
@@ -333,14 +328,14 @@ def _convert_value(
             try:
                 return registry.resolve_enum(str(value))
             except KeyError:
-                return _bad_value(
-                    value, spec, "a registered enum value", strict=strict
-                )
+                return _bad_value(value, spec, "a registered enum value", strict=strict)
         return _bad_value(value, spec, "a registered enum value", strict=strict)
 
     if spec.kind == "term":
         if isinstance(value, URIRef):
-            known = registry.terms_by_iri.get(str(value)) or _reference_terms().get(str(value))
+            known = registry.terms_by_iri.get(str(value)) or _reference_terms().get(
+                str(value)
+            )
             if known is not None:
                 return known
             return _term(graph, value)

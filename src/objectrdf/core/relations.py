@@ -30,21 +30,6 @@ T = TypeVar("T")
 V = TypeVar("V")
 
 
-class PropertyAlias:
-    """A compatibility descriptor that delegates to one canonical property."""
-
-    def __init__(self, target: str) -> None:
-        self.target = target
-
-    def __get__(self, obj: Entity | None, owner: type | None = None) -> object:
-        if obj is None:
-            return self
-        return getattr(obj, self.target)
-
-    def __set__(self, obj: Entity, value: object) -> None:
-        setattr(obj, self.target, value)
-
-
 class RelSet(Generic[T]):
     """Live, ordered, duplicate-free set of links from one entity.
 
@@ -66,7 +51,11 @@ class RelSet(Generic[T]):
         if self._owner._shape_constraints:
             from .shape_constraints import check_values
 
-            check_values(self._owner, self._spec.name, list(dict.fromkeys([*self._items, *items])))
+            check_values(
+                self._owner,
+                self._spec.name,
+                list(dict.fromkeys([*self._items, *items])),
+            )
         changed = False
         changed_items: list[T] = []
         for item in items:
@@ -87,7 +76,11 @@ class RelSet(Generic[T]):
         if self._owner._shape_constraints:
             from .shape_constraints import check_values
 
-            check_values(self._owner, self._spec.name, [value for value in self._items if value != item])
+            check_values(
+                self._owner,
+                self._spec.name,
+                [value for value in self._items if value != item],
+            )
         self._items.remove(item)
         if self._spec.kind == "object":
             _unlink_inverse(self._owner, self._spec, item)
@@ -224,9 +217,12 @@ class TermOne(Generic[V]):
                 f"{type(obj).__name__}.{self.spec.name} expects a compiled "
                 f"vocabulary term, got {type(value).__name__} ({value!r})"
             )
-        if value is not None and self.spec.term_ranges and not any(
-            value.is_instance_of(class_iri)
-            for class_iri in self.spec.term_ranges
+        if (
+            value is not None
+            and self.spec.term_ranges
+            and not any(
+                value.is_instance_of(class_iri) for class_iri in self.spec.term_ranges
+            )
         ):
             allowed = " | ".join(self.spec.term_ranges)
             raise RangeError(

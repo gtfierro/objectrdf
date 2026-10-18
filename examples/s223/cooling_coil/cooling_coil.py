@@ -1,7 +1,7 @@
 """Import a portable air/water coil generated from ontology/hvac.ttl.
 
-Run with:  uv run python examples/s223/recipe_coil/recipe_coil.py
-Produces: recipe_coil.ttl and recipe_coil_schema.ttl next to this script.
+Run with:  uv run python examples/s223/cooling_coil/cooling_coil.py
+Produces: cooling_coil.ttl and cooling_coil_schema.ttl next to this script.
 """
 
 from pathlib import Path
@@ -35,8 +35,8 @@ for name, handle in (
     )
 
 out_dir = Path(__file__).parent
-instance_path = out_dir / "recipe_coil.ttl"
-schema_path = out_dir / "recipe_coil_schema.ttl"
+instance_path = out_dir / "cooling_coil.ttl"
+schema_path = out_dir / "cooling_coil_schema.ttl"
 model.save(instance_path)
 model.export_ontology(schema_path)
 print(f"wrote {instance_path} and {schema_path}")

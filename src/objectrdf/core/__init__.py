@@ -29,15 +29,16 @@ from .meta import (
     Registry,
 )
 from .model import Model, current_model
-from .property_bundle import PropertyBundle
 from .property_schema import (
-    PropertySchema, PropertySet, QuantityAmount, QuantityDefinition,
+    PropertySchema,
+    PropertySet,
+    QuantityAmount,
+    QuantityDefinition,
 )
 from .relations import (
     EnumOne,
     EnumSet,
     Lit,
-    PropertyAlias,
     Rel,
     RelOne,
     RelSet,
@@ -81,12 +82,10 @@ __all__ = [
     "PortContract",
     "PortSlot",
     "PropertySpec",
-    "PropertyBundle",
     "PropertySchema",
     "PropertySet",
     "QuantityAmount",
     "QuantityDefinition",
-    "PropertyAlias",
     "RangeError",
     "ResolutionError",
     "ResolutionIssue",

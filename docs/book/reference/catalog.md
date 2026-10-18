@@ -13,8 +13,9 @@ parents and ontology IRI. Both views are built from the installed S223 and
 WaTr packages every time the book is built.
 
 ```python
+from objectrdf import watr
 from objectrdf.s223 import Equipment as S223Equipment
-from objectrdf.watr import Equipment as WatrEquipment, Process
+from objectrdf.watr import Process
 
 # Direct children and the full branch of the hierarchy:
 S223Equipment.meta.subclasses
@@ -24,7 +25,7 @@ Process.meta.descendants
 print(Process.meta.tree(max_depth=3))
 
 # Every class available from a generated package:
-WatrEquipment.meta.registry.classes
+watr.REGISTRY.classes
 ```
 
 For example, the top of the WaTr process hierarchy renders as:
@@ -72,8 +73,7 @@ in the alphabetical index.
 :tags: [hide-input]
 from html import escape
 from IPython.display import HTML, display
-from objectrdf.s223 import Equipment as S223Equipment
-from objectrdf.watr import Equipment as WatrEquipment
+from objectrdf import s223, watr
 
 def class_anchor(package, cls):
     return f"{package}-class-{cls.__name__}"
@@ -115,14 +115,14 @@ display(HTML("""
 
 ```{code-cell} python3
 :tags: [hide-input]
-display(HTML(class_hierarchy("s223", S223Equipment.meta.registry)))
+display(HTML(class_hierarchy("s223", s223.REGISTRY)))
 ```
 
 ### WaTr hierarchy
 
 ```{code-cell} python3
 :tags: [hide-input]
-display(HTML(class_hierarchy("watr", WatrEquipment.meta.registry)))
+display(HTML(class_hierarchy("watr", watr.REGISTRY)))
 ```
 
 ## Alphabetical class index
@@ -154,14 +154,14 @@ def class_table(package, registry):
     rows.append("</tbody></table>")
     return "".join(rows)
 
-display(HTML(class_table("s223", S223Equipment.meta.registry)))
+display(HTML(class_table("s223", s223.REGISTRY)))
 ```
 
 ### WaTr
 
 ```{code-cell} python3
 :tags: [hide-input]
-display(HTML(class_table("watr", WatrEquipment.meta.registry)))
+display(HTML(class_table("watr", watr.REGISTRY)))
 ```
 
 ## Enumeration values

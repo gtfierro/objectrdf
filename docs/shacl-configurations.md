@@ -2,17 +2,19 @@
 
 Domain configurations and property schemas are defined in RDF and SHACL, then
 compiled into ordinary typed Python. Model authors import the generated package;
-they do not write Python recipe classes or property metadata alongside the RDF.
+model code supplies values and topology while reusable definitions remain in RDF.
 
-The complete example is [ASM2d](asm2d-proposed-example.md). Its source is
+The complete example is [ASM2d](asm2d-example.md). Its source is
 [ontology/asm2d.ttl](../ontology/asm2d.ttl), and its generated package is
 `objectrdf.watr.asm2d`.
 
 The [seawater RO example](../examples/watr/seawater_ro/README.md) uses
 `objectrdf.watr.seawater_ro`, generated from `ontology/seawater-ro.ttl`.
+The [surface-water treatment tutorial](book/tutorials/watr-treatment.md) uses
+`objectrdf.watr.drinking_water`, generated from `ontology/drinking-water.ttl`.
 The S223 examples share `objectrdf.s223.hvac`, generated from
 `ontology/hvac.ttl`. Run `uv run python scripts/generate_example_domains.py`
-to regenerate all three packages offline.
+to regenerate all four packages offline.
 
 ## Compile an extension
 
@@ -39,7 +41,8 @@ uv run python scripts/generate_asm2d.py
 ```
 
 The extension reuses the installed base's classes and enumeration values.
-The generated registry includes base and extension types for graph loading.
+The package exports `REGISTRY`, including base and extension types for graph
+loading; for example, `registries=objectrdf.watr.drinking_water.REGISTRY`.
 The package carries the exact source shapes in `_shapes.ttl`; generation
 canonicalizes blank nodes and is deterministic across fresh RDF parses.
 
@@ -150,7 +153,3 @@ they do not replace constraints. Complex paths, disjunctive constructive layouts
 and unlinked parents produce compiler diagnostics. Full validation uses the
 original shapes, including constraints outside the constructive projection.
 The compiler is not a general SHACL-SPARQL object-construction engine.
-
-The existing Python recipe declarations and `PropertyBundle` interfaces remain
-available for compatibility during the 0.1 series. New domain packages and
-examples should use RDF/SHACL-generated configurations and schemas.

@@ -351,3 +351,22 @@ objectrdf/
 4. **Polish**: blank-node and refresh support for graph-backed objects,
    error-message UX, docs site with side-by-side
    "Python you write / TTL you get" panes.
+
+## Domain configurations and value schemas
+
+RDF and SHACL are the single source for reusable equipment configurations,
+named ports, quantity definitions, and defaults. The compiler generates ordinary
+Python classes with typed constructors and immutable `PropertySchema` values.
+See [the supported authoring and compiler contract](docs/shacl-configurations.md).
+
+Equipment, points, and connections share `apply_properties(...)`; each
+application creates independent named RDF properties on that exact subject.
+Scalar `quantity(...)` uses the same unit validation and attachment path.
+`QuantityAmount` supplies explicit units; bare values use shape-declared defaults.
+Property capability and nominal/actual interpretation are separate facts.
+
+Connection names label links without changing endpoint selection. Fresh point
+allocation is explicit (`ports="new"`) and remains subject to SHACL counts.
+System scopes collect equipment and junctions, with explicit boundary references.
+The compiler emits source provenance and bundles the original shapes, so graph
+hydration and full validation preserve the same portable domain definitions.

@@ -21,6 +21,8 @@ import rdflib
 from rdflib import RDF
 from rdflib.namespace import SH
 
+from .terms import TermValue
+
 if TYPE_CHECKING:
     from .entity import Entity
     from .model import Model
@@ -134,7 +136,9 @@ def _package_shapes(model: Model) -> rdflib.Graph:
                 continue
             module = sys.modules.get(cls.__module__)
             module_file = getattr(module, "__file__", None)
-            bundled = Path(module_file).with_name("_shapes.ttl") if module_file else None
+            bundled = (
+                Path(module_file).with_name("_shapes.ttl") if module_file else None
+            )
             if bundled is not None and bundled.exists():
                 package_files.add(bundled)
             source = cls.__dict__["_classinfo"].ontology.source
@@ -160,6 +164,16 @@ def _package_shapes(model: Model) -> rdflib.Graph:
         g.parse(package_file)
     for source in sources:
         g.parse(source)
+    # Vocabulary references carry authoritative types compiled from their
+    # catalogs. A base package's bundled closure need not contain every unit
+    # or quantity-kind individual referenced by the model.
+    for entity in model:
+        for _spec, value in entity._property_values():
+            if isinstance(value, TermValue):
+                for class_iri in value.types:
+                    g.add(
+                        (rdflib.URIRef(value.iri), RDF.type, rdflib.URIRef(class_iri))
+                    )
     return g
 
 

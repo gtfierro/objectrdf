@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Any, Literal, TypeVar, cast
 
 from objectrdf.core import (
@@ -30,27 +29,28 @@ ONTOLOGY = OntologyInfo(
     source="http://qudt.org/3.4.0/qudt-all",
 )
 _REGISTRY = Registry(ONTOLOGY)
+REGISTRY = _REGISTRY
 PropertyT = TypeVar("PropertyT", bound=Entity)
-QuantityMode = Literal["static", "nominal", "observable", "actuatable"]
+PropertyCapability = Literal["static", "observable", "actuatable"]
 
 
-def _quantity_class(registry: Registry, mode: QuantityMode) -> type[Entity]:
+def _quantity_class(registry: Registry, capability: PropertyCapability) -> type[Entity]:
     class_names = {
-        "nominal": "QuantifiableProperty",
         "static": "QuantifiableProperty",
         "observable": "QuantifiableObservableProperty",
         "actuatable": "QuantifiableActuatableProperty",
     }
     try:
-        class_name = class_names[mode]
+        class_name = class_names[capability]
     except KeyError:
-        raise ValueError(f"unknown quantity mode {mode!r}") from None
+        raise ValueError(f"unknown property capability {capability!r}") from None
     property_class = registry.by_iri.get(
         f"http://data.ashrae.org/standard223#{class_name}"
     )
     if property_class is None:
         raise TypeError(f"{registry.ontology.name} has no {class_name} class")
     return property_class
+
 
 _NUMERIC_VALUE = PropertySpec(
     name="numeric_value",
@@ -103,7 +103,7 @@ class QuantityValue(Entity):
         )
 
 
-def quantity(
+def _create_quantity(
     property_class: type[PropertyT],
     name: str,
     value: float,
@@ -123,8 +123,7 @@ def quantity(
         raise TypeError(f"unit must be a QUDT Unit term, got {unit!r}")
     if not quantity_kind.is_instance_of(f"{QUDT}QuantityKind"):
         raise TypeError(
-            "quantity_kind must be a QUDT QuantityKind term, "
-            f"got {quantity_kind!r}"
+            f"quantity_kind must be a QUDT QuantityKind term, got {quantity_kind!r}"
         )
     model = (
         (of.meta.model if isinstance(of, Entity) else of._model)
@@ -162,15 +161,12 @@ def _attached_quantity(
     unit: TermValue | None,
     kind: TermValue,
     capability: Literal["static", "observable", "actuatable"] = "static",
-    mode: Literal["nominal", "observable", "actuatable"] | None = None,
     label: str | None = None,
     **properties: Any,
 ) -> Entity:
     """Shared scalar construction for concrete and deferred subjects."""
     from objectrdf.core.property_schema import QuantityDefinition
 
-    if mode is not None and capability != "static":
-        raise ValueError("use capability or legacy mode, not both")
     if isinstance(value, QuantityAmount):
         if unit is not None and unit.iri != value.unit.iri:
             raise ValueError("explicit amount and unit argument disagree")
@@ -188,71 +184,24 @@ def _attached_quantity(
     else:
         registry = target._connection_type().meta.registry
         model = target._model
-    if mode == "nominal" and "has_aspect" not in properties:
-        properties["has_aspect"] = [registry.resolve_enum(
-            "http://data.ashrae.org/standard223#Aspect-Nominal"
-        )]
     with model._atomic():
-        return quantity(
-            _quantity_class(registry, mode or capability), name, number,
-            selected_unit, kind, of=target, label=label, **properties,
-        )
-
-
-@dataclass(frozen=True)
-class StreamState:
-    """Ergonomic view that attaches nominal properties to a flow entity.
-
-    This is deliberately not an RDF class: S223/WaTr currently provide the
-    property/medium pattern, but no standard stream-state or operating-point
-    class with time/scenario identity.
-    """
-
-    subject: Entity | ConnectionHandle
-    medium: Any
-
-    def quantity(
-        self,
-        property_class: type[PropertyT],
-        name: str,
-        value: float,
-        unit: TermValue,
-        quantity_kind: TermValue,
-        *,
-        substance: Any = None,
-        **properties: Any,
-    ) -> PropertyT:
-        """Attach one medium- or substance-qualified quantity to the flow."""
-        properties.setdefault("of_medium", self.medium)
-        if substance is not None:
-            properties.setdefault("of_substance", substance)
-        return quantity(
-            property_class,
+        return _create_quantity(
+            _quantity_class(registry, capability),
             name,
-            value,
-            unit,
-            quantity_kind,
-            of=self.subject,
+            number,
+            selected_unit,
+            kind,
+            of=target,
+            label=label,
             **properties,
         )
 
 
-def stream_state(
-    subject: Entity | ConnectionHandle,
-    *,
-    medium: Any,
-) -> StreamState:
-    """Create a non-RDF authoring view for nominal properties of ``subject``."""
-    return StreamState(subject, medium)
-
-
 __all__ = [
     "ONTOLOGY",
+    "REGISTRY",
     "QuantityValue",
     "QuantityAmount",
-    "StreamState",
-    "quantity",
     "quantity_kinds",
-    "stream_state",
     "units",
 ]

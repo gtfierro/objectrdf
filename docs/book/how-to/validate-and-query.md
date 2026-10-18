@@ -50,7 +50,8 @@ instances of Pump subclasses. To discover class names before importing them,
 see the [class catalog](../reference/catalog.md).
 
 For graphs without matching imports, or for custom generated packages, pass
-`registries=Pump.meta.registry` explicitly.
+the package's registry explicitly, for example
+`registries=objectrdf.watr.drinking_water.REGISTRY` for the treatment tutorial.
 
 Generated property edits on a loaded object update the model's RDF graph.
 Unmodeled triples remain in `loaded.graph()`. Deferred `connect()` and system

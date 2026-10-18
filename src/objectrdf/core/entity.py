@@ -7,8 +7,7 @@ the model's serializer. User code should never need an import from ``rdflib``.
 
 from __future__ import annotations
 
-from functools import wraps
-from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Literal, Mapping, Self, overload
+from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Literal, Self, overload
 
 from . import containment as _containment
 from .errors import ModelingError, RangeError
@@ -25,7 +24,6 @@ from .relations import (
     EnumOne,
     EnumSet,
     Lit,
-    PropertyAlias,
     Rel,
     RelOne,
     RelSet,
@@ -37,9 +35,8 @@ from .terms import TermValue
 if TYPE_CHECKING:
     from .enums import EnumValue
     from .model import Model
-    from .property_bundle import PropertyBundle
     from .property_schema import PropertySchema, PropertySet, QuantityAmount
-    from .recipes import PointRef
+    from .points import PointRef
     from .resolution import PortHandle
 
 
@@ -123,8 +120,7 @@ class ClassMetaView:
             cls = registry.by_iri.get(name_or_iri)
         if cls is None or cls is self._cls or not issubclass(cls, self._cls):
             raise KeyError(
-                f"{name_or_iri!r} is not a registered subclass of "
-                f"{self._cls.__name__}"
+                f"{name_or_iri!r} is not a registered subclass of {self._cls.__name__}"
             )
         return cls
 
@@ -176,7 +172,9 @@ class ClassMetaView:
 
     def describe_ports(self) -> str:
         """Render this class's inherited port requirements for authoring."""
-        return f"{self._cls.__name__} port requirements\n{self.port_contract.describe()}"
+        return (
+            f"{self._cls.__name__} port requirements\n{self.port_contract.describe()}"
+        )
 
     @property
     def abstract(self) -> bool:
@@ -260,58 +258,13 @@ class Entity:
 
     meta = _MetaDescriptor()
     _point_declarations: ClassVar[dict[str, Any]] = {}
-    _property_policies: ClassVar[dict[str, Any]] = {}
     _shape_constraints: ClassVar[tuple[Any, ...]] = ()
     _shape_max_ports: ClassVar[int | None] = None
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
-        recipe_metadata = {"class_iri", "ontology_iri", "class_label"}
-        if recipe_metadata.intersection(cls.__dict__):
-            from .recipes import register_recipe_class
-
-            register_recipe_class(cls)
-            return
         info = cls.__dict__.get("_classinfo")
         if info is not None:
-            aliases: dict[str, str] = {}
-            canonical_names = {
-                "http://data.ashrae.org/standard223#hasMedium": "medium",
-                "http://data.ashrae.org/standard223#isConnectionPointOf": "owner",
-                "http://data.ashrae.org/standard223#connectsThrough": "connection",
-                "http://data.ashrae.org/standard223#pairedConnectionPoint": (
-                    "paired_with"
-                ),
-            }
-            for prop in cls._effective_specs().values():
-                canonical = canonical_names.get(prop.predicate)
-                if (
-                    canonical is None
-                    or prop.name == canonical
-                    or canonical in cls.__dict__
-                ):
-                    continue
-                if not hasattr(cls, prop.name):
-                    continue
-                aliases[canonical] = prop.name
-                setattr(cls, canonical, PropertyAlias(prop.name))
-
-            original_init = cls.__dict__.get("__init__")
-            if aliases and original_init is not None:
-                @wraps(original_init)
-                def canonical_init(
-                    self: Entity, *args: Any, **props: Any
-                ) -> None:
-                    for canonical, legacy in aliases.items():
-                        if canonical in props:
-                            if legacy in props:
-                                raise TypeError(
-                                    f"{canonical!r} and {legacy!r} name the same property"
-                                )
-                            props[legacy] = props.pop(canonical)
-                    original_init(self, *args, **props)
-
-                setattr(cls, "__init__", canonical_init)
             info.registry.register(cls)
 
     def __init__(
@@ -364,20 +317,11 @@ class Entity:
         # must unbind it — otherwise a raised constructor leaves a ghost
         # entity occupying the name.
         try:
-            self._recipe_points: dict[str, Any] = {}
+            self._named_points: dict[str, Any] = {}
             if self._shape_constraints:
                 from .shape_constraints import initial_values
 
                 props = initial_values(self, props)
-            for prop, policy in type(self)._property_policies.items():
-                if policy.kind == "default":
-                    from .recipes import copy_default
-
-                    setattr(self, prop, copy_default(policy.value))
-                elif policy.kind == "fixed":
-                    setattr(self, prop, policy.value)
-                elif policy.kind == "choose" and len(policy.values) == 1:
-                    setattr(self, prop, policy.values[0])
             for key, value in props.items():
                 descriptor = getattr(type(self), key, None)
                 if not isinstance(
@@ -393,53 +337,30 @@ class Entity:
 
             declarations = type(self)._point_declarations
             if declarations:
-                from .recipes import PointGroupRef, PointRef, Policy
+                from .points import PointGroupRef, PointRef
 
                 for point_name, declaration in declarations.items():
-                    medium_policy = declaration.medium
-                    medium_options = ()
-                    if isinstance(medium_policy, Policy):
-                        if medium_policy.kind in {"fixed", "default"}:
-                            medium = medium_policy.value
-                        elif len(medium_policy.values) == 1:
-                            medium = medium_policy.values[0]
-                        else:
-                            medium = None
-                            medium_options = tuple(medium_policy.values)
-                    else:
-                        medium = medium_policy
-                    direction = declaration.direction
-                    if isinstance(direction, Policy):
-                        if direction.kind == "fixed":
-                            direction = direction.value
-                        else:
-                            direction = tuple(direction.values)
                     refs = []
-                    label_policy = declaration.label
-                    point_label = (
-                        label_policy.value
-                        if isinstance(label_policy, Policy)
-                        and label_policy.kind in {"fixed", "default"}
-                        else label_policy
-                        if not isinstance(label_policy, Policy)
-                        else None
-                    )
                     for index in range(declaration.count):
-                        local = point_name if declaration.count == 1 else f"{point_name}-{index + 1}"
-                        port_name = f"{self.name}-{local}"
+                        local = (
+                            point_name
+                            if declaration.count == 1
+                            else f"{point_name}-{index + 1}"
+                        )
                         port = m._defer_port(
-                            self, port_name, direction, medium=medium,
-                            label=point_label,
-                            fixed_medium=(
-                                isinstance(medium_policy, Policy)
-                                and medium_policy.kind == "fixed"
-                            ),
-                            medium_options=medium_options,
+                            self,
+                            f"{self.name}-{local}",
+                            declaration.direction,
+                            medium=declaration.medium,
+                            label=declaration.label,
+                            fixed_medium=True,
                         )
                         port.symmetry_key = point_name
                         refs.append(PointRef(self, local, port))
-                    self._recipe_points[point_name] = (
-                        refs[0] if len(refs) == 1 else PointGroupRef(self, point_name, tuple(refs))
+                    self._named_points[point_name] = (
+                        refs[0]
+                        if len(refs) == 1
+                        else PointGroupRef(self, point_name, tuple(refs))
                     )
 
             self._check_required()
@@ -476,17 +397,6 @@ class Entity:
             from .shape_constraints import check_values
 
             check_values(self, name, value)
-        policies = getattr(type(self), "_property_policies", {})
-        policy = policies.get(name)
-        if policy is not None:
-            if policy.kind == "fixed" and value != policy.value:
-                raise ModelingError(
-                    f"{type(self).__name__}.{name} is fixed to {policy.value!r}"
-                )
-            if policy.kind == "choose" and value not in policy.values:
-                raise ModelingError(
-                    f"{type(self).__name__}.{name} must be one of {policy.values!r}"
-                )
         object.__setattr__(self, name, value)
 
     @property
@@ -546,7 +456,6 @@ class Entity:
         unit: TermValue | None = None,
         kind: TermValue,
         capability: Literal["static", "observable", "actuatable"] = "static",
-        mode: Literal["nominal", "observable", "actuatable"] | None = None,
         label: str | None = None,
         **properties: Any,
     ) -> Entity:
@@ -554,30 +463,23 @@ class Entity:
 
         ``capability`` selects a static, observable, or actuatable property.
         Measurement aspects are independent; pass ``has_aspect`` explicitly.
-        The legacy ``mode="nominal"`` adds ``Aspect-Nominal`` to a static
-        property. A ``QuantityAmount`` supplies its own unit.
-        The returned property is an ordinary model entity. Use the free
-        ``objectrdf.qudt.quantity`` helper when choosing a different property
-        class.
+        A ``QuantityAmount`` supplies its own unit.
+        The returned property is an ordinary model entity.
         """
         if not hasattr(self, "has_property"):
             raise TypeError(f"{type(self).__name__} does not support has_property")
         from objectrdf.qudt import _attached_quantity
 
         return _attached_quantity(
-            self, name, value, unit=unit, kind=kind,
-            capability=capability, mode=mode, label=label, **properties,
+            self,
+            name,
+            value,
+            unit=unit,
+            kind=kind,
+            capability=capability,
+            label=label,
+            **properties,
         )
-
-    def apply_property_block(
-        self,
-        block: PropertyBundle,
-        *,
-        prefix: str | None = None,
-        values: Mapping[str, float] | None = None,
-    ) -> dict[str, Entity]:
-        """Attach fresh properties from a reusable bundle to this entity."""
-        return block.apply(self, prefix=prefix, values=values)
 
     def apply_properties(
         self, schema: PropertySchema, *, prefix: str | None = None
@@ -592,7 +494,7 @@ class Entity:
         if not hasattr(self, "has_boundary_connection_point"):
             raise TypeError(f"{type(self).__name__} has no boundary connection points")
         from .resolution import PortHandle
-        from .recipes import PointRef
+        from .points import PointRef
 
         self._model._assert_mutable()
         boundary_points = getattr(self, "has_boundary_connection_point")

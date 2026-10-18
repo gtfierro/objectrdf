@@ -9,30 +9,52 @@ points and deferred Z3 resolution.
 
 ```python
 from objectrdf import Model, connect
-from objectrdf.watr import Chiller, Pump, Tank
+from objectrdf.watr.drinking_water import (
+    ChlorinationStage,
+    ClarificationStage,
+    CoagulationStage,
+    FlocculationStage,
+    RapidSandFiltrationStage,
+)
 
 with Model("urn:example/treatment#") as model:
-    source = Chiller("source")
-    pump = Pump("transfer-pump")       # WaTr Pump
-    product = Tank("product-tank")     # accepts the Mix-Fluid domain
-    inlet = connect(source, pump)
-    outlet = connect(pump, product)
+    with model.system("treatment-system") as system:
+        coagulation = CoagulationStage("coagulation")
+        flocculation = FlocculationStage("flocculation")
+        clarifier = ClarificationStage("clarifier")
+        sand_filter = RapidSandFiltrationStage("sand-filter")
+        disinfection = ChlorinationStage("chlorination-contact")
 
-resolved = model.resolve()
-assert resolved.connection(inlet).medium is resolved.connection(outlet).medium
+        connect(coagulation.outlet, flocculation.inlet)
+        connect(flocculation.outlet, clarifier.inlet)
+        connect(clarifier.clarified_water, sand_filter.inlet)
+        connect(sand_filter.filtered_water, disinfection.inlet)
+        system.boundary(
+            coagulation.inlet, disinfection.outlet, clarifier.sludge,
+            sand_filter.backwash_supply, sand_filter.backwash_waste,
+        )
+
+resolved = model.compile()
 ```
 
-The source establishes `Fluid-Water`. Water is permitted by both pump ports
-and by the tank's broad `Mix-Fluid` domain, so the optimizer ranks that
-coherent assignment above unsupported alternatives. This is an assignment
-preference, not a hard claim that every pump preserves medium. Generic
-treatment equipment may still have several equal-best media. Constrain such a
-component at creation time or later through its handle:
+This conventional surface-water sequence follows
+[CDC's treatment overview](https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html).
+The stages subclass WaTr's `CoagulationBasin`, `FlocculationBasin`,
+`SedimentationTank`, `RapidSandFilter`, and `ChlorinationUnit`. Their process
+terms, objectives, and named ports are generated from
+[`ontology/drinking-water.ttl`](../ontology/drinking-water.ttl). The main path
+carries water; sludge and intermittent filter backwash have separate boundary
+ports. This schematic records treatment intent without calculating performance
+or sizing. See the [executable tutorial](book/tutorials/watr-treatment.md).
+
+Generic treatment equipment may still have several equal-best media. Constrain
+such a connection at creation time or later through its handle. For example,
+when connecting residuals equipment:
 
 ```python
 from objectrdf.watr import enums
 
-flow = connect(source, target)
+flow = connect(residuals_source, residuals_target)
 flow.medium = enums.values.Fluid_Sludge
 flow.has_role.add(enums.values.Role_Backwash)
 ```
@@ -82,13 +104,13 @@ name (`Pump`) and the imported S223 class receives a deterministic suffix
 These are punned named individuals, so use the exported instance directly
 rather than constructing a class. Constituents such as
 `Constituent_Salt` and `Constituent_SuspendedSolids` can qualify stream
-properties through `stream_state(...).quantity(..., substance=...)`.
+properties through schema definitions or `subject.quantity(..., of_substance=...)`.
 
 See
 [`examples/watr/treatment/watr_quickstart.py`](../examples/watr/treatment/watr_quickstart.py)
 for a complete serializing example and [Authoring 223P](s223.md) for handles,
 snapshots, ambiguity, and validation behavior shared by both packages.
-See [Quantities and stream state](quantities.md) for compiled QUDT terms and
+See [Quantities and property schemas](quantities.md) for compiled QUDT terms and
 the boundary between ontology semantics and convenience authoring.
 
 The [ASM2d example](../examples/watr/asm2d/README.md) writes a larger WaTr/S223

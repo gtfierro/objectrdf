@@ -27,16 +27,31 @@ if supply_fan is not None:
 
 ## Discovering classes and instances
 
-Each generated package has a registry. Start from any class in the package to
-list its generated classes, inspect one class's direct parents or children,
-or find every descendant in its branch. User-defined recipe subclasses also
-appear once they have been registered:
+Each generated package exports `REGISTRY`, which lists all its classes without
+requiring you to choose one first. A domain package's registry contains both
+the extension and its linked base types:
 
 ```python
+from objectrdf.watr import drinking_water
+
+loaded = Model.from_graph("treatment.ttl", registries=drinking_water.REGISTRY)
+for cls in drinking_water.REGISTRY.classes:
+    print(cls.__name__, cls.meta.iri)
+```
+
+Use the domain registry for graphs containing its configurations;
+`objectrdf.watr.REGISTRY` covers the base WaTr vocabulary alone. For graphs
+combining independent packages, pass a list of registries as shown below.
+
+Use a class's `.meta` to inspect its direct parents or children, or find every
+descendant in a particular branch:
+
+```python
+from objectrdf import s223
 from objectrdf.s223 import Equipment as S223Equipment
 from objectrdf.watr import Equipment as WatrEquipment, Process
 
-all_s223_classes = S223Equipment.meta.registry.classes
+all_s223_classes = s223.REGISTRY.classes
 direct_equipment_types = S223Equipment.meta.children
 all_equipment_types = WatrEquipment.meta.descendants
 all_process_types = Process.meta.descendants
@@ -87,14 +102,13 @@ generated package, pass its registry explicitly. Multiple registries are
 accepted:
 
 ```python
-from objectrdf.brick import Equipment as BrickEquipment
-from objectrdf.s223 import Equipment as S223Equipment
+from objectrdf import brick, s223
 
 model = Model.from_graph(
     graph,
     registries=[
-        BrickEquipment.meta.registry,
-        S223Equipment.meta.registry,
+        brick.REGISTRY,
+        s223.REGISTRY,
     ],
 )
 ```
@@ -177,9 +191,11 @@ Pass `infer=True` to run shifty's SHACL-AF forward-chaining rules before
 objects and relationships are hydrated:
 
 ```python
+from objectrdf import s223
+
 model = Model.from_graph(
     graph,
-    registries=Equipment.meta.registry,
+    registries=s223.REGISTRY,
     infer=True,
     shapes="building-shapes.ttl",
 )

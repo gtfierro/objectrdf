@@ -40,6 +40,7 @@ Then run an example from the repository root:
 uv run python examples/brick/quickstart/brick_quickstart.py
 uv run python examples/s223/ahu/s223_quickstart.py
 uv run python examples/watr/treatment/watr_quickstart.py
+uv run python examples/watr/asm2d/watertap_asm2d.py
 ```
 
 Each example prints a short summary and writes its generated Turtle file next
@@ -59,13 +60,49 @@ to the example script. See [examples/](examples/) for more scenarios.
 - WaTr treatment example:
   [examples/watr/treatment/watr_quickstart.py](examples/watr/treatment/watr_quickstart.py)
 
+## Domain configurations and quantities
+
+Reusable equipment layouts and property metadata are defined in RDF and SHACL.
+The compiler generates typed configurations and immutable value schemas:
+
+```python
+from objectrdf.qudt import QuantityAmount as Q, units
+from objectrdf.watr.asm2d import AerobicStage, AerobicDesign, OxygenOutletState
+
+with Model("urn:example:reactor#") as model:
+    reactor = AerobicStage("R5")
+    reactor.apply_properties(AerobicDesign(oxygen_transfer_coefficient=10.0))
+    reactor.outlet.apply_properties(
+        OxygenOutletState(oxygen_concentration=Q(1.91, units.GM_PER_M3))
+    )
+```
+
+Bare values use shape-declared units; explicit quantities preserve their units.
+The same `apply_properties(...)` API works on equipment, points, and connections.
+Use `subject.quantity(...)` for individual values. `capability=` selects static,
+observable, or actuatable properties; `has_aspect=` supplies their interpretation.
+
+See [the configuration guide](docs/shacl-configurations.md) and the
+[ASM2d example](docs/asm2d-example.md). Regenerate the supplied domains with
+`uv run python scripts/generate_example_domains.py`.
+
 ## Development
 
+The Makefile wraps the standard development commands:
+
 ```bash
-uv sync
-uv run pytest
-uv run ruff check src tests examples
-uv run ty check src tests examples
+make setup          # install development and documentation dependencies
+make check          # lint, type checks, and tests
+make docs           # build the documentation and execute tutorials
+make docs-open      # build and open the HTML documentation
+make docs-check     # full documentation build; warnings are errors
+make build          # source distribution and wheel
+make regen          # regenerate the supplied domain packages from local SHACL
+make help           # all available targets
 ```
+
+Use `make test TEST_ARGS="-q tests/test_named_points.py"` to select tests.
+`make format` formats source while excluding generated ontology output.
+`make clean` removes documentation, build output, and tool caches.
 
 Regenerate the Brick package: see [docs/codegen.md](docs/codegen.md).

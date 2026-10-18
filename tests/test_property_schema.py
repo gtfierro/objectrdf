@@ -13,7 +13,7 @@ from objectrdf import Model, PropertySchema, QuantityDefinition, connect
 from objectrdf.core.errors import ModelingError
 from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
 from objectrdf.watr import enums
-from objectrdf.watr import QuantifiableProperty
+from objectrdf.watr import Pump, QuantifiableProperty
 from objectrdf.watr.asm2d import (
     AerobicDesign,
     AerobicStage,
@@ -246,7 +246,7 @@ def test_scalar_quantity_capability_and_aspect_are_independent():
             101325.0,
             unit=units.PA,
             kind=quantity_kinds.Pressure,
-            mode="nominal",
+            has_aspect=[enums.values.Aspect_Nominal],
         )
         observable = pump.inlet.quantity(
             "reading",
@@ -277,3 +277,37 @@ def test_scalar_quantity_rejects_conflicting_explicit_units_without_mutation():
                 kind=quantity_kinds.Pressure,
             )
         assert model._revision == revision
+
+
+@pytest.mark.parametrize("subject", ["entity", "port", "reference", "connection"])
+@pytest.mark.parametrize("capability", ["static", "observable", "actuatable"])
+def test_scalar_capabilities_and_aspects_are_consistent_on_all_subjects(
+    subject, capability
+):
+    with Model("urn:test:shared-scalar-api#") as model:
+        if subject == "reference":
+            target = RecyclePump("pump").outlet
+        else:
+            pump = Pump("pump")
+            if subject == "port":
+                target = pump.port("custom-out", direction="out")
+            elif subject == "connection":
+                target = connect(pump, Pump("other"))
+            else:
+                target = pump
+        prop = target.quantity(
+            "pressure",
+            Q(101325.0, units.PA),
+            kind=quantity_kinds.Pressure,
+            capability=capability,
+            has_aspect=[enums.values.Aspect_Nominal],
+        )
+    expected = {
+        "static": "QuantifiableProperty",
+        "observable": "QuantifiableObservableProperty",
+        "actuatable": "QuantifiableActuatableProperty",
+    }[capability]
+    assert prop.meta.iri.endswith("#" + expected)
+    assert getattr(prop, "has_unit") is units.PA
+    assert getattr(prop, "has_aspect") == [enums.values.Aspect_Nominal]
+    assert model["pressure"] is prop

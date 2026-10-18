@@ -15,10 +15,6 @@ Model
 
 .. autoattribute:: objectrdf.core.Entity.ports
 
-.. automethod:: objectrdf.core.Entity.apply_property_block
-
-.. automethod:: objectrdf.PortHandle.apply_property_block
-
 Property schemas
 ----------------
 
@@ -33,14 +29,16 @@ Property schemas
 
 .. automethod:: objectrdf.core.Entity.apply_properties
 
-.. automethod:: objectrdf.PortHandle.apply_properties
+.. automethod:: objectrdf.core.Entity.quantity
 
-Property bundles
-----------------
+.. autoclass:: objectrdf.PointRef
+   :members: medium, quantity, apply_properties
 
-.. autoclass:: objectrdf.PropertyBundle
-   :members: quantity, property, apply, describe, parameters
-   :special-members: __call__
+.. autoclass:: objectrdf.PointGroupRef
+   :members:
+
+.. autoclass:: objectrdf.PortHandle
+   :members: medium, direction, pair, quantity, apply_properties
 
 Class discovery
 ---------------
@@ -69,7 +67,7 @@ Connections and snapshots
 .. autofunction:: objectrdf.connect
 
 .. autoclass:: objectrdf.ConnectionHandle
-   :members: medium, connection_class, label, comment, assign
+   :members: medium, connection_class, label, comment, assign, quantity, apply_properties
 
 .. autoclass:: objectrdf.ResolvedModel
    :members: entities, connection, point, explain, graph

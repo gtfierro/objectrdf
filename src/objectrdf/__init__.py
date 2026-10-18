@@ -28,7 +28,6 @@ from .core import (
     PortHandle,
     PortContract,
     PortSlot,
-    PropertyBundle,
     PropertySchema,
     PropertySet,
     QuantityDefinition,
@@ -47,7 +46,7 @@ from .core import (
     ValidationReport,
     current_model,
 )
-from .core.recipes import PointGroupRef, PointRef, Policy, choose, default, fixed
+from .core.points import PointGroupRef, PointRef
 
 __version__ = "0.1.0"
 
@@ -56,16 +55,23 @@ __version__ = "0.1.0"
 def connect(
     a: S223Connectable | WaTrConnectable | PortHandle | PointRef | PointGroupRef,
     b: Entity | PortHandle | PointRef | PointGroupRef,
-    *, medium: EnumValue | None = None, connection: type[Entity] | None = None,
-    name: str | None = None, ports: Literal["match", "new"] = "match",
+    *,
+    medium: EnumValue | None = None,
+    connection: type[Entity] | None = None,
+    name: str | None = None,
+    ports: Literal["match", "new"] = "match",
 ) -> ConnectionHandle: ...
 
 
 @overload
 def connect(
-    a: Entity, b: Entity | PortHandle | PointRef | PointGroupRef,
-    *, medium: EnumValue | None = None, connection: type[Entity] | None = None,
-    name: str | None = None, ports: Literal["match", "new"] = "match",
+    a: Entity,
+    b: Entity | PortHandle | PointRef | PointGroupRef,
+    *,
+    medium: EnumValue | None = None,
+    connection: type[Entity] | None = None,
+    name: str | None = None,
+    ports: Literal["match", "new"] = "match",
 ) -> ConnectionHandle | None: ...
 
 
@@ -118,7 +124,9 @@ def connect(
                 if isinstance(point_owner, Entity):
                     b_owner = point_owner
             if b_owner.meta.model is not a_model:
-                raise ModelingError("connection endpoints must belong to the same Model")
+                raise ModelingError(
+                    "connection endpoints must belong to the same Model"
+                )
             a_model._assert_mutable()
             if a_model._loaded_graph is not None:
                 raise ModelingError(
@@ -126,16 +134,23 @@ def connect(
                 )
             with a_model._atomic():
                 for endpoint, direction in ((a, "out"), (b, "in")):
-                    if not isinstance(endpoint, Entity) or not hasattr(endpoint, "has_connection_point"):
+                    if not isinstance(endpoint, Entity) or not hasattr(
+                        endpoint, "has_connection_point"
+                    ):
                         continue
                     maximum = type(endpoint)._shape_max_ports
                     count = len(endpoint.ports)
                     if maximum is not None and count >= maximum:
-                        raise ModelingError(f"{endpoint.name}: shape prohibits additional ports")
+                        raise ModelingError(
+                            f"{endpoint.name}: shape prohibits additional ports"
+                        )
                     stem = f"{endpoint.name}-{direction}"
                     candidate = stem
                     index = 2
-                    while candidate in a_model._by_name or candidate in a_model._reserved_names:
+                    while (
+                        candidate in a_model._by_name
+                        or candidate in a_model._reserved_names
+                    ):
                         candidate = f"{stem}-{index}"
                         index += 1
                     port = endpoint.port(candidate, direction=direction, medium=medium)
@@ -144,7 +159,11 @@ def connect(
                     else:
                         b = port
                 return a_owner._CONNECTOR.connect(
-                    a, b, medium=medium, connection=connection, name=name,
+                    a,
+                    b,
+                    medium=medium,
+                    connection=connection,
+                    name=name,
                 )
         return a_owner._CONNECTOR.connect(
             a, b, medium=medium, connection=connection, name=name
@@ -161,13 +180,11 @@ __all__ = [
     "PortHandle",
     "PortContract",
     "PortSlot",
-    "PropertyBundle",
     "PropertySchema",
     "PropertySet",
     "QuantityDefinition",
     "PointGroupRef",
     "PointRef",
-    "Policy",
     "ResolutionExplanation",
     "Entity",
     "EnumValue",
@@ -182,9 +199,6 @@ __all__ = [
     "ValidationReport",
     "ValidationError",
     "connect",
-    "choose",
     "current_model",
-    "default",
-    "fixed",
     "__version__",
 ]
