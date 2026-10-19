@@ -303,10 +303,83 @@ class EnumOne(Generic[V]):
         obj._model._touch(obj)
 
 
+class EnumValues(Generic[V]):
+    """Live, ordered, duplicate-free enum values of one entity property.
+
+    Obtained by reading an :class:`EnumSet` attribute (``duct.has_role``).
+    Like :class:`RelSet`, mutations are range-checked and write through to
+    the model; it compares equal to a list of the same values.
+    """
+
+    __slots__ = ("_owner", "_spec")
+
+    def __init__(self, owner: Entity, spec: PropertySpec) -> None:
+        self._owner = owner
+        self._spec = spec
+
+    def _current(self) -> list[V]:
+        return self._owner._data.get(self._spec.name, [])
+
+    def _replace(self, values: list[V]) -> None:
+        owner = self._owner
+        if owner._shape_constraints:
+            from .shape_constraints import check_values
+
+            check_values(owner, self._spec.name, values)
+        owner._data[self._spec.name] = values
+        owner._model._touch(owner)
+
+    def add(self, *items: V) -> None:
+        """Add one or more enum values. Duplicates are ignored."""
+        self._owner._model._assert_mutable()
+        values = list(self._current())
+        for item in items:
+            _check_enum(self._owner, self._spec, item)
+            if item not in values:
+                values.append(item)
+        if len(values) != len(self._current()):
+            self._replace(values)
+
+    def remove(self, item: V) -> None:
+        """Remove an enum value; raises ValueError if it is absent."""
+        self._owner._model._assert_mutable()
+        values = list(self._current())
+        values.remove(item)
+        self._replace(values)
+
+    def clear(self) -> None:
+        """Remove every value."""
+        self._owner._model._assert_mutable()
+        if self._current():
+            self._replace([])
+
+    def __iter__(self) -> Iterator[V]:
+        return iter(list(self._current()))
+
+    def __len__(self) -> int:
+        return len(self._current())
+
+    def __contains__(self, item: object) -> bool:
+        return item in self._current()
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, EnumValues):
+            return self._current() == other._current()
+        if isinstance(other, (list, tuple)):
+            return self._current() == list(other)
+        return NotImplemented
+
+    __hash__ = None  # type: ignore[assignment]
+
+    def __repr__(self) -> str:
+        return f"EnumValues({self._spec.name}={self._current()!r})"
+
+
 class EnumSet(Generic[V]):
     """Descriptor for a multi-valued enum property (e.g. 223 ``hasRole``).
 
-    Reads as a plain list-valued attribute; assignment replaces contents.
+    Reads as a live :class:`EnumValues` collection; assignment replaces
+    contents.
     """
 
     def __init__(self, spec: PropertySpec) -> None:
@@ -321,12 +394,12 @@ class EnumSet(Generic[V]):
     @overload
     def __get__(self, obj: None, owner: type) -> EnumSet[V]: ...
     @overload
-    def __get__(self, obj: Entity, owner: type) -> list[V]: ...
+    def __get__(self, obj: Entity, owner: type) -> EnumValues[V]: ...
 
-    def __get__(self, obj: Entity | None, owner: type) -> EnumSet[V] | list[V]:
+    def __get__(self, obj: Entity | None, owner: type) -> EnumSet[V] | EnumValues[V]:
         if obj is None:
             return self
-        return obj._data.setdefault(self.spec.name, [])
+        return EnumValues(obj, self.spec)
 
     def __set__(self, obj: Entity, value: Iterable[V]) -> None:
         obj._model._assert_mutable()

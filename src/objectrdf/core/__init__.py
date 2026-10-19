@@ -38,6 +38,7 @@ from .property_schema import (
 from .relations import (
     EnumOne,
     EnumSet,
+    EnumValues,
     Lit,
     Rel,
     RelOne,
@@ -71,6 +72,7 @@ __all__ = [
     "Entity",
     "EnumOne",
     "EnumSet",
+    "EnumValues",
     "EnumValue",
     "InstanceMetaView",
     "Issue",

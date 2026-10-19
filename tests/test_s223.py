@@ -300,6 +300,30 @@ def test_explain_by_equipment_finds_connection_through_concrete_point(m):
     assert resolved.explain(pump, inlet).connection == "p--ch-in"
 
 
+def test_enum_collection_is_live_and_validated(m):
+    pump = s223.Pump("p", medium=[enums.values.Fluid_Water])
+    revision = m._revision
+    pump.medium.add(enums.values.Fluid_Water, enums.values.Fluid_Air)
+    assert pump.medium == [enums.values.Fluid_Water, enums.values.Fluid_Air]
+    assert m._revision != revision  # cached resolution is invalidated
+    with pytest.raises(RangeError):
+        pump.medium.add("water")
+    pump.medium.remove(enums.values.Fluid_Air)
+    assert list(pump.medium) == [enums.values.Fluid_Water]
+    assert enums.values.Fluid_Water in pump.medium
+    pump.medium.clear()
+    assert len(pump.medium) == 0
+    assert not hasattr(pump.medium, "append")  # no unchecked list mutation
+
+
+def test_resolved_enum_collection_is_immutable(m):
+    pump = s223.Pump("p", has_role=[enums.values.Role_Supply])
+    snapshot = m.resolve()
+    with pytest.raises(ModelingError):
+        snapshot[pump.name].has_role.add(enums.values.Role_Return)
+    assert pump.has_role == [enums.values.Role_Supply]
+
+
 def test_construction_materializes_required_cps(m):
     # The Fan shape requires an air inlet and outlet: they exist immediately.
     fan = s223.Fan("f")

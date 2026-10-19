@@ -57,8 +57,9 @@ constructor signature and attributes:
   `Process_Settling` is filled in when you supply neither it nor a subclass;
 - `maxCount 1` → scalar attribute (`fan.has_location`, entity or `None`);
 - otherwise → a set-like collection (`ahu.feeds.add(vav)`, iterable,
-  assignment replaces contents). Pass a list even for one value:
-  `has_role=[role]`.
+  assignment replaces contents). Enum-valued collections such as `has_role`
+  work the same way (`duct.has_role.add(role)`). Pass a list even for one
+  value: `has_role=[role]`.
 
 Runtime checks mirror the static types, so users without a type checker get
 the same errors, at construction/assignment time, in Python vocabulary:
