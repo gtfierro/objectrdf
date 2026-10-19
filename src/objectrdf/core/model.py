@@ -245,6 +245,16 @@ class Model:
                 obj = Literal(value)
             yield subject, URIRef(spec.predicate), obj
 
+    def _assert_accepts_connections(self) -> None:
+        """Deferred connections need an authored, mutable model."""
+        self._assert_mutable()
+        if self._loaded_graph is not None:
+            raise ModelingError(
+                "deferred S223/WaTr connections cannot yet be added to a "
+                "graph-backed model; edit its concrete Connection and "
+                "ConnectionPoint objects instead"
+            )
+
     def _defer_connection(
         self,
         source: Entity | PortHandle | PointGroupRef,
@@ -255,32 +265,12 @@ class Model:
         name: str | None,
     ) -> ConnectionHandle:
         """Record an S223 connection intention without materializing it."""
-        from .entity import Entity
-        from .resolution import ConnectionHandle, PortHandle
+        from .points import endpoint_owner
+        from .resolution import ConnectionHandle
 
-        self._assert_mutable()
-        if self._loaded_graph is not None:
-            raise ModelingError(
-                "deferred S223/WaTr connections cannot yet be added to a "
-                "graph-backed model; edit its concrete Connection and "
-                "ConnectionPoint objects instead"
-            )
-        from .points import PointGroupRef
-
-        source_owner = (
-            source.owner if isinstance(source, (PortHandle, PointGroupRef)) else source
-        )
-        target_owner = (
-            target.owner if isinstance(target, (PortHandle, PointGroupRef)) else target
-        )
-        if isinstance(source_owner, Entity):
-            point_owner = getattr(source_owner, "owner", None)
-            if isinstance(point_owner, Entity):
-                source_owner = point_owner
-        if isinstance(target_owner, Entity):
-            point_owner = getattr(target_owner, "owner", None)
-            if isinstance(point_owner, Entity):
-                target_owner = point_owner
+        self._assert_accepts_connections()
+        source_owner = endpoint_owner(source)
+        target_owner = endpoint_owner(target)
         if source_owner.meta.model is not self or target_owner.meta.model is not self:
             raise ModelingError("connection endpoints must belong to the same Model")
         base = name or f"{source.name}--{target.name}"
@@ -365,6 +355,15 @@ class Model:
             if candidate not in self._by_name and candidate not in self._reserved_names:
                 break
         self._auto_counters[prefix] = counter
+        return candidate
+
+    def _unique_name(self, stem: str) -> str:
+        """``stem`` if no entity, port, or connection uses it, else the first
+        free ``stem-<n>``."""
+        candidate, index = stem, 2
+        while candidate in self._by_name or candidate in self._reserved_names:
+            candidate = f"{stem}-{index}"
+            index += 1
         return candidate
 
     def system(self, name: str, *, label: str | None = None) -> _SystemScope:

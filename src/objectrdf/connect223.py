@@ -9,10 +9,11 @@ an immutable resolved snapshot, leaving the authored model unchanged.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal, TypeGuard
 
 from .core import CPSlot, ConnectionHandle, EnumValue, PortHandle
-from .core.points import PointGroupRef, PointRef
+from .core.errors import ModelingError
+from .core.points import PointGroupRef, PointRef, endpoint_owner
 from .core import containment as _containment
 
 if TYPE_CHECKING:
@@ -101,26 +102,36 @@ class S223Connector:
         medium: EnumValue | None = None,
         connection: type[Entity] | None = None,
         name: str | None = None,
+        ports: Literal["match", "new"] = "match",
     ) -> ConnectionHandle:
-        """Record a deferred connection intention and return its handle."""
-        from .core.entity import Entity
+        """Record a deferred connection intention and return its handle.
 
+        With ``ports="new"``, bare equipment endpoints first get a fresh
+        directed port each (``<name>-out`` / ``<name>-in``), so the
+        connection never reuses an existing point.
+        """
         if isinstance(a, PointRef):
             a = a._port
         if isinstance(b, PointRef):
             b = b._port
-        a_owner = a.owner if isinstance(a, (PortHandle, PointGroupRef)) else a
-        if isinstance(a_owner, Entity):
-            point_owner = getattr(a_owner, "owner", None)
-            if isinstance(point_owner, Entity):
-                a_owner = point_owner
-        return a_owner.meta.model._defer_connection(
-            a,
-            b,
-            medium=medium,
-            connection=connection,
-            name=name,
-        )
+        model = endpoint_owner(a).meta.model
+        if ports == "match" or not (_is_equipment(a) or _is_equipment(b)):
+            return model._defer_connection(
+                a, b, medium=medium, connection=connection, name=name
+            )
+        if endpoint_owner(b).meta.model is not model:
+            raise ModelingError("connection endpoints must belong to the same Model")
+        # Refuse before allocating ports, so the error names the connection
+        # rather than a port and a loaded graph is not snapshotted for nothing.
+        model._assert_accepts_connections()
+        with model._atomic():
+            if _is_equipment(a):
+                a = self._new_port(a, "out", medium)
+            if _is_equipment(b):
+                b = self._new_port(b, "in", medium)
+            return model._defer_connection(
+                a, b, medium=medium, connection=connection, name=name
+            )
 
     def _all_slots(self, cls: type[Entity]) -> list[CPSlot]:
         """CPSlots declared anywhere along the MRO."""
@@ -131,7 +142,24 @@ class S223Connector:
                 out.extend(info.cp_slots)
         return out
 
+    def _new_port(
+        self, entity: Entity, direction: str, medium: EnumValue | None
+    ) -> PortHandle:
+        """Declare one more port on ``entity`` unless its shapes forbid it."""
+        maximum = type(entity)._shape_max_ports
+        if maximum is not None and len(entity.ports) >= maximum:
+            raise ModelingError(f"{entity.name}: shape prohibits additional ports")
+        name = entity.meta.model._unique_name(f"{entity.name}-{direction}")
+        return entity.port(name, direction=direction, medium=medium)
+
     def _free_name(self, entity: Entity, base: str) -> str | None:
         """Use a readable name when free; fall back to auto-naming."""
         model = entity.meta.model
         return base if base not in model._by_name else None
+
+
+def _is_equipment(endpoint: object) -> TypeGuard[Entity]:
+    """A bare entity that owns connection points (not a port or point)."""
+    from .core.entity import Entity
+
+    return isinstance(endpoint, Entity) and hasattr(endpoint, "has_connection_point")

@@ -118,3 +118,24 @@ class PointGroupRef:
 
     def __repr__(self) -> str:
         return f"<PointGroupRef {self.owner.name}.{self.name} x{len(self.points)}>"
+
+
+def endpoint_owner(endpoint: Any) -> Any:
+    """The equipment a connection endpoint belongs to.
+
+    Ports and point references report their owner; a concrete connection
+    point reports the entity that owns it; anything else is its own owner.
+    """
+    from .entity import Entity
+    from .resolution import PortHandle
+
+    owner = (
+        endpoint.owner
+        if isinstance(endpoint, (PortHandle, PointRef, PointGroupRef))
+        else endpoint
+    )
+    if isinstance(owner, Entity):
+        point_owner = getattr(owner, "owner", None)
+        if isinstance(point_owner, Entity):
+            return point_owner
+    return owner

@@ -242,6 +242,35 @@ def test_unbounded_slot_supports_multiple_connections(m):
     assert isinstance(resolved.connection(second), s223.Pipe)
 
 
+def test_new_ports_are_allocated_on_bare_equipment(m):
+    ch, pump = s223.Chiller("ch"), s223.Pump("p")
+    first = connect(ch, pump, ports="new", medium=enums.values.Fluid_Water)
+    second = connect(ch, s223.Pump("q"), ports="new")
+    assert first.source.name == "ch-out"
+    assert first.target.name == "p-in"
+    assert second.source.name == "ch-out-2"
+    assert {port.name for port in ch.ports} >= {"ch-out", "ch-out-2"}
+    assert first.source.medium is enums.values.Fluid_Water
+    resolved = m.resolve()
+    assert isinstance(resolved.connection(first), s223.Pipe)
+
+
+def test_new_ports_require_one_model(m):
+    with Model("urn:test/other#"):
+        other = s223.Pump("p")
+    with pytest.raises(ModelingError, match="same Model"):
+        connect(s223.Chiller("ch"), other, ports="new")
+    assert not m._port_intents
+
+
+def test_new_ports_are_refused_on_graph_backed_model(m):
+    connect(s223.Chiller("ch"), s223.Pump("p"))
+    loaded = Model.from_graph(m.resolve().graph(), registries=s223.REGISTRY)
+    with pytest.raises(ModelingError, match="deferred S223/WaTr connections"):
+        connect(loaded["ch"], loaded["p"], ports="new")
+    assert not loaded._port_intents
+
+
 def test_construction_materializes_required_cps(m):
     # The Fan shape requires an air inlet and outlet: they exist immediately.
     fan = s223.Fan("f")
