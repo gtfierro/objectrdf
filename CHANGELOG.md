@@ -49,6 +49,9 @@ First public release.
   outright (`AirHeatExchanger`), or require identical points
   (`DualDuctTerminal`'s two air inlets). Points created from shapes are named
   after their owner, such as `hx-in-2`, rather than `inlet_connection_point_1`.
+- A port or connection point with an explicit medium is no longer held to the
+  media its class's shapes mention, so a `Fan` can have a declared
+  electricity inlet. Medium-domain conflicts now appear in unsatisfiable cores.
 
 [Unreleased]: https://github.com/gtfierro/objectrdf/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/gtfierro/objectrdf/releases/tag/v0.1.0

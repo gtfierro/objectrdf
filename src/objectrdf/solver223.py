@@ -265,21 +265,32 @@ def _solve_component(
                 )
         for point in entity_points:
             solver.add(point.medium >= 0, point.medium < len(enum_values))
+            if point.existing is not None:
+                solver.add(point.active)
+            stated = _stated_medium(point)
+            if stated is not None:
+                # An explicit medium overrides the class's medium domain: a
+                # Fan's shapes mention only air, but a declared power inlet
+                # may carry electricity.
+                if stated.iri in enum_ids:
+                    tracked(
+                        point.medium == enum_ids[stated.iri],
+                        point.name,
+                        ("explicit medium " if point.authored else "medium ")
+                        + _local(stated.iri),
+                    )
+                continue
             roots = _point_roots(point)
             if roots:
-                solver.add(
+                tracked(
                     z3.Implies(
                         point.active,
                         _medium_in_roots(point.medium, roots, enum_values, enum_ids),
-                    )
+                    ),
+                    point.name,
+                    f"{point.cls.__name__} medium must be one of "
+                    + ", ".join(sorted(_local(root) for root in roots)),
                 )
-            if point.existing is not None:
-                solver.add(point.active)
-                existing_medium = getattr(point.existing, "medium")
-                if existing_medium is not None and existing_medium.iri in enum_ids:
-                    solver.add(point.medium == enum_ids[existing_medium.iri])
-            if point.authored is not None and point.authored.medium is not None:
-                solver.add(point.medium == enum_ids[point.authored.medium.iri])
         for slot_index, slot in enumerate(_all_slots(type(entity))):
             tracked(
                 _slot_expr(entity_points, slot, enum_values, enum_ids),
@@ -708,11 +719,23 @@ def _point_roots(point: _Point) -> set[str]:
     }
 
 
+def _stated_medium(point: _Point) -> EnumValue | None:
+    """The medium the user gave this port or concrete point, if any."""
+    if point.authored is not None:
+        return point.authored.medium
+    if point.existing is not None:
+        return getattr(point.existing, "medium")
+    return None
+
+
 def _possible_medium_ids(
     point: _Point,
     media: list[EnumValue],
     enum_ids: dict[str, int],
 ) -> set[int]:
+    stated = _stated_medium(point)
+    if stated is not None and stated.iri in enum_ids:
+        return {enum_ids[stated.iri]}
     roots = _point_roots(point)
     if not roots:
         return set(enum_ids.values())

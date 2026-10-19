@@ -446,6 +446,28 @@ def test_identical_shape_points_are_interchangeable_and_named_by_owner(m):
     m.resolve()
 
 
+def test_explicit_port_medium_overrides_class_medium_domain(m):
+    # Fan inlets must carry air, but a declared power inlet may carry
+    # electricity; plain connections still infer air.
+    fan = s223.Fan("fan")
+    power = fan.port("fan-power", direction="in", medium=enums.values.Electricity_AC)
+    supply = connect(s223.Equipment("panel"), power)
+    air = connect(s223.Damper("damper"), fan)
+
+    resolved = m.resolve()
+    assert resolved.connection(supply).medium is enums.values.Electricity_AC
+    assert resolved.explain(supply).medium_reason == "explicit port"
+    assert resolved.connection(air).medium is enums.values.Fluid_Air
+
+
+def test_medium_domain_conflict_is_named_in_unsat_core(m):
+    connect(s223.Boiler("boiler"), s223.Fan("fan"))
+    with pytest.raises(UnsatisfiableModelError) as caught:
+        m.resolve()
+    assert caught.value.core
+    assert "fan-in: medium Fluid-Air" in caught.value.core
+
+
 def test_sparse_components_resolve_independently():
     with Model("urn:test/sparse#") as model:
         handles = [connect(s223.Damper(f"d{i}"), s223.Fan(f"f{i}")) for i in range(30)]
