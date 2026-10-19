@@ -12,6 +12,7 @@ once the structured API covers result paths end-to-end.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 import sys
@@ -25,6 +26,7 @@ from .terms import TermValue
 
 if TYPE_CHECKING:
     from .entity import Entity
+    from .meta import Registry
     from .model import Model
 
 
@@ -122,16 +124,16 @@ def _resolve_shapes(model: Model, shapes: object) -> rdflib.Graph:
     )
 
 
-def _package_shapes(model: Model) -> rdflib.Graph:
-    """Collect shapes from the ontology sources of the packages in use.
+def shapes_for(classes: Iterable[type], registries: Iterable[Registry]) -> rdflib.Graph:
+    """The shapes (and SHACL-AF rules) of the packages defining ``classes``.
 
-    Each generated package records where its ontology was loaded from
-    (``OntologyInfo.source``); we parse the union of the distinct sources.
+    Prefers each package's bundled ``_shapes.ttl``, falling back to the
+    ontology source it records, and adds extension packages' schema graphs.
     """
     package_files: set[Path] = set()
     sources: set[str] = set()
-    for entity in model.entities:
-        for cls in type(entity).__mro__:
+    for entity_type in classes:
+        for cls in entity_type.__mro__:
             if "_classinfo" not in cls.__dict__:
                 continue
             module = sys.modules.get(cls.__module__)
@@ -144,26 +146,37 @@ def _package_shapes(model: Model) -> rdflib.Graph:
             source = cls.__dict__["_classinfo"].ontology.source
             if source is not None and (bundled is None or not bundled.exists()):
                 sources.add(source)
-    g = rdflib.Graph()
-    registries = {
-        entity.meta.registry
-        for entity in model.entities
-        if getattr(entity.meta.registry, "schema_graph", None) is not None
-    }
-    if not package_files and not sources and not registries:
+    schemas = [
+        schema
+        for registry in registries
+        if (schema := getattr(registry, "schema_graph", None)) is not None
+    ]
+    if not package_files and not sources and not schemas:
         raise ValueError(
             "no shapes given and no generated package in this model "
             "records an ontology source; pass shapes= explicitly"
         )
-    for registry in registries:
-        schema = registry.schema_graph
-        if schema is not None:
-            for triple in schema:
-                g.add(triple)
-    for package_file in package_files:
+    g = rdflib.Graph()
+    for schema in schemas:
+        for triple in schema:
+            g.add(triple)
+    for package_file in sorted(package_files):
         g.parse(package_file)
-    for source in sources:
+    for source in sorted(sources):
         g.parse(source)
+    return g
+
+
+def _package_shapes(model: Model) -> rdflib.Graph:
+    """Collect shapes from the ontology sources of the packages in use.
+
+    Each generated package records where its ontology was loaded from
+    (``OntologyInfo.source``); we parse the union of the distinct sources.
+    """
+    g = shapes_for(
+        [type(entity) for entity in model.entities],
+        {entity.meta.registry for entity in model.entities},
+    )
     # Vocabulary references carry authoritative types compiled from their
     # catalogs. A base package's bundled closure need not contain every unit
     # or quantity-kind individual referenced by the model.

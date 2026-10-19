@@ -288,6 +288,18 @@ def test_single_value_for_collection_names_the_fix(m):
     assert "p" not in {entity.name for entity in m.entities}
 
 
+def test_explain_by_equipment_finds_connection_through_concrete_point(m):
+    pump, chiller = s223.Pump("p"), s223.Chiller("ch")
+    inlet = s223.InletConnectionPoint(
+        "ch-in", medium=enums.values.Fluid_Water, owner=chiller
+    )
+    connect(pump, inlet)
+    resolved = m.resolve()
+    # The solver treats the point's owner as the endpoint; so does explain().
+    assert resolved.explain(pump, chiller).connection == "p--ch-in"
+    assert resolved.explain(pump, inlet).connection == "p--ch-in"
+
+
 def test_construction_materializes_required_cps(m):
     # The Fan shape requires an air inlet and outlet: they exist immediately.
     fan = s223.Fan("f")

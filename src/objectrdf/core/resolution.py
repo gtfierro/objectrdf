@@ -483,26 +483,28 @@ class ResolvedModel:
         if not isinstance(handle, ConnectionHandle):
             if target is None:
                 raise TypeError("explain() needs a handle or both connection endpoints")
-            from .points import PointGroupRef, PointRef
+            from .points import PointRef, endpoint_owner
 
             source = handle._port if isinstance(handle, PointRef) else handle
             destination = target._port if isinstance(target, PointRef) else target
-            source_owner = (
-                source.owner
-                if isinstance(source, (PortHandle, PointGroupRef))
-                else source
-            )
-            target_owner = (
-                destination.owner
-                if isinstance(destination, (PortHandle, PointGroupRef))
-                else destination
-            )
+            intents = self._authored_model._connection_intents
+            # The exact endpoints pick out one connection among several
+            # between the same equipment; otherwise match by owner, as the
+            # solver groups connections.
             matches = [
                 candidate
-                for candidate in self._authored_model._connection_intents
-                if _endpoint_owner(candidate.source) is source_owner
-                and _endpoint_owner(candidate.target) is target_owner
+                for candidate in intents
+                if candidate.source is source and candidate.target is destination
             ]
+            source_owner = endpoint_owner(source)
+            target_owner = endpoint_owner(destination)
+            if not matches:
+                matches = [
+                    candidate
+                    for candidate in intents
+                    if endpoint_owner(candidate.source) is source_owner
+                    and endpoint_owner(candidate.target) is target_owner
+                ]
             if len(matches) != 1:
                 raise KeyError(
                     f"expected one authored connection from {source_owner.name} "
@@ -518,11 +520,3 @@ class ResolvedModel:
 
     def graph(self) -> rdflib.Graph:
         return self._model._graph_unresolved()
-
-
-def _endpoint_owner(endpoint: Any) -> Any:
-    from .points import PointGroupRef
-
-    if isinstance(endpoint, (PortHandle, PointGroupRef)):
-        return endpoint.owner
-    return endpoint

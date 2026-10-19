@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, cast
-from collections.abc import Iterable
+from typing import TYPE_CHECKING, Any
 
 from .errors import ModelingError
+from .relations import _collection
 
 if TYPE_CHECKING:
     from .entity import Entity
@@ -47,7 +47,7 @@ def initial_values(entity: Entity, supplied: dict[str, Any]) -> dict[str, Any]:
         if current is None:
             current = ()
         if many:
-            current = list(current or ())
+            current = _collection(entity, spec, current)
             for required in item.required:
                 if required not in current:
                     current.append(required)
@@ -68,9 +68,7 @@ def check_values(entity: Entity, name: str, value: object) -> None:
         return
     many = spec.kind in {"object", "class", "enum"} and spec.max_count != 1
     values = (
-        list(cast(Iterable[object], value))
-        if many
-        else ([] if value is None else [value])
+        _collection(entity, spec, value) if many else ([] if value is None else [value])
     )
     for item in constraints(type(entity)):
         if item.name != name:

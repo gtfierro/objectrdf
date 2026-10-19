@@ -56,8 +56,10 @@ RDF and SHACL; model authors import the generated classes.
 | `rdfs:label`, `skos:definition`/`rdfs:comment` | `meta` + class/attribute docstrings |
 | property with `rdfs:domain`/`schema:domainIncludes` | descriptor on the domain class |
 | `sh:property` with `sh:minCount >= 1` | required constructor kwarg |
+| `sh:qualifiedValueShape [sh:class C]` with `sh:qualifiedMinCount >= 1` on an overlay `class_properties` predicate | class default: `C` is added unless the author supplies `C` or a subclass, and the kwarg becomes optional |
 | `sh:property` with `sh:maxCount 1` | scalar attribute (`RelOne`/`Lit`) |
 | `sh:class` / `sh:datatype` / `rdfs:range` | type annotation + runtime check |
+| untyped declaration of a predicate that is enum-valued wherever it is typed | enum collection accepting any member |
 | `owl:inverseOf` | automatic inverse maintenance |
 | `owl:equivalentProperty` | canonicalized to the ontology's primary namespace |
 

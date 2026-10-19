@@ -47,6 +47,15 @@ def load_graph(
     if infer:
         import shifty
 
+        if shapes is None:
+            # Like validate(): the rules ship with the generated packages,
+            # not with the model graph being loaded.
+            from .validation import shapes_for
+
+            shapes = shapes_for(
+                [cls for registry in registry_list for cls in registry.classes],
+                registry_list,
+            )
         inferred = shifty.infer(graph, shapes).graph()
         if isinstance(source, rdflib.Graph):
             graph += inferred

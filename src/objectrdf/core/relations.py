@@ -349,9 +349,10 @@ def _collection(obj: Entity, spec: PropertySpec, value: object) -> list:
     if isinstance(value, (str, bytes, Entity, EnumValue, type)) or not isinstance(
         value, Iterable
     ):
+        shown = value.__name__ if isinstance(value, type) else repr(value)
         raise RangeError(
             f"{type(obj).__name__}.{spec.name} takes a collection of values; "
-            f"pass [{value!r}]"
+            f"pass [{shown}]"
         )
     return list(value)
 

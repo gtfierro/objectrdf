@@ -21,6 +21,7 @@ from objectrdf.watr import (
     FlocculationBasin,
     OutletConnectionPoint,
     Pipe,
+    Process_Settling,
     RapidSandFilter,
     SedimentationTank,
     Sensor,
@@ -307,3 +308,16 @@ def test_monitoring_examples_collect_system_members_without_fabricating_readings
     for sensor in sensors:
         prop = getattr(sensor, "observes")
         assert getattr(prop, "has_value") is None
+
+
+def test_configuration_rejects_single_value_for_collection():
+    # Shape-constrained configurations check values before the descriptor
+    # does; both paths must name the fix rather than iterate the enum.
+    from objectrdf.core import RangeError
+
+    with Model("urn:test:single-value#"):
+        with pytest.raises(RangeError, match=r"has_role takes a collection"):
+            ClarificationStage("c", has_role=enums.values.Role_Primary)  # ty: ignore[invalid-argument-type]
+        stage = ClarificationStage("d")
+        with pytest.raises(RangeError, match=r"pass \[Process_Settling\]"):
+            setattr(stage, "has_process", Process_Settling)

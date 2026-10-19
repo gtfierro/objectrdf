@@ -421,7 +421,8 @@ class Model:
         packages, for example ``objectrdf.watr.drinking_water.REGISTRY``.
         When ``infer`` is true,
         shifty applies SHACL-AF rules before objects and their relationships
-        are materialized. Mutating generated attributes writes through to the
+        are materialized; the rules come from ``shapes`` or, by default, the
+        selected packages' bundled shapes, as in :meth:`validate`. Mutating generated attributes writes through to the
         graph; RDF outside the generated object projection is preserved.
         Unknown RDF classes remain in :meth:`graph` but are not exposed as
         Python objects.

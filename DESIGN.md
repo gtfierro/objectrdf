@@ -59,7 +59,7 @@ Consequences:
 
 | SHACL | Python |
 |---|---|
-| `minCount >= 1` | required, keyword-only constructor arg |
+| `minCount >= 1` | required, keyword-only constructor arg (optional when a class default supplies it) |
 | `minCount` absent/0 | optional, defaults to `None`/empty |
 | `maxCount 1` | scalar attribute `T \| None` |
 | no `maxCount` | typed collection `RelSet[T]` |
@@ -68,6 +68,7 @@ Consequences:
 | `sh:in` / EnumerationKind | generated enum-like namespace (see §5) |
 | `sh:or` | `Union[...]` annotation |
 | qualified shapes (223 connection-point counts) | consumed by the connection negotiator (§6), not surfaced as attributes |
+| qualified `sh:class` value on a class-valued property (WaTr process/objective) | class default added at construction unless the author supplies it or a subclass |
 
 Attribute names come from `rdfs:label`/`skos:prefLabel`, snake_cased, with a deterministic
 collision policy (suffix by property namespace prefix on conflict). Original IRI, label,

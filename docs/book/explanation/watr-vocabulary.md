@@ -45,6 +45,14 @@ Python objects: `model.validate(infer=True)` uses it during validation, and
 `Model.from_graph(..., infer=True)` applies it before loading an RDF graph. A
 role depends on the installation and is never supplied by these rules.
 
+Class defaults are applied when Python constructs an object, not when
+`Model.from_graph()` loads RDF: a loaded graph keeps exactly the triples it
+contains. Load with `infer=True` to have `ClassDefaultsRule` add them from the
+package's bundled rules. The two differ in one detail: the constructor adds
+only the most specific implied term (`Process_Settling` for a clarifier),
+while the rule also adds each inherited requirement (`Process_Separation`).
+Both satisfy the shapes.
+
 ## Aqueous media and constituents
 
 WaTr 0.3 models freshwater with an H₂O constituent and seawater, brackish water,

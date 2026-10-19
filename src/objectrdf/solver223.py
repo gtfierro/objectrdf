@@ -1066,13 +1066,9 @@ def _result_roots(point: _PointResult) -> set[str]:
 
 
 def _owner(endpoint: Entity | PortHandle | PointGroupRef) -> Entity:
-    from .core.entity import Entity
-    from .core.points import PointGroupRef
+    from .core.points import endpoint_owner
 
-    if isinstance(endpoint, (PortHandle, PointGroupRef)):
-        return endpoint.owner
-    point_owner = getattr(endpoint, "owner", None)
-    return point_owner if isinstance(point_owner, Entity) else endpoint
+    return endpoint_owner(endpoint)
 
 
 def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:

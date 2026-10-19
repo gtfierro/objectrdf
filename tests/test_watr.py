@@ -1,10 +1,13 @@
 """WaTr reuses the S223 authoring and deferred-resolution machinery."""
 
 import pytest
+from rdflib import URIRef
 
 from objectrdf import Model, connect
 from objectrdf import watr
 from objectrdf.watr import enums
+
+W = "https://watermetadata.org/ontology/watr#"
 
 
 @pytest.fixture
@@ -155,3 +158,22 @@ def test_prefixes_follow_namespaces_not_entity_order():
     }
     assert bindings(watr.Pump_2, watr.Tank) == expected
     assert bindings(watr.Tank, watr.Pump_2) == expected
+
+
+def test_from_graph_inference_uses_bundled_package_rules(m):
+    # The model file carries no rules; inference must read the generated
+    # package's bundled shapes, as validate() does.
+    watr.Clarifier("clarifier")
+    graph = m.graph()
+    for predicate in ("hasProcess", "hasTreatmentObjective"):
+        graph.remove((None, URIRef(f"{W}{predicate}"), None))
+
+    plain = Model.from_graph(graph, registries=watr.REGISTRY)["clarifier"]
+    assert isinstance(plain, watr.Clarifier)
+    assert not list(plain.has_process)
+
+    inferred = Model.from_graph(graph, registries=watr.REGISTRY, infer=True)
+    clarifier = inferred["clarifier"]
+    assert isinstance(clarifier, watr.Clarifier)
+    assert watr.Process_Settling in clarifier.has_process
+    assert watr.TreatmentObjective_Clarification in clarifier.has_treatment_objective

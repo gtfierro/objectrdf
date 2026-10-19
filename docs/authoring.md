@@ -51,10 +51,14 @@ preserved when deferred connections are resolved.
 Everything the ontology's SHACL shapes say about a class becomes its
 constructor signature and attributes:
 
-- `minCount >= 1` → required keyword argument (your IDE flags the omission);
+- `minCount >= 1` → required keyword argument (your IDE flags the omission),
+  unless the class's own shapes determine the value: every WaTr
+  `SedimentationTank` performs settling, so its `has_process` is optional and
+  `Process_Settling` is filled in when you supply neither it nor a subclass;
 - `maxCount 1` → scalar attribute (`fan.has_location`, entity or `None`);
 - otherwise → a set-like collection (`ahu.feeds.add(vav)`, iterable,
-  assignment replaces contents).
+  assignment replaces contents). Pass a list even for one value:
+  `has_role=[role]`.
 
 Runtime checks mirror the static types, so users without a type checker get
 the same errors, at construction/assignment time, in Python vocabulary:
