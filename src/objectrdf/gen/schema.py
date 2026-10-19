@@ -210,6 +210,7 @@ def extract(
             if prop.predicate in class_properties:
                 prop.kind = "class"
     _attach_class_defaults(graph, classes, names, canonical, class_properties)
+    _type_untyped_enum_properties(classes)
 
     ordered = _topo_sort(list(classes.values()))
     _resolve_mro(ordered)
@@ -617,6 +618,26 @@ def _attach_shape_properties(
             if isinstance(sh_datatype, URIRef) and sh_datatype in _DATATYPES:
                 existing.kind = "literal"
                 existing.datatype = _DATATYPES[sh_datatype]
+
+
+def _type_untyped_enum_properties(classes: dict[str, ClassIR]) -> None:
+    """Give untyped declarations of enum-valued predicates the enum kind.
+
+    A SPARQL-only shape declares a predicate without saying what it holds
+    (223 checks ``hasMedium`` compatibility on every Concept). When every
+    typed declaration of that predicate is an enumeration, the untyped ones
+    accept any enum value rather than defaulting to entity links.
+    """
+    by_predicate: dict[str, list[PropIR]] = {}
+    for cls in classes.values():
+        for prop in cls.own_props:
+            by_predicate.setdefault(prop.predicate, []).append(prop)
+    for props in by_predicate.values():
+        untyped = [p for p in props if p.kind == "object" and not p.ranges]
+        typed = [p for p in props if p not in untyped]
+        if untyped and typed and all(p.kind == "enum" for p in typed):
+            for prop in untyped:
+                prop.kind = "enum"
 
 
 def _attach_class_defaults(

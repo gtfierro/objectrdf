@@ -12,6 +12,7 @@ from objectrdf import (  # noqa: E402
     UnsatisfiableModelError,
     connect,
 )
+from objectrdf.core import RangeError  # noqa: E402
 from objectrdf.s223 import enums  # noqa: E402
 
 S = "http://data.ashrae.org/standard223#"
@@ -269,6 +270,22 @@ def test_new_ports_are_refused_on_graph_backed_model(m):
     with pytest.raises(ModelingError, match="deferred S223/WaTr connections"):
         connect(loaded["ch"], loaded["p"], ports="new")
     assert not loaded._port_intents
+
+
+def test_equipment_medium_accepts_enum_values(m):
+    pump = s223.Pump("p", medium=[enums.values.Fluid_Water])
+    assert pump.medium == [enums.values.Fluid_Water]
+    assert (
+        URIRef(m.namespace + "p"),
+        URIRef(f"{S}hasMedium"),
+        URIRef(f"{S}Fluid-Water"),
+    ) in m.graph()
+
+
+def test_single_value_for_collection_names_the_fix(m):
+    with pytest.raises(RangeError, match=r"takes a collection.*pass \["):
+        s223.Pump("p", medium=enums.values.Fluid_Water)
+    assert "p" not in {entity.name for entity in m.entities}
 
 
 def test_construction_materializes_required_cps(m):

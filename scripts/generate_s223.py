@@ -5,6 +5,8 @@ come from the separate ``objectrdf.qudt`` vocabulary package.
 """
 
 from pathlib import Path
+import subprocess
+import sys
 
 from rdflib import Graph
 
@@ -20,6 +22,11 @@ def main() -> None:
         ROOT / "src" / "objectrdf" / "s223",
         name="S223",
         source=S223_SOURCE,
+    )
+    # Link the extension against the freshly emitted base in a new interpreter.
+    subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "generate_example_domains.py")],
+        check=True,
     )
 
 

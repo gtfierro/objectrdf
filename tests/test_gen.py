@@ -631,3 +631,38 @@ def test_class_default_is_added_beside_unrelated_values(defaults_pkg, m):
 def test_property_without_class_default_stays_required(defaults_pkg, m):
     with pytest.raises(TypeError, match="has_process"):
         defaults_pkg.Unit("u")
+
+
+def test_untyped_declaration_of_enum_predicate_becomes_enum():
+    # Like 223's hasMedium: a SPARQL-only shape on the base class declares
+    # the predicate untyped; every typed declaration is an enumeration.
+    graph = rdflib.Graph().parse(
+        data="""
+            @prefix ex: <urn:media#> .
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix sh: <http://www.w3.org/ns/shacl#> .
+            <urn:media> a owl:Ontology .
+            ex:EnumerationKind a owl:Class .
+            ex:Medium a owl:Class ; rdfs:subClassOf ex:EnumerationKind .
+            ex:Water a owl:Class ; rdfs:subClassOf ex:Medium .
+            ex:Concept a owl:Class, sh:NodeShape ;
+                sh:property [
+                    sh:path ex:hasMedium ;
+                    sh:sparql [ sh:select "SELECT $this WHERE { }" ]
+                ] .
+            ex:Port a owl:Class, sh:NodeShape ;
+                rdfs:subClassOf ex:Concept ;
+                sh:property [ sh:path ex:hasMedium ; sh:class ex:Medium ] .
+        """,
+        format="turtle",
+    )
+    ir = extract(graph, name="Media", enum_root="urn:media#EnumerationKind")
+    props = {
+        cls.name: next(p for p in cls.own_props if p.name == "has_medium")
+        for cls in ir.classes
+        if cls.name in {"Concept", "Port"}
+    }
+    assert props["Concept"].kind == "enum"
+    assert props["Concept"].enum_ranges == ()
+    assert props["Port"].enum_ranges == ("urn:media#Medium",)

@@ -134,8 +134,8 @@ class Rel(Generic[T]):
     def __set__(self, obj: Entity, value: Iterable[T]) -> None:
         """Replace the full contents (used by constructor kwargs)."""
         store: RelSet[T] = obj._store_for(self.spec)
+        values = _collection(obj, self.spec, value)
         if obj._shape_constraints:
-            values = list(value)
             for item in values:
                 obj._check_range(self.spec, item)
             from .shape_constraints import check_values
@@ -148,7 +148,7 @@ class Rel(Generic[T]):
                 store.add(*values)
             return
         store.clear()
-        store.add(*value)
+        store.add(*values)
 
 
 class RelOne(Generic[T]):
@@ -330,11 +330,30 @@ class EnumSet(Generic[V]):
 
     def __set__(self, obj: Entity, value: Iterable[V]) -> None:
         obj._model._assert_mutable()
-        values = list(value)
+        values = _collection(obj, self.spec, value)
         for item in values:
             _check_enum(obj, self.spec, item)
         obj._data[self.spec.name] = values
         obj._model._touch(obj)
+
+
+def _collection(obj: Entity, spec: PropertySpec, value: object) -> list:
+    """The items of a multi-valued assignment; a lone value is an error.
+
+    Enum constants support ``[...]`` hierarchy lookup, so iterating one by
+    accident fails with a baffling KeyError rather than a TypeError.
+    """
+    from .entity import Entity
+    from .enums import EnumValue
+
+    if isinstance(value, (str, bytes, Entity, EnumValue, type)) or not isinstance(
+        value, Iterable
+    ):
+        raise RangeError(
+            f"{type(obj).__name__}.{spec.name} takes a collection of values; "
+            f"pass [{value!r}]"
+        )
+    return list(value)
 
 
 def _check_enum(obj: Entity, spec: PropertySpec, value: object) -> None:

@@ -67,7 +67,7 @@ class AerobicStage(_BASE.AerationBasin):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -127,7 +127,7 @@ class AnaerobicStage(_BASE.Reactor):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -187,7 +187,7 @@ class AnoxicStage(_BASE.Reactor):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -247,7 +247,7 @@ class InfluentMixer(_BASE.StaticMixer):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -353,7 +353,7 @@ class RecycleMixer(_BASE.StaticMixer):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -408,7 +408,7 @@ class RecyclePump(_BASE.Pump):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -470,7 +470,7 @@ class SecondaryClarifier(_BASE.SedimentationTank):
         has_property: _Iterable[_BASE.Property] | None = None,
         has_role: _Iterable[_EnumValue] | None = None,
         has_treatment_objective: _Iterable[type[_BASE.TreatmentObjective]] | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         label: str | None = None, comment: str | None = None, model: _Model | None = None) -> None:
         _Entity.__init__(self, name, label=label, comment=comment, model=model, **{
             'medium': medium,
@@ -581,7 +581,7 @@ class SplitFraction(_BASE.QuantifiableProperty):
         has_variable_range: _Iterable[_BASE.QuantifiableProperty] | None = None,
         is_delta_quantity: bool | None = None,
         is_internal_reference_of: _BASE.Property | None = None,
-        medium: _Iterable[_Entity] | None = None,
+        medium: _Iterable[_EnumValue] | None = None,
         of_constituent: _Iterable[_Entity] | None = None,
         of_medium: _EnumValue | None = None,
         of_substance: _EnumValue | None = None,
