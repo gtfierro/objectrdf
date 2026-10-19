@@ -18,6 +18,7 @@ from .core import (
     ResolvedModel,
     UnsatisfiableModelError,
 )
+from .core.enums import _local
 from .core.relations import RelSet
 
 if TYPE_CHECKING:
@@ -978,7 +979,7 @@ def _explain_intent(intent: _IntentResult) -> ResolutionExplanation:
     ]
     if handle.medium is not None:
         reason = "explicit connection"
-        evidence.append(f"{handle.name}.medium = {handle.medium.iri}")
+        evidence.append(f"{handle.name}.medium = {_local(handle.medium.iri)}")
     else:
         explicit = _point_medium_evidence(intent.source) or _point_medium_evidence(
             intent.target
@@ -1012,11 +1013,11 @@ def _explain_intent(intent: _IntentResult) -> ResolutionExplanation:
 
 def _point_medium_evidence(point: _PointResult) -> str | None:
     if point.authored is not None and point.authored.medium is not None:
-        return f"{point.authored.name}.medium = {point.authored.medium.iri}"
+        return f"{point.authored.name}.medium = {_local(point.authored.medium.iri)}"
     if point.existing is not None:
         medium = getattr(point.existing, "medium", None)
         if medium is not None:
-            return f"{point.existing.name}.medium = {medium.iri}"
+            return f"{point.existing.name}.medium = {_local(medium.iri)}"
     return None
 
 
@@ -1026,7 +1027,7 @@ def _paired_medium_evidence(point: _PointResult) -> str | None:
         if paired.medium is not None:
             return (
                 f"{point.authored.name} is paired with {paired.name}, "
-                f"whose medium is {paired.medium.iri}"
+                f"whose medium is {_local(paired.medium.iri)}"
             )
     if point.existing is not None:
         paired = getattr(point.existing, "paired_with", None)
@@ -1035,7 +1036,7 @@ def _paired_medium_evidence(point: _PointResult) -> str | None:
             assert paired is not None
             return (
                 f"{point.existing.name} is paired with {paired.name}, "
-                f"whose medium is {medium.iri}"
+                f"whose medium is {_local(medium.iri)}"
             )
     return None
 

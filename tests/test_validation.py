@@ -74,3 +74,18 @@ def test_compile_validates_by_default(shapes):
 
     # Partial/diagnostic workflows can still request resolution alone.
     assert m.compile(validate=False)
+
+
+def test_report_and_issues_display_readably_in_notebooks(shapes):
+    class Printer:
+        def text(self, value):
+            self.value = value
+
+    with Model("urn:ex/t#") as m:
+        s1 = toy.Sensor("s1")
+        toy.Meter("m1", has_point=[s1]).has_point.remove(s1)
+    report = m.validate(shapes)
+    for shown in (report, report.issues[0]):
+        printer = Printer()
+        shown._repr_pretty_(printer, False)
+        assert printer.value == str(shown)

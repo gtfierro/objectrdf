@@ -137,6 +137,13 @@ def test_resolution_explains_paired_port_medium_propagation(m):
     assert explanation.medium is enums.values.Fluid_Sludge
     assert explanation.medium_reason == "paired port"
     assert "paired with pxr-feed-in" in explanation.evidence[-1]
+    assert str(explanation) == (
+        "pxr-feed-out--source-in: pxr-feed-out -> source-in\n"
+        "  medium: Fluid-Sludge (paired port)\n"
+        "  - selected OutletConnectionPoint pxr-feed-out\n"
+        "  - selected InletConnectionPoint source-in\n"
+        "  - pxr-feed-out is paired with pxr-feed-in, whose medium is Fluid-Sludge"
+    )
 
 
 def test_prefixes_follow_namespaces_not_entity_order():

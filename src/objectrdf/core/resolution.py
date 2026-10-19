@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Iterator, Literal
 
+from .enums import _local
 from .errors import ModelingError
 from .terms import TermValue
 
@@ -409,6 +410,18 @@ class ResolutionExplanation:
         "affinity preference",
     ]
     evidence: tuple[str, ...] = ()
+
+    def __str__(self) -> str:
+        lines = [
+            f"{self.connection}: {self.source_point} -> {self.target_point}",
+            f"  medium: {_local(self.medium.iri)} ({self.medium_reason})",
+        ]
+        lines.extend(f"  - {line}" for line in self.evidence)
+        return "\n".join(lines)
+
+    def _repr_pretty_(self, printer: Any, cycle: bool) -> None:
+        # IPython and Jupyter display the readable form; repr() keeps fields.
+        printer.text(str(self))
 
 
 class ResolvedModel:

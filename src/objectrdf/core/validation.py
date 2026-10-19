@@ -16,7 +16,7 @@ from collections.abc import Iterable
 from dataclasses import dataclass
 from pathlib import Path
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import rdflib
 from rdflib import RDF
@@ -58,6 +58,10 @@ class Issue:
         prop = f" [{_local(self.path)}]" if self.path else ""
         return f"{self.severity}: {where}{prop}: {self.message}"
 
+    def _repr_pretty_(self, printer: Any, cycle: bool) -> None:
+        # IPython and Jupyter display the readable form; repr() keeps fields.
+        printer.text(str(self))
+
 
 @dataclass(frozen=True)
 class ValidationReport:
@@ -82,6 +86,10 @@ class ValidationReport:
         if not self.issues:
             return "conforms"
         return "\n".join(str(issue) for issue in self.issues)
+
+    def _repr_pretty_(self, printer: Any, cycle: bool) -> None:
+        # IPython and Jupyter display the readable form; repr() keeps fields.
+        printer.text(str(self))
 
 
 def validate_model(
