@@ -60,7 +60,7 @@ extend-exclude = ["src/objectrdf/brick", "src/objectrdf/s223", "src/objectrdf/wa
 testpaths = ["tests"]
 
 [build-system]
-requires = ["uv_build>=0.11.26,<0.12.0"]
+requires = ["uv_build>=0.11.26,<0.15"]
 build-backend = "uv_build"
 
 [dependency-groups]
