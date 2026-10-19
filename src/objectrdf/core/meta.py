@@ -363,5 +363,9 @@ class ClassInfo:
     cp_constraints: tuple[CPConstraint, ...] = ()
     """Boolean connection layouts projected from nested SHACL shapes."""
 
+    class_defaults: tuple[tuple[str, str], ...] = ()
+    """(property name, class name) pairs the shapes imply for every instance;
+    the class is added unless the author supplies it or a subclass."""
+
     cls: type[Entity] | None = field(default=None, repr=False)
     """The Python class this info describes (set at registration)."""

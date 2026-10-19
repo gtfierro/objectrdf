@@ -363,6 +363,7 @@ class Entity:
                         else PointGroupRef(self, point_name, tuple(refs))
                     )
 
+            self._apply_class_defaults()
             self._check_required()
             if not m._resolving:
                 _containment.attach(self)
@@ -675,6 +676,28 @@ class Entity:
                 f"{type(self).__name__}.{spec.name} expects {names}, got "
                 f"{type(value).__name__} ({value.name!r})"
             )
+
+    def _apply_class_defaults(self) -> None:
+        """Add each class-implied value the author did not already cover."""
+        specs = self._effective_specs()
+        for klass in type(self).__mro__:
+            info = klass.__dict__.get("_classinfo")
+            if info is None:
+                continue
+            for name, class_name in info.class_defaults:
+                implied = info.registry.resolve(class_name)
+                spec = specs[name]
+                if spec.max_count == 1:
+                    current = getattr(self, name)
+                    if current is None:
+                        setattr(self, name, implied)
+                    continue
+                store = self._store_for(spec)
+                if not any(
+                    isinstance(value, type) and issubclass(value, implied)
+                    for value in store
+                ):
+                    store.add(implied)
 
     def _check_required(self) -> None:
         """Raise if any SHACL-required property is still empty."""

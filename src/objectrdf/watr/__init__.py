@@ -1623,7 +1623,60 @@ class AerationBasin(Reactor):
         registry=_REGISTRY,
         label='Aeration Basin',
         definition='A basin in a biological treatment train where air or oxygen is transferred into the mixed liquor to sustain the aerobic biomass. Named for the aeration equipment installed, not for the regime it is run in: a swing zone with diffusers that is operated unaerated is still an aeration basin, carrying Role-Anoxic.',
+        class_defaults=(('has_process', 'Process_Aeration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Digester(Reactor):
     """A container to promote decomposition of organic waste
@@ -1637,7 +1690,60 @@ class Digester(Reactor):
         registry=_REGISTRY,
         label='Digester',
         definition='A container to promote decomposition of organic waste',
+        class_defaults=(('has_process', 'Process_Digestion'), ('has_treatment_objective', 'TreatmentObjective_Stabilization')),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class AerobicDigester(Digester):
     """A container to promote decomposition of organic waste in aerobic conditions
@@ -1651,6 +1757,7 @@ class AerobicDigester(Digester):
         registry=_REGISTRY,
         label='Aerobic Digester',
         definition='A container to promote decomposition of organic waste in aerobic conditions',
+        class_defaults=(('has_process', 'Process_AerobicDigestion'),),
     )
 
 _P_CoordinateSystem_coordinate_center = _PropertySpec(
@@ -1829,7 +1936,60 @@ class SeparationTank(Tank, UnitProcess):
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Mix-Fluid', medium_options=(), min_count=2, max_count=None),
         ),
+        class_defaults=(('has_process', 'Process_Separation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class AirStripper(SeparationTank):
     """A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream
@@ -1843,6 +2003,7 @@ class AirStripper(SeparationTank):
         registry=_REGISTRY,
         label='Air Stripper',
         definition='A vessel, typically a packed tower, in which air is contacted with water to transfer dissolved gases and volatile organic compounds out of the water and into an off-gas stream',
+        class_defaults=(('has_process', 'Process_Stripping'),),
     )
 
 class HeatPump(Equipment):
@@ -2141,6 +2302,7 @@ class AnaerobicDigester(Digester):
         registry=_REGISTRY,
         label='Anaerobic Digester',
         definition='A container to promote decomposition of organic waste in anaerobic conditions',
+        class_defaults=(('has_process', 'Process_AnaerobicDigestion'),),
     )
 
 _P_Unit_unit_for = _PropertySpec(
@@ -3886,6 +4048,7 @@ class DewateringUnit(UnitProcess):
         registry=_REGISTRY,
         label='Dewatering Unit',
         definition='A unit used to remove water from solid material',
+        class_defaults=(('has_treatment_objective', 'TreatmentObjective_Dewatering'),),
     )
 
 class BeltFilterPress(DewateringUnit):
@@ -3900,7 +4063,60 @@ class BeltFilterPress(DewateringUnit):
         registry=_REGISTRY,
         label='Belt Filter Press',
         definition='A dewatering unit that uses a belt system to separate solids from liquids',
+        class_defaults=(('has_process', 'Process_Filtration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Thickener(UnitProcess):
     """A device used to increase the solids concentration of a slurry
@@ -3914,6 +4130,7 @@ class Thickener(UnitProcess):
         registry=_REGISTRY,
         label='Thickener',
         definition='A device used to increase the solids concentration of a slurry',
+        class_defaults=(('has_treatment_objective', 'TreatmentObjective_Thickening'),),
     )
 
 class BeltThickener(Thickener):
@@ -3928,7 +4145,60 @@ class BeltThickener(Thickener):
         registry=_REGISTRY,
         label='Belt Thickener',
         definition='A thickener that uses a belt system to separate solids from liquids',
+        class_defaults=(('has_process', 'Process_Filtration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_ConnectionPoint_has_electrical_phase = _PropertySpec(
     name='has_electrical_phase',
@@ -4809,7 +5079,60 @@ class Filter(Filter_2, UnitProcess):
         registry=_REGISTRY,
         label='Filter',
         definition='An equipment used to remove impurities from liquids or gases',
+        class_defaults=(('has_process', 'Process_Filtration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class BiologicalAeratedFilter(Filter, Reactor):
     """A filter that uses biological processes to remove contaminants.
@@ -4823,6 +5146,7 @@ class BiologicalAeratedFilter(Filter, Reactor):
         registry=_REGISTRY,
         label='Biological Aerated Filter (BAF)',
         definition='A filter that uses biological processes to remove contaminants.',
+        class_defaults=(('has_process', 'Process_BiologicallyActiveFiltration'),),
     )
 
 _P_Encoding_bits = _PropertySpec(
@@ -4932,7 +5256,60 @@ class Boiler(Boiler_2, UnitProcess):
         registry=_REGISTRY,
         label='Boiler',
         definition='A device for heating water',
+        class_defaults=(('has_process', 'Process_Combustion'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class BooleanEncodingType(Encoding):
     """Boolean Encoding Type
@@ -5405,7 +5782,60 @@ class CentrifugalDewateringUnit(DewateringUnit):
         registry=_REGISTRY,
         label='Centrifugal Dewatering Unit',
         definition='A dewatering unit that uses centrifugal force to separate solids from liquids',
+        class_defaults=(('has_process', 'Process_Centrifugation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class CentrifugalThickener(Thickener):
     """A thickener that uses centrifugal force to separate solids from liquids
@@ -5419,7 +5849,60 @@ class CentrifugalThickener(Thickener):
         registry=_REGISTRY,
         label='Centrifugal Thickener',
         definition='A thickener that uses centrifugal force to separate solids from liquids',
+        class_defaults=(('has_process', 'Process_Centrifugation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class CharEncodingType(Encoding):
     """Char Encoding Type
@@ -5604,6 +6087,7 @@ class DisinfectionUnit(Reactor):
         registry=_REGISTRY,
         label='Disinfection Unit',
         definition='A unit used to eliminate or reduce harmful microorganisms',
+        class_defaults=(('has_treatment_objective', 'TreatmentObjective_Disinfection'),),
     )
 
 class ChlorinationUnit(DisinfectionUnit):
@@ -5618,7 +6102,60 @@ class ChlorinationUnit(DisinfectionUnit):
         registry=_REGISTRY,
         label='Chlorination Unit',
         definition='A unit that uses chlorine or chlorine compounds for disinfection.',
+        class_defaults=(('has_process', 'Process_Chlorination'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_Citation_description = _PropertySpec(
     name='description',
@@ -5717,6 +6254,7 @@ class SedimentationTank(SeparationTank):
         registry=_REGISTRY,
         label='Sedimentation Tank',
         definition='A tank in which suspended solids separate from water by settling under gravity',
+        class_defaults=(('has_process', 'Process_Settling'),),
     )
 
 class Clarifier(SedimentationTank):
@@ -5737,6 +6275,7 @@ class Clarifier(SedimentationTank):
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None)),
             )),
         ),
+        class_defaults=(('has_treatment_objective', 'TreatmentObjective_Clarification'),),
     )
 
 _P_Class_achieves_treatment_objective = _PropertySpec(
@@ -5833,7 +6372,60 @@ class CoagulationBasin(Reactor):
         registry=_REGISTRY,
         label='Coagulation Basin',
         definition='A basin where coagulation occurs to destabilize particles in water',
+        class_defaults=(('has_process', 'Process_Coagulation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_Connection_connects_from = _PropertySpec(
     name='connects_from',
@@ -6184,7 +6776,60 @@ class Cogenerator(UnitProcess):
         registry=_REGISTRY,
         label='Cogenerator',
         definition='An equipment that produces both electricity and heat from the same energy source',
+        class_defaults=(('has_process', 'Process_Cogeneration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Collection(StructuredDatatype):
     """Collection Type
@@ -7141,7 +7786,60 @@ class Condenser(HeatExchanger, UnitProcess):
         registry=_REGISTRY,
         label='Condenser',
         definition='A device used to condense a gaseous substance back into a liquid',
+        class_defaults=(('has_process', 'Process_Condensation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Conditioner(Equipment):
     """An equipment used to prepare raw biogas from a digester by removing impurities
@@ -8912,7 +9610,60 @@ class Crystallizer(UnitProcess):
         registry=_REGISTRY,
         label='Crystallizer',
         definition='An equipment used to produce solid crystals from a solution',
+        class_defaults=(('has_process', 'Process_Crystallization'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_CurrencyUnit_currency_code = _PropertySpec(
     name='currency_code',
@@ -10163,7 +10914,60 @@ class DissolvedAirFlotationThickener(Thickener):
         registry=_REGISTRY,
         label='Dissolved Air Flotation Thickener',
         definition='A thickener that uses dissolved air to separate solids from liquids',
+        class_defaults=(('has_process', 'Process_Flotation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Domain(Dimension):
     """Domain Dimension
@@ -10889,7 +11693,60 @@ class ElectroDialyticCrystallizer(UnitProcess):
         registry=_REGISTRY,
         label='Electro-Dialytic Crystallizer (EDC)',
         definition='A modular system designed for brine concentration and crystallization, integrating electrodialysis and crystallization.',
+        class_defaults=(('has_process', 'Process_Crystallization'), ('has_process', 'Process_Electrodialysis')),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class ElectrocoagulationUnit(Reactor):
     """A unit that uses electrocoagulation for contaminant removal.
@@ -10903,7 +11760,60 @@ class ElectrocoagulationUnit(Reactor):
         registry=_REGISTRY,
         label='Electrocoagulation Unit',
         definition='A unit that uses electrocoagulation for contaminant removal.',
+        class_defaults=(('has_process', 'Process_Electrocoagulation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class ElectrodialysisUnit(UnitProcess):
     """A unit that uses electricity to drive ion movement through a membrane
@@ -10917,7 +11827,60 @@ class ElectrodialysisUnit(UnitProcess):
         registry=_REGISTRY,
         label='Electrodialysis',
         definition='A unit that uses electricity to drive ion movement through a membrane',
+        class_defaults=(('has_process', 'Process_Electrodialysis'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Electrolyzer(UnitProcess):
     """An equipment that uses electricity to split liquids into constituent elements
@@ -10931,7 +11894,60 @@ class Electrolyzer(UnitProcess):
         registry=_REGISTRY,
         label='Electrolyzer',
         definition='An equipment that uses electricity to split liquids into constituent elements',
+        class_defaults=(('has_process', 'Process_Electrolysis'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class ElectromagneticFieldDevice(Equipment):
     """A device that generates an electromagnetic field, used as a pretreatment method for membrane scaling and fouling control.
@@ -11905,7 +12921,60 @@ class Evaporator(HeatExchanger, UnitProcess):
         registry=_REGISTRY,
         label='Evaporator',
         definition='A device used to turn the liquid form of a substance into its gaseous form',
+        class_defaults=(('has_process', 'Process_Evaporation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_FactorUnit_exponent = _PropertySpec(
     name='exponent',
@@ -12828,7 +13897,60 @@ class FlocculationBasin(Reactor):
         registry=_REGISTRY,
         label='Flocculation Basin',
         definition='A tank where flocculation occurs to aggregate particles in water',
+        class_defaults=(('has_process', 'Process_Flocculation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_FlowSensor_2_observes = _PropertySpec(
     name='observes',
@@ -13496,7 +14618,60 @@ class GranularActivatedCarbonAdsorber(UnitProcess):
         registry=_REGISTRY,
         label='Granular Activated Carbon (GAC) Adsorber',
         definition='A unit that uses granulated activated carbon to adsorb impurities from water.',
+        class_defaults=(('has_process', 'Process_GACFiltration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class GraphMetaData(_EntityBase):
     """Graph Metadata
@@ -13558,7 +14733,60 @@ class GravityThickener(Thickener):
                 _CPConstraint(operator='slot', slot=_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', medium_options=(), min_count=1, max_count=None)),
             )),
         ),
+        class_defaults=(('has_process', 'Process_Settling'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Grinder(UnitProcess):
     """Machine that shreds solid waste into tiny particles
@@ -13572,7 +14800,60 @@ class Grinder(UnitProcess):
         registry=_REGISTRY,
         label='Grinder',
         definition='Machine that shreds solid waste into tiny particles',
+        class_defaults=(('has_process', 'Process_Comminution'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class GritChamber(UnitProcess):
     """A chamber used to remove grit from wastewater
@@ -13586,7 +14867,60 @@ class GritChamber(UnitProcess):
         registry=_REGISTRY,
         label='Grit Chamber',
         definition='A chamber used to remove grit from wastewater',
+        class_defaults=(('has_process', 'Process_Settling'), ('has_treatment_objective', 'TreatmentObjective_SuspendedSolidsRemoval')),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class GroundCoordinateSystem(AerospaceCoordinateSystem):
     """Ground coordinate system
@@ -14824,7 +16158,60 @@ class IonExchangeMembrane(UnitProcess):
         registry=_REGISTRY,
         label='Ion Exchange Membrane',
         definition='A membrane that selectively allows ions to pass through while blocking other substances',
+        class_defaults=(('has_process', 'Process_IonExchange'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_Junction_medium = _PropertySpec(
     name='medium',
@@ -15445,6 +16832,7 @@ class MediaFiltrationUnit(Filter):
         registry=_REGISTRY,
         label='MediaFiltration Unit',
         definition='A filter system that uses a bed of material to filter out contaminants',
+        class_defaults=(('has_process', 'Process_MediaFiltration'),),
     )
 
 class MembraneAeratedBiofilmReaactor(Reactor):
@@ -15459,7 +16847,60 @@ class MembraneAeratedBiofilmReaactor(Reactor):
         registry=_REGISTRY,
         label='Membrane Aerated Biofilm Reactor',
         definition='A reactor that grows biofilm on membranes supplied with air',
+        class_defaults=(('has_process', 'Process_Aeration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class MembraneBioreactor(Filter, Reactor, SeparationTank):
     """A filter system that combines a membrane process like microfiltration with a biological reactor
@@ -15473,6 +16914,7 @@ class MembraneBioreactor(Filter, Reactor, SeparationTank):
         registry=_REGISTRY,
         label='Membrane Bioreactor',
         definition='A filter system that combines a membrane process like microfiltration with a biological reactor',
+        class_defaults=(('has_process', 'Process_Biofiltration'),),
     )
 
 class MemoryOrderType(EnumeratedValue):
@@ -15501,6 +16943,7 @@ class MicrofiltrationUnit(Filter):
         registry=_REGISTRY,
         label='Microfiltration Unit',
         definition='A filter system which removes contaminants from a liquid by passing it through a microporous membrane',
+        class_defaults=(('has_process', 'Process_Microfiltration'),),
     )
 
 class MicrowaveOven(ElectricOven):
@@ -15532,7 +16975,60 @@ class MixingBasin(Reactor):
         registry=_REGISTRY,
         label='Mixing Basin',
         definition='A tank where mixed liquor is stirred without aeration',
+        class_defaults=(('has_process', 'Process_Mixing'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 _P_ModalEnumeration_default_value = _PropertySpec(
     name='default_value',
@@ -15709,6 +17205,7 @@ class MovingBedBioreactor(Filter, Reactor):
         registry=_REGISTRY,
         label='Moving Bed Bioreactor (MBBR)',
         definition='MBBR process using suspended growth media a tank',
+        class_defaults=(('has_process', 'Process_Biofiltration'),),
     )
 
 class MultiDimensionalArray(Array):
@@ -17269,7 +18766,60 @@ class OxidationDitch(Reactor):
         registry=_REGISTRY,
         label='Oxidation Ditch',
         definition='Modified activated sludge process that uses a ring-shaped channel to biologically remove pollutants',
+        class_defaults=(('has_process', 'Process_ActivatedSludge'), ('has_treatment_objective', 'TreatmentObjective_OrganicsRemoval')),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class OxygenDemandSensor(Sensor):
     """A sensor used to measure Chemical Oxygen Demand (COD) and Biological Oxygen Demand (BOD)
@@ -17311,7 +18861,60 @@ class OzonationUnit(UnitProcess):
         registry=_REGISTRY,
         label='Ozonation Unit',
         definition='A unit that uses ozone for water treatment.',
+        class_defaults=(('has_process', 'Process_Ozonation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class PaddingType(EnumeratedValue):
     """Padding type
@@ -21091,6 +22694,7 @@ class RapidSandFilter(MediaFiltrationUnit):
         registry=_REGISTRY,
         label='Rapid Sand Filter',
         definition='A type of media filter that uses sand as the filter medium and operates at high filtration rates.',
+        class_defaults=(('has_process', 'Process_RapidSandFiltration'),),
     )
 
 class RatioScale(Scale):
@@ -21717,6 +23321,7 @@ class ReverseOsmosisMembrane(Filter):
         registry=_REGISTRY,
         label='Reverse Osmosis Membrane',
         definition='A membrane used for reverse osmosis',
+        class_defaults=(('has_process', 'Process_ReverseOsmosis'),),
     )
 
 class Role_NitrogenRemoval(_EntityBase):
@@ -21801,7 +23406,60 @@ class RotaryDrumThickener(Thickener):
         registry=_REGISTRY,
         label='Rotary Drum Thickener',
         definition='A thickener that uses a rotating drum to separate solids from liquids',
+        class_defaults=(('has_process', 'Process_Filtration'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class RotatingBiologicalContactor(Filter, Reactor):
     """Fixed-film process using a slowly rotating discs partially submerged in a tank
@@ -21815,6 +23473,7 @@ class RotatingBiologicalContactor(Filter, Reactor):
         registry=_REGISTRY,
         label='Rotating Biological Contactor (RBC)',
         definition='Fixed-film process using a slowly rotating discs partially submerged in a tank',
+        class_defaults=(('has_process', 'Process_Biofiltration'),),
     )
 
 class RotatingReferenceFrame(ReferenceFrame):
@@ -22246,7 +23905,60 @@ class Screen(UnitProcess):
         registry=_REGISTRY,
         label='Screen',
         definition='An equipment used for separation',
+        class_defaults=(('has_process', 'Process_Screening'), ('has_treatment_objective', 'TreatmentObjective_SuspendedSolidsRemoval')),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class Sequence(Collection):
     """Sequence
@@ -22277,6 +23989,7 @@ class SequencingBatchReactor(Reactor, SeparationTank):
         cp_slots=(
             _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', medium_options=(), min_count=1, max_count=None),
         ),
+        class_defaults=(('has_process', 'Process_ActivatedSludge'), ('has_process', 'Process_Settling'), ('has_treatment_objective', 'TreatmentObjective_OrganicsRemoval')),
     )
 
 class ServerComputer(Computer):
@@ -22939,7 +24652,60 @@ class SolventExtractionSystem(UnitProcess):
         registry=_REGISTRY,
         label='Solvent Extraction System',
         definition='A system that uses a solvent to selectively extract water from highly saline brines.',
+        class_defaults=(('has_process', 'Process_SolventExtraction'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class SpeedSensor(Sensor):
     """A sensor used to measure the speed of an object or fluid
@@ -23196,7 +24962,60 @@ class StaticMixer(Reactor):
         registry=_REGISTRY,
         label='StaticMixer',
         definition='A device for mixing liquids without moving components',
+        class_defaults=(('has_process', 'Process_Mixing'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class SteamInjector(Equipment):
     """A piece of `Equipment` for increasing the humidity of an air stream by injecting steam into the air stream.
@@ -25232,6 +27051,7 @@ class TricklingFilter(Filter):
         registry=_REGISTRY,
         label='Trickling Filter',
         definition='A filter system that treats wastewater by trickling it over a bed of rocks or plastic',
+        class_defaults=(('has_process', 'Process_TricklingFiltration'),),
     )
 
 class Triplet(ThreeTuple):
@@ -25836,7 +27656,60 @@ class UVH2O2Reactor(Reactor):
         registry=_REGISTRY,
         label='UV/H2O2 Reactor',
         definition='A specific reactor used in Advanced Oxidation Processes (AOPs) combining UV light with hydrogen peroxide.',
+        class_defaults=(('has_process', 'Process_AdvancedOxidation'), ('has_treatment_objective', 'TreatmentObjective_OrganicsRemoval')),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class UltrafiltrationUnit(Filter):
     """A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid
@@ -25850,6 +27723,7 @@ class UltrafiltrationUnit(Filter):
         registry=_REGISTRY,
         label='Ultrafiltration Unit',
         definition='A filter system that uses a pressure-driven barrier to separate particles and solutes in a fluid',
+        class_defaults=(('has_process', 'Process_Ultrafiltration'),),
     )
 
 class UltravioletLightUnit(DisinfectionUnit):
@@ -25864,7 +27738,60 @@ class UltravioletLightUnit(DisinfectionUnit):
         registry=_REGISTRY,
         label='Ultravioletlight Unit',
         definition='A unit using ultraviolet light for disinfection',
+        class_defaults=(('has_process', 'Process_UVIrradiation'),),
     )
+
+    def __init__(
+        self,
+        name: str | None = None,
+        *,
+        actuated_by_property: _Iterable[ActuatableProperty] = (),
+        cnx: _Iterable[ConnectionPoint] = (),
+        connected: _Iterable[Connectable] = (),
+        connected_from: _Iterable[Connectable] = (),
+        connected_through: _Iterable[Connection] = (),
+        connected_to: _Iterable[Connectable] = (),
+        contains_: _Iterable[_EntityBase] = (),
+        executes: _Iterable[Function] = (),
+        has_connection_point: _Iterable[ConnectionPoint] = (),
+        has_optional_connection_point: _Iterable[ConnectionPoint] = (),
+        has_physical_location: _Iterable[PhysicalSpace] = (),
+        has_process: _Iterable[type[Process]] = (),
+        has_property: _Iterable[Property] = (),
+        has_role: _Iterable[_EnumValue] = (),
+        has_treatment_objective: _Iterable[type[TreatmentObjective]] = (),
+        medium: _Iterable[_EntityBase] = (),
+        label: str | None = None,
+        comment: str | None = None,
+        model: _Model | None = None,
+    ) -> None:
+        # Funnel straight to the runtime base: generated __init__ methods are
+        # typed sugar, not a cooperative chain (parents' signatures differ).
+        _EntityBase.__init__(
+            self,
+            name,
+            label=label,
+            comment=comment,
+            model=model,
+            **_provided(
+                actuated_by_property=actuated_by_property,
+                cnx=cnx,
+                connected=connected,
+                connected_from=connected_from,
+                connected_through=connected_through,
+                connected_to=connected_to,
+                contains_=contains_,
+                executes=executes,
+                has_connection_point=has_connection_point,
+                has_optional_connection_point=has_optional_connection_point,
+                has_physical_location=has_physical_location,
+                has_process=has_process,
+                has_property=has_property,
+                has_role=has_role,
+                has_treatment_objective=has_treatment_objective,
+                medium=medium,
+            ),
+        )
 
 class UnsignedBigIntegerType(BigIntegerType, UnsignedIntegerType):
     """Unsigned Big Integer Type

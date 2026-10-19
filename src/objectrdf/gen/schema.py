@@ -124,6 +124,9 @@ class ClassIR:
     cp_slots: list[CPSlotIR] = field(default_factory=list)
     cp_constraints: list[CPConstraintIR] = field(default_factory=list)
     abstract: bool = False
+    # (property name, python class name): a value of that class (or a
+    # subclass) the shapes require, filled in when the author gives none.
+    class_defaults: list[tuple[str, str]] = field(default_factory=list)
 
 
 @dataclass
@@ -206,6 +209,7 @@ def extract(
         for prop in cls.own_props:
             if prop.predicate in class_properties:
                 prop.kind = "class"
+    _attach_class_defaults(graph, classes, names, canonical, class_properties)
 
     ordered = _topo_sort(list(classes.values()))
     _resolve_mro(ordered)
@@ -613,6 +617,45 @@ def _attach_shape_properties(
             if isinstance(sh_datatype, URIRef) and sh_datatype in _DATATYPES:
                 existing.kind = "literal"
                 existing.datatype = _DATATYPES[sh_datatype]
+
+
+def _attach_class_defaults(
+    graph: rdflib.Graph,
+    classes: dict[str, ClassIR],
+    names: dict[str, str],
+    canonical: dict[str, str],
+    class_properties: tuple[str, ...],
+) -> None:
+    """Record class-implied values of punned-class properties.
+
+    A shape requiring at least one ``sh:qualifiedValueShape [sh:class X]``
+    value on a class-valued property (WaTr: a SedimentationTank performs
+    Process-Settling) determines that value for every instance. The runtime
+    adds ``X`` unless the author supplies ``X`` or a subclass, which is what
+    WaTr's ``ClassDefaultsRule`` infers in RDF.
+    """
+    if not class_properties:
+        return
+    for shape, class_iri in _shape_class_pairs(graph, classes):
+        for pshape in graph.objects(shape, SH.property):
+            path = graph.value(pshape, SH.path)
+            qualified = graph.value(pshape, SH.qualifiedValueShape)
+            if not isinstance(path, URIRef) or qualified is None:
+                continue
+            predicate = canonical.get(str(path), str(path))
+            minimum = _int(graph, pshape, SH.qualifiedMinCount)
+            value = graph.value(qualified, SH["class"])
+            if (
+                predicate in class_properties
+                and minimum is not None
+                and minimum >= 1
+                and str(value) in names
+            ):
+                entry = (naming.property_name(predicate), names[str(value)])
+                if entry not in classes[class_iri].class_defaults:
+                    classes[class_iri].class_defaults.append(entry)
+    for cls in classes.values():
+        cls.class_defaults.sort()
 
 
 def _inherited_prop(

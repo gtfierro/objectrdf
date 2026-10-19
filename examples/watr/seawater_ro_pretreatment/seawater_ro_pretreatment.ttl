@@ -221,7 +221,8 @@
     rdfs:label "chlorination" ;
     s223:hasConnectionPoint :chlorination-in,
         :chlorination-out ;
-    watr:hasProcess watr:Process-Chlorination .
+    watr:hasProcess watr:Process-Chlorination ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
 
 :ferric-chloride-addition a seawater-ro:CoagulationStage ;
     rdfs:label "Ferric chloride addition" ;

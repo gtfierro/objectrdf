@@ -716,7 +716,8 @@
     rdfs:label "chlorination" ;
     s223:hasConnectionPoint :chlorination-in,
         :chlorination-out ;
-    watr:hasProcess watr:Process-Chlorination .
+    watr:hasProcess watr:Process-Chlorination ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
 
 :co2-addition a seawater-ro:DosingStage ;
     rdfs:label "Carbon dioxide addition" ;
@@ -833,7 +834,8 @@
         :uv-aop-out ;
     s223:hasProperty :uv-aop-reduction-equivalent-dose,
         :uv-aop-transmittance ;
-    watr:hasProcess watr:Process-AdvancedOxidation .
+    watr:hasProcess watr:Process-AdvancedOxidation ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-OrganicsRemoval .
 
 :backwash-handling a seawater-ro:BackwashSeparator ;
     rdfs:label "Media-filter backwash handling" ;

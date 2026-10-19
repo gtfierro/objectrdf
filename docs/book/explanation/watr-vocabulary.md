@@ -30,16 +30,20 @@ objective objects. Roles are enum values in
 `objectrdf.watr.enums` and can be passed to `has_role`. The
 [authoring guide](../how-to/watr-processes.md) shows all three together.
 
-The ontology's SHACL-AF class-default rules can infer processes and objectives
-fixed by an equipment class. For example, `GravityThickener` implies
-settling, and `ProcessObjectiveRule` adds the objective a process declares
-(`Process-Chlorination` implies disinfection). `model.validate(infer=True)` uses those rules
-during validation, but does not add inferred relationships to the authored
-Python objects. `Model.from_graph(..., infer=True)` applies inference before
-loading an RDF graph. A role depends on the installation and is never supplied
-by these class-default rules. In the current Python API, constructors may still
-require an explicit `has_process` argument even when the RDF rules can infer
-it.
+Some processes and objectives are fixed by the equipment class. For example,
+every `GravityThickener` performs settling to thicken sludge. WaTr's
+`ClassDefaultsRule` infers these in RDF, and the generated constructors apply
+the same defaults: `GravityThickener("thickener")` already has
+`Process_Settling` and `TreatmentObjective_Thickening`. A default is added
+only when you have not supplied that term or a subclass of it, so
+`MediaFiltrationUnit(has_process=[Process_RapidSandFiltration])` does not also
+get the generic `Process_MediaFiltration`.
+
+`ProcessObjectiveRule` adds the objective a process declares
+(`Process-Chlorination` implies disinfection). That rule is not applied to
+Python objects: `model.validate(infer=True)` uses it during validation, and
+`Model.from_graph(..., infer=True)` applies it before loading an RDF graph. A
+role depends on the installation and is never supplied by these rules.
 
 ## Aqueous media and constituents
 

@@ -75,7 +75,6 @@ value:
 
 ```python
 from objectrdf.watr import (
-    Process_Settling,
     SedimentationTank,
     TreatmentObjective_Clarification,
     enums,
@@ -84,13 +83,18 @@ from objectrdf.watr import (
 with Model("urn:example:clarifier#") as treatment:
     clarifier = SedimentationTank(
         "clarifier",
-        has_process=[Process_Settling],
         has_treatment_objective=[TreatmentObjective_Clarification],
         has_role=[enums.values.Role_Primary],
     )
 
-print([item.__name__ for item in clarifier.has_treatment_objective])
+print([item.__name__ for item in clarifier.has_process])  # ['Process_Settling']
 ```
+
+A process or objective that the class's shapes require is filled in when you
+leave it out: every `SedimentationTank` performs settling, so the constructor
+adds `Process_Settling`. A more specific process replaces the default: a
+`MediaFiltrationUnit` given `has_process=[Process_RapidSandFiltration]` does
+not also get the generic `Process_MediaFiltration`.
 
 Explore available process and objective subclasses through `Process.meta.tree()`
 and `TreatmentObjective.meta.tree()`. The

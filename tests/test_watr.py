@@ -31,6 +31,20 @@ def test_latest_watr_terms_are_available():
     assert enums.values.ReducingAgent.iri.endswith("#ReducingAgent")
 
 
+def test_class_implied_process_and_objective_are_filled_in(m):
+    # WaTr's ClassDefaultsRule infers these in RDF; the generated classes
+    # apply the same defaults so the authored model already carries them.
+    clarifier = watr.Clarifier("clarifier")
+    assert list(clarifier.has_process) == [watr.Process_Settling]
+    assert list(clarifier.has_treatment_objective) == [
+        watr.TreatmentObjective_Clarification
+    ]
+    # Only the unconnected outlets remain; nothing about process or objective.
+    messages = [issue.message for issue in m.validate(infer=False).violations]
+    assert messages
+    assert not [text for text in messages if "rocess" in text or "bjective" in text]
+
+
 def test_direct_watr_connection_point_shapes_are_compiled():
     slots = watr.Reactor._classinfo.cp_slots
     assert {(slot.direction, slot.medium) for slot in slots} >= {

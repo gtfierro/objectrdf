@@ -14,6 +14,8 @@ carry the property's definition and predicate.
 
 from __future__ import annotations
 
+from dataclasses import replace
+
 from .overlays import Overlay
 from .schema import CPConstraintIR, ClassIR, PropIR, SchemaIR
 
@@ -82,8 +84,26 @@ def emit_module(ir: SchemaIR, overlay: Overlay | None = None) -> str:
         )
     by_name = {c.name: c for c in ir.classes}
     emitted: set[str] = set()
+    # Stand-in classes with the emitted bases, so each class can find the
+    # __init__ Python's MRO will actually resolve for it.
+    mro_stand_ins: dict[str, type] = {}
+    with_init: set[str] = set()
     for cls in ir.classes:
-        parts.append(_emit_class(cls, by_name, emitted, ir))
+        bases = tuple(mro_stand_ins[p] for p in cls.parents if p in emitted)
+        stand_in = type(cls.name, bases, {})
+        mro_stand_ins[cls.name] = stand_in
+        inherited = next(
+            (
+                by_name[klass.__name__]
+                for klass in stand_in.__mro__[1:]
+                if klass.__name__ in with_init
+            ),
+            None,
+        )
+        init = _emit_init(cls, by_name, inherited)
+        if init:
+            with_init.add(cls.name)
+        parts.append(_emit_class(cls, emitted, ir, init))
         emitted.add(cls.name)
     if overlay is not None:
         parts.append(_emit_overlay(overlay, ir))
@@ -94,9 +114,9 @@ def emit_module(ir: SchemaIR, overlay: Overlay | None = None) -> str:
 
 def _emit_class(
     cls: ClassIR,
-    by_name: dict[str, ClassIR],
     emitted: set[str],
     ir: SchemaIR,
+    init: str,
 ) -> str:
     # Only inherit from parents already emitted; a dropped link (cycle) still
     # leaves the class rooted at the runtime Entity base.
@@ -135,6 +155,8 @@ def _emit_class(
         for constraint in cls.cp_constraints:
             lines.extend(_emit_cp_constraint(constraint, indent="            "))
         lines.append("        ),")
+    if cls.class_defaults:
+        lines.append(f"        class_defaults={tuple(cls.class_defaults)!r},")
     lines.append("    )")
 
     for prop in cls.own_props:
@@ -143,7 +165,6 @@ def _emit_class(
         doc = prop.definition or prop.label or prop.name
         lines.append(_docstring(f"{doc} ({prop.predicate})", indent="    "))
 
-    init = _emit_init(cls, by_name)
     if init:
         lines.append("")
         lines.append(init)
@@ -241,26 +262,49 @@ def _effective_props(cls: ClassIR, by_name: dict[str, ClassIR]) -> dict[str, Pro
     return merged
 
 
-def _emit_init(cls: ClassIR, by_name: dict[str, ClassIR]) -> str:
-    """Typed constructor; emitted when this class changes the property set.
+def _effective_defaults(cls: ClassIR, by_name: dict[str, ClassIR]) -> set[str]:
+    """Names of properties a class default fills, including inherited ones."""
+    names = {name for name, _value in cls.class_defaults}
+    for parent in cls.parents:
+        if parent in by_name:
+            names |= _effective_defaults(by_name[parent], by_name)
+    return names
 
-    Classes that inherit an identical signature simply inherit ``__init__``
-    (keeps generated files compact for deep taxonomies like Brick's).
+
+def _init_props(cls: ClassIR, by_name: dict[str, ClassIR]) -> dict[str, PropIR]:
+    """Constructor parameters: a required property with a class default is
+    optional, since the runtime supplies the implied value."""
+    defaulted = _effective_defaults(cls, by_name)
+    return {
+        name: replace(prop, required=False)
+        if prop.required and name in defaulted
+        else prop
+        for name, prop in _effective_props(cls, by_name).items()
+    }
+
+
+def _signature(props: dict[str, PropIR]) -> set[tuple[str, bool]]:
+    return {(name, prop.required) for name, prop in props.items()}
+
+
+def _emit_init(
+    cls: ClassIR, by_name: dict[str, ClassIR], inherited: ClassIR | None
+) -> str:
+    """Typed constructor; emitted when this class changes the signature.
+
+    ``inherited`` is the class whose ``__init__`` Python's MRO resolves for
+    ``cls`` if it defines none. Classes whose signature matches it simply
+    inherit (keeps generated files compact for deep taxonomies like Brick's).
     """
-    effective = _effective_props(cls, by_name)
+    effective = _init_props(cls, by_name)
     if not effective:
         return ""
-    if not cls.own_props and cls.parents:
-        # Multiple inheritance may combine disjoint property sets. Inherit a
-        # constructor only when one direct parent already exposes the complete
-        # effective signature.
-        effective_names = set(effective)
-        if any(
-            set(_effective_props(by_name[parent], by_name)) == effective_names
-            for parent in cls.parents
-            if parent in by_name
-        ):
-            return ""
+    if (
+        not cls.own_props
+        and inherited is not None
+        and _signature(_init_props(inherited, by_name)) == _signature(effective)
+    ):
+        return ""
 
     props = sorted(effective.values(), key=lambda p: (not p.required, p.name))
     params: list[str] = []

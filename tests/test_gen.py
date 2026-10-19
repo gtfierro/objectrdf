@@ -561,3 +561,73 @@ def test_generated_source_type_checks(mini, tmp_path):
         cwd=Path(__file__).parent.parent,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+CLASS_DEFAULTS_TTL = """
+@prefix ex: <urn:defaults#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+<urn:defaults> a owl:Ontology .
+
+ex:Process a owl:Class .
+ex:Settling a owl:Class ; rdfs:subClassOf ex:Process .
+ex:Sedimentation a owl:Class ; rdfs:subClassOf ex:Settling .
+ex:Coagulation a owl:Class ; rdfs:subClassOf ex:Process .
+
+ex:hasProcess a owl:ObjectProperty ; rdfs:domain ex:Equipment .
+
+ex:Equipment a owl:Class .
+ex:Tank a owl:Class ; rdfs:subClassOf ex:Equipment .
+ex:Unit a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf ex:Equipment ;
+    sh:property [ sh:path ex:hasProcess ; sh:class ex:Process ; sh:minCount 1 ] .
+ex:Settler a owl:Class, sh:NodeShape ;
+    rdfs:subClassOf ex:Tank, ex:Unit ;
+    sh:property [
+        sh:path ex:hasProcess ;
+        sh:qualifiedValueShape [ sh:class ex:Settling ] ;
+        sh:qualifiedMinCount 1
+    ] .
+"""
+
+
+@pytest.fixture(scope="module")
+def defaults_pkg(tmp_path_factory):
+    graph = rdflib.Graph().parse(data=CLASS_DEFAULTS_TTL, format="turtle")
+    out = tmp_path_factory.mktemp("gen") / "defaults"
+    target = generate(
+        graph,
+        out,
+        name="Defaults",
+        overlay=Overlay(class_properties=("urn:defaults#hasProcess",)),
+    )
+    spec = importlib.util.spec_from_file_location("generated_defaults", target)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules["generated_defaults"] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_qualified_class_requirement_becomes_constructor_default(defaults_pkg, m):
+    # Settler(Tank, Unit): Python resolves Unit.__init__, where has_process is
+    # required, so the generator must emit Settler's own optional signature.
+    settler = defaults_pkg.Settler("settler")
+    assert list(settler.has_process) == [defaults_pkg.Settling]
+
+
+def test_class_default_yields_to_supplied_subclass(defaults_pkg, m):
+    settler = defaults_pkg.Settler("s", has_process=[defaults_pkg.Sedimentation])
+    assert list(settler.has_process) == [defaults_pkg.Sedimentation]
+
+
+def test_class_default_is_added_beside_unrelated_values(defaults_pkg, m):
+    settler = defaults_pkg.Settler("s", has_process=[defaults_pkg.Coagulation])
+    assert set(settler.has_process) == {defaults_pkg.Coagulation, defaults_pkg.Settling}
+
+
+def test_property_without_class_default_stays_required(defaults_pkg, m):
+    with pytest.raises(TypeError, match="has_process"):
+        defaults_pkg.Unit("u")
