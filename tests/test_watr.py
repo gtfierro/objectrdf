@@ -88,6 +88,37 @@ def test_broad_watr_fluid_domain_can_be_narrowed_explicitly(m):
     assert connection.medium is enums.values.Fluid_Sludge
 
 
+def test_one_sided_shapes_leave_other_directions_open(m):
+    # Clarifier's shapes require only outlets; SHACL leaves inlets open, so a
+    # plain connect() into it gets a generic inlet beside the required outlets.
+    clarifier = watr.Clarifier("clarifier")
+    handle = connect(watr.Tank("source"), clarifier, medium=enums.values.Fluid_Water)
+
+    resolved = m.resolve()
+    assert resolved.explain(handle).target_point == "clarifier-in"
+    points = list(resolved["clarifier"].has_connection_point)
+    assert sum(isinstance(point, watr.InletConnectionPoint) for point in points) == 1
+    assert sum(isinstance(point, watr.OutletConnectionPoint) for point in points) == 2
+
+
+def test_shape_maximum_still_closes_one_sided_equipment():
+    from objectrdf.watr import seawater_ro
+
+    with Model("urn:example/feed#") as model:
+        connect(
+            watr.Tank("tank"),
+            seawater_ro.SeawaterFeed("feed"),
+            medium=enums.values.Fluid_Water,
+        )
+    report = model.check()
+    assert report.status == "unsatisfiable"
+    assert any(
+        "shape maximum connection-point count" in label
+        for issue in report.issues
+        for label in issue.labels
+    )
+
+
 def test_watr_connection_handle_stages_role_with_collection_api(m):
     handle = connect(
         watr.Tank("filter"),

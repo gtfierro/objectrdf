@@ -393,6 +393,8 @@ def test_unsat_core_uses_authored_connection_name(m):
     with pytest.raises(UnsatisfiableModelError) as caught:
         m.resolve()
     assert any("boiler--fan" in label for label in caught.value.core)
+    # The message names the conflicting constraints, not just "inconsistent".
+    assert all(label in str(caught.value) for label in caught.value.core)
 
 
 def test_sparse_components_resolve_independently():

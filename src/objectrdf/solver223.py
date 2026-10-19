@@ -93,8 +93,10 @@ def resolve_model(model: Model) -> ResolvedModel:
             labels = tuple(
                 label for issue in result.report.issues for label in issue.labels
             )
+            # Name the conflicting constraints; the bare issue text is generic.
+            message = "; ".join(issue.message for issue in result.report.issues)
             raise UnsatisfiableModelError(
-                "; ".join(issue.message for issue in result.report.issues),
+                f"{message}: {'; '.join(labels)}" if labels else message,
                 core=labels,
             )
         if result.report.status == "underconstrained":
@@ -518,15 +520,16 @@ def _make_points(
         needed = max(needed, incident["in"] if slot.direction in {"in", "bi"} else 0)
         needed = max(needed, incident["out"] if slot.direction in {"out", "bi"} else 0)
         classes[cls] = max(classes.get(cls, 0), needed)
-    if not classes:
-        for direction in ("in", "out"):
-            if incident[direction]:
-                name = (
-                    "InletConnectionPoint"
-                    if direction == "in"
-                    else "OutletConnectionPoint"
-                )
-                classes[registry.resolve(name)] = incident[direction]
+    # Shape slots are lower bounds, not a closed list: SHACL leaves other
+    # connection points open, so a direction no slot covers gets generic
+    # points. Shape maximums still bound the total.
+    covered = {_direction_of(cls) for cls in classes}
+    for direction in ("in", "out"):
+        if incident[direction] and not covered & {direction, "bi"}:
+            name = (
+                "InletConnectionPoint" if direction == "in" else "OutletConnectionPoint"
+            )
+            classes[registry.resolve(name)] = incident[direction]
     existing_names = {point.name for point in points}
     for cls, count in sorted(classes.items(), key=lambda item: item[0].__name__):
         existing_count = sum(
