@@ -31,5 +31,14 @@ First public release.
 - The `objectrdf gen` command for compiling other ontologies, with
   deterministic output for an unchanged imports closure.
 
+### Changed
+
+- Compared with pre-release builds, multi-valued enum properties such as
+  `has_role` and equipment `medium` return a live collection with `add()`, `remove()`,
+  and `clear()` instead of a plain `list`. Each change is range-checked and
+  shape-checked. Code that called `.append()` on the old list must use
+  `.add()`; comparisons with lists, such as `duct.has_role == [...]`, still
+  work.
+
 [Unreleased]: https://github.com/gtfierro/objectrdf/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/gtfierro/objectrdf/releases/tag/v0.1.0
