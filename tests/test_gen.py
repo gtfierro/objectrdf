@@ -493,6 +493,28 @@ def test_direct_qualified_shape_medium_is_extracted():
     assert tank.cp_slots[0].medium == "urn:boolean#Fluid-Water"
 
 
+def test_qualified_max_count_alone_sets_no_minimum():
+    graph = rdflib.Graph().parse(
+        data=BOOLEAN_CP_TTL
+        + """
+mini:HeatExchanger a owl:Class, sh:NodeShape ;
+    sh:property [
+        sh:path mini:hasConnectionPoint ;
+        sh:qualifiedValueShape [ sh:class mini:BidirectionalConnectionPoint ] ;
+        sh:qualifiedMaxCount 0
+    ] .
+""",
+        format="turtle",
+    )
+    ir = extract(graph, name="Boolean", enum_root="urn:boolean#EnumerationKind")
+    exchanger = next(cls for cls in ir.classes if cls.name == "HeatExchanger")
+
+    # SHACL reads a missing qualifiedMinCount as no minimum, so this forbids
+    # bidirectional points instead of requiring one and allowing none.
+    [slot] = exchanger.cp_slots
+    assert (slot.min_count, slot.max_count) == (0, 0)
+
+
 def test_shacl_target_shapes_supply_domain_and_range():
     graph = rdflib.Graph().parse(
         data="""

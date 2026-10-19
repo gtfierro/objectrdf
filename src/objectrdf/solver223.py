@@ -514,12 +514,18 @@ def _make_points(
             )
     slots = _all_slots(type(entity)) + _constraint_slots(type(entity))
     classes: dict[type[Entity], int] = {}
+    # Slots of one class add up: an inlet for water and another for
+    # electricity need two inlets. A slot whose maximum is 0 forbids points.
     for slot in slots:
+        if slot.max_count == 0:
+            continue
         cls = registry.resolve(slot.cp_class)
-        needed = max(slot.min_count, slot.max_count or 0)
-        needed = max(needed, incident["in"] if slot.direction in {"in", "bi"} else 0)
-        needed = max(needed, incident["out"] if slot.direction in {"out", "bi"} else 0)
-        classes[cls] = max(classes.get(cls, 0), needed)
+        classes[cls] = classes.get(cls, 0) + max(slot.min_count, slot.max_count or 0)
+    for cls in classes:
+        direction = _direction_of(cls)
+        for side in ("in", "out"):
+            if direction in {side, "bi"}:
+                classes[cls] = max(classes[cls], incident[side])
     # Shape slots are lower bounds, not a closed list: SHACL leaves other
     # connection points open, so a direction no slot covers gets generic
     # points. Shape maximums still bound the total.
@@ -813,7 +819,14 @@ def _selection_group(point: _Point) -> tuple[str, str]:
         key = point.authored.symmetry_key or point.authored.name
         return ("authored", key)
     if point.existing is not None:
-        return ("existing", point.existing.name)
+        existing = point.existing
+        if getattr(existing, "_from_shape", False) and (
+            getattr(existing, "connection") is None
+        ):
+            medium = getattr(existing, "medium")
+            label = existing.label if existing.label != existing.name else ""
+            return ("shape", f"{type(existing).__name__} {medium.iri} {label}")
+        return ("existing", existing.name)
     return ("generated", point.cls.__name__)
 
 

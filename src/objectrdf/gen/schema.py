@@ -765,8 +765,9 @@ def _cp_slot(
                         option = graph.value(alternative, SH["class"])
                         if isinstance(option, URIRef) and str(option) in enum_iris:
                             media.add(str(option))
-    declared_min = _int(graph, pshape, SH.qualifiedMinCount)
-    min_count = 1 if declared_min is None else declared_min
+    # SHACL has no minimum when qualifiedMinCount is absent: a shape with only
+    # qualifiedMaxCount 0 forbids such points rather than requiring one.
+    min_count = _int(graph, pshape, SH.qualifiedMinCount) or 0
     max_count = _int(graph, pshape, SH.qualifiedMaxCount)
     return CPSlotIR(
         cp_class=cp_name,

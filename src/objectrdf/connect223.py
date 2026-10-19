@@ -85,13 +85,17 @@ class S223Connector:
                     and port.medium.is_a(medium)
                     and (slot.label is None or port.label == slot.label)
                 )
+                model = entity.meta.model
                 for _ in range(max(slot.min_count - already, 0)):
                     cp = slot_cls(
-                        self._free_name(entity, f"{entity.name}-{slot.direction}"),
+                        model._unique_name(f"{entity.name}-{slot.direction}"),
                         medium=medium,
                         owner=entity,
-                        model=entity.meta.model,
+                        model=model,
                     )
+                    # Points made here are interchangeable until connected
+                    # or labelled; the solver must not treat them as choices.
+                    cp._from_shape = True
                     existing.append(cp)
 
     def connect(
@@ -151,11 +155,6 @@ class S223Connector:
             raise ModelingError(f"{entity.name}: shape prohibits additional ports")
         name = entity.meta.model._unique_name(f"{entity.name}-{direction}")
         return entity.port(name, direction=direction, medium=medium)
-
-    def _free_name(self, entity: Entity, base: str) -> str | None:
-        """Use a readable name when free; fall back to auto-naming."""
-        model = entity.meta.model
-        return base if base not in model._by_name else None
 
 
 def _is_equipment(endpoint: object) -> TypeGuard[Entity]:

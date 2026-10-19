@@ -44,6 +44,11 @@ First public release.
   accepts deferred connections in the other direction instead of reporting
   them as unsatisfiable. `UnsatisfiableModelError` messages name the
   conflicting constraints.
+- Deferred connections resolve for equipment whose shapes need several points
+  of one class (an `IceMaker`'s electricity and water inlets), forbid a class
+  outright (`AirHeatExchanger`), or require identical points
+  (`DualDuctTerminal`'s two air inlets). Points created from shapes are named
+  after their owner, such as `hx-in-2`, rather than `inlet_connection_point_1`.
 
 [Unreleased]: https://github.com/gtfierro/objectrdf/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/gtfierro/objectrdf/releases/tag/v0.1.0

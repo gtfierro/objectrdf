@@ -397,6 +397,55 @@ def test_unsat_core_uses_authored_connection_name(m):
     assert all(label in str(caught.value) for label in caught.value.core)
 
 
+def test_same_class_slots_with_different_media_each_get_a_point(m):
+    # An IceMaker needs an electricity inlet and a water inlet: two inlets,
+    # not the larger of the two slot counts.
+    ice = s223.IceMaker("ice")
+    handle = connect(s223.Equipment("supply"), ice, medium=enums.values.Fluid_Water)
+
+    resolved = m.resolve()
+    assert resolved.connection(handle).medium is enums.values.Fluid_Water
+    inlets = [
+        point
+        for point in resolved["ice"].has_connection_point
+        if isinstance(point, s223.InletConnectionPoint)
+    ]
+    assert {point.medium for point in inlets} == {
+        enums.values.Fluid_Water,
+        enums.values.Constituent_Electricity,
+    }
+
+
+def test_shape_maximum_of_zero_forbids_points_without_requiring_one(m):
+    # 223P: "An AirHeatExchanger shall have no bidirectional connection points."
+    exchanger = s223.AirHeatExchanger("hx")
+    connect(s223.Damper("supply"), exchanger)
+
+    assert m.check().status != "unsatisfiable"
+    resolved = m.resolve()
+    assert not [
+        point
+        for point in resolved["hx"].has_connection_point
+        if isinstance(point, s223.BidirectionalConnectionPoint)
+    ]
+
+
+def test_identical_shape_points_are_interchangeable_and_named_by_owner(m):
+    # A DualDuctTerminal needs two air inlets. The constructor makes both;
+    # either can take the connection, so the choice is not an ambiguity.
+    first = s223.DualDuctTerminal("ddt1")
+    s223.DualDuctTerminal("ddt2")
+    assert sorted(point.name for point in first.has_connection_point) == [
+        "ddt1-in",
+        "ddt1-in-2",
+        "ddt1-out",
+    ]
+    connect(s223.Damper("supply"), first)
+
+    assert m.check().complete
+    m.resolve()
+
+
 def test_sparse_components_resolve_independently():
     with Model("urn:test/sparse#") as model:
         handles = [connect(s223.Damper(f"d{i}"), s223.Fan(f"f{i}")) for i in range(30)]
