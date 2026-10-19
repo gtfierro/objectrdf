@@ -11,13 +11,15 @@ Deterministic and documented, because generated names are user-facing API:
   ``describe_ports``) or Python keywords get a
   trailing ``_``;
 - two terms mapping to the same Python name are disambiguated by suffixing
-  ``_2``, ``_3``, ... in sorted-IRI order (stable across runs).
+  ``_2``, ``_3``, ... (stable across runs); deprecated terms are suffixed
+  before current ones, then sorted-IRI order decides.
 """
 
 from __future__ import annotations
 
 import keyword
 import re
+from collections.abc import Set
 
 #: Attribute/method names owned by the Entity base class.
 RESERVED = frozenset(
@@ -88,13 +90,19 @@ def _sanitize(name: str) -> str:
 
 
 def disambiguate(
-    assignments: dict[str, str], *, preferred_namespace: str | None = None
+    assignments: dict[str, str],
+    *,
+    preferred_namespace: str | None = None,
+    deprecated: Set[str] = frozenset(),
 ) -> dict[str, str]:
     """Resolve name collisions across a set of IRIs.
 
     ``assignments`` maps IRI -> desired Python name. Returns IRI -> final
-    name, where every duplicate group keeps the name for its sorted-first
-    IRI and suffixes ``_2``, ``_3``, ... onto the rest.
+    name, where every duplicate group keeps the name for its first IRI and
+    suffixes ``_2``, ``_3``, ... onto the rest. Current terms precede
+    ``deprecated`` ones, then ``preferred_namespace`` terms, then sorted IRI
+    order: a deprecated ``brick:Building`` yields ``Building`` to its
+    replacement ``rec:Building``.
     """
     by_name: dict[str, list[str]] = {}
     for iri in sorted(assignments):
@@ -104,6 +112,7 @@ def disambiguate(
         ordered = sorted(
             iris,
             key=lambda iri: (
+                iri in deprecated,
                 not (
                     preferred_namespace is not None
                     and iri.startswith(preferred_namespace)

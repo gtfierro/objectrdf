@@ -11,8 +11,8 @@ from objectrdf.brick import (
     AHU,
     VAV,
     Building,
-    Floor,
-    HVAC_Zone,
+    HVACZone,
+    Level,
     Room,
     Supply_Air_Temperature_Sensor,
     Supply_Fan,
@@ -20,9 +20,10 @@ from objectrdf.brick import (
 )
 
 with Model("urn:example/bldg1#") as model:
-    # Spatial hierarchy: `with` blocks nest the way the building does.
+    # Spatial hierarchy: `with` blocks nest the way the building does. Brick
+    # 1.4 uses RealEstateCore spaces (rec:Building, rec:Level, rec:Room).
     with Building("bldg1", label="Building 1"):
-        with Floor("floor1"):
+        with Level("floor1"):
             room101 = Room("room101")
             room102 = Room("room102")
 
@@ -40,11 +41,12 @@ with Model("urn:example/bldg1#") as model:
     ahu >> vav1
     ahu >> vav2
 
-    # Zones and their sensors.
-    zone1 = HVAC_Zone("zone1")
-    zone1.contains(room101)  # Location/Location -> hasPart
+    # Zones and their sensors. Brick 1.4.2's isPointOf shape rejects points
+    # on REC spaces, so the zone temperature sensor is a point of its VAV.
+    zone1 = HVACZone("zone1")
+    zone1.contains(room101)  # Space/Space -> rec:hasPart
     vav1 >> zone1
-    zone1.contains(Zone_Air_Temperature_Sensor("zat1"))  # -> hasPoint
+    vav1.contains(Zone_Air_Temperature_Sensor("zat1"))  # -> hasPoint
 
     # Plain attribute access reads back exactly what you authored.
     assert vav1 in ahu.feeds

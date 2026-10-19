@@ -10,9 +10,9 @@ from __future__ import annotations
 from objectrdf.core import EnumValue as _EnumValue
 
 
-_E_EnumerationKind = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind', label='Enumeration kind', definition='This is the encapsulating class for all `EnumerationKind`s.\n`EnumerationKind`s define the (closed) set of permissible values for a given purpose.\nFor example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.\n\n`EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named\nstarting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes.\nEach class is also an instance of itself. This unusual modeling pattern was used to achieve:\n\n- The ability to set an `EnumerationKind` value that is more general, or not yet fully specified\n  at the time of modeling, such as `Electricity-AC` without having to state exactly what voltage or frequency it is.\n\n- The ability to use the `sh:class` SHACL predicate at any level in the `EnumerationKind` hierarchy\n  to constrain a value in the s223 specification, even if it is a more general one such as `Electricity-AC` in the above example.\n\nCertain validation constraints exist in the standard that evaluate compatibility of `EnumerationKind`s.\nTwo values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other,\nor if they are mixtures sharing at least one constituent.')
+_E_EnumerationKind = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind', label='Enumeration kind', definition='This is the encapsulating class for all `EnumerationKind`s.\n`EnumerationKind`s define the closed set of permissible values for a given purpose.\nFor example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.\n\n`EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named\nstarting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes.\nEach class is also an instance of itself. This unusual modeling pattern was used to achieve:\n\n- The ability to set an `EnumerationKind` value that is more general, or not yet fully specified\n  at the time of modeling, such as `Electricity-AC` without having to state exactly what voltage or frequency it is.\n\n- The ability to use the `sh:class` SHACL predicate at any level in the `EnumerationKind` hierarchy\n  to constrain a value in the s223 specification, even if it is a more general one such as `Electricity-AC` in the above example.\n\nCertain validation constraints exist in the standard that evaluate compatibility of `EnumerationKind`s.\nTwo values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other,\nor if they are mixtures sharing at least one constituent.')
 """This is the encapsulating class for all `EnumerationKind`s.
-`EnumerationKind`s define the (closed) set of permissible values for a given purpose.
+`EnumerationKind`s define the closed set of permissible values for a given purpose.
 For example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.
 
 `EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named
@@ -274,8 +274,12 @@ _E_NumberOfElectricalPhases_SinglePhase = _EnumValue('http://data.ashrae.org/sta
 """Single phase"""
 _E_NumberOfElectricalPhases_ThreePhase = _EnumValue('http://data.ashrae.org/standard223#NumberOfElectricalPhases-ThreePhase', label='Three phase', definition='Three phase', parent=_E_Numerical_NumberOfElectricalPhases)
 """Three phase"""
-_E_Numerical_Voltage = _EnumValue('http://data.ashrae.org/standard223#Numerical-Voltage', label='Voltage', definition='This class and its enumerated subclasses represent common voltages for electricity service.\n\n: Numerical-Voltage Enumerations\n\n| Enumeration |\n|:-----------|\n| `Voltage-0V` |\n| `Voltage-2.5V` |\n| `Voltage-3V` |\n| `Voltage-5V` |\n| `Voltage-6V` |\n| `Voltage-12V` |\n| `Voltage-24V` |\n| `Voltage-48V` |\n| `Voltage-110V` |\n| `Voltage-120V` |\n| `Voltage-127V` |\n| `Voltage-139V` |\n| `Voltage-190V` |\n| `Voltage-208V` |\n| `Voltage-219V` |\n| `Voltage-220V` |\n| `Voltage-230V` |\n| `Voltage-240V` |\n| `Voltage-277V` |\n| `Voltage-347V` |\n| `Voltage-380V` |\n| `Voltage-400V` |\n| `Voltage-415V` |\n| `Voltage-480V` |\n| `Voltage-600V` |\n| `Voltage-1730V` |\n| `Voltage-1900V` |\n| `Voltage-2400V` |\n| `Voltage-3000V` |\n| `Voltage-3300V` |\n| `Voltage-3460V` |\n| `Voltage-3810V` |\n| `Voltage-4160V` |\n| `Voltage-5770V` |\n| `Voltage-6000V` |\n| `Voltage-6600V` |\n| `Voltage-10000V` |\n| `Voltage-PoE` (see {s223:Voltage-PoE}) |', parent=_E_EnumerationKind_Numerical)
+_E_Numerical_Voltage = _EnumValue('http://data.ashrae.org/standard223#Numerical-Voltage', label='Voltage', definition='This class and its enumerated subclasses represent common voltages for electricity service.\n  doc:subclauses (\n      s223:Voltage-PoE\n    ) ;\n\n\n: Numerical-Voltage Enumerations\n\n| Enumeration |\n|:-----------|\n| `Voltage-0V` |\n| `Voltage-2.5V` |\n| `Voltage-3V` |\n| `Voltage-5V` |\n| `Voltage-6V` |\n| `Voltage-12V` |\n| `Voltage-24V` |\n| `Voltage-48V` |\n| `Voltage-110V` |\n| `Voltage-120V` |\n| `Voltage-127V` |\n| `Voltage-139V` |\n| `Voltage-190V` |\n| `Voltage-208V` |\n| `Voltage-219V` |\n| `Voltage-220V` |\n| `Voltage-230V` |\n| `Voltage-240V` |\n| `Voltage-277V` |\n| `Voltage-347V` |\n| `Voltage-380V` |\n| `Voltage-400V` |\n| `Voltage-415V` |\n| `Voltage-480V` |\n| `Voltage-600V` |\n| `Voltage-1730V` |\n| `Voltage-1900V` |\n| `Voltage-2400V` |\n| `Voltage-3000V` |\n| `Voltage-3300V` |\n| `Voltage-3460V` |\n| `Voltage-3810V` |\n| `Voltage-4160V` |\n| `Voltage-5770V` |\n| `Voltage-6000V` |\n| `Voltage-6600V` |\n| `Voltage-10000V` |\n| `Voltage-PoE` (see {s223:Voltage-PoE}) |', parent=_E_EnumerationKind_Numerical)
 """This class and its enumerated subclasses represent common voltages for electricity service.
+  doc:subclauses (
+      s223:Voltage-PoE
+    ) ;
+
 
 : Numerical-Voltage Enumerations
 
@@ -516,9 +520,9 @@ _E_Role_Supply = _EnumValue('http://data.ashrae.org/standard223#Role-Supply', la
 """`Role-Supply`"""
 _E_Role_Ventilating = _EnumValue('http://data.ashrae.org/standard223#Role-Ventilating', label='Ventilating role', definition='`Role-Ventilating`', parent=_E_EnumerationKind_Role)
 """`Role-Ventilating`"""
-_E_EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=_E_EnumerationKind)
+_E_EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent substances that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between media, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=_E_EnumerationKind)
 """
-This class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.
+This class and its enumerated subclasses represent substances that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between media, particulates, and soot.
 
 : EnumerationKind-Substance Enumerations
 
@@ -617,8 +621,8 @@ _E_EM_Light = _EnumValue('http://data.ashrae.org/standard223#EM-Light', label='L
 | `Light-Ultraviolet` |
 | `Light-Visible` |
 """
-_E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrared', label='Infrared light', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for multiple purposes, including communication signals.\n\n: Light-Infrared Enumerations\n\n  | Enumeration |\n  |:-----------|\n  | `Infrared-Signal` (see {s223:Infrared-Signal}) |', parent=_E_EM_Light)
-""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for multiple purposes, including communication signals.
+_E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrared', label='Infrared light', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for any defined purpose, including the creation of communication signals and common communication protocols.\n\n: Light-Infrared Enumerations\n\n  | Enumeration |\n  |:-----------|\n  | `Infrared-Signal` (see {s223:Infrared-Signal}) |', parent=_E_EM_Light)
+""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for any defined purpose, including the creation of communication signals and common communication protocols.
 
 : Light-Infrared Enumerations
 
@@ -626,8 +630,8 @@ _E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrare
   |:-----------|
   | `Infrared-Signal` (see {s223:Infrared-Signal}) |
 """
-_E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Signal', label='Infrared signal', definition=' This class and its enumerated subclasses represent common infrared communication protocols.\n\n: Infrared-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |', parent=_E_Light_Infrared)
-""" This class and its enumerated subclasses represent common infrared communication protocols.
+_E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Signal', label='Infrared signal', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for creating communication signals and common communication protocols.\n\n: Infrared-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |', parent=_E_Light_Infrared)
+""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for creating communication signals and common communication protocols.
 
 : Infrared-Signal Enumerations
 
@@ -635,8 +639,8 @@ _E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Sig
 |:-----------|
 | `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |
 """
-_E_Signal_FiberEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-FiberEthernet', label='Fiber Ethernet', definition='This class and its enumerated subclasses represent common fiber Ethernet communication protocols.\n\n: Signal-FiberEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `FiberEthernet-1X9` |\n| `FiberEthernet-300PIN` |\n| `FiberEthernet-CFP` |\n| `FiberEthernet-CFP2` |\n| `FiberEthernet-CFP4` |\n| `FiberEthernet-CPAK` |\n| `FiberEthernet-CXP` |\n| `FiberEthernet-GBIC` |\n| `FiberEthernet-QSFP` |\n| `FiberEthernet-QSFP+` |\n| `FiberEthernet-QSFP28` |\n| `FiberEthernet-SFF` |\n| `FiberEthernet-SFP` |\n| `FiberEthernet-SFP+` |\n| `FiberEthernet-X2` |\n| `FiberEthernet-XENPAK` |\n| `FiberEthernet-XFP` |', parent=_E_Infrared_Signal)
-"""This class and its enumerated subclasses represent common fiber Ethernet communication protocols.
+_E_Signal_FiberEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-FiberEthernet', label='Fiber Ethernet', definition='This class and its enumerated subclasses represent common fiber Ethernet communication protocols that are used to deliver data over `FiberOpticCable`s.\n\n: Signal-FiberEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `FiberEthernet-1X9` |\n| `FiberEthernet-300PIN` |\n| `FiberEthernet-CFP` |\n| `FiberEthernet-CFP2` |\n| `FiberEthernet-CFP4` |\n| `FiberEthernet-CPAK` |\n| `FiberEthernet-CXP` |\n| `FiberEthernet-GBIC` |\n| `FiberEthernet-QSFP` |\n| `FiberEthernet-QSFP+` |\n| `FiberEthernet-QSFP28` |\n| `FiberEthernet-SFF` |\n| `FiberEthernet-SFP` |\n| `FiberEthernet-SFP+` |\n| `FiberEthernet-X2` |\n| `FiberEthernet-XENPAK` |\n| `FiberEthernet-XFP` |', parent=_E_Infrared_Signal)
+"""This class and its enumerated subclasses represent common fiber Ethernet communication protocols that are used to deliver data over `FiberOpticCable`s.
 
 : Signal-FiberEthernet Enumerations
 
@@ -710,8 +714,8 @@ This class and its enumerated subclasses represent the use electromagnetic energ
 |:-----------|
 | `RF-Signal` (see {s223:RF-Signal}) |
 """
-_E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label='Radio frequency signal', definition='This class and its enumerated subclasses represent the use of radio frequency for creating communication signals, and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).\n\n: RF-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EHF` |\n| `Signal-ELF` |\n| `Signal-HF` |\n| `Signal-LF` |\n| `Signal-MF` |\n| `Signal-SHF` |\n| `Signal-SLF` |\n| `Signal-THF` |\n| `Signal-UHF` (see {s223:Signal-UHF}) |\n| `Signal-ULF` |\n| `Signal-VHF` |\n| `Signal-VLF` |\n| `Signal-Wideband` (see {s223:Signal-Wideband}) |', parent=_E_EM_RF)
-"""This class and its enumerated subclasses represent the use of radio frequency for creating communication signals, and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).
+_E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label='Radio frequency signal', definition='This class and its enumerated subclasses represent the use of radio frequency for creating communication signals and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).\n\n: RF-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EHF` |\n| `Signal-ELF` |\n| `Signal-HF` |\n| `Signal-LF` |\n| `Signal-MF` |\n| `Signal-SHF` |\n| `Signal-SLF` |\n| `Signal-THF` |\n| `Signal-UHF` (see {s223:Signal-UHF}) |\n| `Signal-ULF` |\n| `Signal-VHF` |\n| `Signal-VLF` |\n| `Signal-Wideband` (see {s223:Signal-Wideband}) |', parent=_E_EM_RF)
+"""This class and its enumerated subclasses represent the use of radio frequency for creating communication signals and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).
 
 : RF-Signal Enumerations
 
@@ -731,24 +735,24 @@ _E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label=
 | `Signal-VLF` |
 | `Signal-Wideband` (see {s223:Signal-Wideband}) |
 """
-_E_Signal_EHF = _EnumValue('http://data.ashrae.org/standard223#Signal-EHF', label='EHF', definition='RF Signal Extremely High Frequency 30 GHz to 300 GHz', parent=_E_RF_Signal)
-"""RF Signal Extremely High Frequency 30 GHz to 300 GHz"""
-_E_Signal_ELF = _EnumValue('http://data.ashrae.org/standard223#Signal-ELF', label='ELF', definition='RF Signal Extremely Low Frequency 3 Hz to 30 Hz', parent=_E_RF_Signal)
-"""RF Signal Extremely Low Frequency 3 Hz to 30 Hz"""
-_E_Signal_HF = _EnumValue('http://data.ashrae.org/standard223#Signal-HF', label='HF', definition='RF Signal High Frequency 3 MHz to 30 MHz', parent=_E_RF_Signal)
-"""RF Signal High Frequency 3 MHz to 30 MHz"""
-_E_Signal_LF = _EnumValue('http://data.ashrae.org/standard223#Signal-LF', label='LF', definition='RF Signal Low Frequency 30 kHz to 300 kHz', parent=_E_RF_Signal)
-"""RF Signal Low Frequency 30 kHz to 300 kHz"""
-_E_Signal_MF = _EnumValue('http://data.ashrae.org/standard223#Signal-MF', label='MF', definition='RF Signal Medium Frequency 300 kHz to 3 MHz', parent=_E_RF_Signal)
-"""RF Signal Medium Frequency 300 kHz to 3 MHz"""
-_E_Signal_SHF = _EnumValue('http://data.ashrae.org/standard223#Signal-SHF', label='SHF', definition='RF Signal Super High Frequency 3 GHz to 30 GHz', parent=_E_RF_Signal)
-"""RF Signal Super High Frequency 3 GHz to 30 GHz"""
-_E_Signal_SLF = _EnumValue('http://data.ashrae.org/standard223#Signal-SLF', label='SLF', definition='RF Signal Super Low Frequency 30 Hz to 300 Hz', parent=_E_RF_Signal)
-"""RF Signal Super Low Frequency 30 Hz to 300 Hz"""
-_E_Signal_THF = _EnumValue('http://data.ashrae.org/standard223#Signal-THF', label='THF', definition='RF Signal Tremendously High Frequency 300 GHz to 3 THz', parent=_E_RF_Signal)
-"""RF Signal Tremendously High Frequency 300 GHz to 3 THz"""
-_E_Signal_UHF = _EnumValue('http://data.ashrae.org/standard223#Signal-UHF', label='UHF', definition='RF Signal Ultra High Frequency 300 MHz to 3 GHz', parent=_E_RF_Signal)
-"""RF Signal Ultra High Frequency 300 MHz to 3 GHz"""
+_E_Signal_EHF = _EnumValue('http://data.ashrae.org/standard223#Signal-EHF', label='EHF', definition='This class represents the use of radio frequency in the Extremely High Frequency band, from 30 GHz to 300 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Extremely High Frequency band, from 30 GHz to 300 GHz, for creating communication signals and common communication protocols."""
+_E_Signal_ELF = _EnumValue('http://data.ashrae.org/standard223#Signal-ELF', label='ELF', definition='This class represents the use of radio frequency in the Extremely Low Frequency band, from 3 Hz to 30 Hz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Extremely Low Frequency band, from 3 Hz to 30 Hz, for creating communication signals and common communication protocols."""
+_E_Signal_HF = _EnumValue('http://data.ashrae.org/standard223#Signal-HF', label='HF', definition='This class represents the use of radio frequency in the High Frequency band, from 3 MHz to 30 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the High Frequency band, from 3 MHz to 30 MHz, for creating communication signals and common communication protocols."""
+_E_Signal_LF = _EnumValue('http://data.ashrae.org/standard223#Signal-LF', label='LF', definition='This class represents the use of radio frequency in the Low Frequency band, from 30 kHz to 300 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Low Frequency band, from 30 kHz to 300 kHz, for creating communication signals and common communication protocols."""
+_E_Signal_MF = _EnumValue('http://data.ashrae.org/standard223#Signal-MF', label='MF', definition='This class represents the use of radio frequency in the Medium Frequency band, from 300 kHz to 3 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Medium Frequency band, from 300 kHz to 3 MHz, for creating communication signals and common communication protocols."""
+_E_Signal_SHF = _EnumValue('http://data.ashrae.org/standard223#Signal-SHF', label='SHF', definition='This class represents the use of radio frequency in the Super High Frequency band, from 3 GHz to 30 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Super High Frequency band, from 3 GHz to 30 GHz, for creating communication signals and common communication protocols."""
+_E_Signal_SLF = _EnumValue('http://data.ashrae.org/standard223#Signal-SLF', label='SLF', definition='This class represents the use of radio frequency in the Super Low Frequency band, from 30 Hz to 300 Hz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Super Low Frequency band, from 30 Hz to 300 Hz, for creating communication signals and common communication protocols."""
+_E_Signal_THF = _EnumValue('http://data.ashrae.org/standard223#Signal-THF', label='THF', definition='This class represents the use of radio frequency in the Tremendously High Frequency band, from 300 GHz to 3 THz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Tremendously High Frequency band, from 300 GHz to 3 THz, for creating communication signals and common communication protocols."""
+_E_Signal_UHF = _EnumValue('http://data.ashrae.org/standard223#Signal-UHF', label='UHF', definition='This class represents the use of radio frequency in the Ultra High Frequency band, from 300 MHz to 3 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Ultra High Frequency band, from 300 MHz to 3 GHz, for creating communication signals and common communication protocols."""
 _E_UHF_ISMBand = _EnumValue('http://data.ashrae.org/standard223#UHF-ISMBand', label='ISM band', definition='This class and its enumerated subclasses represent communication protocols that use radio frequencies that are reserved internationally for license-free support of Industrial, Scientific, and Medical applications.\n\n: UHF-ISMBand Enumerations\n\n| Enumeration |\n|:-----------|\n| `ISMBand-BluetoothLE` |\n| `ISMBand-IEEE802.11` |\n| `ISMBand-IEEE802.15.4` |\n| `ISMBand-LoRaWAN` |\n| `ISMBand-NFC` |\n| `ISMBand-RFID` |', parent=_E_Signal_UHF)
 """This class and its enumerated subclasses represent communication protocols that use radio frequencies that are reserved internationally for license-free support of Industrial, Scientific, and Medical applications.
 
@@ -763,32 +767,32 @@ _E_UHF_ISMBand = _EnumValue('http://data.ashrae.org/standard223#UHF-ISMBand', la
 | `ISMBand-NFC` |
 | `ISMBand-RFID` |
 """
-_E_ISMBand_BluetoothLE = _EnumValue('http://data.ashrae.org/standard223#ISMBand-BluetoothLE', label='BluetoothLE', definition='The BluetoothLE radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The BluetoothLE radio frequency communication protocol"""
-_E_ISMBand_IEEE802_11 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.11', label='IEEE 802.11', definition='The IEEE 802.11 radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The IEEE 802.11 radio frequency communication protocol"""
-_E_ISMBand_IEEE802_15_4 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.15.4', label='IEEE 802.15.4', definition='The IEEE 802.15.4 radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The IEEE 802.15.4 radio frequency communication protocol"""
-_E_ISMBand_LoRaWAN = _EnumValue('http://data.ashrae.org/standard223#ISMBand-LoRaWAN', label='LoRaWAN', definition='The LoRaWAN radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The LoRaWAN radio frequency communication protocol"""
-_E_ISMBand_NFC = _EnumValue('http://data.ashrae.org/standard223#ISMBand-NFC', label='NFC', definition='NFC radio frequency communication protocols', parent=_E_UHF_ISMBand)
-"""NFC radio frequency communication protocols"""
-_E_ISMBand_RFID = _EnumValue('http://data.ashrae.org/standard223#ISMBand-RFID', label='RFID', definition='RFID radio frequency communication protocols', parent=_E_UHF_ISMBand)
-"""RFID radio frequency communication protocols"""
+_E_ISMBand_BluetoothLE = _EnumValue('http://data.ashrae.org/standard223#ISMBand-BluetoothLE', label='BluetoothLE', definition='The BluetoothLE radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The BluetoothLE radio frequency communication protocol."""
+_E_ISMBand_IEEE802_11 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.11', label='IEEE 802.11', definition='The IEEE 802.11 radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The IEEE 802.11 radio frequency communication protocol."""
+_E_ISMBand_IEEE802_15_4 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.15.4', label='IEEE 802.15.4', definition='The IEEE 802.15.4 radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The IEEE 802.15.4 radio frequency communication protocol."""
+_E_ISMBand_LoRaWAN = _EnumValue('http://data.ashrae.org/standard223#ISMBand-LoRaWAN', label='LoRaWAN', definition='The LoRaWAN radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The LoRaWAN radio frequency communication protocol."""
+_E_ISMBand_NFC = _EnumValue('http://data.ashrae.org/standard223#ISMBand-NFC', label='NFC', definition='NFC radio frequency communication protocols.', parent=_E_UHF_ISMBand)
+"""NFC radio frequency communication protocols."""
+_E_ISMBand_RFID = _EnumValue('http://data.ashrae.org/standard223#ISMBand-RFID', label='RFID', definition='RFID radio frequency communication protocols.', parent=_E_UHF_ISMBand)
+"""RFID radio frequency communication protocols."""
 _E_UHF_LicensedBand = _EnumValue('http://data.ashrae.org/standard223#UHF-LicensedBand', label='Licensed band', definition='This class represents communication protocols that use radio frequencies in licensed bands of the UHF spectrum.', parent=_E_Signal_UHF)
 """This class represents communication protocols that use radio frequencies in licensed bands of the UHF spectrum."""
-_E_Signal_ULF = _EnumValue('http://data.ashrae.org/standard223#Signal-ULF', label='ULF', definition='RF Signal Ultra Low Frequency 300 Hz to 3 kHz', parent=_E_RF_Signal)
-"""RF Signal Ultra Low Frequency 300 Hz to 3 kHz"""
-_E_Signal_VHF = _EnumValue('http://data.ashrae.org/standard223#Signal-VHF', label='VHF', definition='RF Signal Very High Frequency 30 MHz to 300 MHz', parent=_E_RF_Signal)
-"""RF Signal Very High Frequency 30 MHz to 300 MHz"""
-_E_Signal_VLF = _EnumValue('http://data.ashrae.org/standard223#Signal-VLF', label='VLF', definition='RF Signal Very Low Frequency 3 kHz to 30 kHz', parent=_E_RF_Signal)
-"""RF Signal Very Low Frequency 3 kHz to 30 kHz"""
-_E_Signal_Wideband = _EnumValue('http://data.ashrae.org/standard223#Signal-Wideband', label='Wideband', definition='Signal-Wideband', parent=_E_RF_Signal)
-"""Signal-Wideband"""
-_E_Wideband_CATV = _EnumValue('http://data.ashrae.org/standard223#Wideband-CATV', label='CATV', definition='The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable` or `FiberOpticCable` communication networks.', parent=_E_Signal_Wideband)
-"""The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable` or `FiberOpticCable` communication networks."""
-_E_Wideband_DOCSIS = _EnumValue('http://data.ashrae.org/standard223#Wideband-DOCSIS', label='DOCSIS', definition='The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable` communication networks.', parent=_E_Signal_Wideband)
-"""The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable` communication networks."""
+_E_Signal_ULF = _EnumValue('http://data.ashrae.org/standard223#Signal-ULF', label='ULF', definition='This class represents the use of radio frequency in the Ultra Low Frequency band, from 300 Hz to 3 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Ultra Low Frequency band, from 300 Hz to 3 kHz, for creating communication signals and common communication protocols."""
+_E_Signal_VHF = _EnumValue('http://data.ashrae.org/standard223#Signal-VHF', label='VHF', definition='This class represents the use of radio frequency in the Very High Frequency band, from 30 MHz to 300 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Very High Frequency band, from 30 MHz to 300 MHz, for creating communication signals and common communication protocols."""
+_E_Signal_VLF = _EnumValue('http://data.ashrae.org/standard223#Signal-VLF', label='VLF', definition='This class represents the use of radio frequency in the Very Low Frequency band, from 3 kHz to 30 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Very Low Frequency band, from 3 kHz to 30 kHz, for creating communication signals and common communication protocols."""
+_E_Signal_Wideband = _EnumValue('http://data.ashrae.org/standard223#Signal-Wideband', label='Wideband', definition='This class represents the use of radio frequency over a wide frequency range for any defined purpose, including the creation of communication signals and common communication protocols', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency over a wide frequency range for any defined purpose, including the creation of communication signals and common communication protocols"""
+_E_Wideband_CATV = _EnumValue('http://data.ashrae.org/standard223#Wideband-CATV', label='CATV', definition='The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable`s or `FiberOpticCable`s.', parent=_E_Signal_Wideband)
+"""The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable`s or `FiberOpticCable`s."""
+_E_Wideband_DOCSIS = _EnumValue('http://data.ashrae.org/standard223#Wideband-DOCSIS', label='DOCSIS', definition='The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable`s.', parent=_E_Signal_Wideband)
+"""The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable`s."""
 _E_Constituent_Electricity = _EnumValue('http://data.ashrae.org/standard223#Constituent-Electricity', label='Electricity', definition='This class and its enumerated subclasses represent common forms of electrical energy, including AC, DC, and electrical communication signals.\n\n: Constituent-Electricity Enumerations\n\n| Enumeration |\n|:-----------|\n| `Electricity-AC` (see {s223:Electricity-AC}) |\n| `Electricity-DC` (see {s223:Electricity-DC}) |\n| `Electricity-Earth` |\n| `Electricity-Neutral` |\n| `Electricity-Signal` (see {s223:Electricity-Signal}) |', parent=_E_Medium_Constituent)
 """This class and its enumerated subclasses represent common forms of electrical energy, including AC, DC, and electrical communication signals.
 
@@ -1200,8 +1204,8 @@ _E_Electricity_Earth = _EnumValue('http://data.ashrae.org/standard223#Electricit
 """`Electricity-Earth`"""
 _E_Electricity_Neutral = _EnumValue('http://data.ashrae.org/standard223#Electricity-Neutral', label='Neutral', definition='`Electricity-Neutral`', parent=_E_Constituent_Electricity)
 """`Electricity-Neutral`"""
-_E_Electricity_Signal = _EnumValue('http://data.ashrae.org/standard223#Electricity-Signal', label='Electrical signal', definition='This class and its enumerated subclasses represent the use of electricity for creating communication signals, and common communication protocols.\n\n: Electricity-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EIA485` |\n| `Signal-IEC14908` |\n| `Signal-Modulated` (see {s223:Signal-Modulated}) |\n| `Signal-USB` |\n| `Signal-WiredEthernet` (see {s223:Signal-WiredEthernet}) |', parent=_E_Constituent_Electricity)
-"""This class and its enumerated subclasses represent the use of electricity for creating communication signals, and common communication protocols.
+_E_Electricity_Signal = _EnumValue('http://data.ashrae.org/standard223#Electricity-Signal', label='Electrical signal', definition='This class and its enumerated subclasses represent the use of electricity for creating communication signals and common communication protocols.\n\n: Electricity-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EIA485` |\n| `Signal-IEC14908` |\n| `Signal-Modulated` (see {s223:Signal-Modulated}) |\n| `Signal-USB` |\n| `Signal-WiredEthernet` (see {s223:Signal-WiredEthernet}) |', parent=_E_Constituent_Electricity)
+"""This class and its enumerated subclasses represent the use of electricity for creating communication signals and common communication protocols.
 
 : Electricity-Signal Enumerations
 
@@ -1234,10 +1238,10 @@ _E_Modulated_4_20mA = _EnumValue('http://data.ashrae.org/standard223#Modulated-4
 """Modulated-4-20mA"""
 _E_Modulated_Resistive = _EnumValue('http://data.ashrae.org/standard223#Modulated-Resistive', label='Modulated resistive', definition='Modulated-Resistive', parent=_E_Signal_Modulated)
 """Modulated-Resistive"""
-_E_Signal_USB = _EnumValue('http://data.ashrae.org/standard223#Signal-USB', label='USB', definition='Signal-USB', parent=_E_Electricity_Signal)
-"""Signal-USB"""
-_E_Signal_WiredEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-WiredEthernet', label='Wired Ethernet', definition='This class and its enumerated subclasses represent common wired Ethernet communication protocols.\n\n: Signal-WiredEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `WiredEthernet-2.5GBASE-T` |\n| `WiredEthernet-2.5GBASE-T1` |\n| `WiredEthernet-5GBASE-T` |\n| `WiredEthernet-5GBASE-T1` |\n| `WiredEthernet-10BASE-T` |\n| `WiredEthernet-10BASE-T1L` |\n| `WiredEthernet-10BASE-T1S` |\n| `WiredEthernet-10GBASE-T` |\n| `WiredEthernet-10GBASE-T1` |\n| `WiredEthernet-25GBASE-T` |\n| `WiredEthernet-40GBASE-T` |\n| `WiredEthernet-100BASE-T1` |\n| `WiredEthernet-100BASE-TX` |\n| `WiredEthernet-1000BASE-T` |\n| `WiredEthernet-1000BASE-T1` |', parent=_E_Electricity_Signal)
-"""This class and its enumerated subclasses represent common wired Ethernet communication protocols.
+_E_Signal_USB = _EnumValue('http://data.ashrae.org/standard223#Signal-USB', label='USB', definition='The Universal Serial Bus protocol that is used to deliver data and/or power over `USBCable`s.', parent=_E_Electricity_Signal)
+"""The Universal Serial Bus protocol that is used to deliver data and/or power over `USBCable`s."""
+_E_Signal_WiredEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-WiredEthernet', label='Wired Ethernet', definition='This class and its enumerated subclasses represent common wired Ethernet communication protocols that are used to deliver data and/or power over `EthernetCable`s.\n\n: Signal-WiredEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `WiredEthernet-2.5GBASE-T` |\n| `WiredEthernet-2.5GBASE-T1` |\n| `WiredEthernet-5GBASE-T` |\n| `WiredEthernet-5GBASE-T1` |\n| `WiredEthernet-10BASE-T` |\n| `WiredEthernet-10BASE-T1L` |\n| `WiredEthernet-10BASE-T1S` |\n| `WiredEthernet-10GBASE-T` |\n| `WiredEthernet-10GBASE-T1` |\n| `WiredEthernet-25GBASE-T` |\n| `WiredEthernet-40GBASE-T` |\n| `WiredEthernet-100BASE-T1` |\n| `WiredEthernet-100BASE-TX` |\n| `WiredEthernet-1000BASE-T` |\n| `WiredEthernet-1000BASE-T1` |', parent=_E_Electricity_Signal)
+"""This class and its enumerated subclasses represent common wired Ethernet communication protocols that are used to deliver data and/or power over `EthernetCable`s.
 
 : Signal-WiredEthernet Enumerations
 

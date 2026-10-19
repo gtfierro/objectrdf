@@ -81,7 +81,7 @@ package registers:
 
 ```python
 with Building("b1"):
-    with Floor("f2") as floor:
+    with Level("f2") as floor:
         Room("r201")                # floor hasPart r201
         with Room("r202") as room:
             VAV("vav-202")          # vav hasLocation r202 (innermost
@@ -95,9 +95,14 @@ Only entities opened with `with` join the ambient stack; creating a `Room`
 doesn't make it a container until you enter its block (or call
 `.contains()`).
 
-For Brick: Location×Location → `hasPart`, Location×Equipment → the
-equipment's `hasLocation`, Equipment×Equipment → `hasPart`,
-{Equipment,Location}×Point → `hasPoint`.
+For Brick: Space×Space → `rec:hasPart`, Space×Equipment → the equipment's
+`hasLocation`, Equipment×Equipment → `hasPart`, and {Equipment,
+Architecture}×Point → `hasPoint`. Brick 1.4 deprecates its own location
+classes in favor of RealEstateCore, so `Building`, `Room`, `Space`, `Site`,
+and `Zone` are the `rec:` classes, alongside `Level` and `HVACZone`. The
+deprecated `brick:` classes remain available with a `_2` suffix (for example
+`Building_2`), or under their unchanged names where REC uses a different one
+(`Floor`, `HVAC_Zone`), and keep their original containment rules.
 
 If containers are open but none accepts the new entity's class, construction
 raises `ContainmentError` (a floating entity is almost always a mistake);

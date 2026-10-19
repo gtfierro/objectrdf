@@ -1,16 +1,18 @@
 @prefix : <urn:example/watertap/seawater-ro/full#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix seawaterro: <https://w3id.org/objectrdf/seawater-ro#> .
+@prefix seawater-ro: <https://w3id.org/objectrdf/seawater-ro#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/watertap/seawater-ro/full> a owl:Ontology ;
     rdfs:label "WaTr seawater RO reference" ;
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
-        seawaterro:,
+        seawater-ro:,
         <https://watermetadata.org/ontology/watr> .
 
 :seawater-ro-system a s223:System ;
@@ -44,23 +46,23 @@
         :storage-tank-3,
         :uv-aop .
 
-<https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
+<https://watermetadata.org/ontology/watr> owl:versionInfo "0.3.rc1" .
 
 :influent-flow-rate a s223:QuantifiableProperty ;
     rdfs:label "Influent flow rate" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7.05e+06 ;
     s223:ofMedium s223:Fluid-Water ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-DAY> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-DAY .
 
 :influent-pressure a s223:QuantifiableProperty ;
     rdfs:label "Influent pressure" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+05 ;
     s223:ofMedium s223:Fluid-Water ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/PA> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PA .
 
 :influent-tds-concentration a s223:QuantifiableProperty ;
     rdfs:label "Influent total dissolved solids concentration" ;
@@ -68,16 +70,16 @@
     s223:hasValue 3.5e+01 ;
     s223:ofMedium s223:Fluid-Water ;
     s223:ofSubstance watr:Constituent-Salt ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/GM-PER-L> .
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-L .
 
 :influent-temperature a s223:QuantifiableProperty ;
     rdfs:label "Influent temperature" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2.98e+02 ;
     s223:ofMedium s223:Fluid-Water ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/K> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:K .
 
 :influent-tss-concentration a s223:QuantifiableProperty ;
     rdfs:label "Influent total suspended solids concentration" ;
@@ -85,78 +87,78 @@
     s223:hasValue 3e-02 ;
     s223:ofMedium s223:Fluid-Water ;
     s223:ofSubstance watr:Constituent-SuspendedSolids ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/GM-PER-L> .
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-L .
 
 :pressure-exchanger-efficiency a s223:QuantifiableProperty ;
     rdfs:label "Pressure-exchanger efficiency" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 9.5e-01 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Efficiency ;
+    qudt:hasUnit unit:UNITLESS .
 
 :pump-1-efficiency a s223:QuantifiableProperty ;
     rdfs:label "Pump efficiency" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e-01 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Efficiency ;
+    qudt:hasUnit unit:UNITLESS .
 
 :pump-1-operating-pressure a s223:QuantifiableProperty ;
     rdfs:label "Operating pressure" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+06 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/PA> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PA .
 
 :pump-2-efficiency a s223:QuantifiableProperty ;
     rdfs:label "Pump efficiency" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e-01 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Efficiency> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Efficiency ;
+    qudt:hasUnit unit:UNITLESS .
 
 :reverse-osmosis-channel-height a s223:QuantifiableProperty ;
     rdfs:label "Membrane channel height" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e-03 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/M> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:M .
 
 :reverse-osmosis-membrane-area a s223:QuantifiableProperty ;
     rdfs:label "Membrane area" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3914e+04 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Area> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/M2> .
+    qudt:hasQuantityKind quantitykind:Area ;
+    qudt:hasUnit unit:M2 .
 
 :reverse-osmosis-permeate-side-pressure a s223:QuantifiableProperty ;
     rdfs:label "Nominal permeate-side pressure" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.01325e+05 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/PA> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PA .
 
 :reverse-osmosis-salt-permeability a s223:QuantifiableProperty ;
     rdfs:label "Salt permeability coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 3.5e-08 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Velocity> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/M-PER-SEC> .
+    qudt:hasQuantityKind quantitykind:Velocity ;
+    qudt:hasUnit unit:M-PER-SEC .
 
 :reverse-osmosis-spacer-porosity a s223:QuantifiableProperty ;
     rdfs:label "Feed spacer porosity" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 9.7e-01 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
+    qudt:hasUnit unit:UNITLESS .
 
 :reverse-osmosis-stage-width a s223:QuantifiableProperty ;
     rdfs:label "Membrane width per stage" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+03 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/M> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:M .
 
 :reverse-osmosis-water-permeability a s223:Property ;
     rdfs:label "Water permeability coefficient [m/(Pa·s)]" ;
@@ -167,36 +169,36 @@
     rdfs:label "Nominal residence time" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+00 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/HR> .
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:HR .
 
 :storage-tank-2-residence-time a s223:QuantifiableProperty ;
     rdfs:label "Nominal residence time" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+00 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/HR> .
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:HR .
 
 :storage-tank-3-residence-time a s223:QuantifiableProperty ;
     rdfs:label "Nominal residence time" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+00 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Time> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/HR> .
+    qudt:hasQuantityKind quantitykind:Time ;
+    qudt:hasUnit unit:HR .
 
 :uv-aop-reduction-equivalent-dose a s223:QuantifiableProperty ;
     rdfs:label "Reduction-equivalent UV dose" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 3.5e-01 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/EnergyPerArea> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/J-PER-CentiM2> .
+    qudt:hasQuantityKind quantitykind:EnergyPerArea ;
+    qudt:hasUnit unit:J-PER-CentiM2 .
 
 :uv-aop-transmittance a s223:QuantifiableProperty ;
     rdfs:label "UV transmittance" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 9.5e-01 ;
-    qudt:hasQuantityKind <http://qudt.org/vocab/quantitykind/Transmittance> ;
-    qudt:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Transmittance ;
+    qudt:hasUnit unit:UNITLESS .
 
 :antiscalant-addition--cartridge-filtration a s223:Pipe ;
     rdfs:label "antiscalant-addition--cartridge-filtration" ;
@@ -316,7 +318,7 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :disposal .
 
-:feed a seawaterro:SeawaterFeed ;
+:feed a seawater-ro:SeawaterFeed ;
     rdfs:label "Seawater feed" ;
     s223:hasConnectionPoint :feed-outlet ;
     s223:hasRole watr:Role-Feed .
@@ -581,7 +583,7 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:hasRole watr:Role-Feed .
 
-:ro-permeate a seawaterro:PermeateConnection ;
+:ro-permeate a seawater-ro:PermeateConnection ;
     rdfs:label "ro-permeate" ;
     s223:connectsAt :desalination-to-posttreatment-boundary-in,
         :reverse-osmosis-permeate ;
@@ -698,25 +700,25 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :uv-aop .
 
-:antiscalant-addition a seawaterro:DosingStage ;
+:antiscalant-addition a seawater-ro:DosingStage ;
     rdfs:label "Antiscalant addition" ;
     s223:hasConnectionPoint :antiscalant-addition-in,
         :antiscalant-addition-out ;
     watr:hasProcess watr:Process-Dosing .
 
-:cartridge-filtration a seawaterro:CartridgeFiltrationStage ;
+:cartridge-filtration a seawater-ro:CartridgeFiltrationStage ;
     rdfs:label "Cartridge filtration" ;
     s223:hasConnectionPoint :cartridge-filtration-in,
         :cartridge-filtration-out ;
     watr:hasProcess watr:Process-Filtration .
 
-:chlorination a seawaterro:ChlorinationStage ;
+:chlorination a seawater-ro:ChlorinationStage ;
     rdfs:label "chlorination" ;
     s223:hasConnectionPoint :chlorination-in,
         :chlorination-out ;
-    watr:hasProcess watr:Process-ChlorineDosing .
+    watr:hasProcess watr:Process-Chlorination .
 
-:co2-addition a seawaterro:DosingStage ;
+:co2-addition a seawater-ro:DosingStage ;
     rdfs:label "Carbon dioxide addition" ;
     s223:hasConnectionPoint :co2-addition-in,
         :co2-addition-out ;
@@ -728,24 +730,24 @@
         :desalination-to-posttreatment-boundary-out ;
     s223:hasRole watr:Role-Posttreatment .
 
-:ferric-chloride-addition a seawaterro:CoagulationStage ;
+:ferric-chloride-addition a seawater-ro:CoagulationStage ;
     rdfs:label "Ferric chloride addition" ;
     s223:hasConnectionPoint :ferric-chloride-addition-in,
         :ferric-chloride-addition-out ;
     watr:hasProcess watr:Process-Coagulation .
 
-:intake a seawaterro:IntakePump ;
+:intake a seawater-ro:IntakePump ;
     rdfs:label "Seawater intake" ;
     s223:hasConnectionPoint :intake-in,
         :intake-out ;
     s223:hasRole watr:Role-Feed .
 
-:landfill a seawaterro:Landfill ;
+:landfill a seawater-ro:Landfill ;
     rdfs:label "Landfill" ;
     s223:hasConnectionPoint :landfill-inlet,
         :landfill-outlet .
 
-:lime-addition a seawaterro:DosingStage ;
+:lime-addition a seawater-ro:DosingStage ;
     rdfs:label "Lime addition" ;
     s223:hasConnectionPoint :lime-addition-in,
         :lime-addition-out ;
@@ -757,14 +759,14 @@
         :pretreatment-to-desalination-boundary-out ;
     s223:hasRole watr:Role-Pretreatment .
 
-:pump-1 a seawaterro:HighPressurePump ;
+:pump-1 a seawater-ro:HighPressurePump ;
     rdfs:label "High-pressure pump P1" ;
     s223:hasConnectionPoint :pump-1-in,
         :pump-1-out ;
     s223:hasProperty :pump-1-efficiency,
         :pump-1-operating-pressure .
 
-:pump-2 a seawaterro:BoosterPump ;
+:pump-2 a seawater-ro:BoosterPump ;
     rdfs:label "Booster pump P2" ;
     s223:hasConnectionPoint :pump-2-in,
         :pump-2-out ;
@@ -798,34 +800,34 @@
     s223:isConnectionPointOf :pressure-exchanger ;
     s223:pairedConnectionPoint :pxr-feed-in .
 
-:static-mixer a seawaterro:MixingStage ;
+:static-mixer a seawater-ro:MixingStage ;
     rdfs:label "Static mixer" ;
     s223:hasConnectionPoint :static-mixer-in,
         :static-mixer-out ;
     watr:hasProcess watr:Process-Mixing .
 
-:storage-tank-1 a seawaterro:StorageTank ;
+:storage-tank-1 a seawater-ro:StorageTank ;
     rdfs:label "Pretreatment storage tank" ;
     s223:hasConnectionPoint :storage-tank-1-in,
         :storage-tank-1-out ;
     s223:hasProperty :storage-tank-1-residence-time ;
     s223:hasRole watr:Role-Storage .
 
-:storage-tank-2 a seawaterro:StorageTank ;
+:storage-tank-2 a seawater-ro:StorageTank ;
     rdfs:label "Post-treatment storage tank 2" ;
     s223:hasConnectionPoint :storage-tank-2-in,
         :storage-tank-2-out ;
     s223:hasProperty :storage-tank-2-residence-time ;
     s223:hasRole watr:Role-Storage .
 
-:storage-tank-3 a seawaterro:StorageTank ;
+:storage-tank-3 a seawater-ro:StorageTank ;
     rdfs:label "Municipal-water storage tank 3" ;
     s223:hasConnectionPoint :storage-tank-3-in,
         :storage-tank-3-out ;
     s223:hasProperty :storage-tank-3-residence-time ;
     s223:hasRole watr:Role-Storage .
 
-:uv-aop a seawaterro:AdvancedOxidationStage ;
+:uv-aop a seawater-ro:AdvancedOxidationStage ;
     rdfs:label "UV advanced oxidation process" ;
     s223:hasConnectionPoint :uv-aop-in,
         :uv-aop-out ;
@@ -833,28 +835,28 @@
         :uv-aop-transmittance ;
     watr:hasProcess watr:Process-AdvancedOxidation .
 
-:backwash-handling a seawaterro:BackwashSeparator ;
+:backwash-handling a seawater-ro:BackwashSeparator ;
     rdfs:label "Media-filter backwash handling" ;
     s223:hasConnectionPoint :backwash-handling-byproduct,
         :backwash-handling-inlet,
         :backwash-handling-treated ;
     watr:hasProcess watr:Process-Separation .
 
-:media-filtration a seawaterro:MediaFilter ;
+:media-filtration a seawater-ro:MediaFilter ;
     rdfs:label "Media filtration" ;
     s223:hasConnectionPoint :media-filtration-backwash,
         :media-filtration-inlet,
         :media-filtration-product ;
     watr:hasProcess watr:Process-MediaFiltration .
 
-:mixer-1 a seawaterro:ROFeedMixer ;
+:mixer-1 a seawater-ro:ROFeedMixer ;
     rdfs:label "RO feed mixer M1" ;
     s223:hasConnectionPoint :mixer-1-booster,
         :mixer-1-high_pressure,
         :mixer-1-outlet ;
     watr:hasProcess watr:Process-Mixing .
 
-:reverse-osmosis a seawaterro:ROStage ;
+:reverse-osmosis a seawater-ro:ROStage ;
     rdfs:label "Reverse osmosis" ;
     s223:hasConnectionPoint :reverse-osmosis-concentrate,
         :reverse-osmosis-inlet,
@@ -867,7 +869,7 @@
         :reverse-osmosis-water-permeability ;
     watr:hasProcess watr:Process-ReverseOsmosis .
 
-:separator-1 a seawaterro:FeedSplitter ;
+:separator-1 a seawater-ro:FeedSplitter ;
     rdfs:label "Feed separator S1" ;
     s223:hasConnectionPoint :separator-1-inlet,
         :separator-1-pressure_exchanger,
@@ -875,7 +877,7 @@
     s223:hasMedium s223:Fluid-Water ;
     rdfs:comment "IDAES stream splitter; this junction performs no treatment process." .
 
-:pressure-exchanger a seawaterro:EnergyRecoveryExchanger ;
+:pressure-exchanger a seawater-ro:EnergyRecoveryExchanger ;
     rdfs:label "Pressure exchanger PXR" ;
     s223:hasConnectionPoint :pxr-brine-in,
         :pxr-brine-out,

@@ -45,7 +45,7 @@ WaTr process and objective vocabulary
 .. autoclass:: objectrdf.watr.Process
    :members:
 
-.. autoclass:: objectrdf.watr.Process_Sedimentation
+.. autoclass:: objectrdf.watr.Process_Settling
    :members:
 
 .. autoclass:: objectrdf.watr.TreatmentObjective

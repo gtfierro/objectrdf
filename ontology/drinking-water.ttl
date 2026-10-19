@@ -62,7 +62,7 @@ dw:ClarificationStage a owl:Class ;
     rdfs:comment "Settles flocs and separates clarified water from a sludge withdrawal." .
 dw:ClarificationStageShape a sh:NodeShape ;
     sh:targetClass dw:ClarificationStage ;
-    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-Sedimentation ],
+    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-Settling ],
         [ sh:path watr:hasTreatmentObjective ;
           sh:hasValue watr:TreatmentObjective-Clarification ],
         [ sh:path s223:hasConnectionPoint ; sh:name "inlet" ;
@@ -122,6 +122,6 @@ dw:ChlorinationStage a owl:Class ;
 dw:ChlorinationStageShape a sh:NodeShape ;
     sh:targetClass dw:ChlorinationStage ;
     sh:node dw:TwoPortWaterStageShape ;
-    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-ChlorineDosing ],
+    sh:property [ sh:path watr:hasProcess ; sh:hasValue watr:Process-Chlorination ],
         [ sh:path watr:hasTreatmentObjective ;
           sh:hasValue watr:TreatmentObjective-Disinfection ] .

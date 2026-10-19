@@ -68,17 +68,17 @@ class AirWaterCoolingCoil(_BASE.CoolingCoil):
             'medium': medium,
             'has_property': has_property,
             'cnx': cnx,
-            'connected_from': connected_from,
-            'has_connection_point': has_connection_point,
-            'has_optional_connection_point': has_optional_connection_point,
             'connected_through': connected_through,
             'connected': connected,
+            'connected_from': connected_from,
             'connected_to': connected_to,
+            'has_optional_connection_point': has_optional_connection_point,
+            'has_connection_point': has_connection_point,
             'contains_': contains_,
-            'has_physical_location': has_physical_location,
             'actuated_by_property': actuated_by_property,
-            'has_role': has_role,
+            'has_physical_location': has_physical_location,
             'executes': executes,
+            'has_role': has_role,
         })
 
 __all__ = ['ONTOLOGY', 'REGISTRY', 'AirWaterCoolingCoil']

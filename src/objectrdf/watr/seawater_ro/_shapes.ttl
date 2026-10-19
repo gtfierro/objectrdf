@@ -92,7 +92,7 @@
 <https://w3id.org/objectrdf/seawater-ro#ChlorinationStage> <http://www.w3.org/2000/01/rdf-schema#comment> "Chlorination Stage configuration defined by the seawater RO shapes." .
 <https://w3id.org/objectrdf/seawater-ro#ChlorinationStage> <http://www.w3.org/2000/01/rdf-schema#label> "Chlorination Stage" .
 <https://w3id.org/objectrdf/seawater-ro#ChlorinationStage> <http://www.w3.org/2000/01/rdf-schema#subClassOf> <https://watermetadata.org/ontology/watr#ChlorinationUnit> .
-<https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> <http://www.w3.org/ns/shacl#hasValue> <https://watermetadata.org/ontology/watr#Process-ChlorineDosing> .
+<https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> <http://www.w3.org/ns/shacl#hasValue> <https://watermetadata.org/ontology/watr#Process-Chlorination> .
 <https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> <http://www.w3.org/ns/shacl#path> <https://watermetadata.org/ontology/watr#hasProcess> .
 <https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/shacl#NodeShape> .
 <https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape> <http://www.w3.org/ns/shacl#property> <https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> .

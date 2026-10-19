@@ -8,7 +8,7 @@
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all>,
         hvac: .
 
-<http://data.ashrae.org/standard223/1.0/model/all> owl:versionInfo "v1.0.0-2026" .
+<http://data.ashrae.org/standard223/1.0/model/all> owl:versionInfo "git:master@6fdc11c60b930ccb042d775b66a9115547fd22a7 date:2026-10-06 20:01:58 UTC" .
 
 :chiller-in a s223:InletConnectionPoint ;
     rdfs:label "chiller-in" ;

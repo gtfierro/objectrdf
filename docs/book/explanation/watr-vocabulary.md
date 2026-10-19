@@ -1,9 +1,9 @@
 # What the new WaTr vocabulary means
 
-This package uses the local WaTr snapshot in `ontology/watr-pr39-pr46.ttl`,
-assembled from water-ontology PRs 39 and 46. The snapshot keeps WaTr's 0.2
-ontology IRI, but includes proposed changes that are not yet a published
-release.
+This package is generated from WaTr
+[v0.3.0.rc1](https://github.com/DataDrivenCPS/water-ontology/releases/tag/v0.3.0.rc1),
+vendored unmodified as `ontology/watr-0.3.0rc1.ttl`. It is a release
+candidate, so terms may still change before WaTr 0.3.0.
 
 ## Equipment, process, objective, and role
 
@@ -12,7 +12,7 @@ These four descriptions answer different questions about one unit:
 | Question | RDF relation | Example |
 | --- | --- | --- |
 | What kind of equipment is it? | `rdf:type` | `watr:GravityThickener` |
-| What activity does it perform? | `watr:hasProcess` | `watr:Process-Sedimentation` |
+| What activity does it perform? | `watr:hasProcess` | `watr:Process-Settling` |
 | What result is it intended to achieve? | `watr:hasTreatmentObjective` | `watr:TreatmentObjective-Thickening` |
 | How is it used in this system? | `s223:hasRole` | `watr:Role-Primary` |
 
@@ -32,7 +32,8 @@ objective objects. Roles are enum values in
 
 The ontology's SHACL-AF class-default rules can infer processes and objectives
 fixed by an equipment class. For example, `GravityThickener` implies
-sedimentation and thickening. `model.validate(infer=True)` uses those rules
+settling, and `ProcessObjectiveRule` adds the objective a process declares
+(`Process-Chlorination` implies disinfection). `model.validate(infer=True)` uses those rules
 during validation, but does not add inferred relationships to the authored
 Python objects. `Model.from_graph(..., infer=True)` applies inference before
 loading an RDF graph. A role depends on the installation and is never supplied
@@ -42,13 +43,13 @@ it.
 
 ## Aqueous media and constituents
 
-PR 46 models freshwater with an H₂O constituent and seawater, brackish water,
+WaTr 0.3 models freshwater with an H₂O constituent and seawater, brackish water,
 and brine with H₂O and NaCl constituents. S223 can use a shared constituent
 to treat those media as compatible at connections. This establishes
 compatibility; it does not assert equal composition or enforce a material
-balance. `Fluid-Sludge` belongs beneath both `Fluid-Water` and `Mix-Fluid`.
-The Python enum value therefore has two entries in `.parents`, and `.is_a()`
-recognizes both branches.
+balance. `Fluid-Sludge` is a `Mix-Fluid` composed of water and solids, not a
+kind of `Fluid-Water`, so a sludge port does not accept a water-only
+connection.
 
 The bundled shapes also check percentage compositions. A composition whose
 stated lower percentages exceed 100% violates

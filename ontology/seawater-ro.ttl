@@ -220,7 +220,7 @@ ex:ChlorinationStage a owl:Class ;
     rdfs:comment "Chlorination Stage configuration defined by the seawater RO shapes." ;
     rdfs:subClassOf watr:ChlorinationUnit .
 
-<https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> sh:hasValue watr:Process-ChlorineDosing ;
+<https://w3id.org/objectrdf/seawater-ro#ChlorinationStageShape/hasProcess/0> sh:hasValue watr:Process-Chlorination ;
     sh:path watr:hasProcess .
 
 ex:CoagulationStage a owl:Class ;

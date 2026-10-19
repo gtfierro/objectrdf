@@ -39,7 +39,7 @@ def test_feeds_operator_and_inverse(m):
 
 def test_containment_negotiation(m):
     with brick.Building("b1") as building:
-        with brick.Floor("f1") as floor:
+        with brick.Level("f1") as floor:
             room = brick.Room("r1")
     assert floor in building.has_part
     assert room in floor.has_part
@@ -50,6 +50,14 @@ def test_containment_negotiation(m):
 
     ahu.contains(brick.Supply_Fan("sf1"))
     assert m["sf1"] in ahu.has_part
+
+
+def test_current_rec_classes_take_names_from_deprecated_brick_ones():
+    assert brick.Building.meta.iri == "https://w3id.org/rec#Building"
+    assert brick.Room.meta.iri == "https://w3id.org/rec#Room"
+    assert brick.Building_2.meta.iri == (
+        "https://brickschema.org/schema/Brick#Building"
+    )
 
 
 def test_point_range_enforced(m):

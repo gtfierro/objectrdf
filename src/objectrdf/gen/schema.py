@@ -7,7 +7,9 @@ information, in increasing precedence:
 1. class hierarchy: ``owl:Class``/``rdfs:Class`` + ``rdfs:subClassOf``;
 2. property attachment: ``rdfs:domain``/``rdfs:range`` (and
    ``schema:domainIncludes``/``rangeIncludes``) on object/datatype
-   properties;
+   properties, falling back to SHACL node shapes that target the subjects
+   (``sh:targetSubjectsOf``) or objects (``sh:targetObjectsOf``) of a
+   property and constrain them with ``sh:class`` or an ``sh:or`` of them;
 3. SHACL: node shapes that are (or target) a class contribute per-class
    property constraints — ``sh:class``/``sh:datatype`` ranges,
    ``minCount`` (required), ``maxCount`` (scalar vs collection).
@@ -23,6 +25,7 @@ from typing import Literal
 
 import rdflib
 from rdflib import OWL, RDF, RDFS, SKOS, XSD, URIRef
+from rdflib.collection import Collection
 from rdflib.namespace import SH
 
 from . import naming
@@ -174,6 +177,7 @@ def extract(
     names = naming.disambiguate(
         {iri: naming.class_name(iri) for iri in class_iris},
         preferred_namespace=primary_namespace,
+        deprecated={iri for iri in class_iris if _is_deprecated(graph, iri)},
     )
 
     classes: dict[str, ClassIR] = {}
@@ -271,6 +275,14 @@ def _collect_class_iris(graph: rdflib.Graph) -> set[str]:
                 continue
             iris.add(iri)
     return iris
+
+
+def _is_deprecated(graph: rdflib.Graph, iri: str) -> bool:
+    return any(
+        value.toPython() is True
+        for value in graph.objects(URIRef(iri), OWL.deprecated)
+        if isinstance(value, rdflib.Literal)
+    )
 
 
 def _is_abstract(graph: rdflib.Graph, iri: str) -> bool:
@@ -403,10 +415,36 @@ def _attach_domain_properties(
         domains = _values(graph, prop, (RDFS.domain, *_SCHEMA_DOMAIN))
         domains = [d for d in domains if d in classes]
         if not domains:
+            domains = [
+                d
+                for d in _shape_target_classes(graph, prop, SH.targetSubjectsOf)
+                if d in classes
+            ]
+        if not domains:
             continue
         ir = _prop_ir(graph, prop, names, inverse_names, canonical)
         for domain in _drop_redundant_domains(domains, classes):
             _attach_prop(classes[domain], ir)
+
+
+def _shape_target_classes(
+    graph: rdflib.Graph, prop: URIRef, target: URIRef
+) -> list[str]:
+    """Classes required of a property's subjects or objects by SHACL.
+
+    Reads node shapes declaring ``target`` (``sh:targetSubjectsOf`` or
+    ``sh:targetObjectsOf``) ``prop`` whose focus nodes must have ``sh:class``
+    C, or satisfy an ``sh:or`` whose every member is an ``sh:class``.
+    """
+    out: set[str] = set()
+    for shape in graph.subjects(target, prop):
+        out.update(_values(graph, shape, (SH["class"],)))
+        for members in graph.objects(shape, SH["or"]):
+            alternatives = list(Collection(graph, members))
+            classes = [graph.value(alt, SH["class"]) for alt in alternatives]
+            if alternatives and all(isinstance(c, URIRef) for c in classes):
+                out.update(str(c) for c in classes)
+    return sorted(out)
 
 
 def _attach_prop(cls: ClassIR, ir: PropIR) -> None:
@@ -442,6 +480,8 @@ def _prop_ir(
     canonical: dict[str, str],
 ) -> PropIR:
     ranges = _values(graph, prop, (RDFS.range, *_SCHEMA_RANGE))
+    if not ranges:
+        ranges = _shape_target_classes(graph, prop, SH.targetObjectsOf)
     datatype_ranges = [URIRef(r) for r in ranges if URIRef(r) in _DATATYPES]
     is_literal = bool(datatype_ranges) or (
         (prop, RDF.type, OWL.DatatypeProperty) in graph

@@ -105,7 +105,9 @@ requirements from ranking evidence.
 - Collisions with reserved Entity API (`name`, `label`, `comment`, `meta`,
   `model`, `contains`) or keywords get a trailing `_`.
 - Distinct IRIs mapping to one name are suffixed `_2`, `_3`, ... in sorted-IRI
-  order (deterministic).
+  order (deterministic). An `owl:deprecated` term is suffixed before a current
+  one, so Brick 1.4's `Building` is `rec:Building` and the deprecated
+  `brick:Building` is `Building_2`.
 - When several namespaces declare the "same" property (Brick bundles
   RealEstateCore), `owl:equivalentProperty` groups are collapsed to the
   primary namespace's member — models serialize with `brick:isPointOf`, not
@@ -131,14 +133,26 @@ versions. Pass `--no-overlay` to disable, or supply your own
 ## Regenerating the committed packages
 
 ```bash
-curl -sLO https://brickschema.org/schema/1.4/Brick.ttl
-uv run objectrdf gen --file Brick.ttl --name Brick --out src/objectrdf/brick
+uv run python scripts/generate_brick.py
 uv run pytest tests/test_brick.py
 ```
 
+The script bundles Brick's RealEstateCore, QUDT, and other imports into
+`_shapes.ttl` through ontoenv. S223 is compiled from the published 223P
+document alone, since units and quantity kinds come from `objectrdf.qudt`:
+
+```bash
+uv run python scripts/generate_s223.py
+```
+
+Base-package generation first relabels blank nodes from their content and
+sorts the input triples, so the output does not depend on how an imports
+closure happened to be assembled. Regenerating against unchanged upstream
+documents is byte-identical.
+
 WaTr is compiled from the checked-in
-[local PR 39 and 46 snapshot](../ontology/README.md) plus its S223 and QUDT
-imports. The complete graph is saved in the generated package's `_shapes.ttl`.
+[v0.3.0.rc1 release](../ontology/README.md) plus its S223 and QUDT imports.
+The complete graph is saved in the generated package's `_shapes.ttl`.
 The WaTr overlay gives extension terms priority when names collide and
 installs the same deferred connection solver:
 

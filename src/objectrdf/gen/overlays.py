@@ -55,7 +55,12 @@ class Overlay:
 BRICK = Overlay(
     rshift={"Equipment": "feeds"},
     containment=(
-        # Spatial hierarchy composes via hasPart.
+        # Brick 1.4 locations are RealEstateCore spaces (rec:Building,
+        # rec:Level, rec:Room, rec:HVACZone, ...), composed via rec:hasPart.
+        ("Space", "Space", "has_part", "container"),
+        ("Space", "Equipment", "has_location", "child"),
+        ("Architecture", "Point", "has_point", "container"),
+        # Deprecated brick:Location classes keep their original rules.
         ("Location", "Location", "has_part", "container"),
         # Equipment placed in a location: the edge lives on the equipment.
         ("Location", "Equipment", "has_location", "child"),

@@ -9,7 +9,7 @@ DOCS_DIR := docs/book
 FORMAT_EXCLUDE := src/objectrdf/qudt/units.py,src/objectrdf/qudt/quantity_kinds.py
 
 .PHONY: help setup check test lint typecheck format build docs docs-rebuild \
-	docs-check docs-open docs-clean regen clean
+	docs-check docs-open docs-clean regen examples clean
 
 help: ## Show available commands
 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z_-]+:.*## / {printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -51,6 +51,17 @@ docs-clean: ## Remove generated documentation and notebook caches
 
 regen: ## Regenerate supplied domain packages from local SHACL
 	$(UV) run python scripts/generate_example_domains.py
+
+examples: ## Run every example, refreshing its committed Turtle output
+	cd examples/brick/quickstart && $(UV) run python brick_quickstart.py
+	cd examples/s223/ahu && $(UV) run python s223_quickstart.py
+	cd examples/s223/cooling_coil && $(UV) run python cooling_coil.py
+	cd examples/watr/asm2d && $(UV) run python watertap_asm2d.py
+	cd examples/watr/epanet_anytown && $(UV) run python epanet_anytown_to_watr.py Anytown.inp
+	cd examples/watr/seawater_ro && $(UV) run python watertap_seawater_ro_full.py
+	cd examples/watr/seawater_ro_pretreatment && \
+		$(UV) run python watertap_seawater_ro_pretreatment.py
+	cd examples/watr/treatment && $(UV) run python watr_quickstart.py
 
 clean: docs-clean ## Remove documentation, build output, and tool caches
 	rm -rf build dist .pytest_cache .ruff_cache

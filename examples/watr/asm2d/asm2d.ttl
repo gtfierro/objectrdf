@@ -1,10 +1,12 @@
 @prefix : <urn:example/watertap/asm2d#> .
 @prefix asm2d: <https://w3id.org/objectrdf/asm2d#> .
-@prefix ns1: <http://qudt.org/schema/qudt/> .
-@prefix ns2: <https://watermetadata.org/ontology/watr#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix watr: <http://data.ashrae.org/standard223#> .
+@prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <urn:example/watertap/asm2d> a owl:Ontology ;
@@ -13,12 +15,12 @@
         asm2d:,
         <https://watermetadata.org/ontology/watr> .
 
-:ASM2d-system a watr:System ;
+:ASM2d-system a s223:System ;
     rdfs:label "WaterTAP ASM2d treatment train" ;
-    watr:hasBoundaryConnectionPoint :CL1-effluent,
+    s223:hasBoundaryConnectionPoint :CL1-effluent,
         :MX1-feed_water,
         :SP2-waste ;
-    watr:hasMember :CL1,
+    s223:hasMember :CL1,
         :MX1,
         :MX2,
         :P1,
@@ -32,362 +34,362 @@
         :SP1,
         :SP2 .
 
-<https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
+<https://watermetadata.org/ontology/watr> owl:versionInfo "0.3.rc1" .
 
 :CL1-effluent-h2o-fraction a asm2d:SplitFraction ;
     rdfs:label "H2o fraction" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 4.8956e-01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance watr:Constituent-H2O ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 4.8956e-01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance s223:Constituent-H2O ;
+    qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
+    qudt:hasUnit unit:UNITLESS ;
     asm2d:hasSplitBasis asm2d:ComponentMassFlow .
 
 :CL1-effluent-tss-fraction a asm2d:SplitFraction ;
     rdfs:label "Tss fraction" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2.194e-02 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-SuspendedSolids ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.194e-02 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-SuspendedSolids ;
+    qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
+    qudt:hasUnit unit:UNITLESS ;
     asm2d:hasSplitBasis asm2d:ComponentMassFlow .
 
-:P1-outlet-pressure a watr:QuantifiableProperty ;
+:P1-outlet-pressure a s223:QuantifiableProperty ;
     rdfs:label "Pressure" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.01325e+05 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PA> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.01325e+05 ;
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PA .
 
-:R1-volume a watr:QuantifiableProperty ;
+:R1-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
-:R2-volume a watr:QuantifiableProperty ;
+:R2-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
-:R3-volume a watr:QuantifiableProperty ;
+:R3-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
-:R4-volume a watr:QuantifiableProperty ;
+:R4-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
-:R5-outlet-oxygen-concentration a watr:QuantifiableProperty ;
+:R5-outlet-oxygen-concentration a s223:QuantifiableProperty ;
     rdfs:label "Oxygen concentration" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.91e+00 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-DissolvedOxygen ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.91e+00 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:R5-oxygen-transfer-coefficient a watr:QuantifiableProperty ;
+:R5-oxygen-transfer-coefficient a s223:QuantifiableProperty ;
     rdfs:label "Oxygen transfer coefficient" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Frequency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PER-HR> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    qudt:hasQuantityKind quantitykind:Frequency ;
+    qudt:hasUnit unit:PER-HR .
 
-:R5-volume a watr:QuantifiableProperty ;
+:R5-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.333e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.333e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
-:R6-outlet-oxygen-concentration a watr:QuantifiableProperty ;
+:R6-outlet-oxygen-concentration a s223:QuantifiableProperty ;
     rdfs:label "Oxygen concentration" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2.6e+00 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-DissolvedOxygen ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.6e+00 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:R6-oxygen-transfer-coefficient a watr:QuantifiableProperty ;
+:R6-oxygen-transfer-coefficient a s223:QuantifiableProperty ;
     rdfs:label "Oxygen transfer coefficient" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Frequency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PER-HR> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e+01 ;
+    qudt:hasQuantityKind quantitykind:Frequency ;
+    qudt:hasUnit unit:PER-HR .
 
-:R6-volume a watr:QuantifiableProperty ;
+:R6-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.333e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.333e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
-:R7-outlet-oxygen-concentration a watr:QuantifiableProperty ;
+:R7-outlet-oxygen-concentration a s223:QuantifiableProperty ;
     rdfs:label "Oxygen concentration" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3.2e+00 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-DissolvedOxygen ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3.2e+00 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:R7-oxygen-transfer-coefficient a watr:QuantifiableProperty ;
+:R7-oxygen-transfer-coefficient a s223:QuantifiableProperty ;
     rdfs:label "Oxygen transfer coefficient" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3.5e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Frequency> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PER-HR> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3.5e+00 ;
+    qudt:hasQuantityKind quantitykind:Frequency ;
+    qudt:hasUnit unit:PER-HR .
 
-:R7-volume a watr:QuantifiableProperty ;
+:R7-volume a s223:QuantifiableProperty ;
     rdfs:label "Volume" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.333e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Volume> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.333e+03 ;
+    qudt:hasQuantityKind quantitykind:Volume ;
+    qudt:hasUnit unit:M3 .
 
 :SP1-underflow-fraction a asm2d:SplitFraction ;
     rdfs:label "Fraction" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 6e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 6e-01 ;
+    qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
+    qudt:hasUnit unit:UNITLESS ;
     asm2d:hasSplitBasis asm2d:OverallFlow .
 
 :SP2-recycle-fraction a asm2d:SplitFraction ;
     rdfs:label "Fraction" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 9.7955e-01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/DimensionlessRatio> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> ;
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 9.7955e-01 ;
+    qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
+    qudt:hasUnit unit:UNITLESS ;
     asm2d:hasSplitBasis asm2d:OverallFlow .
 
-:feed-flow-rate a watr:QuantifiableProperty ;
+:feed-flow-rate a s223:QuantifiableProperty ;
     rdfs:label "Flow rate" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.8446e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/M3-PER-DAY> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.8446e+04 ;
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:M3-PER-DAY .
 
-:feed-pressure a watr:QuantifiableProperty ;
+:feed-pressure a s223:QuantifiableProperty ;
     rdfs:label "Pressure" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.01325e+05 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PA> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.01325e+05 ;
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PA .
 
-:feed-s_a-concentration a watr:QuantifiableProperty ;
+:feed-s_a-concentration a s223:QuantifiableProperty ;
     rdfs:label "Fermentation products" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2e+01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-S_A ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2e+01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-S_A ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_alk-concentration a watr:QuantifiableProperty ;
+:feed-s_alk-concentration a s223:QuantifiableProperty ;
     rdfs:label "Alkalinity" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 7e+00 ;
-    watr:ofMedium watr:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/AmountOfSubstanceConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/MOL-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 7e+00 ;
+    s223:ofMedium s223:Fluid-Water ;
+    qudt:hasQuantityKind quantitykind:AmountOfSubstanceConcentration ;
+    qudt:hasUnit unit:MOL-PER-M3 .
 
-:feed-s_f-concentration a watr:QuantifiableProperty ;
+:feed-s_f-concentration a s223:QuantifiableProperty ;
     rdfs:label "Fermentable substrate" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3e+01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-S_F ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3e+01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-S_F ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_i-concentration a watr:QuantifiableProperty ;
+:feed-s_i-concentration a s223:QuantifiableProperty ;
     rdfs:label "Inert soluble organics" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3e+01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-S_I ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3e+01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-S_I ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_n2-concentration a watr:QuantifiableProperty ;
+:feed-s_n2-concentration a s223:QuantifiableProperty ;
     rdfs:label "Dissolved nitrogen" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance watr:Constituent-N2 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance s223:Constituent-N2 ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_nh4-concentration a watr:QuantifiableProperty ;
+:feed-s_nh4-concentration a s223:QuantifiableProperty ;
     rdfs:label "Ammonia ammonium nitrogen" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.6e+01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-S_NH4 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.6e+01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-S_NH4 ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_no3-concentration a watr:QuantifiableProperty ;
+:feed-s_no3-concentration a s223:QuantifiableProperty ;
     rdfs:label "Nitrate nitrite nitrogen" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-S_NO3 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-S_NO3 ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_o2-concentration a watr:QuantifiableProperty ;
+:feed-s_o2-concentration a s223:QuantifiableProperty ;
     rdfs:label "Dissolved oxygen" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-DissolvedOxygen ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-DissolvedOxygen ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-s_po4-concentration a watr:QuantifiableProperty ;
+:feed-s_po4-concentration a s223:QuantifiableProperty ;
     rdfs:label "Soluble inorganic phosphorus" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3.6e+00 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-S_PO4 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3.6e+00 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-S_PO4 ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-temperature a watr:QuantifiableProperty ;
+:feed-temperature a s223:QuantifiableProperty ;
     rdfs:label "Temperature" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2.9815e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/K> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.9815e+02 ;
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:K .
 
-:feed-x_aut-concentration a watr:QuantifiableProperty ;
+:feed-x_aut-concentration a s223:QuantifiableProperty ;
     rdfs:label "Autotrophic biomass" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_AUT ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_AUT ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_h-concentration a watr:QuantifiableProperty ;
+:feed-x_h-concentration a s223:QuantifiableProperty ;
     rdfs:label "Heterotrophic biomass" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 3e+01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_H ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 3e+01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_H ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_i-concentration a watr:QuantifiableProperty ;
+:feed-x_i-concentration a s223:QuantifiableProperty ;
     rdfs:label "Inert particulate organics" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 2.5e+01 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_I ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 2.5e+01 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_I ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_meoh-concentration a watr:QuantifiableProperty ;
+:feed-x_meoh-concentration a s223:QuantifiableProperty ;
     rdfs:label "Metal hydroxides" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_MeOH ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_MeOH ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_mep-concentration a watr:QuantifiableProperty ;
+:feed-x_mep-concentration a s223:QuantifiableProperty ;
     rdfs:label "Metal phosphates" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_MeP ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_MeP ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_pao-concentration a watr:QuantifiableProperty ;
+:feed-x_pao-concentration a s223:QuantifiableProperty ;
     rdfs:label "Phosphate accumulating biomass" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_PAO ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_PAO ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_pha-concentration a watr:QuantifiableProperty ;
+:feed-x_pha-concentration a s223:QuantifiableProperty ;
     rdfs:label "Stored pha" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_PHA ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_PHA ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_pp-concentration a watr:QuantifiableProperty ;
+:feed-x_pp-concentration a s223:QuantifiableProperty ;
     rdfs:label "Stored polyphosphate" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1e-06 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_PP ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1e-06 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_PP ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_s-concentration a watr:QuantifiableProperty ;
+:feed-x_s-concentration a s223:QuantifiableProperty ;
     rdfs:label "Slowly biodegradable substrate" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.25e+02 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-ASM2d-X_S ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.25e+02 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-ASM2d-X_S ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:feed-x_tss-concentration a watr:QuantifiableProperty ;
+:feed-x_tss-concentration a s223:QuantifiableProperty ;
     rdfs:label "Total suspended solids" ;
-    watr:hasAspect watr:Aspect-Nominal ;
-    watr:hasValue 1.8e+02 ;
-    watr:ofMedium watr:Fluid-Water ;
-    watr:ofSubstance ns2:Constituent-SuspendedSolids ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/MassConcentration> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GM-PER-M3> .
+    s223:hasAspect s223:Aspect-Nominal ;
+    s223:hasValue 1.8e+02 ;
+    s223:ofMedium s223:Fluid-Water ;
+    s223:ofSubstance watr:Constituent-SuspendedSolids ;
+    qudt:hasQuantityKind quantitykind:MassConcentration ;
+    qudt:hasUnit unit:GM-PER-M3 .
 
-:CL1-effluent a watr:OutletConnectionPoint ;
+:CL1-effluent a s223:OutletConnectionPoint ;
     rdfs:label "effluent" ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :CL1-effluent-h2o-fraction,
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :CL1-effluent-h2o-fraction,
         :CL1-effluent-tss-fraction ;
-    watr:isConnectionPointOf :CL1 .
+    s223:isConnectionPointOf :CL1 .
 
-:CL1-inlet a watr:InletConnectionPoint ;
+:CL1-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream11 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :CL1 .
+    s223:connectsThrough :stream11 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :CL1 .
 
-:CL1-underflow a watr:OutletConnectionPoint ;
+:CL1-underflow a s223:OutletConnectionPoint ;
     rdfs:label "underflow" ;
-    watr:connectsThrough :stream14 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :CL1 .
+    s223:connectsThrough :stream14 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :CL1 .
 
-:MX1-feed_water a watr:InletConnectionPoint ;
+:MX1-feed_water a s223:InletConnectionPoint ;
     rdfs:label "feed_water" ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :feed-flow-rate,
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :feed-flow-rate,
         :feed-pressure,
         :feed-s_a-concentration,
         :feed-s_alk-concentration,
@@ -409,377 +411,377 @@
         :feed-x_pp-concentration,
         :feed-x_s-concentration,
         :feed-x_tss-concentration ;
-    watr:isConnectionPointOf :MX1 .
+    s223:isConnectionPointOf :MX1 .
 
-:MX1-outlet a watr:OutletConnectionPoint ;
+:MX1-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream2 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :MX1 .
+    s223:connectsThrough :stream2 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :MX1 .
 
-:MX1-recycle a watr:InletConnectionPoint ;
+:MX1-recycle a s223:InletConnectionPoint ;
     rdfs:label "recycle" ;
-    watr:connectsThrough :stream17 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :MX1 .
+    s223:connectsThrough :stream17 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :MX1 .
 
-:MX2-internal_recycle a watr:InletConnectionPoint ;
+:MX2-internal_recycle a s223:InletConnectionPoint ;
     rdfs:label "internal_recycle" ;
-    watr:connectsThrough :stream12 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :MX2 .
+    s223:connectsThrough :stream12 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :MX2 .
 
-:MX2-outlet a watr:OutletConnectionPoint ;
+:MX2-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream5 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :MX2 .
+    s223:connectsThrough :stream5 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :MX2 .
 
-:MX2-reactor a watr:InletConnectionPoint ;
+:MX2-reactor a s223:InletConnectionPoint ;
     rdfs:label "reactor" ;
-    watr:connectsThrough :stream4 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :MX2 .
+    s223:connectsThrough :stream4 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :MX2 .
 
-:P1-inlet a watr:InletConnectionPoint ;
+:P1-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream16 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :P1 .
+    s223:connectsThrough :stream16 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :P1 .
 
-:P1-outlet a watr:OutletConnectionPoint ;
+:P1-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream17 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :P1-outlet-pressure ;
-    watr:isConnectionPointOf :P1 .
+    s223:connectsThrough :stream17 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :P1-outlet-pressure ;
+    s223:isConnectionPointOf :P1 .
 
-:R1-inlet a watr:InletConnectionPoint ;
+:R1-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream2 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R1 .
+    s223:connectsThrough :stream2 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R1 .
 
-:R1-outlet a watr:OutletConnectionPoint ;
+:R1-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream3 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R1 .
+    s223:connectsThrough :stream3 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R1 .
 
-:R2-inlet a watr:InletConnectionPoint ;
+:R2-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream3 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R2 .
+    s223:connectsThrough :stream3 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R2 .
 
-:R2-outlet a watr:OutletConnectionPoint ;
+:R2-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream4 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R2 .
+    s223:connectsThrough :stream4 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R2 .
 
-:R3-inlet a watr:InletConnectionPoint ;
+:R3-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream5 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R3 .
+    s223:connectsThrough :stream5 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R3 .
 
-:R3-outlet a watr:OutletConnectionPoint ;
+:R3-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream6 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R3 .
+    s223:connectsThrough :stream6 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R3 .
 
-:R4-inlet a watr:InletConnectionPoint ;
+:R4-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream6 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R4 .
+    s223:connectsThrough :stream6 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R4 .
 
-:R4-outlet a watr:OutletConnectionPoint ;
+:R4-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream7 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R4 .
+    s223:connectsThrough :stream7 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R4 .
 
-:R5-inlet a watr:InletConnectionPoint ;
+:R5-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream7 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R5 .
+    s223:connectsThrough :stream7 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R5 .
 
-:R5-outlet a watr:OutletConnectionPoint ;
+:R5-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream8 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :R5-outlet-oxygen-concentration ;
-    watr:isConnectionPointOf :R5 .
+    s223:connectsThrough :stream8 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :R5-outlet-oxygen-concentration ;
+    s223:isConnectionPointOf :R5 .
 
-:R6-inlet a watr:InletConnectionPoint ;
+:R6-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream8 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R6 .
+    s223:connectsThrough :stream8 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R6 .
 
-:R6-outlet a watr:OutletConnectionPoint ;
+:R6-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream9 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :R6-outlet-oxygen-concentration ;
-    watr:isConnectionPointOf :R6 .
+    s223:connectsThrough :stream9 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :R6-outlet-oxygen-concentration ;
+    s223:isConnectionPointOf :R6 .
 
-:R7-inlet a watr:InletConnectionPoint ;
+:R7-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream9 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :R7 .
+    s223:connectsThrough :stream9 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :R7 .
 
-:R7-outlet a watr:OutletConnectionPoint ;
+:R7-outlet a s223:OutletConnectionPoint ;
     rdfs:label "outlet" ;
-    watr:connectsThrough :stream10 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :R7-outlet-oxygen-concentration ;
-    watr:isConnectionPointOf :R7 .
+    s223:connectsThrough :stream10 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :R7-outlet-oxygen-concentration ;
+    s223:isConnectionPointOf :R7 .
 
-:SP1-inlet a watr:InletConnectionPoint ;
+:SP1-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream10 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :SP1 .
+    s223:connectsThrough :stream10 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :SP1 .
 
-:SP1-overflow a watr:OutletConnectionPoint ;
+:SP1-overflow a s223:OutletConnectionPoint ;
     rdfs:label "overflow" ;
-    watr:connectsThrough :stream11 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :SP1 .
+    s223:connectsThrough :stream11 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :SP1 .
 
-:SP1-underflow a watr:OutletConnectionPoint ;
+:SP1-underflow a s223:OutletConnectionPoint ;
     rdfs:label "underflow" ;
-    watr:connectsThrough :stream12 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :SP1-underflow-fraction ;
-    watr:isConnectionPointOf :SP1 .
+    s223:connectsThrough :stream12 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :SP1-underflow-fraction ;
+    s223:isConnectionPointOf :SP1 .
 
-:SP2-inlet a watr:InletConnectionPoint ;
+:SP2-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
-    watr:connectsThrough :stream14 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :SP2 .
+    s223:connectsThrough :stream14 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :SP2 .
 
-:SP2-recycle a watr:OutletConnectionPoint ;
+:SP2-recycle a s223:OutletConnectionPoint ;
     rdfs:label "recycle" ;
-    watr:connectsThrough :stream16 ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:hasProperty :SP2-recycle-fraction ;
-    watr:isConnectionPointOf :SP2 .
+    s223:connectsThrough :stream16 ;
+    s223:hasMedium s223:Fluid-Water ;
+    s223:hasProperty :SP2-recycle-fraction ;
+    s223:isConnectionPointOf :SP2 .
 
-:SP2-waste a watr:OutletConnectionPoint ;
+:SP2-waste a s223:OutletConnectionPoint ;
     rdfs:label "waste" ;
-    watr:hasMedium watr:Fluid-Water ;
-    watr:isConnectionPointOf :SP2 .
+    s223:hasMedium s223:Fluid-Water ;
+    s223:isConnectionPointOf :SP2 .
 
-:stream10 a watr:Pipe ;
+:stream10 a s223:Pipe ;
     rdfs:label "stream10" ;
-    watr:connectsAt :R7-outlet,
+    s223:connectsAt :R7-outlet,
         :SP1-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream11 a watr:Pipe ;
+:stream11 a s223:Pipe ;
     rdfs:label "stream11" ;
-    watr:connectsAt :CL1-inlet,
+    s223:connectsAt :CL1-inlet,
         :SP1-overflow ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream12 a watr:Pipe ;
+:stream12 a s223:Pipe ;
     rdfs:label "stream12" ;
-    watr:connectsAt :MX2-internal_recycle,
+    s223:connectsAt :MX2-internal_recycle,
         :SP1-underflow ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream14 a watr:Pipe ;
+:stream14 a s223:Pipe ;
     rdfs:label "stream14" ;
-    watr:connectsAt :CL1-underflow,
+    s223:connectsAt :CL1-underflow,
         :SP2-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream16 a watr:Pipe ;
+:stream16 a s223:Pipe ;
     rdfs:label "stream16" ;
-    watr:connectsAt :P1-inlet,
+    s223:connectsAt :P1-inlet,
         :SP2-recycle ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream17 a watr:Pipe ;
+:stream17 a s223:Pipe ;
     rdfs:label "stream17" ;
-    watr:connectsAt :MX1-recycle,
+    s223:connectsAt :MX1-recycle,
         :P1-outlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream2 a watr:Pipe ;
+:stream2 a s223:Pipe ;
     rdfs:label "stream2" ;
-    watr:connectsAt :MX1-outlet,
+    s223:connectsAt :MX1-outlet,
         :R1-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream3 a watr:Pipe ;
+:stream3 a s223:Pipe ;
     rdfs:label "stream3" ;
-    watr:connectsAt :R1-outlet,
+    s223:connectsAt :R1-outlet,
         :R2-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream4 a watr:Pipe ;
+:stream4 a s223:Pipe ;
     rdfs:label "stream4" ;
-    watr:connectsAt :MX2-reactor,
+    s223:connectsAt :MX2-reactor,
         :R2-outlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream5 a watr:Pipe ;
+:stream5 a s223:Pipe ;
     rdfs:label "stream5" ;
-    watr:connectsAt :MX2-outlet,
+    s223:connectsAt :MX2-outlet,
         :R3-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream6 a watr:Pipe ;
+:stream6 a s223:Pipe ;
     rdfs:label "stream6" ;
-    watr:connectsAt :R3-outlet,
+    s223:connectsAt :R3-outlet,
         :R4-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream7 a watr:Pipe ;
+:stream7 a s223:Pipe ;
     rdfs:label "stream7" ;
-    watr:connectsAt :R4-outlet,
+    s223:connectsAt :R4-outlet,
         :R5-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream8 a watr:Pipe ;
+:stream8 a s223:Pipe ;
     rdfs:label "stream8" ;
-    watr:connectsAt :R5-outlet,
+    s223:connectsAt :R5-outlet,
         :R6-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
-:stream9 a watr:Pipe ;
+:stream9 a s223:Pipe ;
     rdfs:label "stream9" ;
-    watr:connectsAt :R6-outlet,
+    s223:connectsAt :R6-outlet,
         :R7-inlet ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
 :P1 a asm2d:RecyclePump ;
     rdfs:label "P1" ;
-    watr:hasConnectionPoint :P1-inlet,
+    s223:hasConnectionPoint :P1-inlet,
         :P1-outlet .
 
 :R1 a asm2d:AnaerobicStage ;
     rdfs:label "R1" ;
-    watr:hasConnectionPoint :R1-inlet,
+    s223:hasConnectionPoint :R1-inlet,
         :R1-outlet ;
-    watr:hasProperty :R1-volume ;
-    watr:hasRole ns2:Role-Anaerobic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-EnhancedBiologicalPhosphorusRemoval ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-PhosphorusRemoval .
+    s223:hasProperty :R1-volume ;
+    s223:hasRole watr:Role-Anaerobic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-PhosphorusRemoval .
 
 :R2 a asm2d:AnaerobicStage ;
     rdfs:label "R2" ;
-    watr:hasConnectionPoint :R2-inlet,
+    s223:hasConnectionPoint :R2-inlet,
         :R2-outlet ;
-    watr:hasProperty :R2-volume ;
-    watr:hasRole ns2:Role-Anaerobic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-EnhancedBiologicalPhosphorusRemoval ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-PhosphorusRemoval .
+    s223:hasProperty :R2-volume ;
+    s223:hasRole watr:Role-Anaerobic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-EnhancedBiologicalPhosphorusRemoval ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-PhosphorusRemoval .
 
 :R3 a asm2d:AnoxicStage ;
     rdfs:label "R3" ;
-    watr:hasConnectionPoint :R3-inlet,
+    s223:hasConnectionPoint :R3-inlet,
         :R3-outlet ;
-    watr:hasProperty :R3-volume ;
-    watr:hasRole ns2:Role-Anoxic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-Denitrification ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-NitrogenRemoval .
+    s223:hasProperty :R3-volume ;
+    s223:hasRole watr:Role-Anoxic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Denitrification ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
 
 :R4 a asm2d:AnoxicStage ;
     rdfs:label "R4" ;
-    watr:hasConnectionPoint :R4-inlet,
+    s223:hasConnectionPoint :R4-inlet,
         :R4-outlet ;
-    watr:hasProperty :R4-volume ;
-    watr:hasRole ns2:Role-Anoxic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-Denitrification ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-NitrogenRemoval .
+    s223:hasProperty :R4-volume ;
+    s223:hasRole watr:Role-Anoxic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Denitrification ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-NitrogenRemoval .
 
 :R5 a asm2d:AerobicStage ;
     rdfs:label "R5" ;
-    watr:hasConnectionPoint :R5-inlet,
+    s223:hasConnectionPoint :R5-inlet,
         :R5-outlet ;
-    watr:hasProperty :R5-oxygen-transfer-coefficient,
+    s223:hasProperty :R5-oxygen-transfer-coefficient,
         :R5-volume ;
-    watr:hasRole ns2:Role-Aerobic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-Aeration,
-        ns2:Process-Nitrification ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-AmmoniaControl,
-        ns2:TreatmentObjective-NitrogenRemoval .
+    s223:hasRole watr:Role-Aerobic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Aeration,
+        watr:Process-Nitrification ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-AmmoniaControl,
+        watr:TreatmentObjective-NitrogenRemoval .
 
 :R6 a asm2d:AerobicStage ;
     rdfs:label "R6" ;
-    watr:hasConnectionPoint :R6-inlet,
+    s223:hasConnectionPoint :R6-inlet,
         :R6-outlet ;
-    watr:hasProperty :R6-oxygen-transfer-coefficient,
+    s223:hasProperty :R6-oxygen-transfer-coefficient,
         :R6-volume ;
-    watr:hasRole ns2:Role-Aerobic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-Aeration,
-        ns2:Process-Nitrification ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-AmmoniaControl,
-        ns2:TreatmentObjective-NitrogenRemoval .
+    s223:hasRole watr:Role-Aerobic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Aeration,
+        watr:Process-Nitrification ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-AmmoniaControl,
+        watr:TreatmentObjective-NitrogenRemoval .
 
 :R7 a asm2d:AerobicStage ;
     rdfs:label "R7" ;
-    watr:hasConnectionPoint :R7-inlet,
+    s223:hasConnectionPoint :R7-inlet,
         :R7-outlet ;
-    watr:hasProperty :R7-oxygen-transfer-coefficient,
+    s223:hasProperty :R7-oxygen-transfer-coefficient,
         :R7-volume ;
-    watr:hasRole ns2:Role-Aerobic,
-        ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-Aeration,
-        ns2:Process-Nitrification ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-AmmoniaControl,
-        ns2:TreatmentObjective-NitrogenRemoval .
+    s223:hasRole watr:Role-Aerobic,
+        watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Aeration,
+        watr:Process-Nitrification ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-AmmoniaControl,
+        watr:TreatmentObjective-NitrogenRemoval .
 
 :CL1 a asm2d:SecondaryClarifier ;
     rdfs:label "CL1" ;
-    watr:hasConnectionPoint :CL1-effluent,
+    s223:hasConnectionPoint :CL1-effluent,
         :CL1-inlet,
         :CL1-underflow ;
-    watr:hasRole ns2:Role-Secondary ;
-    ns2:hasProcess ns2:Process-Sedimentation ;
-    ns2:hasTreatmentObjective ns2:TreatmentObjective-Clarification .
+    s223:hasRole watr:Role-Secondary ;
+    watr:hasProcess watr:Process-Settling ;
+    watr:hasTreatmentObjective watr:TreatmentObjective-Clarification .
 
 :MX1 a asm2d:InfluentMixer ;
     rdfs:label "MX1" ;
-    watr:hasConnectionPoint :MX1-feed_water,
+    s223:hasConnectionPoint :MX1-feed_water,
         :MX1-outlet,
         :MX1-recycle ;
-    ns2:hasProcess ns2:Process-Mixing .
+    watr:hasProcess watr:Process-Mixing .
 
 :MX2 a asm2d:RecycleMixer ;
     rdfs:label "MX2" ;
-    watr:hasConnectionPoint :MX2-internal_recycle,
+    s223:hasConnectionPoint :MX2-internal_recycle,
         :MX2-outlet,
         :MX2-reactor ;
-    ns2:hasProcess ns2:Process-Mixing .
+    watr:hasProcess watr:Process-Mixing .
 
 :SP1 a asm2d:InternalRecycleSplitter ;
     rdfs:label "SP1" ;
-    watr:hasConnectionPoint :SP1-inlet,
+    s223:hasConnectionPoint :SP1-inlet,
         :SP1-overflow,
         :SP1-underflow ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 
 :SP2 a asm2d:SludgeSplitter ;
     rdfs:label "SP2" ;
-    watr:hasConnectionPoint :SP2-inlet,
+    s223:hasConnectionPoint :SP2-inlet,
         :SP2-recycle,
         :SP2-waste ;
-    watr:hasMedium watr:Fluid-Water .
+    s223:hasMedium s223:Fluid-Water .
 

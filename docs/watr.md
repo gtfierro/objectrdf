@@ -1,8 +1,8 @@
 # Authoring WaTr models
 
 `objectrdf.watr` is generated from the
-[local WaTr snapshot](../ontology/README.md) combining upstream PRs 39 and 46,
-with its S223 and QUDT imports closure. Its ontology namespace is
+WaTr [v0.3.0.rc1](../ontology/README.md) release candidate, with its S223 and
+QUDT imports closure. Its ontology namespace is
 `https://watermetadata.org/ontology/watr#`. It exposes WaTr treatment
 equipment, processes, substances, and roles while reusing S223 connection
 points and deferred Z3 resolution.
@@ -75,7 +75,7 @@ value:
 
 ```python
 from objectrdf.watr import (
-    Process_Sedimentation,
+    Process_Settling,
     SedimentationTank,
     TreatmentObjective_Clarification,
     enums,
@@ -84,7 +84,7 @@ from objectrdf.watr import (
 with Model("urn:example:clarifier#") as treatment:
     clarifier = SedimentationTank(
         "clarifier",
-        has_process=[Process_Sedimentation],
+        has_process=[Process_Settling],
         has_treatment_objective=[TreatmentObjective_Clarification],
         has_role=[enums.values.Role_Primary],
     )

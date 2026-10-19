@@ -308,6 +308,27 @@ def test_generation_is_deterministic():
     assert one == two
 
 
+def test_generation_ignores_input_order_and_blank_node_labels():
+    source = rdflib.Graph().parse(data=BOOLEAN_CP_TTL, format="turtle")
+    source.parse(FIXTURE)
+    triples = sorted(source)
+
+    def assembled(order):
+        relabel: dict[rdflib.BNode, rdflib.BNode] = {}
+
+        def fresh(term):
+            if isinstance(term, rdflib.BNode):
+                return relabel.setdefault(term, rdflib.BNode())
+            return term
+
+        graph = rdflib.Graph()
+        for s, p, o in order:
+            graph.add((fresh(s), p, fresh(o)))
+        return compile_modules(graph, name="Mini", overlay=MINI_OVERLAY)
+
+    assert assembled(triples) == assembled(reversed(triples))
+
+
 def test_punned_enum_is_emitted_only_as_reference_instance():
     graph = rdflib.Graph().parse(
         data=BOOLEAN_CP_TTL
@@ -470,6 +491,36 @@ def test_direct_qualified_shape_medium_is_extracted():
 
     assert len(tank.cp_slots) == 1
     assert tank.cp_slots[0].medium == "urn:boolean#Fluid-Water"
+
+
+def test_shacl_target_shapes_supply_domain_and_range():
+    graph = rdflib.Graph().parse(
+        data="""
+            @prefix ex: <urn:targets#> .
+            @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix sh: <http://www.w3.org/ns/shacl#> .
+            ex:Equipment a rdfs:Class .
+            ex:System a rdfs:Class .
+            ex:Process a rdfs:Class .
+            ex:Other a rdfs:Class .
+            ex:hasProcess a rdf:Property .
+            ex:BearerShape a sh:NodeShape ;
+                sh:targetSubjectsOf ex:hasProcess ;
+                sh:or ( [ sh:class ex:Equipment ] [ sh:class ex:System ] ) .
+            ex:ValueShape a sh:NodeShape ;
+                sh:targetObjectsOf ex:hasProcess ;
+                sh:class ex:Process .
+        """,
+        format="turtle",
+    )
+    classes = {cls.name: cls for cls in extract(graph, name="Targets").classes}
+
+    for bearer in ("Equipment", "System"):
+        (prop,) = classes[bearer].own_props
+        assert prop.name == "has_process"
+        assert prop.ranges == ("Process",)
+    assert classes["Other"].own_props == []
 
 
 def test_extension_namespace_wins_name_collisions_and_identity():

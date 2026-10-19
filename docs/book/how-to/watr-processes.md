@@ -21,7 +21,7 @@ from objectrdf.watr import Process, TreatmentObjective, enums
 
 print(Process.meta.tree(max_depth=1))
 print(TreatmentObjective.meta.tree(max_depth=1))
-assert Process.meta["Sedimentation"].meta.iri.endswith("Process-Sedimentation")
+assert Process.meta["Settling"].meta.iri.endswith("Process-Settling")
 assert TreatmentObjective.meta["Thickening"].meta.iri.endswith(
     "TreatmentObjective-Thickening"
 )
@@ -39,14 +39,14 @@ the ontology could infer a class-default process from RDF later.
 from objectrdf import Model
 from objectrdf.watr import (
     GravityThickener,
-    Process_Sedimentation,
+    Process_Settling,
     TreatmentObjective_Thickening,
 )
 
 with Model("urn:example:thickening#") as model:
     thickener = GravityThickener(
         "primary-thickener",
-        has_process=[Process_Sedimentation],
+        has_process=[Process_Settling],
         has_treatment_objective=[TreatmentObjective_Thickening],
         has_role=[enums.values.Role_Primary],
     )
@@ -77,7 +77,7 @@ from objectrdf.watr import (
 with model:
     clarifier = SedimentationTank(
         "primary-clarifier",
-        has_process=[Process_Sedimentation],
+        has_process=[Process_Settling],
         has_treatment_objective=[TreatmentObjective_Clarification],
         has_role=[enums.values.Role_Primary],
     )

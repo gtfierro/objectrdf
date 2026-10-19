@@ -1,4 +1,8 @@
-"""Regenerate the local WaTr snapshot with its S223 and QUDT imports."""
+"""Regenerate objectrdf.watr from WaTr v0.3.0.rc1 with its S223 and QUDT imports.
+
+`ontology/watr-0.3.0rc1.ttl` is the unmodified `watr.ttl` asset of
+https://github.com/DataDrivenCPS/water-ontology/releases/tag/v0.3.0.rc1.
+"""
 
 from pathlib import Path
 import subprocess
@@ -10,7 +14,7 @@ from rdflib import Graph
 from objectrdf.gen import generate
 
 ROOT = Path(__file__).resolve().parents[1]
-WATR_SOURCE = ROOT / "ontology" / "watr-pr39-pr46.ttl"
+WATR_SOURCE = ROOT / "ontology" / "watr-0.3.0rc1.ttl"
 ASM2D_COMPONENTS = ROOT / "ontology" / "asm2d-components.ttl"
 WATR_IRI = "https://watermetadata.org/ontology/watr"
 S223_SOURCE = "https://open223.info/223p.ttl"

@@ -20,7 +20,11 @@ def test_extension_terms_keep_public_names():
         == "https://watermetadata.org/ontology/watr#Pump"
     )
     assert watr.Pump_2.meta.iri == "http://data.ashrae.org/standard223#Pump"
-    assert issubclass(watr.Pump, watr.Pump_2)
+    # WaTr 0.3 pumps accept any Mix-Fluid (e.g. sludge), so they extend
+    # s223:Equipment rather than s223:Pump, which admits only water, oil, or
+    # refrigerant.
+    assert not issubclass(watr.Pump, watr.Pump_2)
+    assert issubclass(watr.Pump, watr.Equipment)
 
 
 def test_latest_watr_terms_are_available():
@@ -31,13 +35,13 @@ def test_latest_watr_terms_are_available():
 
 
 def test_direct_watr_connection_point_shapes_are_compiled():
-    slots = watr.Tank._classinfo.cp_slots
+    slots = watr.Reactor._classinfo.cp_slots
     assert {(slot.direction, slot.medium) for slot in slots} >= {
         ("in", "http://data.ashrae.org/standard223#Mix-Fluid"),
         ("out", "http://data.ashrae.org/standard223#Mix-Fluid"),
     }
-    constraint = watr.SequencingBatchReactor._classinfo.cp_constraints[0]
-    assert constraint.operator == "xone"
+    constraint = watr.Clarifier._classinfo.cp_constraints[0]
+    assert constraint.operator == "and"
 
 
 def test_watr_domains_prefer_coherent_medium_assignment(m):
@@ -119,3 +123,24 @@ def test_resolution_explains_paired_port_medium_propagation(m):
     assert explanation.medium is enums.values.Fluid_Sludge
     assert explanation.medium_reason == "paired port"
     assert "paired with pxr-feed-in" in explanation.evidence[-1]
+
+
+def test_prefixes_follow_namespaces_not_entity_order():
+    def bindings(first, second):
+        with Model("urn:example/order#") as model:
+            first(f"a-{first.__name__}")
+            second(f"b-{second.__name__}")
+        graph = model.graph()
+        return {
+            prefix: str(namespace)
+            for prefix, namespace in graph.namespaces()
+            if prefix in {"s223", "watr"}
+        }
+
+    # watr.Pump_2 is s223:Pump, generated into the WaTr package.
+    expected = {
+        "s223": "http://data.ashrae.org/standard223#",
+        "watr": "https://watermetadata.org/ontology/watr#",
+    }
+    assert bindings(watr.Pump_2, watr.Tank) == expected
+    assert bindings(watr.Tank, watr.Pump_2) == expected

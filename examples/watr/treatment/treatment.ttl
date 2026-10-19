@@ -1,5 +1,5 @@
 @prefix : <urn:example/treatment#> .
-@prefix drinkingwater: <https://w3id.org/objectrdf/drinking-water#> .
+@prefix drinking-water: <https://w3id.org/objectrdf/drinking-water#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
@@ -7,7 +7,7 @@
 
 <urn:example/treatment> a owl:Ontology ;
     rdfs:label "Conventional surface-water treatment train" ;
-    owl:imports drinkingwater:,
+    owl:imports drinking-water:,
         <https://watermetadata.org/ontology/watr> .
 
 :treatment-system a s223:System ;
@@ -23,7 +23,7 @@
         :flocculation,
         :sand-filter .
 
-<https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
+<https://watermetadata.org/ontology/watr> owl:versionInfo "0.3.rc1" .
 
 :chlorination-contact-inlet a s223:InletConnectionPoint ;
     rdfs:label "inlet" ;
@@ -122,36 +122,36 @@
     s223:hasMedium s223:Fluid-Water ;
     s223:isConnectionPointOf :sand-filter .
 
-:chlorination-contact a drinkingwater:ChlorinationStage ;
+:chlorination-contact a drinking-water:ChlorinationStage ;
     rdfs:label "chlorination-contact" ;
     s223:hasConnectionPoint :chlorination-contact-inlet,
         :chlorination-contact-outlet ;
-    watr:hasProcess watr:Process-ChlorineDosing ;
+    watr:hasProcess watr:Process-Chlorination ;
     watr:hasTreatmentObjective watr:TreatmentObjective-Disinfection .
 
-:coagulation a drinkingwater:CoagulationStage ;
+:coagulation a drinking-water:CoagulationStage ;
     rdfs:label "coagulation" ;
     s223:hasConnectionPoint :coagulation-inlet,
         :coagulation-outlet ;
     watr:hasProcess watr:Process-Coagulation ;
     watr:hasTreatmentObjective watr:TreatmentObjective-TurbidityRemoval .
 
-:flocculation a drinkingwater:FlocculationStage ;
+:flocculation a drinking-water:FlocculationStage ;
     rdfs:label "flocculation" ;
     s223:hasConnectionPoint :flocculation-inlet,
         :flocculation-outlet ;
     watr:hasProcess watr:Process-Flocculation ;
     watr:hasTreatmentObjective watr:TreatmentObjective-TurbidityRemoval .
 
-:clarifier a drinkingwater:ClarificationStage ;
+:clarifier a drinking-water:ClarificationStage ;
     rdfs:label "clarifier" ;
     s223:hasConnectionPoint :clarifier-clarified_water,
         :clarifier-inlet,
         :clarifier-sludge ;
-    watr:hasProcess watr:Process-Sedimentation ;
+    watr:hasProcess watr:Process-Settling ;
     watr:hasTreatmentObjective watr:TreatmentObjective-Clarification .
 
-:sand-filter a drinkingwater:RapidSandFiltrationStage ;
+:sand-filter a drinking-water:RapidSandFiltrationStage ;
     rdfs:label "sand-filter" ;
     s223:hasConnectionPoint :sand-filter-backwash_supply,
         :sand-filter-backwash_waste,

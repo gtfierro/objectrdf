@@ -6,11 +6,11 @@ you call `model.save()`.
 
 ```python
 from objectrdf import Model
-from objectrdf.brick import AHU, VAV, Building, Floor, Room
+from objectrdf.brick import AHU, VAV, Building, Level, Room
 
 with Model("urn:example/bldg1#") as model:
     with Building("bldg1"):
-        with Floor("floor1"):
+        with Level("floor1"):
             room = Room("room101")
 
     ahu = AHU("ahu1", label="Main AHU")

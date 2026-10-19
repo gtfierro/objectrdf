@@ -1838,7 +1838,7 @@ asm2d:SecondaryClarifier a owl:Class ;
     sh:qualifiedMinCount 1 ;
     sh:qualifiedValueShape <https://w3id.org/objectrdf/asm2d#SecondaryClarifierShape/underflow> .
 
-<https://w3id.org/objectrdf/asm2d#SecondaryClarifierShape/hasProcess/0> sh:hasValue watr:Process-Sedimentation ;
+<https://w3id.org/objectrdf/asm2d#SecondaryClarifierShape/hasProcess/0> sh:hasValue watr:Process-Settling ;
     sh:path watr:hasProcess .
 
 <https://w3id.org/objectrdf/asm2d#SecondaryClarifierShape/hasRole/2> sh:hasValue watr:Role-Secondary ;

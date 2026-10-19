@@ -489,7 +489,6 @@ class Model:
         valid, and keeps the serializer trivial.
         """
         g = rdflib.Graph()
-        namespaces: dict[str, str] = {"": self.namespace, **self.prefixes}
         imports = set(self.imports)
         ontology_versions: dict[str, str] = {}
         for entity in self.entities:
@@ -533,10 +532,6 @@ class Model:
                 else:
                     obj = Literal(value)
                 g.add((subject, URIRef(spec.predicate), obj))
-            # Bind a prefix for the ontology namespace for readable output.
-            ns = _split_namespace(info.iri)
-            if ns is not None:
-                namespaces.setdefault(info.ontology.name.lower(), ns)
         ontology_subject = URIRef(self.ontology_iri)
         g.add((ontology_subject, RDF.type, OWL.Ontology))
         if self.name is not None:
@@ -546,9 +541,7 @@ class Model:
                 g.add((ontology_subject, OWL.imports, URIRef(dependency)))
                 if version := ontology_versions.get(dependency):
                     g.add((URIRef(dependency), OWL.versionInfo, Literal(version)))
-        for prefix, ns in namespaces.items():
-            g.bind(prefix, ns, replace=True)
-        g.bind("owl", OWL, replace=True)
+        _bind_prefixes(g, {"": self.namespace, **self.prefixes})
         return g
 
     def export_ontology(self, destination: str | Path | None = None) -> rdflib.Graph:
@@ -728,6 +721,58 @@ class _SystemScope:
         )
         self.model._system_intents.append((self.entity, members))
         self.entity.boundary(*self._boundaries)
+
+
+#: Conventional prefixes for namespaces whose final path segment is not the
+#: name people use for them.
+_WELL_KNOWN_PREFIXES = {
+    "http://data.ashrae.org/standard223#": "s223",
+}
+
+_PREFIX_CHARS = re.compile(r"[^A-Za-z0-9_-]")
+
+
+def _bind_prefixes(graph: rdflib.Graph, declared: Mapping[str, str]) -> None:
+    """Bind one stable prefix per namespace used in ``graph``.
+
+    ``declared`` bindings win. Other namespaces take a conventional prefix or
+    one derived from their final path segment (``.../watr#`` -> ``watr``), in
+    sorted namespace order, so output prefixes depend only on the IRIs used
+    and never on the order entities were created.
+    """
+    graph.bind("owl", OWL, replace=True)
+    taken = {prefix for prefix, _ns in graph.namespaces()} | set(declared)
+    bound = {str(ns) for _prefix, ns in graph.namespaces()} | set(declared.values())
+    # Vocabulary terms appear as predicates and objects; subjects are model
+    # instances or ontology IRIs, which read better written out in full.
+    used: set[str] = set()
+    for _subject, predicate, obj in graph:
+        if predicate == OWL.imports:
+            continue
+        for term in (predicate, obj):
+            if isinstance(term, URIRef):
+                ns = _split_namespace(str(term))
+                if ns is not None:
+                    used.add(ns)
+    for prefix, ns in declared.items():
+        graph.bind(prefix, ns, replace=True)
+    for ns in sorted(used - bound):
+        stem = _WELL_KNOWN_PREFIXES.get(ns) or _namespace_stem(ns)
+        prefix, index = stem, 2
+        while prefix in taken:
+            prefix = f"{stem}{index}"
+            index += 1
+        taken.add(prefix)
+        graph.bind(prefix, ns, replace=True)
+
+
+def _namespace_stem(namespace: str) -> str:
+    """Prefix candidate from a namespace's final non-empty path segment."""
+    segment = namespace.rstrip("#/").rsplit("/", 1)[-1]
+    stem = _PREFIX_CHARS.sub("", segment).lower().strip("-")
+    if not stem or not stem[0].isalpha():
+        return "ns"
+    return stem
 
 
 def _split_namespace(class_iri: str) -> str | None:

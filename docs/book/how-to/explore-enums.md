@@ -35,10 +35,11 @@ print([value.label for value in water.children])
 print([value.iri for value in water.descendants])
 print(water.parent.iri)
 
+# Sludge is a fluid mixture of water and solids, not a kind of water.
 sludge = enums.values.Fluid_Sludge
 print([value.iri for value in sludge.parents])
-assert sludge.is_a(enums.values.Fluid_Water)
 assert sludge.is_a(enums.values.Mix_Fluid)
+assert not sludge.is_a(enums.values.Fluid_Water)
 ```
 
 `tree()` prints a subtree. Use `tree_text()` when you want the text to store,

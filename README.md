@@ -4,13 +4,17 @@ Author RDF building models — [Brick](https://brickschema.org),
 [ASHRAE 223P](https://open223.info), [WATR](https://watermetadata.org) — as
 plain, typed Python. No RDF in user code; real Turtle out.
 
+Bundled ontologies: Brick 1.4.2, ASHRAE 223P (v1.0.0-2026), and WATR
+v0.3.0.rc1, a WATR release candidate whose terms may still change before
+0.3.0.
+
 ```python
 from objectrdf import Model
-from objectrdf.brick import AHU, VAV, Building, Floor, Room
+from objectrdf.brick import AHU, VAV, Building, Level, Room
 
 with Model("urn:example/bldg1#") as model:
     with Building("bldg1"):
-        with Floor("floor1"):
+        with Level("floor1"):
             Room("room101")
 
     ahu = AHU("ahu1", label="Main AHU")

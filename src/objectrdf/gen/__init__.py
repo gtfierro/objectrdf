@@ -59,6 +59,9 @@ def compile_modules(
             canonical.serialize(format="nt").splitlines()
         )) + "\n"
         return modules
+    from .stable import stable_graph
+
+    graph = stable_graph(graph)
     resolved = _resolve_overlay(name, overlay)
     ir = extract(
         graph,

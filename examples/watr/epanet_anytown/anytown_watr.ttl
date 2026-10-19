@@ -1,8 +1,10 @@
 @prefix : <urn:example/epanet/anytown#> .
-@prefix ns1: <http://qudt.org/schema/qudt/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -73,532 +75,532 @@
         :turbidity-meter-165,
         :turbidity-meter-65 .
 
-<https://watermetadata.org/ontology/watr> owl:versionInfo "0.2" .
+<https://watermetadata.org/ontology/watr> owl:versionInfo "0.3.rc1" .
 
 :base-demand-100 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-110 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-120 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-130 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-140 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-150 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-160 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-170 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-20 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-30 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-40 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-50 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-60 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-70 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-80 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :base-demand-90 a s223:QuantifiableProperty ;
     rdfs:label "Base demand" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :diameter-10 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-12 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-14 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-16 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-18 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-2 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.6e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-20 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-22 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-24 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-26 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-28 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-30 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-32 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-34 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-36 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-38 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-4 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-40 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-42 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-44 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-46 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-48 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-50 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-52 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-54 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-56 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-58 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-6 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-60 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-62 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-64 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-66 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+00 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-68 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-70 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-72 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-74 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-76 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-78 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-8 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :diameter-80 a s223:QuantifiableProperty ;
     rdfs:label "Pipe diameter" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/IN> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:IN .
 
 :elevation-100 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-110 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-115 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-120 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-130 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-140 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-150 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-160 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-170 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-20 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-30 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-40 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-50 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-55 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-60 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-70 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-75 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 8e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-80 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :elevation-90 a s223:QuantifiableProperty ;
     rdfs:label "Junction elevation" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 5e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :flow-sensor-pipe-2 a watr:FlowSensor ;
     rdfs:label "Flow at pipe-2 sensor" ;
@@ -640,302 +642,302 @@
     rdfs:label "Hydraulic head" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :hydraulic-head-165 a s223:QuantifiableProperty ;
     rdfs:label "Hydraulic head" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2.15e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :hydraulic-head-65 a s223:QuantifiableProperty ;
     rdfs:label "Hydraulic head" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2.15e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-10 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-12 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-14 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-16 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-18 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-2 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-20 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-22 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-24 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-26 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-28 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-30 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-32 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-34 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-36 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-38 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-4 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-40 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-42 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-44 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-46 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-48 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-50 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-52 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-54 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-56 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-58 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-6 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-60 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-62 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-64 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-66 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+04 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-68 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-70 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-72 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-74 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-76 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-78 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-8 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 9e+03 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :length-80 a s223:QuantifiableProperty ;
     rdfs:label "Pipe length" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Length> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/FT> .
+    qudt:hasQuantityKind quantitykind:Length ;
+    qudt:hasUnit unit:FT .
 
 :pressure-sensor-10 a watr:PressureSensor ;
     rdfs:label "Pressure at 10 sensor" ;
@@ -1049,281 +1051,281 @@
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-12 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-14 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-16 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-18 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-2 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-20 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-22 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-24 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-26 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-28 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-30 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-32 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-34 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-36 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-38 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-4 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-40 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-42 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-44 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-46 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-48 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-50 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-52 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-54 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-56 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-58 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-6 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-60 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-62 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-64 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-66 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-68 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-70 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-72 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-74 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-76 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.3e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-78 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-8 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 7e+01 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :roughness-80 a s223:QuantifiableProperty ;
     rdfs:label "EPANET roughness coefficient" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.2e+02 ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Dimensionless> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/UNITLESS> .
+    qudt:hasQuantityKind quantitykind:Dimensionless ;
+    qudt:hasUnit unit:UNITLESS .
 
 :temperature-sensor-10 a watr:TemperatureSensor ;
     rdfs:label "Water temperature at 10 sensor" ;
@@ -1400,218 +1402,218 @@
 :observed-flow-pipe-2 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pipe-2" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :observed-flow-pipe-76 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pipe-76" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :observed-flow-pipe-78 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pipe-78" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :observed-flow-pipe-8 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pipe-8" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :observed-flow-pipe-80 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pipe-80" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :observed-flow-pump-82 a s223:QuantifiableObservableProperty ;
     rdfs:label "Flow at pump-82" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/VolumeFlowRate> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/GAL_US-PER-MIN> .
+    qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
+    qudt:hasUnit unit:GAL_US-PER-MIN .
 
 :observed-pressure-10 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 10" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-100 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 100" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-110 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 110" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-120 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 120" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-130 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 130" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-140 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 140" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-150 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 150" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-160 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 160" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-165 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 165" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-20 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 20" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-30 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 30" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-50 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 50" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-60 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 60" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-65 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 65" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-70 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 70" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-75 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 75" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-80 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 80" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-pressure-90 a s223:QuantifiableObservableProperty ;
     rdfs:label "Pressure at 90" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Pressure> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/PSI> .
+    qudt:hasQuantityKind quantitykind:Pressure ;
+    qudt:hasUnit unit:PSI .
 
 :observed-temperature-10 a s223:QuantifiableObservableProperty ;
     rdfs:label "Water temperature at 10" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C .
 
 :observed-temperature-100 a s223:QuantifiableObservableProperty ;
     rdfs:label "Water temperature at 100" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C .
 
 :observed-temperature-140 a s223:QuantifiableObservableProperty ;
     rdfs:label "Water temperature at 140" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C .
 
 :observed-temperature-160 a s223:QuantifiableObservableProperty ;
     rdfs:label "Water temperature at 160" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C .
 
 :observed-temperature-165 a s223:QuantifiableObservableProperty ;
     rdfs:label "Water temperature at 165" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C .
 
 :observed-temperature-65 a s223:QuantifiableObservableProperty ;
     rdfs:label "Water temperature at 65" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Temperature> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/DEG_C> .
+    qudt:hasQuantityKind quantitykind:Temperature ;
+    qudt:hasUnit unit:DEG_C .
 
 :observed-turbidity-10 a s223:QuantifiableObservableProperty ;
     rdfs:label "Turbidity at 10" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:hasUnit unit:NTU .
 
 :observed-turbidity-100 a s223:QuantifiableObservableProperty ;
     rdfs:label "Turbidity at 100" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:hasUnit unit:NTU .
 
 :observed-turbidity-140 a s223:QuantifiableObservableProperty ;
     rdfs:label "Turbidity at 140" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:hasUnit unit:NTU .
 
 :observed-turbidity-160 a s223:QuantifiableObservableProperty ;
     rdfs:label "Turbidity at 160" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:hasUnit unit:NTU .
 
 :observed-turbidity-165 a s223:QuantifiableObservableProperty ;
     rdfs:label "Turbidity at 165" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:hasUnit unit:NTU .
 
 :observed-turbidity-65 a s223:QuantifiableObservableProperty ;
     rdfs:label "Turbidity at 65" ;
     s223:ofMedium s223:Fluid-Water ;
-    ns1:hasQuantityKind <http://qudt.org/vocab/quantitykind/Turbidity> ;
-    ns1:hasUnit <http://qudt.org/vocab/unit/NTU> .
+    qudt:hasQuantityKind quantitykind:Turbidity ;
+    qudt:hasUnit unit:NTU .
 
 :pipe-10 a s223:Pipe ;
     rdfs:label "EPANET pipe 10" ;

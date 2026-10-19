@@ -10,9 +10,9 @@ from __future__ import annotations
 from objectrdf.core import EnumValue as _EnumValue
 
 
-_E_EnumerationKind = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind', label='Enumeration kind', definition='This is the encapsulating class for all `EnumerationKind`s.\n`EnumerationKind`s define the (closed) set of permissible values for a given purpose.\nFor example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.\n\n`EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named\nstarting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes.\nEach class is also an instance of itself. This unusual modeling pattern was used to achieve:\n\n- The ability to set an `EnumerationKind` value that is more general, or not yet fully specified\n  at the time of modeling, such as `Electricity-AC` without having to state exactly what voltage or frequency it is.\n\n- The ability to use the `sh:class` SHACL predicate at any level in the `EnumerationKind` hierarchy\n  to constrain a value in the s223 specification, even if it is a more general one such as `Electricity-AC` in the above example.\n\nCertain validation constraints exist in the standard that evaluate compatibility of `EnumerationKind`s.\nTwo values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other,\nor if they are mixtures sharing at least one constituent.')
+_E_EnumerationKind = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind', label='Enumeration kind', definition='This is the encapsulating class for all `EnumerationKind`s.\n`EnumerationKind`s define the closed set of permissible values for a given purpose.\nFor example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.\n\n`EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named\nstarting with its immediate superclass, followed by a hyphen and a name that is unique among the sibling classes.\nEach class is also an instance of itself. This unusual modeling pattern was used to achieve:\n\n- The ability to set an `EnumerationKind` value that is more general, or not yet fully specified\n  at the time of modeling, such as `Electricity-AC` without having to state exactly what voltage or frequency it is.\n\n- The ability to use the `sh:class` SHACL predicate at any level in the `EnumerationKind` hierarchy\n  to constrain a value in the s223 specification, even if it is a more general one such as `Electricity-AC` in the above example.\n\nCertain validation constraints exist in the standard that evaluate compatibility of `EnumerationKind`s.\nTwo values are deemed compatible if they are the same, if one is a direct ancestor (or descendant) of the other,\nor if they are mixtures sharing at least one constituent.')
 """This is the encapsulating class for all `EnumerationKind`s.
-`EnumerationKind`s define the (closed) set of permissible values for a given purpose.
+`EnumerationKind`s define the closed set of permissible values for a given purpose.
 For example, `EnumerationKind-DayOfWeek` enumerates the days of the week and allows no other values.
 
 `EnumerationKind`s are arranged in a class hierarchy tree, with the root class named `EnumerationKind`. Each subclass is named
@@ -300,8 +300,12 @@ _E_NumberOfElectricalPhases_SinglePhase = _EnumValue('http://data.ashrae.org/sta
 """Single phase"""
 _E_NumberOfElectricalPhases_ThreePhase = _EnumValue('http://data.ashrae.org/standard223#NumberOfElectricalPhases-ThreePhase', label='Three phase', definition='Three phase', parent=_E_Numerical_NumberOfElectricalPhases)
 """Three phase"""
-_E_Numerical_Voltage = _EnumValue('http://data.ashrae.org/standard223#Numerical-Voltage', label='Voltage', definition='This class and its enumerated subclasses represent common voltages for electricity service.\n\n: Numerical-Voltage Enumerations\n\n| Enumeration |\n|:-----------|\n| `Voltage-0V` |\n| `Voltage-2.5V` |\n| `Voltage-3V` |\n| `Voltage-5V` |\n| `Voltage-6V` |\n| `Voltage-12V` |\n| `Voltage-24V` |\n| `Voltage-48V` |\n| `Voltage-110V` |\n| `Voltage-120V` |\n| `Voltage-127V` |\n| `Voltage-139V` |\n| `Voltage-190V` |\n| `Voltage-208V` |\n| `Voltage-219V` |\n| `Voltage-220V` |\n| `Voltage-230V` |\n| `Voltage-240V` |\n| `Voltage-277V` |\n| `Voltage-347V` |\n| `Voltage-380V` |\n| `Voltage-400V` |\n| `Voltage-415V` |\n| `Voltage-480V` |\n| `Voltage-600V` |\n| `Voltage-1730V` |\n| `Voltage-1900V` |\n| `Voltage-2400V` |\n| `Voltage-3000V` |\n| `Voltage-3300V` |\n| `Voltage-3460V` |\n| `Voltage-3810V` |\n| `Voltage-4160V` |\n| `Voltage-5770V` |\n| `Voltage-6000V` |\n| `Voltage-6600V` |\n| `Voltage-10000V` |\n| `Voltage-PoE` (see {s223:Voltage-PoE}) |', parent=_E_EnumerationKind_Numerical)
+_E_Numerical_Voltage = _EnumValue('http://data.ashrae.org/standard223#Numerical-Voltage', label='Voltage', definition='This class and its enumerated subclasses represent common voltages for electricity service.\n  doc:subclauses (\n      s223:Voltage-PoE\n    ) ;\n\n\n: Numerical-Voltage Enumerations\n\n| Enumeration |\n|:-----------|\n| `Voltage-0V` |\n| `Voltage-2.5V` |\n| `Voltage-3V` |\n| `Voltage-5V` |\n| `Voltage-6V` |\n| `Voltage-12V` |\n| `Voltage-24V` |\n| `Voltage-48V` |\n| `Voltage-110V` |\n| `Voltage-120V` |\n| `Voltage-127V` |\n| `Voltage-139V` |\n| `Voltage-190V` |\n| `Voltage-208V` |\n| `Voltage-219V` |\n| `Voltage-220V` |\n| `Voltage-230V` |\n| `Voltage-240V` |\n| `Voltage-277V` |\n| `Voltage-347V` |\n| `Voltage-380V` |\n| `Voltage-400V` |\n| `Voltage-415V` |\n| `Voltage-480V` |\n| `Voltage-600V` |\n| `Voltage-1730V` |\n| `Voltage-1900V` |\n| `Voltage-2400V` |\n| `Voltage-3000V` |\n| `Voltage-3300V` |\n| `Voltage-3460V` |\n| `Voltage-3810V` |\n| `Voltage-4160V` |\n| `Voltage-5770V` |\n| `Voltage-6000V` |\n| `Voltage-6600V` |\n| `Voltage-10000V` |\n| `Voltage-PoE` (see {s223:Voltage-PoE}) |', parent=_E_EnumerationKind_Numerical)
 """This class and its enumerated subclasses represent common voltages for electricity service.
+  doc:subclauses (
+      s223:Voltage-PoE
+    ) ;
+
 
 : Numerical-Voltage Enumerations
 
@@ -564,7 +568,7 @@ _E_Role_Extended = _EnumValue('https://watermetadata.org/ontology/watr#Role-Exte
 """The equipment is operated at an extended solids retention time."""
 _E_Role_Feed = _EnumValue('https://watermetadata.org/ontology/watr#Role-Feed', label='Feed', definition='A connection point that admits the stream a process acts on.', parent=_E_EnumerationKind_Role)
 """A connection point that admits the stream a process acts on."""
-_E_Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='MakeUp', definition='A connection point that admits water to replace what a process consumes or loses.', parent=_E_EnumerationKind_Role)
+_E_Role_MakeUp = _EnumValue('https://watermetadata.org/ontology/watr#Role-MakeUp', label='Role-MakeUp', definition='A connection point that admits water to replace what a process consumes or loses.', parent=_E_EnumerationKind_Role)
 """A connection point that admits water to replace what a process consumes or loses."""
 _E_Role_Permeate = _EnumValue('https://watermetadata.org/ontology/watr#Role-Permeate', label='Permeate', definition='A connection point carrying the stream that has passed through a membrane.', parent=_E_EnumerationKind_Role)
 """A connection point carrying the stream that has passed through a membrane."""
@@ -584,9 +588,9 @@ _E_Role_Storage = _EnumValue('https://watermetadata.org/ontology/watr#Role-Stora
 """The equipment holds water or sludge for later use rather than acting on it."""
 _E_Role_Tertiary = _EnumValue('https://watermetadata.org/ontology/watr#Role-Tertiary', label='Tertiary', definition='Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents.', parent=_E_EnumerationKind_Role)
 """Tertiary treatment: the equipment belongs to the polishing stage downstream of secondary treatment, for residual solids, nutrients or specific constituents."""
-_E_EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=_E_EnumerationKind)
+_E_EnumerationKind_Substance = _EnumValue('http://data.ashrae.org/standard223#EnumerationKind-Substance', label='Substance', definition='\nThis class and its enumerated subclasses represent substances that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between media, particulates, and soot.\n\n: EnumerationKind-Substance Enumerations\n\n| Enumeration |\n|:-----------|\n| `Substance-Medium` (see {s223:Substance-Medium}) |\n| `Substance-Particulate` (see {s223:Substance-Particulate}) |\n| `Substance-Soot` (see {s223:Substance-Soot}) |', parent=_E_EnumerationKind)
 """
-This class and its enumerated subclasses represent things that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between mediums, particulates, and soot.
+This class and its enumerated subclasses represent substances that are produced, conveyed, sensed, controlled, or consumed.  Its enumerated subclasses differentate between media, particulates, and soot.
 
 : EnumerationKind-Substance Enumerations
 
@@ -685,8 +689,8 @@ _E_EM_Light = _EnumValue('http://data.ashrae.org/standard223#EM-Light', label='L
 | `Light-Ultraviolet` |
 | `Light-Visible` |
 """
-_E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrared', label='Infrared light', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for multiple purposes, including communication signals.\n\n: Light-Infrared Enumerations\n\n  | Enumeration |\n  |:-----------|\n  | `Infrared-Signal` (see {s223:Infrared-Signal}) |', parent=_E_EM_Light)
-""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for multiple purposes, including communication signals.
+_E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrared', label='Infrared light', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for any defined purpose, including the creation of communication signals and common communication protocols.\n\n: Light-Infrared Enumerations\n\n  | Enumeration |\n  |:-----------|\n  | `Infrared-Signal` (see {s223:Infrared-Signal}) |', parent=_E_EM_Light)
+""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for any defined purpose, including the creation of communication signals and common communication protocols.
 
 : Light-Infrared Enumerations
 
@@ -694,8 +698,8 @@ _E_Light_Infrared = _EnumValue('http://data.ashrae.org/standard223#Light-Infrare
   |:-----------|
   | `Infrared-Signal` (see {s223:Infrared-Signal}) |
 """
-_E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Signal', label='Infrared signal', definition=' This class and its enumerated subclasses represent common infrared communication protocols.\n\n: Infrared-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |', parent=_E_Light_Infrared)
-""" This class and its enumerated subclasses represent common infrared communication protocols.
+_E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Signal', label='Infrared signal', definition=' This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for creating communication signals and common communication protocols.\n\n: Infrared-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |', parent=_E_Light_Infrared)
+""" This class and its enumerated subclasses represent the use of electromagnetic energy in the infrared frequency range for creating communication signals and common communication protocols.
 
 : Infrared-Signal Enumerations
 
@@ -703,8 +707,8 @@ _E_Infrared_Signal = _EnumValue('http://data.ashrae.org/standard223#Infrared-Sig
 |:-----------|
 | `Signal-FiberEthernet` (see {s223:Signal-FiberEthernet}) |
 """
-_E_Signal_FiberEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-FiberEthernet', label='Fiber Ethernet', definition='This class and its enumerated subclasses represent common fiber Ethernet communication protocols.\n\n: Signal-FiberEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `FiberEthernet-1X9` |\n| `FiberEthernet-300PIN` |\n| `FiberEthernet-CFP` |\n| `FiberEthernet-CFP2` |\n| `FiberEthernet-CFP4` |\n| `FiberEthernet-CPAK` |\n| `FiberEthernet-CXP` |\n| `FiberEthernet-GBIC` |\n| `FiberEthernet-QSFP` |\n| `FiberEthernet-QSFP+` |\n| `FiberEthernet-QSFP28` |\n| `FiberEthernet-SFF` |\n| `FiberEthernet-SFP` |\n| `FiberEthernet-SFP+` |\n| `FiberEthernet-X2` |\n| `FiberEthernet-XENPAK` |\n| `FiberEthernet-XFP` |', parent=_E_Infrared_Signal)
-"""This class and its enumerated subclasses represent common fiber Ethernet communication protocols.
+_E_Signal_FiberEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-FiberEthernet', label='Fiber Ethernet', definition='This class and its enumerated subclasses represent common fiber Ethernet communication protocols that are used to deliver data over `FiberOpticCable`s.\n\n: Signal-FiberEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `FiberEthernet-1X9` |\n| `FiberEthernet-300PIN` |\n| `FiberEthernet-CFP` |\n| `FiberEthernet-CFP2` |\n| `FiberEthernet-CFP4` |\n| `FiberEthernet-CPAK` |\n| `FiberEthernet-CXP` |\n| `FiberEthernet-GBIC` |\n| `FiberEthernet-QSFP` |\n| `FiberEthernet-QSFP+` |\n| `FiberEthernet-QSFP28` |\n| `FiberEthernet-SFF` |\n| `FiberEthernet-SFP` |\n| `FiberEthernet-SFP+` |\n| `FiberEthernet-X2` |\n| `FiberEthernet-XENPAK` |\n| `FiberEthernet-XFP` |', parent=_E_Infrared_Signal)
+"""This class and its enumerated subclasses represent common fiber Ethernet communication protocols that are used to deliver data over `FiberOpticCable`s.
 
 : Signal-FiberEthernet Enumerations
 
@@ -778,8 +782,8 @@ This class and its enumerated subclasses represent the use electromagnetic energ
 |:-----------|
 | `RF-Signal` (see {s223:RF-Signal}) |
 """
-_E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label='Radio frequency signal', definition='This class and its enumerated subclasses represent the use of radio frequency for creating communication signals, and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).\n\n: RF-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EHF` |\n| `Signal-ELF` |\n| `Signal-HF` |\n| `Signal-LF` |\n| `Signal-MF` |\n| `Signal-SHF` |\n| `Signal-SLF` |\n| `Signal-THF` |\n| `Signal-UHF` (see {s223:Signal-UHF}) |\n| `Signal-ULF` |\n| `Signal-VHF` |\n| `Signal-VLF` |\n| `Signal-Wideband` (see {s223:Signal-Wideband}) |', parent=_E_EM_RF)
-"""This class and its enumerated subclasses represent the use of radio frequency for creating communication signals, and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).
+_E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label='Radio frequency signal', definition='This class and its enumerated subclasses represent the use of radio frequency for creating communication signals and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).\n\n: RF-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EHF` |\n| `Signal-ELF` |\n| `Signal-HF` |\n| `Signal-LF` |\n| `Signal-MF` |\n| `Signal-SHF` |\n| `Signal-SLF` |\n| `Signal-THF` |\n| `Signal-UHF` (see {s223:Signal-UHF}) |\n| `Signal-ULF` |\n| `Signal-VHF` |\n| `Signal-VLF` |\n| `Signal-Wideband` (see {s223:Signal-Wideband}) |', parent=_E_EM_RF)
+"""This class and its enumerated subclasses represent the use of radio frequency for creating communication signals and common communication protocols. The radio spectrum of frequencies (`RF-Signal`) is divided into bands (i.e., subclasses) with conventional names designated by the International Telecommunication Union (e.g., UHF for Ultra High Frequency).
 
 : RF-Signal Enumerations
 
@@ -799,24 +803,24 @@ _E_RF_Signal = _EnumValue('http://data.ashrae.org/standard223#RF-Signal', label=
 | `Signal-VLF` |
 | `Signal-Wideband` (see {s223:Signal-Wideband}) |
 """
-_E_Signal_EHF = _EnumValue('http://data.ashrae.org/standard223#Signal-EHF', label='EHF', definition='RF Signal Extremely High Frequency 30 GHz to 300 GHz', parent=_E_RF_Signal)
-"""RF Signal Extremely High Frequency 30 GHz to 300 GHz"""
-_E_Signal_ELF = _EnumValue('http://data.ashrae.org/standard223#Signal-ELF', label='ELF', definition='RF Signal Extremely Low Frequency 3 Hz to 30 Hz', parent=_E_RF_Signal)
-"""RF Signal Extremely Low Frequency 3 Hz to 30 Hz"""
-_E_Signal_HF = _EnumValue('http://data.ashrae.org/standard223#Signal-HF', label='HF', definition='RF Signal High Frequency 3 MHz to 30 MHz', parent=_E_RF_Signal)
-"""RF Signal High Frequency 3 MHz to 30 MHz"""
-_E_Signal_LF = _EnumValue('http://data.ashrae.org/standard223#Signal-LF', label='LF', definition='RF Signal Low Frequency 30 kHz to 300 kHz', parent=_E_RF_Signal)
-"""RF Signal Low Frequency 30 kHz to 300 kHz"""
-_E_Signal_MF = _EnumValue('http://data.ashrae.org/standard223#Signal-MF', label='MF', definition='RF Signal Medium Frequency 300 kHz to 3 MHz', parent=_E_RF_Signal)
-"""RF Signal Medium Frequency 300 kHz to 3 MHz"""
-_E_Signal_SHF = _EnumValue('http://data.ashrae.org/standard223#Signal-SHF', label='SHF', definition='RF Signal Super High Frequency 3 GHz to 30 GHz', parent=_E_RF_Signal)
-"""RF Signal Super High Frequency 3 GHz to 30 GHz"""
-_E_Signal_SLF = _EnumValue('http://data.ashrae.org/standard223#Signal-SLF', label='SLF', definition='RF Signal Super Low Frequency 30 Hz to 300 Hz', parent=_E_RF_Signal)
-"""RF Signal Super Low Frequency 30 Hz to 300 Hz"""
-_E_Signal_THF = _EnumValue('http://data.ashrae.org/standard223#Signal-THF', label='THF', definition='RF Signal Tremendously High Frequency 300 GHz to 3 THz', parent=_E_RF_Signal)
-"""RF Signal Tremendously High Frequency 300 GHz to 3 THz"""
-_E_Signal_UHF = _EnumValue('http://data.ashrae.org/standard223#Signal-UHF', label='UHF', definition='RF Signal Ultra High Frequency 300 MHz to 3 GHz', parent=_E_RF_Signal)
-"""RF Signal Ultra High Frequency 300 MHz to 3 GHz"""
+_E_Signal_EHF = _EnumValue('http://data.ashrae.org/standard223#Signal-EHF', label='EHF', definition='This class represents the use of radio frequency in the Extremely High Frequency band, from 30 GHz to 300 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Extremely High Frequency band, from 30 GHz to 300 GHz, for creating communication signals and common communication protocols."""
+_E_Signal_ELF = _EnumValue('http://data.ashrae.org/standard223#Signal-ELF', label='ELF', definition='This class represents the use of radio frequency in the Extremely Low Frequency band, from 3 Hz to 30 Hz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Extremely Low Frequency band, from 3 Hz to 30 Hz, for creating communication signals and common communication protocols."""
+_E_Signal_HF = _EnumValue('http://data.ashrae.org/standard223#Signal-HF', label='HF', definition='This class represents the use of radio frequency in the High Frequency band, from 3 MHz to 30 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the High Frequency band, from 3 MHz to 30 MHz, for creating communication signals and common communication protocols."""
+_E_Signal_LF = _EnumValue('http://data.ashrae.org/standard223#Signal-LF', label='LF', definition='This class represents the use of radio frequency in the Low Frequency band, from 30 kHz to 300 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Low Frequency band, from 30 kHz to 300 kHz, for creating communication signals and common communication protocols."""
+_E_Signal_MF = _EnumValue('http://data.ashrae.org/standard223#Signal-MF', label='MF', definition='This class represents the use of radio frequency in the Medium Frequency band, from 300 kHz to 3 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Medium Frequency band, from 300 kHz to 3 MHz, for creating communication signals and common communication protocols."""
+_E_Signal_SHF = _EnumValue('http://data.ashrae.org/standard223#Signal-SHF', label='SHF', definition='This class represents the use of radio frequency in the Super High Frequency band, from 3 GHz to 30 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Super High Frequency band, from 3 GHz to 30 GHz, for creating communication signals and common communication protocols."""
+_E_Signal_SLF = _EnumValue('http://data.ashrae.org/standard223#Signal-SLF', label='SLF', definition='This class represents the use of radio frequency in the Super Low Frequency band, from 30 Hz to 300 Hz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Super Low Frequency band, from 30 Hz to 300 Hz, for creating communication signals and common communication protocols."""
+_E_Signal_THF = _EnumValue('http://data.ashrae.org/standard223#Signal-THF', label='THF', definition='This class represents the use of radio frequency in the Tremendously High Frequency band, from 300 GHz to 3 THz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Tremendously High Frequency band, from 300 GHz to 3 THz, for creating communication signals and common communication protocols."""
+_E_Signal_UHF = _EnumValue('http://data.ashrae.org/standard223#Signal-UHF', label='UHF', definition='This class represents the use of radio frequency in the Ultra High Frequency band, from 300 MHz to 3 GHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Ultra High Frequency band, from 300 MHz to 3 GHz, for creating communication signals and common communication protocols."""
 _E_UHF_ISMBand = _EnumValue('http://data.ashrae.org/standard223#UHF-ISMBand', label='ISM band', definition='This class and its enumerated subclasses represent communication protocols that use radio frequencies that are reserved internationally for license-free support of Industrial, Scientific, and Medical applications.\n\n: UHF-ISMBand Enumerations\n\n| Enumeration |\n|:-----------|\n| `ISMBand-BluetoothLE` |\n| `ISMBand-IEEE802.11` |\n| `ISMBand-IEEE802.15.4` |\n| `ISMBand-LoRaWAN` |\n| `ISMBand-NFC` |\n| `ISMBand-RFID` |', parent=_E_Signal_UHF)
 """This class and its enumerated subclasses represent communication protocols that use radio frequencies that are reserved internationally for license-free support of Industrial, Scientific, and Medical applications.
 
@@ -831,32 +835,32 @@ _E_UHF_ISMBand = _EnumValue('http://data.ashrae.org/standard223#UHF-ISMBand', la
 | `ISMBand-NFC` |
 | `ISMBand-RFID` |
 """
-_E_ISMBand_BluetoothLE = _EnumValue('http://data.ashrae.org/standard223#ISMBand-BluetoothLE', label='BluetoothLE', definition='The BluetoothLE radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The BluetoothLE radio frequency communication protocol"""
-_E_ISMBand_IEEE802_11 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.11', label='IEEE 802.11', definition='The IEEE 802.11 radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The IEEE 802.11 radio frequency communication protocol"""
-_E_ISMBand_IEEE802_15_4 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.15.4', label='IEEE 802.15.4', definition='The IEEE 802.15.4 radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The IEEE 802.15.4 radio frequency communication protocol"""
-_E_ISMBand_LoRaWAN = _EnumValue('http://data.ashrae.org/standard223#ISMBand-LoRaWAN', label='LoRaWAN', definition='The LoRaWAN radio frequency communication protocol', parent=_E_UHF_ISMBand)
-"""The LoRaWAN radio frequency communication protocol"""
-_E_ISMBand_NFC = _EnumValue('http://data.ashrae.org/standard223#ISMBand-NFC', label='NFC', definition='NFC radio frequency communication protocols', parent=_E_UHF_ISMBand)
-"""NFC radio frequency communication protocols"""
-_E_ISMBand_RFID = _EnumValue('http://data.ashrae.org/standard223#ISMBand-RFID', label='RFID', definition='RFID radio frequency communication protocols', parent=_E_UHF_ISMBand)
-"""RFID radio frequency communication protocols"""
+_E_ISMBand_BluetoothLE = _EnumValue('http://data.ashrae.org/standard223#ISMBand-BluetoothLE', label='BluetoothLE', definition='The BluetoothLE radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The BluetoothLE radio frequency communication protocol."""
+_E_ISMBand_IEEE802_11 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.11', label='IEEE 802.11', definition='The IEEE 802.11 radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The IEEE 802.11 radio frequency communication protocol."""
+_E_ISMBand_IEEE802_15_4 = _EnumValue('http://data.ashrae.org/standard223#ISMBand-IEEE802.15.4', label='IEEE 802.15.4', definition='The IEEE 802.15.4 radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The IEEE 802.15.4 radio frequency communication protocol."""
+_E_ISMBand_LoRaWAN = _EnumValue('http://data.ashrae.org/standard223#ISMBand-LoRaWAN', label='LoRaWAN', definition='The LoRaWAN radio frequency communication protocol.', parent=_E_UHF_ISMBand)
+"""The LoRaWAN radio frequency communication protocol."""
+_E_ISMBand_NFC = _EnumValue('http://data.ashrae.org/standard223#ISMBand-NFC', label='NFC', definition='NFC radio frequency communication protocols.', parent=_E_UHF_ISMBand)
+"""NFC radio frequency communication protocols."""
+_E_ISMBand_RFID = _EnumValue('http://data.ashrae.org/standard223#ISMBand-RFID', label='RFID', definition='RFID radio frequency communication protocols.', parent=_E_UHF_ISMBand)
+"""RFID radio frequency communication protocols."""
 _E_UHF_LicensedBand = _EnumValue('http://data.ashrae.org/standard223#UHF-LicensedBand', label='Licensed band', definition='This class represents communication protocols that use radio frequencies in licensed bands of the UHF spectrum.', parent=_E_Signal_UHF)
 """This class represents communication protocols that use radio frequencies in licensed bands of the UHF spectrum."""
-_E_Signal_ULF = _EnumValue('http://data.ashrae.org/standard223#Signal-ULF', label='ULF', definition='RF Signal Ultra Low Frequency 300 Hz to 3 kHz', parent=_E_RF_Signal)
-"""RF Signal Ultra Low Frequency 300 Hz to 3 kHz"""
-_E_Signal_VHF = _EnumValue('http://data.ashrae.org/standard223#Signal-VHF', label='VHF', definition='RF Signal Very High Frequency 30 MHz to 300 MHz', parent=_E_RF_Signal)
-"""RF Signal Very High Frequency 30 MHz to 300 MHz"""
-_E_Signal_VLF = _EnumValue('http://data.ashrae.org/standard223#Signal-VLF', label='VLF', definition='RF Signal Very Low Frequency 3 kHz to 30 kHz', parent=_E_RF_Signal)
-"""RF Signal Very Low Frequency 3 kHz to 30 kHz"""
-_E_Signal_Wideband = _EnumValue('http://data.ashrae.org/standard223#Signal-Wideband', label='Wideband', definition='Signal-Wideband', parent=_E_RF_Signal)
-"""Signal-Wideband"""
-_E_Wideband_CATV = _EnumValue('http://data.ashrae.org/standard223#Wideband-CATV', label='CATV', definition='The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable` or `FiberOpticCable` communication networks.', parent=_E_Signal_Wideband)
-"""The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable` or `FiberOpticCable` communication networks."""
-_E_Wideband_DOCSIS = _EnumValue('http://data.ashrae.org/standard223#Wideband-DOCSIS', label='DOCSIS', definition='The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable` communication networks.', parent=_E_Signal_Wideband)
-"""The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable` communication networks."""
+_E_Signal_ULF = _EnumValue('http://data.ashrae.org/standard223#Signal-ULF', label='ULF', definition='This class represents the use of radio frequency in the Ultra Low Frequency band, from 300 Hz to 3 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Ultra Low Frequency band, from 300 Hz to 3 kHz, for creating communication signals and common communication protocols."""
+_E_Signal_VHF = _EnumValue('http://data.ashrae.org/standard223#Signal-VHF', label='VHF', definition='This class represents the use of radio frequency in the Very High Frequency band, from 30 MHz to 300 MHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Very High Frequency band, from 30 MHz to 300 MHz, for creating communication signals and common communication protocols."""
+_E_Signal_VLF = _EnumValue('http://data.ashrae.org/standard223#Signal-VLF', label='VLF', definition='This class represents the use of radio frequency in the Very Low Frequency band, from 3 kHz to 30 kHz, for creating communication signals and common communication protocols.', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency in the Very Low Frequency band, from 3 kHz to 30 kHz, for creating communication signals and common communication protocols."""
+_E_Signal_Wideband = _EnumValue('http://data.ashrae.org/standard223#Signal-Wideband', label='Wideband', definition='This class represents the use of radio frequency over a wide frequency range for any defined purpose, including the creation of communication signals and common communication protocols', parent=_E_RF_Signal)
+"""This class represents the use of radio frequency over a wide frequency range for any defined purpose, including the creation of communication signals and common communication protocols"""
+_E_Wideband_CATV = _EnumValue('http://data.ashrae.org/standard223#Wideband-CATV', label='CATV', definition='The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable`s or `FiberOpticCable`s.', parent=_E_Signal_Wideband)
+"""The Community Antenna Television communication protocol that is used to deliver cable TV service over `CoaxialCable`s or `FiberOpticCable`s."""
+_E_Wideband_DOCSIS = _EnumValue('http://data.ashrae.org/standard223#Wideband-DOCSIS', label='DOCSIS', definition='The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable`s.', parent=_E_Signal_Wideband)
+"""The global standard Data Over Cable Service Interface Specification communication protocol that is used to deliver high-speed internet service over `CoaxialCable`s."""
 _E_Constituent_Electricity = _EnumValue('http://data.ashrae.org/standard223#Constituent-Electricity', label='Electricity', definition='This class and its enumerated subclasses represent common forms of electrical energy, including AC, DC, and electrical communication signals.\n\n: Constituent-Electricity Enumerations\n\n| Enumeration |\n|:-----------|\n| `Electricity-AC` (see {s223:Electricity-AC}) |\n| `Electricity-DC` (see {s223:Electricity-DC}) |\n| `Electricity-Earth` |\n| `Electricity-Neutral` |\n| `Electricity-Signal` (see {s223:Electricity-Signal}) |', parent=_E_Medium_Constituent)
 """This class and its enumerated subclasses represent common forms of electrical energy, including AC, DC, and electrical communication signals.
 
@@ -1268,8 +1272,8 @@ _E_Electricity_Earth = _EnumValue('http://data.ashrae.org/standard223#Electricit
 """`Electricity-Earth`"""
 _E_Electricity_Neutral = _EnumValue('http://data.ashrae.org/standard223#Electricity-Neutral', label='Neutral', definition='`Electricity-Neutral`', parent=_E_Constituent_Electricity)
 """`Electricity-Neutral`"""
-_E_Electricity_Signal = _EnumValue('http://data.ashrae.org/standard223#Electricity-Signal', label='Electrical signal', definition='This class and its enumerated subclasses represent the use of electricity for creating communication signals, and common communication protocols.\n\n: Electricity-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EIA485` |\n| `Signal-IEC14908` |\n| `Signal-Modulated` (see {s223:Signal-Modulated}) |\n| `Signal-USB` |\n| `Signal-WiredEthernet` (see {s223:Signal-WiredEthernet}) |', parent=_E_Constituent_Electricity)
-"""This class and its enumerated subclasses represent the use of electricity for creating communication signals, and common communication protocols.
+_E_Electricity_Signal = _EnumValue('http://data.ashrae.org/standard223#Electricity-Signal', label='Electrical signal', definition='This class and its enumerated subclasses represent the use of electricity for creating communication signals and common communication protocols.\n\n: Electricity-Signal Enumerations\n\n| Enumeration |\n|:-----------|\n| `Signal-EIA485` |\n| `Signal-IEC14908` |\n| `Signal-Modulated` (see {s223:Signal-Modulated}) |\n| `Signal-USB` |\n| `Signal-WiredEthernet` (see {s223:Signal-WiredEthernet}) |', parent=_E_Constituent_Electricity)
+"""This class and its enumerated subclasses represent the use of electricity for creating communication signals and common communication protocols.
 
 : Electricity-Signal Enumerations
 
@@ -1302,10 +1306,10 @@ _E_Modulated_4_20mA = _EnumValue('http://data.ashrae.org/standard223#Modulated-4
 """Modulated-4-20mA"""
 _E_Modulated_Resistive = _EnumValue('http://data.ashrae.org/standard223#Modulated-Resistive', label='Modulated resistive', definition='Modulated-Resistive', parent=_E_Signal_Modulated)
 """Modulated-Resistive"""
-_E_Signal_USB = _EnumValue('http://data.ashrae.org/standard223#Signal-USB', label='USB', definition='Signal-USB', parent=_E_Electricity_Signal)
-"""Signal-USB"""
-_E_Signal_WiredEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-WiredEthernet', label='Wired Ethernet', definition='This class and its enumerated subclasses represent common wired Ethernet communication protocols.\n\n: Signal-WiredEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `WiredEthernet-2.5GBASE-T` |\n| `WiredEthernet-2.5GBASE-T1` |\n| `WiredEthernet-5GBASE-T` |\n| `WiredEthernet-5GBASE-T1` |\n| `WiredEthernet-10BASE-T` |\n| `WiredEthernet-10BASE-T1L` |\n| `WiredEthernet-10BASE-T1S` |\n| `WiredEthernet-10GBASE-T` |\n| `WiredEthernet-10GBASE-T1` |\n| `WiredEthernet-25GBASE-T` |\n| `WiredEthernet-40GBASE-T` |\n| `WiredEthernet-100BASE-T1` |\n| `WiredEthernet-100BASE-TX` |\n| `WiredEthernet-1000BASE-T` |\n| `WiredEthernet-1000BASE-T1` |', parent=_E_Electricity_Signal)
-"""This class and its enumerated subclasses represent common wired Ethernet communication protocols.
+_E_Signal_USB = _EnumValue('http://data.ashrae.org/standard223#Signal-USB', label='USB', definition='The Universal Serial Bus protocol that is used to deliver data and/or power over `USBCable`s.', parent=_E_Electricity_Signal)
+"""The Universal Serial Bus protocol that is used to deliver data and/or power over `USBCable`s."""
+_E_Signal_WiredEthernet = _EnumValue('http://data.ashrae.org/standard223#Signal-WiredEthernet', label='Wired Ethernet', definition='This class and its enumerated subclasses represent common wired Ethernet communication protocols that are used to deliver data and/or power over `EthernetCable`s.\n\n: Signal-WiredEthernet Enumerations\n\n| Enumeration |\n|:-----------|\n| `WiredEthernet-2.5GBASE-T` |\n| `WiredEthernet-2.5GBASE-T1` |\n| `WiredEthernet-5GBASE-T` |\n| `WiredEthernet-5GBASE-T1` |\n| `WiredEthernet-10BASE-T` |\n| `WiredEthernet-10BASE-T1L` |\n| `WiredEthernet-10BASE-T1S` |\n| `WiredEthernet-10GBASE-T` |\n| `WiredEthernet-10GBASE-T1` |\n| `WiredEthernet-25GBASE-T` |\n| `WiredEthernet-40GBASE-T` |\n| `WiredEthernet-100BASE-T1` |\n| `WiredEthernet-100BASE-TX` |\n| `WiredEthernet-1000BASE-T` |\n| `WiredEthernet-1000BASE-T1` |', parent=_E_Electricity_Signal)
+"""This class and its enumerated subclasses represent common wired Ethernet communication protocols that are used to deliver data and/or power over `EthernetCable`s.
 
 : Signal-WiredEthernet Enumerations
 
@@ -1498,41 +1502,55 @@ _E_Refrigerant_R_744 = _EnumValue('http://data.ashrae.org/standard223#Refrigeran
 """`Refrigerant-R-744` (Transcritical CO2)"""
 _E_Constituent_SO2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-SO2', label='SO2', definition='Sulfur dioxide', parent=_E_Medium_Constituent)
 """Sulfur dioxide"""
-_E_Constituent_VolatileOrganicCompounds = _EnumValue('http://data.ashrae.org/standard223#Constituent-VolatileOrganicCompounds', label='Volatile organic compounds', definition='`Constituent-VolatileOrganicCompounds`', parent=_E_Medium_Constituent)
+_E_Constituent_VolatileOrganicCompounds_2 = _EnumValue('http://data.ashrae.org/standard223#Constituent-VolatileOrganicCompounds', label='Volatile organic compounds', definition='`Constituent-VolatileOrganicCompounds`', parent=_E_Medium_Constituent)
 """`Constituent-VolatileOrganicCompounds`"""
-_E_Constituent_Ammonia = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Ammonia', label='Ammonia', definition='Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium.', parent=_E_Medium_Constituent)
-"""Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium."""
-_E_Constituent_ASM2d_S_NH4 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_NH4', label='ASM2d ammonia and ammonium nitrogen', definition='S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass.', parent=_E_Constituent_Ammonia)
-"""S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass."""
-_E_Constituent_Bacteria = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Bacteria', label='Constituent Bacteria', definition='Bacteria: Microscopic single-celled organisms that can be found in water', parent=_E_Medium_Constituent)
-"""Bacteria: Microscopic single-celled organisms that can be found in water"""
-_E_Constituent_ASM2d_X_AUT = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_AUT', label='ASM2d autotrophic nitrifying organisms', definition='X_AUT: autotrophic nitrifying organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
-"""X_AUT: autotrophic nitrifying organism biomass pool in ASM2d."""
-_E_Constituent_ASM2d_X_H = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_H', label='ASM2d heterotrophic organisms', definition='X_H: heterotrophic organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
-"""X_H: heterotrophic organism biomass pool in ASM2d."""
-_E_Constituent_ASM2d_X_PAO = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_PAO', label='ASM2d phosphate-accumulating organisms', definition='X_PAO: phosphate-accumulating organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
-"""X_PAO: phosphate-accumulating organism biomass pool in ASM2d."""
-_E_Constituent_Cyanide = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Cyanide', label='Constituent Cyanide', definition='Cyanide: A highly toxic chemical compound that can be harmful to aquatic life', parent=_E_Medium_Constituent)
-"""Cyanide: A highly toxic chemical compound that can be harmful to aquatic life"""
+_E_Constituent_ChlorineResidual = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ChlorineResidual', label='Chlorine Residual', definition='Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own.', parent=_E_Medium_Constituent)
+"""Chlorine remaining in the water after disinfection, free or combined. Wanted in a distribution system and unwanted in a discharge, which is why removing it is an objective of its own."""
+_E_Constituent_Cyanide = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Cyanide', label='Cyanide', definition='Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life.', parent=_E_Medium_Constituent)
+"""Cyanide present as a constituent of a treatment medium. Highly toxic to aquatic life."""
 _E_Constituent_DissolvedOxygen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedOxygen', label='Dissolved Oxygen', definition='Molecular oxygen dissolved in a treatment medium.', parent=_E_Medium_Constituent)
 """Molecular oxygen dissolved in a treatment medium."""
+_E_Constituent_DissolvedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-DissolvedSolids', label='Dissolved Solids', definition='Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids.', parent=_E_Medium_Constituent)
+"""Material dissolved in a treatment medium rather than suspended in it, measured together as total dissolved solids."""
+_E_Constituent_Arsenic = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Arsenic', label='Arsenic', definition='Arsenic species in water, including dissolved arsenite and arsenate.', parent=_E_Constituent_DissolvedSolids)
+"""Arsenic species in water, including dissolved arsenite and arsenate."""
+_E_Constituent_Hardness = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Hardness', label='Hardness', definition='Calcium and magnesium dissolved in a treatment medium, taken together as one constituent because that is what a hardness measurement reports and what softening removes.', parent=_E_Constituent_DissolvedSolids)
+"""Calcium and magnesium dissolved in a treatment medium, taken together as one constituent because that is what a hardness measurement reports and what softening removes."""
+_E_Constituent_Metals = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Metals', label='Metals', definition='Metal species present as constituents of a treatment medium, dissolved or complexed.', parent=_E_Constituent_DissolvedSolids)
+"""Metal species present as constituents of a treatment medium, dissolved or complexed."""
+_E_Constituent_Lead = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Lead', label='Lead', definition='Lead species in water.', parent=_E_Constituent_Metals)
+"""Lead species in water."""
+_E_Constituent_Salt = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Salt', label='Salt', definition='Dissolved inorganic salt present as a constituent of a treatment medium. The constituent desalination removes.', parent=_E_Constituent_DissolvedSolids)
+"""Dissolved inorganic salt present as a constituent of a treatment medium. The constituent desalination removes."""
+_E_Salt_NaCl = _EnumValue('https://watermetadata.org/ontology/watr#Salt-NaCl', label='Sodium Chloride', definition='Sodium chloride dissolved in a treatment medium, the dominant salt in seawater and in most brackish sources.', parent=_E_Constituent_Salt)
+"""Sodium chloride dissolved in a treatment medium, the dominant salt in seawater and in most brackish sources."""
+_E_Constituent_Silica = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Silica', label='Silica', definition='Silica present as a constituent of a treatment medium, dissolved or colloidal. A scalant on membranes and in evaporators.', parent=_E_Constituent_DissolvedSolids)
+"""Silica present as a constituent of a treatment medium, dissolved or colloidal. A scalant on membranes and in evaporators."""
+_E_Constituent_Sulfate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Sulfate', label='Sulfate', definition='Sulfate present as a dissolved constituent of a treatment medium.', parent=_E_Constituent_DissolvedSolids)
+"""Sulfate present as a dissolved constituent of a treatment medium."""
 _E_Constituent_InorganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-InorganicCarbon', label='Inorganic Carbon', definition='Inorganic carbon species present as constituents of a treatment medium.', parent=_E_Medium_Constituent)
 """Inorganic carbon species present as constituents of a treatment medium."""
-_E_Constituent_Inorganics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Inorganics', label='Constituent-Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Inorganics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Inorganics', label='Inorganics', definition='Inorganic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
 """Inorganic chemical matter present as a constituent of a treatment medium."""
 _E_Constituent_ASM2d_S_NO3 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_NO3', label='ASM2d nitrate and nitrite nitrogen', definition='S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone.', parent=_E_Constituent_Inorganics)
 """S_NO3: combined nitrate and nitrite nitrogen pool in ASM2d, expressed as nitrogen; neither nitrate nor nitrite alone."""
 _E_Constituent_ASM2d_S_PO4 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_PO4', label='ASM2d soluble inorganic phosphorus', definition='S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus.', parent=_E_Constituent_Inorganics)
 """S_PO4: soluble inorganic phosphorus pool in ASM2d, primarily orthophosphate, expressed as phosphorus."""
-_E_Constituent_Metals = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Metals', label='Constituent-Metals', definition='Constituent-Metals', parent=_E_Medium_Constituent)
-"""Constituent-Metals"""
-_E_Constituent_Nitrate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrate', label='Nitrate', definition='Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Nitrogen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrogen', label='Nitrogen', definition='Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together.', parent=_E_Medium_Constituent)
+"""Nitrogen present as a constituent of a treatment medium in any form: ammonia, nitrite, nitrate and organic nitrogen together."""
+_E_Constituent_Ammonia = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Ammonia', label='Ammonia', definition='Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium.', parent=_E_Constituent_Nitrogen)
+"""Ammonia present as a dissolved nitrogen-bearing constituent of a treatment medium."""
+_E_Constituent_ASM2d_S_NH4 = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_NH4', label='ASM2d ammonia and ammonium nitrogen', definition='S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass.', parent=_E_Constituent_Ammonia)
+"""S_NH4: combined ammonium and ammonia nitrogen pool in ASM2d, expressed as nitrogen rather than pure NH3 mass."""
+_E_Constituent_Nitrate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrate', label='Nitrate', definition='Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium.', parent=_E_Constituent_Nitrogen)
 """Nitrate present as an oxidized nitrogen-bearing constituent of a treatment medium."""
-_E_Constituent_Nitrite = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrite', label='Nitrite', definition='Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Nitrite = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Nitrite', label='Nitrite', definition='Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium.', parent=_E_Constituent_Nitrogen)
 """Nitrite present as an intermediate nitrogen-bearing constituent of a treatment medium."""
+_E_Constituent_OrganicNitrogen = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-OrganicNitrogen', label='Organic Nitrogen', definition='Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia.', parent=_E_Constituent_Nitrogen)
+"""Nitrogen bound in organic matter present as a constituent of a treatment medium, which hydrolysis releases as ammonia."""
 _E_Constituent_NitrogenOxides = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-NitrogenOxides', label='Nitrogen Oxides', definition='Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms.', parent=_E_Medium_Constituent)
 """Nitrogen oxide species present as constituents of a treatment medium, including gaseous or dissolved forms."""
-_E_Constituent_Organics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Organics', label='Constituent-Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
+_E_Constituent_Organics = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Organics', label='Organics', definition='Organic chemical matter present as a constituent of a treatment medium.', parent=_E_Medium_Constituent)
 """Organic chemical matter present as a constituent of a treatment medium."""
 _E_Constituent_ASM2d_S_A = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-S_A', label='ASM2d fermentation products', definition='S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration.', parent=_E_Constituent_Organics)
 """S_A: soluble fermentation products represented as acetate in ASM2d, expressed on a COD basis; not a pure acetate concentration."""
@@ -1542,11 +1560,19 @@ _E_Constituent_ASM2d_S_I = _EnumValue('https://watermetadata.org/ontology/watr#C
 """S_I: inert soluble organic material pool in ASM2d."""
 _E_Constituent_OrganicCarbon = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-OrganicCarbon', label='Organic Carbon', definition='Organic carbon present as a constituent of a treatment medium.', parent=_E_Constituent_Organics)
 """Organic carbon present as a constituent of a treatment medium."""
-_E_Constituent_Particles = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Particles', label='Constituent-Particles', definition='Particulate matter present as a constituent of a medium.', parent=_E_Medium_Constituent)
+_E_Constituent_PFAS = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-PFAS', label='PFAS', definition='Per- and polyfluoroalkyl substances present as constituents of a treatment medium.', parent=_E_Constituent_Organics)
+"""Per- and polyfluoroalkyl substances present as constituents of a treatment medium."""
+_E_Constituent_VolatileOrganicCompounds = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-VolatileOrganicCompounds', label='Volatile Organic Compounds', definition='Organic compounds volatile enough to leave the water into an off-gas stream, which is why air stripping removes them and settling does not.', parent=_E_Constituent_Organics)
+"""Organic compounds volatile enough to leave the water into an off-gas stream, which is why air stripping removes them and settling does not."""
+_E_Constituent_Particles = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Particles', label='Particles', definition='Particulate matter present as a constituent of a medium.', parent=_E_Medium_Constituent)
 """Particulate matter present as a constituent of a medium."""
-_E_Constituent_Solids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Solids', label='Constituent-Solids', definition='Solid material present as a constituent of a treatment medium.', parent=_E_Constituent_Particles)
+_E_Constituent_Solids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Solids', label='Solids', definition='Solid material present as a constituent of a treatment medium.', parent=_E_Constituent_Particles)
 """Solid material present as a constituent of a treatment medium."""
-_E_Constituent_SuspendedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-SuspendedSolids', label='Constituent-SuspendedSolids', definition='Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid.', parent=_E_Constituent_Solids)
+_E_Constituent_InorganicSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-InorganicSolids', label='Constituent-InorganicSolids', definition='The inorganic fraction of the solids in a treatment medium, such as grit, sand and mineral precipitates.', parent=_E_Constituent_Solids)
+"""The inorganic fraction of the solids in a treatment medium, such as grit, sand and mineral precipitates."""
+_E_Constituent_OrganicSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-OrganicSolids', label='Constituent-OrganicSolids', definition='The organic fraction of the solids in a treatment medium, such as biomass and other biodegradable matter.', parent=_E_Constituent_Solids)
+"""The organic fraction of the solids in a treatment medium, such as biomass and other biodegradable matter."""
+_E_Constituent_SuspendedSolids = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-SuspendedSolids', label='Suspended Solids', definition='Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid.', parent=_E_Constituent_Solids)
 """Solid particulate matter suspended in water rather than dissolved, including organic and inorganic material carried in the fluid."""
 _E_Constituent_ASM2d_X_I = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_I', label='ASM2d inert particulate organics', definition='X_I: inert particulate organic material pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
 """X_I: inert particulate organic material pool in ASM2d."""
@@ -1560,10 +1586,24 @@ _E_Constituent_ASM2d_X_PP = _EnumValue('https://watermetadata.org/ontology/watr#
 """X_PP: intracellular polyphosphate storage pool of phosphate-accumulating organisms in ASM2d."""
 _E_Constituent_ASM2d_X_S = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_S', label='ASM2d slowly biodegradable substrates', definition='X_S: slowly biodegradable particulate substrate pool in ASM2d.', parent=_E_Constituent_SuspendedSolids)
 """X_S: slowly biodegradable particulate substrate pool in ASM2d."""
-_E_Constituent_Salt = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Salt', label='Constituent-Salt', definition='Constituent-Salt', parent=_E_Medium_Constituent)
-"""Constituent-Salt"""
-_E_Salt_NaCl = _EnumValue('https://watermetadata.org/ontology/watr#Salt-NaCl', label='Salt-NaCl', definition='Salt-NaCl', parent=_E_Constituent_Salt)
-"""Salt-NaCl"""
+_E_Constituent_Pathogens = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Pathogens', label='Pathogens', definition='Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets.', parent=_E_Medium_Constituent)
+"""Disease-causing organisms present as constituents of a treatment medium. The constituent disinfection targets."""
+_E_Constituent_Bacteria = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Bacteria', label='Bacteria', definition='Bacteria present as constituents of a treatment medium.', parent=_E_Constituent_Pathogens)
+"""Bacteria present as constituents of a treatment medium."""
+_E_Constituent_ASM2d_X_AUT = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_AUT', label='ASM2d autotrophic nitrifying organisms', definition='X_AUT: autotrophic nitrifying organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
+"""X_AUT: autotrophic nitrifying organism biomass pool in ASM2d."""
+_E_Constituent_ASM2d_X_H = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_H', label='ASM2d heterotrophic organisms', definition='X_H: heterotrophic organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
+"""X_H: heterotrophic organism biomass pool in ASM2d."""
+_E_Constituent_ASM2d_X_PAO = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-ASM2d-X_PAO', label='ASM2d phosphate-accumulating organisms', definition='X_PAO: phosphate-accumulating organism biomass pool in ASM2d.', parent=_E_Constituent_Bacteria)
+"""X_PAO: phosphate-accumulating organism biomass pool in ASM2d."""
+_E_Constituent_Protozoa = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Protozoa', label='Protozoa', definition='Protozoa present as constituents of a treatment medium, including the cysts and oocysts that resist chlorination.', parent=_E_Constituent_Pathogens)
+"""Protozoa present as constituents of a treatment medium, including the cysts and oocysts that resist chlorination."""
+_E_Constituent_Viruses = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Viruses', label='Viruses', definition='Viruses present as constituents of a treatment medium.', parent=_E_Constituent_Pathogens)
+"""Viruses present as constituents of a treatment medium."""
+_E_Constituent_Phosphorus = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Phosphorus', label='Phosphorus', definition='Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against.', parent=_E_Medium_Constituent)
+"""Phosphorus present as a constituent of a treatment medium in any form, the constituent a total phosphorus limit is written against."""
+_E_Constituent_Phosphate = _EnumValue('https://watermetadata.org/ontology/watr#Constituent-Phosphate', label='Phosphate', definition='Phosphate present as a dissolved phosphorus-bearing constituent of a treatment medium, the form biological and chemical phosphorus removal act on.', parent=_E_Constituent_Phosphorus)
+"""Phosphate present as a dissolved phosphorus-bearing constituent of a treatment medium, the form biological and chemical phosphorus removal act on."""
 _E_WastewaterTreatmentChemical = _EnumValue('https://watermetadata.org/ontology/watr#WastewaterTreatmentChemical', label='Wastewater Treatment Chemical', definition='Base class for all chemicals used in wastewater treatment', parent=_E_Medium_Constituent)
 """Base class for all chemicals used in wastewater treatment"""
 _E_Coagulant = _EnumValue('https://watermetadata.org/ontology/watr#Coagulant', label='Coagulant', definition='Class for coagulants used in wastewater treatment', parent=_E_WastewaterTreatmentChemical)
@@ -1683,10 +1723,6 @@ _E_Water_HotWater = _EnumValue('http://data.ashrae.org/standard223#Water-HotWate
 """Water-Hot water"""
 _E_Water_Steam = _EnumValue('http://data.ashrae.org/standard223#Water-Steam', label='Steam', definition='Water-Steam', parent=_E_Fluid_Water)
 """Water-Steam"""
-_E_Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry composed of water and solids.', parent=_E_Fluid_Water)
-"""A semi-solid slurry composed of water and solids."""
-_E_Sludge_MixedLiquor = _EnumValue('https://watermetadata.org/ontology/watr#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=_E_Fluid_Sludge)
-"""Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water."""
 _E_Water_Brackish = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brackish', label='Water-Brackish', definition='Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
 """Moderately saline water (typical salinity 0.5-3%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
 _E_Water_Brine = _EnumValue('https://watermetadata.org/ontology/watr#Water-Brine', label='Water-Brine', definition='Concentrated saline water modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
@@ -1695,6 +1731,10 @@ _E_Water_Freshwater = _EnumValue('https://watermetadata.org/ontology/watr#Water-
 """Low-salinity surface or ground water modeled as a constituent-bearing mixture dominated by the water constituent so that S223 can recognize the shared water constituent across aqueous media."""
 _E_Water_Seawater = _EnumValue('https://watermetadata.org/ontology/watr#Water-Seawater', label='Water-Seawater', definition='Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media.', parent=_E_Fluid_Water)
 """Saline surface water (typical salinity ~3.5%) modeled as a constituent-bearing mixture of water and dissolved salt so that S223 can recognize the shared water constituent across aqueous media."""
+_E_Fluid_Sludge = _EnumValue('https://watermetadata.org/ontology/watr#Fluid-Sludge', label='Sludge', definition='A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener.', parent=_E_Mix_Fluid)
+"""A semi-solid slurry of water, organic solids and inorganic solids, modeled as a constituent-bearing mixture rather than a kind of water. Sharing s223:Constituent-H2O with the aqueous media keeps sludge compatible with them on S223 connection points in both directions, for example water in and sludge out of a clarifier, or sludge in and supernatant out of a thickener."""
+_E_Sludge_MixedLiquor = _EnumValue('https://watermetadata.org/ontology/watr#Sludge-MixedLiquor', label='Sludge-MixedLiquor', definition='Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water.', parent=_E_Fluid_Sludge)
+"""Mixed liquor is the mixture of wastewater and activated sludge in the aeration basin of a wastewater treatment plant. It contains suspended solids and water."""
 _E_Mix_PowerAndSignal = _EnumValue('http://data.ashrae.org/standard223#Mix-PowerAndSignal', label='Power and signal mixture', definition='This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.\n\n: Mix-PowerAndSignal Enumerations\n\n| Enumeration |\n|:-----------|\n| `PowerAndSignal-PoE` |', parent=_E_Medium_Mix)
 """This class and its enumerated subclasses represent substances that are used to convey the combination of electrical power and electrical communication signals.
 
@@ -1787,11 +1827,102 @@ _E_ThermodynamicPhase_Solid = _EnumValue('http://data.ashrae.org/standard223#The
 """`ThermodynamicPhase-Solid`"""
 _E_ThermodynamicPhase_Vapor = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Vapor', label='Vapor phase', definition='`ThermodynamicPhase-Vapor`', parent=_E_EnumerationKind_ThermodynamicPhase)
 """`ThermodynamicPhase-Vapor`"""
-_E_EnumerationKind_DataProcessing = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-DataProcessing', label='DataQuality', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=_E_EnumerationKind)
+_E_EnumerationKind_DataProcessing = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-DataProcessing', label='DataProcessing', definition='This EnumerationKind describes methods of data processing, aggregation, or imputation', parent=_E_EnumerationKind)
 """This EnumerationKind describes methods of data processing, aggregation, or imputation"""
-_E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', parent=_E_EnumerationKind)
-"""Runtime"""
-_E_Fluid_Sludge._add_parent(_E_Mix_Fluid)
+_E_DataProcessing_AccuracyMetrics = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-AccuracyMetrics', label='Accuracy Metrics', definition='Combined accuracy measures (precision and trueness)', parent=_E_EnumerationKind_DataProcessing)
+"""Combined accuracy measures (precision and trueness)"""
+_E_Accuracy_ExpandedUncertainty = _EnumValue('https://watermetadata.org/ontology/watr#Accuracy-ExpandedUncertainty', label='Expanded Uncertainty', definition='Total uncertainty multiplied by coverage factor', parent=_E_DataProcessing_AccuracyMetrics)
+"""Total uncertainty multiplied by coverage factor"""
+_E_Accuracy_PercentRecovery = _EnumValue('https://watermetadata.org/ontology/watr#Accuracy-PercentRecovery', label='Percent Recovery', definition='Ratio of measured to known value (for spike/recovery tests)', parent=_E_DataProcessing_AccuracyMetrics)
+"""Ratio of measured to known value (for spike/recovery tests)"""
+_E_Accuracy_RSquared = _EnumValue('https://watermetadata.org/ontology/watr#Accuracy-RSquared', label='R-Squared', definition='Coefficient of determination for calibration curves', parent=_E_DataProcessing_AccuracyMetrics)
+"""Coefficient of determination for calibration curves"""
+_E_Accuracy_TotalUncertainty = _EnumValue('https://watermetadata.org/ontology/watr#Accuracy-TotalUncertainty', label='Total Uncertainty', definition='Combined standard uncertainty from all sources', parent=_E_DataProcessing_AccuracyMetrics)
+"""Combined standard uncertainty from all sources"""
+_E_DataProcessing_Aggregate = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-Aggregate', label='Aggregate', definition='Parent class for aggregation functions that combine multiple data points', parent=_E_EnumerationKind_DataProcessing)
+"""Parent class for aggregation functions that combine multiple data points"""
+_E_Aggregate_Count = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Count', label='Count', definition='Count of data points', parent=_E_DataProcessing_Aggregate)
+"""Count of data points"""
+_E_Aggregate_Max = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Max', label='Maximum', definition='Maximum value from data points', parent=_E_DataProcessing_Aggregate)
+"""Maximum value from data points"""
+_E_Aggregate_Mean = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Mean', label='Mean', definition='Arithmetic mean (average) of data points', parent=_E_DataProcessing_Aggregate)
+"""Arithmetic mean (average) of data points"""
+_E_Aggregate_Median = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Median', label='Median', definition='Middle value of sorted data points', parent=_E_DataProcessing_Aggregate)
+"""Middle value of sorted data points"""
+_E_Aggregate_Min = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Min', label='Minimum', definition='Minimum value from data points', parent=_E_DataProcessing_Aggregate)
+"""Minimum value from data points"""
+_E_Aggregate_Mode = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Mode', label='Mode', definition='Most frequently occurring value in data points', parent=_E_DataProcessing_Aggregate)
+"""Most frequently occurring value in data points"""
+_E_Aggregate_Range = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Range', label='Range', definition='Difference between maximum and minimum values', parent=_E_DataProcessing_Aggregate)
+"""Difference between maximum and minimum values"""
+_E_Aggregate_StdDev = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-StdDev', label='Standard Deviation', definition='Standard deviation of data points', parent=_E_DataProcessing_Aggregate)
+"""Standard deviation of data points"""
+_E_Aggregate_Sum = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Sum', label='Sum', definition='Sum of all data points', parent=_E_DataProcessing_Aggregate)
+"""Sum of all data points"""
+_E_Aggregate_Variance = _EnumValue('https://watermetadata.org/ontology/watr#Aggregate-Variance', label='Variance', definition='Variance of data points', parent=_E_DataProcessing_Aggregate)
+"""Variance of data points"""
+_E_DataProcessing_ErrorMetrics = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-ErrorMetrics', label='Error Metrics', definition='Parent class for error and uncertainty measurements', parent=_E_EnumerationKind_DataProcessing)
+"""Parent class for error and uncertainty measurements"""
+_E_Error_AbsoluteError = _EnumValue('https://watermetadata.org/ontology/watr#Error-AbsoluteError', label='Absolute Error', definition='Absolute difference between measured and true/reference value', parent=_E_DataProcessing_ErrorMetrics)
+"""Absolute difference between measured and true/reference value"""
+_E_Error_Bias = _EnumValue('https://watermetadata.org/ontology/watr#Error-Bias', label='Bias', definition='Systematic deviation from true value (trueness measure)', parent=_E_DataProcessing_ErrorMetrics)
+"""Systematic deviation from true value (trueness measure)"""
+_E_Error_MeanAbsoluteError = _EnumValue('https://watermetadata.org/ontology/watr#Error-MeanAbsoluteError', label='Mean Absolute Error (MAE)', definition='Average of absolute errors across multiple measurements', parent=_E_DataProcessing_ErrorMetrics)
+"""Average of absolute errors across multiple measurements"""
+_E_Error_MeanAbsolutePercentageError = _EnumValue('https://watermetadata.org/ontology/watr#Error-MeanAbsolutePercentageError', label='Mean Absolute Percentage Error (MAPE)', definition='Average of absolute percentage errors', parent=_E_DataProcessing_ErrorMetrics)
+"""Average of absolute percentage errors"""
+_E_Error_MeanSquaredError = _EnumValue('https://watermetadata.org/ontology/watr#Error-MeanSquaredError', label='Mean Squared Error (MSE)', definition='Average of squared errors', parent=_E_DataProcessing_ErrorMetrics)
+"""Average of squared errors"""
+_E_Error_RelativeError = _EnumValue('https://watermetadata.org/ontology/watr#Error-RelativeError', label='Relative Error', definition='Error expressed as a percentage of the true/reference value', parent=_E_DataProcessing_ErrorMetrics)
+"""Error expressed as a percentage of the true/reference value"""
+_E_Error_RootMeanSquaredError = _EnumValue('https://watermetadata.org/ontology/watr#Error-RootMeanSquaredError', label='Root Mean Squared Error (RMSE)', definition='Square root of MSE, in same units as measurements', parent=_E_DataProcessing_ErrorMetrics)
+"""Square root of MSE, in same units as measurements"""
+_E_DataProcessing_Filter = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-Filter', label='Filter', definition='Parent class for filtering methods to remove outliers or unwanted data points', parent=_E_EnumerationKind_DataProcessing)
+"""Parent class for filtering methods to remove outliers or unwanted data points"""
+_E_DataProcessing_Interpolation = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-Interpolation', label='Interpolation', definition='Parent class for interpolation methods to estimate values between known data points', parent=_E_EnumerationKind_DataProcessing)
+"""Parent class for interpolation methods to estimate values between known data points"""
+_E_Interpolation_BackwardFill = _EnumValue('https://watermetadata.org/ontology/watr#Interpolation-BackwardFill', label='Backward Fill', definition='Propagate next valid observation backward to fill gaps', parent=_E_DataProcessing_Interpolation)
+"""Propagate next valid observation backward to fill gaps"""
+_E_Interpolation_ForwardFill = _EnumValue('https://watermetadata.org/ontology/watr#Interpolation-ForwardFill', label='Forward Fill', definition='Propagate last valid observation forward to fill gaps', parent=_E_DataProcessing_Interpolation)
+"""Propagate last valid observation forward to fill gaps"""
+_E_Interpolation_Linear = _EnumValue('https://watermetadata.org/ontology/watr#Interpolation-Linear', label='Linear Interpolation', definition='Linear interpolation between two adjacent data points', parent=_E_DataProcessing_Interpolation)
+"""Linear interpolation between two adjacent data points"""
+_E_Interpolation_NearestNeighbor = _EnumValue('https://watermetadata.org/ontology/watr#Interpolation-NearestNeighbor', label='Nearest Neighbor', definition='Use the value of the nearest known data point', parent=_E_DataProcessing_Interpolation)
+"""Use the value of the nearest known data point"""
+_E_Interpolation_Polynomial = _EnumValue('https://watermetadata.org/ontology/watr#Interpolation-Polynomial', label='Polynomial Interpolation', definition='Polynomial interpolation using multiple data points', parent=_E_DataProcessing_Interpolation)
+"""Polynomial interpolation using multiple data points"""
+_E_Interpolation_Spline = _EnumValue('https://watermetadata.org/ontology/watr#Interpolation-Spline', label='Spline Interpolation', definition='Cubic spline interpolation for smooth curves', parent=_E_DataProcessing_Interpolation)
+"""Cubic spline interpolation for smooth curves"""
+_E_DataProcessing_Normalization = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-Normalization', label='Normalization', definition='Parent class for normalization methods to scale data to a standard range', parent=_E_EnumerationKind_DataProcessing)
+"""Parent class for normalization methods to scale data to a standard range"""
+_E_Normalization_Decimal = _EnumValue('https://watermetadata.org/ontology/watr#Normalization-Decimal', label='Decimal Scaling', definition='Normalize by moving the decimal point of values', parent=_E_DataProcessing_Normalization)
+"""Normalize by moving the decimal point of values"""
+_E_Normalization_MinMax = _EnumValue('https://watermetadata.org/ontology/watr#Normalization-MinMax', label='Min-Max Normalization', definition='Scale data to a fixed range, typically [0, 1]', parent=_E_DataProcessing_Normalization)
+"""Scale data to a fixed range, typically [0, 1]"""
+_E_Normalization_ZScore = _EnumValue('https://watermetadata.org/ontology/watr#Normalization-ZScore', label='Z-Score Normalization', definition='Standardize data to have mean=0 and standard deviation=1', parent=_E_DataProcessing_Normalization)
+"""Standardize data to have mean=0 and standard deviation=1"""
+_E_DataProcessing_PrecisionMetrics = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-PrecisionMetrics', label='Precision Metrics', definition='Metrics for precision and repeatability measurements', parent=_E_EnumerationKind_DataProcessing)
+"""Metrics for precision and repeatability measurements"""
+_E_Precision_CoefficientOfVariation = _EnumValue('https://watermetadata.org/ontology/watr#Precision-CoefficientOfVariation', label='Coefficient of Variation', definition='Ratio of standard deviation to mean (relative precision)', parent=_E_DataProcessing_PrecisionMetrics)
+"""Ratio of standard deviation to mean (relative precision)"""
+_E_Precision_ConfidenceInterval = _EnumValue('https://watermetadata.org/ontology/watr#Precision-ConfidenceInterval', label='Confidence Interval', definition='Range within which true value likely falls with specified confidence level', parent=_E_DataProcessing_PrecisionMetrics)
+"""Range within which true value likely falls with specified confidence level"""
+_E_Precision_RepeatabilityStdDev = _EnumValue('https://watermetadata.org/ontology/watr#Precision-RepeatabilityStdDev', label='Repeatability Standard Deviation', definition='Standard deviation under repeatability conditions (same operator, equipment, short time)', parent=_E_DataProcessing_PrecisionMetrics)
+"""Standard deviation under repeatability conditions (same operator, equipment, short time)"""
+_E_Precision_ReproducibilityStdDev = _EnumValue('https://watermetadata.org/ontology/watr#Precision-ReproducibilityStdDev', label='Reproducibility Standard Deviation', definition='Standard deviation under reproducibility conditions (different operators, equipment, time)', parent=_E_DataProcessing_PrecisionMetrics)
+"""Standard deviation under reproducibility conditions (different operators, equipment, time)"""
+_E_DataProcessing_Synchronization = _EnumValue('https://watermetadata.org/ontology/watr#DataProcessing-Synchronization', label='Synchronization', definition='Parent class for synchronization methods to align data from multiple sources to common time intervals', parent=_E_EnumerationKind_DataProcessing)
+"""Parent class for synchronization methods to align data from multiple sources to common time intervals"""
+_E_Synchronization_Downsampling = _EnumValue('https://watermetadata.org/ontology/watr#Synchronization-Downsampling', label='Downsampling', definition='Decrease the sampling frequency of data to a lower rate', parent=_E_DataProcessing_Synchronization)
+"""Decrease the sampling frequency of data to a lower rate"""
+_E_Synchronization_Resampling = _EnumValue('https://watermetadata.org/ontology/watr#Synchronization-Resampling', label='Resampling', definition='Resample data to a different frequency or time interval', parent=_E_DataProcessing_Synchronization)
+"""Resample data to a different frequency or time interval"""
+_E_Synchronization_TimeAlignment = _EnumValue('https://watermetadata.org/ontology/watr#Synchronization-TimeAlignment', label='Time Alignment', definition='Align data points from different sources to common timestamps', parent=_E_DataProcessing_Synchronization)
+"""Align data points from different sources to common timestamps"""
+_E_Synchronization_Upsampling = _EnumValue('https://watermetadata.org/ontology/watr#Synchronization-Upsampling', label='Upsampling', definition='Increase the sampling frequency of data to a higher rate', parent=_E_DataProcessing_Synchronization)
+"""Increase the sampling frequency of data to a higher rate"""
+_E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', definition='An enumeration kind describing the accumulated operating time of a piece of equipment.', parent=_E_EnumerationKind)
+"""An enumeration kind describing the accumulated operating time of a piece of equipment."""
 EnumerationKind = _E_EnumerationKind
 Aspect = _E_EnumerationKind_Aspect
 Binary = _E_EnumerationKind_Binary
@@ -2224,30 +2355,41 @@ class _Values:
     Refrigerant_R_717 = _E_Refrigerant_R_717
     Refrigerant_R_744 = _E_Refrigerant_R_744
     Constituent_SO2 = _E_Constituent_SO2
-    Constituent_VolatileOrganicCompounds = _E_Constituent_VolatileOrganicCompounds
-    Constituent_Ammonia = _E_Constituent_Ammonia
-    Constituent_ASM2d_S_NH4 = _E_Constituent_ASM2d_S_NH4
-    Constituent_Bacteria = _E_Constituent_Bacteria
-    Constituent_ASM2d_X_AUT = _E_Constituent_ASM2d_X_AUT
-    Constituent_ASM2d_X_H = _E_Constituent_ASM2d_X_H
-    Constituent_ASM2d_X_PAO = _E_Constituent_ASM2d_X_PAO
+    Constituent_VolatileOrganicCompounds_2 = _E_Constituent_VolatileOrganicCompounds_2
+    Constituent_ChlorineResidual = _E_Constituent_ChlorineResidual
     Constituent_Cyanide = _E_Constituent_Cyanide
     Constituent_DissolvedOxygen = _E_Constituent_DissolvedOxygen
+    Constituent_DissolvedSolids = _E_Constituent_DissolvedSolids
+    Constituent_Arsenic = _E_Constituent_Arsenic
+    Constituent_Hardness = _E_Constituent_Hardness
+    Constituent_Metals = _E_Constituent_Metals
+    Constituent_Lead = _E_Constituent_Lead
+    Constituent_Salt = _E_Constituent_Salt
+    Salt_NaCl = _E_Salt_NaCl
+    Constituent_Silica = _E_Constituent_Silica
+    Constituent_Sulfate = _E_Constituent_Sulfate
     Constituent_InorganicCarbon = _E_Constituent_InorganicCarbon
     Constituent_Inorganics = _E_Constituent_Inorganics
     Constituent_ASM2d_S_NO3 = _E_Constituent_ASM2d_S_NO3
     Constituent_ASM2d_S_PO4 = _E_Constituent_ASM2d_S_PO4
-    Constituent_Metals = _E_Constituent_Metals
+    Constituent_Nitrogen = _E_Constituent_Nitrogen
+    Constituent_Ammonia = _E_Constituent_Ammonia
+    Constituent_ASM2d_S_NH4 = _E_Constituent_ASM2d_S_NH4
     Constituent_Nitrate = _E_Constituent_Nitrate
     Constituent_Nitrite = _E_Constituent_Nitrite
+    Constituent_OrganicNitrogen = _E_Constituent_OrganicNitrogen
     Constituent_NitrogenOxides = _E_Constituent_NitrogenOxides
     Constituent_Organics = _E_Constituent_Organics
     Constituent_ASM2d_S_A = _E_Constituent_ASM2d_S_A
     Constituent_ASM2d_S_F = _E_Constituent_ASM2d_S_F
     Constituent_ASM2d_S_I = _E_Constituent_ASM2d_S_I
     Constituent_OrganicCarbon = _E_Constituent_OrganicCarbon
+    Constituent_PFAS = _E_Constituent_PFAS
+    Constituent_VolatileOrganicCompounds = _E_Constituent_VolatileOrganicCompounds
     Constituent_Particles = _E_Constituent_Particles
     Constituent_Solids = _E_Constituent_Solids
+    Constituent_InorganicSolids = _E_Constituent_InorganicSolids
+    Constituent_OrganicSolids = _E_Constituent_OrganicSolids
     Constituent_SuspendedSolids = _E_Constituent_SuspendedSolids
     Constituent_ASM2d_X_I = _E_Constituent_ASM2d_X_I
     Constituent_ASM2d_X_MeOH = _E_Constituent_ASM2d_X_MeOH
@@ -2255,8 +2397,15 @@ class _Values:
     Constituent_ASM2d_X_PHA = _E_Constituent_ASM2d_X_PHA
     Constituent_ASM2d_X_PP = _E_Constituent_ASM2d_X_PP
     Constituent_ASM2d_X_S = _E_Constituent_ASM2d_X_S
-    Constituent_Salt = _E_Constituent_Salt
-    Salt_NaCl = _E_Salt_NaCl
+    Constituent_Pathogens = _E_Constituent_Pathogens
+    Constituent_Bacteria = _E_Constituent_Bacteria
+    Constituent_ASM2d_X_AUT = _E_Constituent_ASM2d_X_AUT
+    Constituent_ASM2d_X_H = _E_Constituent_ASM2d_X_H
+    Constituent_ASM2d_X_PAO = _E_Constituent_ASM2d_X_PAO
+    Constituent_Protozoa = _E_Constituent_Protozoa
+    Constituent_Viruses = _E_Constituent_Viruses
+    Constituent_Phosphorus = _E_Constituent_Phosphorus
+    Constituent_Phosphate = _E_Constituent_Phosphate
     WastewaterTreatmentChemical = _E_WastewaterTreatmentChemical
     Coagulant = _E_Coagulant
     Coagulant_Alum = _E_Coagulant_Alum
@@ -2292,12 +2441,12 @@ class _Values:
     GlycolSolution_30Percent = _E_GlycolSolution_30Percent
     Water_HotWater = _E_Water_HotWater
     Water_Steam = _E_Water_Steam
-    Fluid_Sludge = _E_Fluid_Sludge
-    Sludge_MixedLiquor = _E_Sludge_MixedLiquor
     Water_Brackish = _E_Water_Brackish
     Water_Brine = _E_Water_Brine
     Water_Freshwater = _E_Water_Freshwater
     Water_Seawater = _E_Water_Seawater
+    Fluid_Sludge = _E_Fluid_Sludge
+    Sludge_MixedLiquor = _E_Sludge_MixedLiquor
     Mix_PowerAndSignal = _E_Mix_PowerAndSignal
     PowerAndSignal_PoE = _E_PowerAndSignal_PoE
     Medium_ThermalContact = _E_Medium_ThermalContact
@@ -2315,6 +2464,52 @@ class _Values:
     ThermodynamicPhase_Solid = _E_ThermodynamicPhase_Solid
     ThermodynamicPhase_Vapor = _E_ThermodynamicPhase_Vapor
     EnumerationKind_DataProcessing = _E_EnumerationKind_DataProcessing
+    DataProcessing_AccuracyMetrics = _E_DataProcessing_AccuracyMetrics
+    Accuracy_ExpandedUncertainty = _E_Accuracy_ExpandedUncertainty
+    Accuracy_PercentRecovery = _E_Accuracy_PercentRecovery
+    Accuracy_RSquared = _E_Accuracy_RSquared
+    Accuracy_TotalUncertainty = _E_Accuracy_TotalUncertainty
+    DataProcessing_Aggregate = _E_DataProcessing_Aggregate
+    Aggregate_Count = _E_Aggregate_Count
+    Aggregate_Max = _E_Aggregate_Max
+    Aggregate_Mean = _E_Aggregate_Mean
+    Aggregate_Median = _E_Aggregate_Median
+    Aggregate_Min = _E_Aggregate_Min
+    Aggregate_Mode = _E_Aggregate_Mode
+    Aggregate_Range = _E_Aggregate_Range
+    Aggregate_StdDev = _E_Aggregate_StdDev
+    Aggregate_Sum = _E_Aggregate_Sum
+    Aggregate_Variance = _E_Aggregate_Variance
+    DataProcessing_ErrorMetrics = _E_DataProcessing_ErrorMetrics
+    Error_AbsoluteError = _E_Error_AbsoluteError
+    Error_Bias = _E_Error_Bias
+    Error_MeanAbsoluteError = _E_Error_MeanAbsoluteError
+    Error_MeanAbsolutePercentageError = _E_Error_MeanAbsolutePercentageError
+    Error_MeanSquaredError = _E_Error_MeanSquaredError
+    Error_RelativeError = _E_Error_RelativeError
+    Error_RootMeanSquaredError = _E_Error_RootMeanSquaredError
+    DataProcessing_Filter = _E_DataProcessing_Filter
+    DataProcessing_Interpolation = _E_DataProcessing_Interpolation
+    Interpolation_BackwardFill = _E_Interpolation_BackwardFill
+    Interpolation_ForwardFill = _E_Interpolation_ForwardFill
+    Interpolation_Linear = _E_Interpolation_Linear
+    Interpolation_NearestNeighbor = _E_Interpolation_NearestNeighbor
+    Interpolation_Polynomial = _E_Interpolation_Polynomial
+    Interpolation_Spline = _E_Interpolation_Spline
+    DataProcessing_Normalization = _E_DataProcessing_Normalization
+    Normalization_Decimal = _E_Normalization_Decimal
+    Normalization_MinMax = _E_Normalization_MinMax
+    Normalization_ZScore = _E_Normalization_ZScore
+    DataProcessing_PrecisionMetrics = _E_DataProcessing_PrecisionMetrics
+    Precision_CoefficientOfVariation = _E_Precision_CoefficientOfVariation
+    Precision_ConfidenceInterval = _E_Precision_ConfidenceInterval
+    Precision_RepeatabilityStdDev = _E_Precision_RepeatabilityStdDev
+    Precision_ReproducibilityStdDev = _E_Precision_ReproducibilityStdDev
+    DataProcessing_Synchronization = _E_DataProcessing_Synchronization
+    Synchronization_Downsampling = _E_Synchronization_Downsampling
+    Synchronization_Resampling = _E_Synchronization_Resampling
+    Synchronization_TimeAlignment = _E_Synchronization_TimeAlignment
+    Synchronization_Upsampling = _E_Synchronization_Upsampling
     EnumerationKind_Runtime = _E_EnumerationKind_Runtime
     _names = (
         'EnumerationKind',
@@ -2733,30 +2928,41 @@ class _Values:
         'Refrigerant_R_717',
         'Refrigerant_R_744',
         'Constituent_SO2',
-        'Constituent_VolatileOrganicCompounds',
-        'Constituent_Ammonia',
-        'Constituent_ASM2d_S_NH4',
-        'Constituent_Bacteria',
-        'Constituent_ASM2d_X_AUT',
-        'Constituent_ASM2d_X_H',
-        'Constituent_ASM2d_X_PAO',
+        'Constituent_VolatileOrganicCompounds_2',
+        'Constituent_ChlorineResidual',
         'Constituent_Cyanide',
         'Constituent_DissolvedOxygen',
+        'Constituent_DissolvedSolids',
+        'Constituent_Arsenic',
+        'Constituent_Hardness',
+        'Constituent_Metals',
+        'Constituent_Lead',
+        'Constituent_Salt',
+        'Salt_NaCl',
+        'Constituent_Silica',
+        'Constituent_Sulfate',
         'Constituent_InorganicCarbon',
         'Constituent_Inorganics',
         'Constituent_ASM2d_S_NO3',
         'Constituent_ASM2d_S_PO4',
-        'Constituent_Metals',
+        'Constituent_Nitrogen',
+        'Constituent_Ammonia',
+        'Constituent_ASM2d_S_NH4',
         'Constituent_Nitrate',
         'Constituent_Nitrite',
+        'Constituent_OrganicNitrogen',
         'Constituent_NitrogenOxides',
         'Constituent_Organics',
         'Constituent_ASM2d_S_A',
         'Constituent_ASM2d_S_F',
         'Constituent_ASM2d_S_I',
         'Constituent_OrganicCarbon',
+        'Constituent_PFAS',
+        'Constituent_VolatileOrganicCompounds',
         'Constituent_Particles',
         'Constituent_Solids',
+        'Constituent_InorganicSolids',
+        'Constituent_OrganicSolids',
         'Constituent_SuspendedSolids',
         'Constituent_ASM2d_X_I',
         'Constituent_ASM2d_X_MeOH',
@@ -2764,8 +2970,15 @@ class _Values:
         'Constituent_ASM2d_X_PHA',
         'Constituent_ASM2d_X_PP',
         'Constituent_ASM2d_X_S',
-        'Constituent_Salt',
-        'Salt_NaCl',
+        'Constituent_Pathogens',
+        'Constituent_Bacteria',
+        'Constituent_ASM2d_X_AUT',
+        'Constituent_ASM2d_X_H',
+        'Constituent_ASM2d_X_PAO',
+        'Constituent_Protozoa',
+        'Constituent_Viruses',
+        'Constituent_Phosphorus',
+        'Constituent_Phosphate',
         'WastewaterTreatmentChemical',
         'Coagulant',
         'Coagulant_Alum',
@@ -2801,12 +3014,12 @@ class _Values:
         'GlycolSolution_30Percent',
         'Water_HotWater',
         'Water_Steam',
-        'Fluid_Sludge',
-        'Sludge_MixedLiquor',
         'Water_Brackish',
         'Water_Brine',
         'Water_Freshwater',
         'Water_Seawater',
+        'Fluid_Sludge',
+        'Sludge_MixedLiquor',
         'Mix_PowerAndSignal',
         'PowerAndSignal_PoE',
         'Medium_ThermalContact',
@@ -2824,6 +3037,52 @@ class _Values:
         'ThermodynamicPhase_Solid',
         'ThermodynamicPhase_Vapor',
         'EnumerationKind_DataProcessing',
+        'DataProcessing_AccuracyMetrics',
+        'Accuracy_ExpandedUncertainty',
+        'Accuracy_PercentRecovery',
+        'Accuracy_RSquared',
+        'Accuracy_TotalUncertainty',
+        'DataProcessing_Aggregate',
+        'Aggregate_Count',
+        'Aggregate_Max',
+        'Aggregate_Mean',
+        'Aggregate_Median',
+        'Aggregate_Min',
+        'Aggregate_Mode',
+        'Aggregate_Range',
+        'Aggregate_StdDev',
+        'Aggregate_Sum',
+        'Aggregate_Variance',
+        'DataProcessing_ErrorMetrics',
+        'Error_AbsoluteError',
+        'Error_Bias',
+        'Error_MeanAbsoluteError',
+        'Error_MeanAbsolutePercentageError',
+        'Error_MeanSquaredError',
+        'Error_RelativeError',
+        'Error_RootMeanSquaredError',
+        'DataProcessing_Filter',
+        'DataProcessing_Interpolation',
+        'Interpolation_BackwardFill',
+        'Interpolation_ForwardFill',
+        'Interpolation_Linear',
+        'Interpolation_NearestNeighbor',
+        'Interpolation_Polynomial',
+        'Interpolation_Spline',
+        'DataProcessing_Normalization',
+        'Normalization_Decimal',
+        'Normalization_MinMax',
+        'Normalization_ZScore',
+        'DataProcessing_PrecisionMetrics',
+        'Precision_CoefficientOfVariation',
+        'Precision_ConfidenceInterval',
+        'Precision_RepeatabilityStdDev',
+        'Precision_ReproducibilityStdDev',
+        'DataProcessing_Synchronization',
+        'Synchronization_Downsampling',
+        'Synchronization_Resampling',
+        'Synchronization_TimeAlignment',
+        'Synchronization_Upsampling',
         'EnumerationKind_Runtime',
     )
 

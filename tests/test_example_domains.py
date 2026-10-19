@@ -88,9 +88,9 @@ def test_conventional_treatment_train_uses_watr_equipment_and_separates_residual
     expected = {
         "coagulation": (CoagulationBasin, "Process_Coagulation"),
         "flocculation": (FlocculationBasin, "Process_Flocculation"),
-        "clarifier": (SedimentationTank, "Process_Sedimentation"),
+        "clarifier": (SedimentationTank, "Process_Settling"),
         "sand-filter": (RapidSandFilter, "Process_RapidSandFiltration"),
-        "chlorination-contact": (ChlorinationUnit, "Process_ChlorineDosing"),
+        "chlorination-contact": (ChlorinationUnit, "Process_Chlorination"),
     }
     assert {member.name for member in plant.has_member} == set(expected)
     for name, (equipment, process) in expected.items():
