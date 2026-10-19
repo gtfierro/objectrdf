@@ -18,8 +18,9 @@ kept in `docs/` and `DESIGN.md`.
 - `uv run pytest` runs the complete test suite configured under `tests/`.
 - `uv run ruff check src tests examples` checks style and common errors.
 - `uv run ty check src tests examples` performs static type checking.
-- `uv build` creates source and wheel distributions with the `uv_build`
-  backend.
+- `make build` creates source and wheel distributions in a cleared `dist/`
+  with the `uv_build` backend; `make dist-check` also checks the metadata and
+  smoke-tests the installed wheel.
 - `uv run objectrdf gen --file schema.ttl --name Example --out mypkg`
   compiles a local ontology. See `docs/codegen.md` before regenerating committed
   packages.

@@ -103,7 +103,8 @@ make check          # lint, type checks, and tests
 make docs           # build the documentation and execute tutorials
 make docs-open      # build and open the HTML documentation
 make docs-check     # full documentation build; warnings are errors
-make build          # source distribution and wheel
+make build          # source distribution and wheel, replacing dist/
+make dist-check     # build, check metadata, and smoke-test the wheel
 make regen          # regenerate the supplied domain packages from local SHACL
 make help           # all available targets
 ```
@@ -111,5 +112,7 @@ make help           # all available targets
 Use `make test TEST_ARGS="-q tests/test_named_points.py"` to select tests.
 `make format` formats source while excluding generated ontology output.
 `make clean` removes documentation, build output, and tool caches.
+Before uploading a release, run `make dist-check` and upload the files it
+leaves in `dist/`.
 
 Regenerate the Brick package: see [docs/codegen.md](docs/codegen.md).

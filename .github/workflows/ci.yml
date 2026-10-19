@@ -67,8 +67,7 @@ jobs:
         with:
           python-version: "3.12"
           enable-cache: true
-      - run: make build
-      - run: uvx twine check --strict dist/*
+      - run: make dist-check
       - uses: actions/upload-artifact@v4
         with:
           name: dist
