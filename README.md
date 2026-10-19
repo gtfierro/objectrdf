@@ -1,5 +1,7 @@
 # objectrdf
 
+[![CI](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml/badge.svg)](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml)
+
 Author RDF building models — [Brick](https://brickschema.org),
 [ASHRAE 223P](https://open223.info), [WATR](https://watermetadata.org) — as
 plain, typed Python. No RDF in user code; real Turtle out.
@@ -58,6 +60,7 @@ to the example script. See [examples/](examples/) for more scenarios.
 - Quantities, scalar values, and stream composition:
   [docs/quantities.md](docs/quantities.md)
 - Design rationale and roadmap: [DESIGN.md](DESIGN.md)
+- Release notes: [CHANGELOG.md](CHANGELOG.md)
 - Examples organized by ontology: [examples/](examples/)
 - Brick quickstart:
   [examples/brick/quickstart/brick_quickstart.py](examples/brick/quickstart/brick_quickstart.py)

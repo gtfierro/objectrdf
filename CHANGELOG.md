@@ -1,0 +1,35 @@
+# Changelog
+
+All notable changes to objectrdf are documented in this file. The format
+follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
+project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). While
+the version is below 1.0, minor releases may change the public API.
+
+## [Unreleased]
+
+## [0.1.0] - Unreleased
+
+First public release.
+
+### Added
+
+- Typed Python packages generated from ontologies and their SHACL shapes:
+  Brick 1.4.2, ASHRAE 223P (v1.0.0-2026), WATR v0.3.0.rc1, and QUDT units and
+  quantity kinds. Generated classes carry ontology definitions and typed
+  constructors, so editors and type checkers see the whole vocabulary.
+- `Model` sessions that serialize authored objects to Turtle, with containment
+  through `with` blocks, flow connections through `>>` and `connect()`, and
+  SHACL validation through shifty whose reports name the authored objects.
+- Deferred 223P and WATR connections: the Z3 resolver chooses connection
+  points, media, and Connection classes, and `explain()` reports why.
+- `Model.from_graph()` to load existing RDF as typed, editable objects, with
+  optional SHACL-AF inference, plus querying helpers.
+- Domain configurations and immutable property schemas compiled from SHACL,
+  with QUDT-aware quantities (`apply_properties()`, `quantity()`).
+- WATR process and treatment-objective defaults implied by an equipment
+  class's shapes are filled in at construction.
+- The `objectrdf gen` command for compiling other ontologies, with
+  deterministic output for an unchanged imports closure.
+
+[Unreleased]: https://github.com/gtfierro/objectrdf/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/gtfierro/objectrdf/releases/tag/v0.1.0
