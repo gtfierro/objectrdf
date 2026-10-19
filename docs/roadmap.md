@@ -19,6 +19,10 @@
   quantity and stream-state patterns settle.
 - Source traceability/provenance for generated model facts. Revisit before
   adding interchange or translation workflows.
+- A committed lockfile pinning the versions and hashes of each generated
+  package's imports closure. Generation is byte-identical for an unchanged
+  closure and each package bundles its compiled graph, but regenerating Brick,
+  S223, or WaTr still resolves imports from the network.
 
 ## Later development line
 

@@ -38,7 +38,9 @@ def test_explicit_prefixes_are_bound_to_graph():
     ) as m:
         toy.Fan("f1")
 
-    namespaces = {prefix: str(namespace) for prefix, namespace in m.graph().namespaces()}
+    namespaces = {
+        prefix: str(namespace) for prefix, namespace in m.graph().namespaces()
+    }
     assert namespaces["qudt"] == "http://qudt.org/schema/qudt/"
 
 

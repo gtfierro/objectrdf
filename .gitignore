@@ -12,3 +12,7 @@ docs/book/_build/
 .ontoenv/
 examples/bldg1.ttl
 examples/ahu.ttl
+
+# Local scratch files
+.DS_Store
+*.ipynb

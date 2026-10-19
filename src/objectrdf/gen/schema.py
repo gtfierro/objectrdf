@@ -788,7 +788,9 @@ def _shape_class_pairs(graph: rdflib.Graph, classes: dict[str, ClassIR]):
     shape_predicates = (SH.property, SH.node, SH["and"], SH["or"], SH.xone)
     for class_iri in sorted(classes):
         shape = URIRef(class_iri)
-        if any(graph.value(shape, predicate) is not None for predicate in shape_predicates):
+        if any(
+            graph.value(shape, predicate) is not None for predicate in shape_predicates
+        ):
             if (pair := emit(shape, class_iri)) is not None:
                 yield pair
 

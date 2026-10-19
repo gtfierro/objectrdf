@@ -189,10 +189,7 @@ class PortContract:
                 if allowed
                 else ""
             )
-            return (
-                f'direction="{direction}" -> {point_class} '
-                f"(count {count}){media}"
-            )
+            return f'direction="{direction}" -> {point_class} (count {count}){media}'
 
         def constraint_lines(node: CPConstraint, indent: str) -> list[str]:
             if node.operator == "slot" and node.slot is not None:
@@ -224,7 +221,8 @@ class PortContract:
             lines.append("Unconditional ports:")
             for slot in self.slots:
                 lines.append(
-                    "  - " + (f"{slot.name}: " if slot.name else "")
+                    "  - "
+                    + (f"{slot.name}: " if slot.name else "")
                     + line(
                         slot.direction,
                         slot.point_class.__name__,
@@ -290,7 +288,9 @@ class Registry:
     ) -> tuple[type[Entity], ...]:
         """Registered subclasses of ``base``, directly or at any depth."""
         if recursive:
-            return tuple(cls for cls in self.classes if cls is not base and issubclass(cls, base))
+            return tuple(
+                cls for cls in self.classes if cls is not base and issubclass(cls, base)
+            )
         return tuple(cls for cls in self.classes if base in cls.__bases__)
 
     def tree(self, base: type[Entity], *, max_depth: int | None = None) -> str:

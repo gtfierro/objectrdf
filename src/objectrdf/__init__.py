@@ -16,6 +16,7 @@ this top-level module re-exports the runtime pieces users touch directly.
 
 from __future__ import annotations
 
+from importlib.metadata import version as _version
 from typing import TYPE_CHECKING, Literal, overload
 
 if TYPE_CHECKING:
@@ -48,7 +49,7 @@ from .core import (
 )
 from .core.points import PointGroupRef, PointRef
 
-__version__ = "0.1.0"
+__version__ = _version("objectrdf")
 
 
 @overload

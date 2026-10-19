@@ -27,8 +27,8 @@ R3–R4 are anoxic, and R5–R7 are aerobic.
 
 Equipment configurations and property schemas are generated from
 [ontology/asm2d.ttl](../../../ontology/asm2d.ttl). Imports such as `AerobicStage`
-already carry their processes, objectives, roles, and named ports. No local
-Python recipe or property bundle definitions are needed. `model.system(...)`
+already carry their processes, objectives, roles, and named ports, so the script
+defines no supporting Python of its own. `model.system(...)`
 collects equipment and junctions; `system.boundary(...)` marks its boundaries.
 
 `ASM2dState` groups the 22 feed quantities. Its descriptive Python keywords

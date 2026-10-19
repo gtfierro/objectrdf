@@ -83,9 +83,9 @@ def _cmd_gen(args: argparse.Namespace) -> int:
 def _load_via_ontoenv(iri: str) -> tuple[rdflib.Graph, str]:
     """Fetch an ontology and its owl:imports closure through ontoenv.
 
-    Uses a temporary environment so repeated CLI runs stay reproducible from
-    the network state at generation time; a committed lockfile mechanism is
-    planned (see DESIGN.md section 9).
+    Uses a temporary environment, so the closure reflects the network state
+    at generation time. Pinning it with a lockfile is deferred (see
+    docs/roadmap.md).
     """
     from ontoenv import OntoEnv
 

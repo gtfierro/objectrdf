@@ -8,7 +8,7 @@ PYTHON_PATHS := src tests examples
 DOCS_DIR := docs/book
 FORMAT_EXCLUDE := src/objectrdf/qudt/units.py,src/objectrdf/qudt/quantity_kinds.py
 
-.PHONY: help setup check test lint typecheck format build docs docs-rebuild \
+.PHONY: help setup check test lint format-check typecheck format build docs docs-rebuild \
 	docs-check docs-open docs-clean regen examples clean
 
 help: ## Show available commands
@@ -17,7 +17,7 @@ help: ## Show available commands
 setup: ## Install project, development, and documentation dependencies
 	$(UV) sync --group docs
 
-check: lint typecheck test ## Run lint, type checks, and tests
+check: lint format-check typecheck test ## Run lint, format, type checks, and tests
 
 test: ## Run tests (override TEST_ARGS to select tests or options)
 	$(UV) run pytest $(TEST_ARGS)
@@ -25,11 +25,14 @@ test: ## Run tests (override TEST_ARGS to select tests or options)
 lint: ## Check Python style and common errors
 	$(UV) run ruff check $(PYTHON_PATHS)
 
+format-check: ## Check formatting, excluding generated ontology output
+	$(UV) run ruff format --check --extend-exclude '$(FORMAT_EXCLUDE)' $(PYTHON_PATHS) scripts
+
 typecheck: ## Check Python types
 	$(UV) run ty check $(PYTHON_PATHS)
 
 format: ## Format Python source, excluding generated ontology output
-	$(UV) run ruff format --extend-exclude '$(FORMAT_EXCLUDE)' $(PYTHON_PATHS)
+	$(UV) run ruff format --extend-exclude '$(FORMAT_EXCLUDE)' $(PYTHON_PATHS) scripts
 
 build: ## Build the source distribution and wheel in dist/
 	$(UV) build

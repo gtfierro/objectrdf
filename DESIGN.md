@@ -260,9 +260,10 @@ Both the generator and the runtime lean on two existing tools:
 **[ontoenv](https://ontoenv.gtf.fyi)** — ontology dependency resolution for the compiler.
 `objectrdf gen` takes ontology IRIs, not file paths; ontoenv resolves the `owl:imports`
 closure (Brick→ref schemas, 223→QUDT, extensions→base ontologies), caches it, and makes
-codegen reproducible. A lockfile (pinned versions/hashes of the closure) is committed
-next to the generated packages so regeneration is a verifiable no-op. Wishlist if needed:
-first-class lockfile support in ontoenv itself.
+codegen reproducible. Generation output is byte-identical for an unchanged closure, and
+each generated package bundles the exact graph it was compiled from in `_shapes.ttl`.
+Pinning the closure itself (versions/hashes in a committed lockfile) is deferred; see
+[the roadmap](docs/roadmap.md). Wishlist: first-class lockfile support in ontoenv.
 
 **[shifty](https://shifty.gtf.fyi)** (via `pyshifty`) — SHACL validation *and* SHACL-AF
 inference. This is load-bearing for 223, where normative semantics live in `sh:rule`s

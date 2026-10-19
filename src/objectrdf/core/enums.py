@@ -126,9 +126,7 @@ class EnumValue:
         children); the default walks every descendant. Set ``show_iris`` to
         display full RDF identifiers instead of ontology-local names.
         """
-        if max_depth is not None and (
-            isinstance(max_depth, bool) or max_depth < 0
-        ):
+        if max_depth is not None and (isinstance(max_depth, bool) or max_depth < 0):
             raise ValueError("max_depth must be a non-negative integer or None")
 
         def display(node: EnumValue) -> str:
@@ -177,8 +175,17 @@ class EnumValue:
         """Show public metadata and direct children for interactive completion."""
         return sorted(
             {
-                "iri", "label", "definition", "parent", "parents", "children",
-                "descendants", "is_a", "tree", "tree_text", *self._children,
+                "iri",
+                "label",
+                "definition",
+                "parent",
+                "parents",
+                "children",
+                "descendants",
+                "is_a",
+                "tree",
+                "tree_text",
+                *self._children,
             }
         )
 

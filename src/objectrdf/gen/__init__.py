@@ -55,9 +55,9 @@ def compile_modules(
 
         canonical = to_canonical_graph(graph)
         modules = compile_configurations(canonical, name=name, source=source)
-        modules["_shapes.ttl"] = "\n".join(sorted(
-            canonical.serialize(format="nt").splitlines()
-        )) + "\n"
+        modules["_shapes.ttl"] = (
+            "\n".join(sorted(canonical.serialize(format="nt").splitlines())) + "\n"
+        )
         return modules
     from .stable import stable_graph
 

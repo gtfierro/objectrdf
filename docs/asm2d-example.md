@@ -167,5 +167,5 @@ Outlet oxygen values are 1.91, 2.60, and 3.20 g/m³, corresponding to the source
 this example describes a flowsheet and does not solve its process equations.
 
 Regenerate the package with `uv run python scripts/generate_asm2d.py` after editing
-[ontology/asm2d.ttl](../ontology/asm2d.ttl). Model authors need no companion Python
-recipes, bundles, or quantity wrappers.
+[ontology/asm2d.ttl](../ontology/asm2d.ttl). Model authors import the generated
+classes and write no supporting Python.

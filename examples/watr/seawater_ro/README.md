@@ -30,8 +30,8 @@ feed.outlet.apply_properties(
 `MembraneDesign`, `HighPressurePumpDesign`, `PumpDesign`, `ResidenceTimeDesign`,
 `PressureExchangerDesign`, `PermeateState`, and `UVDesign` use the same
 `apply_properties(...)` API. Bare numbers use source-declared default units;
-`Q` is the library's `QuantityAmount` imported under a short name. No local
-quantity wrappers or recipe classes are needed. Each application creates
+`Q` is the library's `QuantityAmount` imported under a short name. Each
+application creates
 separate RDF properties, so a storage design can be reused safely.
 
 The full model uses broad water media to permit composition changes along the

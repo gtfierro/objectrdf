@@ -42,9 +42,7 @@ def test_find_all_includes_subclasses_and_filters_attributes():
     assert model.find_all(toy.Equipment, feeds=pump) == [model["fan"]]
     assert model.find(toy.Equipment, label="Primary pump") is pump
     assert model.find(toy.Sensor) is None
-    assert model.find_all(toy.Equipment, label=lambda value: "pump" in value) == [
-        pump
-    ]
+    assert model.find_all(toy.Equipment, label=lambda value: "pump" in value) == [pump]
 
 
 def test_loaded_object_edits_write_through_and_preserve_unmodeled_rdf():

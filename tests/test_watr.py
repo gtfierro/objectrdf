@@ -15,10 +15,7 @@ def m():
 
 def test_extension_terms_keep_public_names():
     assert watr.ONTOLOGY.iri == "https://watermetadata.org/ontology/watr"
-    assert (
-        watr.Pump.meta.iri
-        == "https://watermetadata.org/ontology/watr#Pump"
-    )
+    assert watr.Pump.meta.iri == "https://watermetadata.org/ontology/watr#Pump"
     assert watr.Pump_2.meta.iri == "http://data.ashrae.org/standard223#Pump"
     # WaTr 0.3 pumps accept any Mix-Fluid (e.g. sludge), so they extend
     # s223:Equipment rather than s223:Pump, which admits only water, oil, or

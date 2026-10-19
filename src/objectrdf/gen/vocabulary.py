@@ -30,8 +30,11 @@ def _text(
     values = sorted(
         graph.objects(subject, predicate),
         key=lambda value: (
-            0 if (getattr(value, "language", None) or "").startswith("en")
-            else 1 if getattr(value, "language", None) is None else 2,
+            0
+            if (getattr(value, "language", None) or "").startswith("en")
+            else 1
+            if getattr(value, "language", None) is None
+            else 2,
             str(value),
         ),
     )
@@ -75,7 +78,8 @@ def extract_vocabulary(
                 definition=_text(graph, subject, SKOS.definition),
                 types=types,
                 dimension_vector=_text(
-                    graph, subject,
+                    graph,
+                    subject,
                     URIRef("http://qudt.org/schema/qudt/hasDimensionVector"),
                 ),
             )

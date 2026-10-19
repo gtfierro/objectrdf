@@ -3,16 +3,48 @@ name = "objectrdf"
 version = "0.1.0"
 description = "Author RDF building models (Brick, 223P, WATR) as plain typed Python"
 readme = "README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 authors = [
     { name = "Gabe Fierro", email = "gtfierro@mines.edu" }
 ]
 requires-python = ">=3.12"
+keywords = [
+    "rdf",
+    "ontology",
+    "shacl",
+    "brick",
+    "ashrae-223p",
+    "watr",
+    "building-automation",
+    "water-treatment",
+    "code-generation",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Code Generators",
+    "Typing :: Typed",
+]
 dependencies = [
     "ontoenv>=0.5.5",
     "pyshifty>=0.2.6",
     "rdflib>=7.6.0",
     "z3-solver>=5.0.0.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/gtfierro/objectrdf"
+Repository = "https://github.com/gtfierro/objectrdf"
+Issues = "https://github.com/gtfierro/objectrdf/issues"
 
 [project.scripts]
 objectrdf = "objectrdf.cli:main"
