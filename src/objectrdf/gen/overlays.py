@@ -44,6 +44,10 @@ class Overlay:
     primary_namespace: str | None = None
     """Namespace whose terms retain unsuffixed Python names on collisions."""
 
+    deferred_properties: tuple[str, ...] = ()
+    """Predicates whose values may be a deferred port, declared point, or
+    connection handle, replaced by the concrete entity on resolution."""
+
     connector: bool = False
     """Install the 223-style connection-point negotiator on Connectable."""
 
@@ -91,6 +95,10 @@ S223 = Overlay(
     ),
     enum_root=f"{_S223_NS}EnumerationKind",
     ontology_iri="http://data.ashrae.org/standard223/1.0/model/all",
+    deferred_properties=(
+        f"{_S223_NS}hasObservationLocation",
+        f"{_S223_NS}hasReferenceLocation",
+    ),
     connector=True,
     connection_classes={
         f"{_S223_NS}Fluid-Air": "Duct",
@@ -111,6 +119,7 @@ WATR = Overlay(
         f"{_WATR_NS}hasProcess",
         f"{_WATR_NS}hasTreatmentObjective",
     ),
+    deferred_properties=S223.deferred_properties,
     connector=True,
     connection_classes={
         **S223.connection_classes,

@@ -17,7 +17,7 @@ readable errors.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Generic, Iterable, Iterator, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Generic, Iterable, Iterator, TypeVar, overload
 
 from .errors import RangeError
 from .meta import PropertySpec
@@ -59,6 +59,7 @@ class RelSet(Generic[T]):
         changed = False
         changed_items: list[T] = []
         for item in items:
+            item = _link_value(self._spec, item)
             self._owner._check_range(self._spec, item)
             if item in self._items:
                 continue
@@ -176,6 +177,7 @@ class RelOne(Generic[T]):
     def __set__(self, obj: Entity, value: T | None) -> None:
         obj._model._assert_mutable()
         if value is not None:
+            value = _link_value(self.spec, value)
             obj._check_range(self.spec, value)
         previous = obj._data.get(self.spec.name)
         if previous is not None:
@@ -501,6 +503,16 @@ def _literal_ok(datatype: type | None, value: object) -> bool:
     if datatype is int:
         return isinstance(value, int) and not isinstance(value, bool)
     return isinstance(value, datatype)
+
+
+def _link_value(spec: PropertySpec, value: Any) -> Any:
+    """Store a declared point as its port, or as its concrete point."""
+    if spec.deferred:
+        from .points import PointRef
+
+        if isinstance(value, PointRef):
+            return value._port
+    return value
 
 
 def _link_inverse(owner: Entity, spec: PropertySpec, target: object) -> None:

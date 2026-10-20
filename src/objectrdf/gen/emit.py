@@ -78,6 +78,10 @@ def emit_module(ir: SchemaIR, overlay: Overlay | None = None) -> str:
             source_r=repr(ir.source),
         )
     ]
+    if any(prop.deferred for cls in ir.classes for prop in cls.own_props):
+        parts.append(
+            "from objectrdf.core import DeferredEndpoint as _DeferredEndpoint\n"
+        )
     if ir.enums:
         parts.append(
             "from . import enums as enums\n\n_REGISTRY.register_enums(enums)\n"
@@ -215,6 +219,8 @@ def _emit_spec(cls: ClassIR, prop: PropIR) -> str:
         args.append(f"max_count={prop.max_count}")
     if prop.inverse is not None:
         args.append(f"inverse={prop.inverse!r}")
+    if prop.deferred:
+        args.append("deferred=True")
     joined = ",\n    ".join(args)
     return f"{_spec_var(cls, prop)} = _PropertySpec(\n    {joined},\n)\n"
 
@@ -248,6 +254,8 @@ def _range_union(prop: PropIR) -> str:
         "http://qudt.org/schema/qudt/hasQuantityKind",
     }:
         union += " | _TermValue"
+    if prop.deferred:
+        union += " | _DeferredEndpoint"
     return union
 
 

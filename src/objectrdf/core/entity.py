@@ -663,6 +663,8 @@ class Entity:
                 f"{type(self).__name__}.{spec.name} expects {names}, got "
                 f"compiled term {value!r}"
             )
+        if spec.deferred and self._check_deferred(spec, value):
+            return
         if not isinstance(value, Entity):
             raise RangeError(
                 f"{type(self).__name__}.{spec.name} links entities, got "
@@ -676,6 +678,30 @@ class Entity:
                 f"{type(self).__name__}.{spec.name} expects {names}, got "
                 f"{type(value).__name__} ({value.name!r})"
             )
+
+    def _check_deferred(self, spec: PropertySpec, value: object) -> bool:
+        """Accept a port, declared point, or connection handle of this model.
+
+        Resolution replaces it with the concrete point or connection.
+        """
+        from .points import PointGroupRef, PointRef
+        from .resolution import ConnectionHandle, PortHandle
+
+        if isinstance(value, PointGroupRef):
+            raise RangeError(
+                f"{type(self).__name__}.{spec.name} needs one point; "
+                f"{value.name!r} names a group, so pick one of its points"
+            )
+        if isinstance(value, PointRef):
+            value = value._port
+        if not isinstance(value, (PortHandle, ConnectionHandle)):
+            return False
+        if value._model is not self._model:
+            raise RangeError(
+                f"{type(self).__name__}.{spec.name}: {value.name!r} belongs to "
+                "another Model"
+            )
+        return True
 
     def _apply_class_defaults(self) -> None:
         """Add each class-implied value the author did not already cover."""

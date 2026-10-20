@@ -49,6 +49,7 @@ from .relations import (
 )
 from .resolution import (
     ConnectionHandle,
+    DeferredEndpoint,
     PortHandle,
     ResolutionExplanation,
     ResolutionIssue,
@@ -61,6 +62,7 @@ from .terms import TermValue
 __all__ = [
     "AmbiguousModelError",
     "CPSlot",
+    "DeferredEndpoint",
     "ClassInfo",
     "CPConstraint",
     "ClassMetaView",

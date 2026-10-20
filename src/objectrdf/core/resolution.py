@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Iterator, Literal
 
 from .enums import _local
 from .errors import ModelingError
+from .points import PointRef
 from .terms import TermValue
 
 if TYPE_CHECKING:
@@ -318,6 +319,14 @@ class ConnectionHandle:
         return (
             f"<ConnectionHandle {self.name}: {self.source.name} -> {self.target.name}>"
         )
+
+
+DeferredEndpoint = PortHandle | PointRef | ConnectionHandle
+"""A not-yet-resolved connection point or connection.
+
+Properties that name a location, such as a sensor's observation location,
+accept one; resolution replaces it with the concrete entity.
+"""
 
 
 class _StagedCollection:

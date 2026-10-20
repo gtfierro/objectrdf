@@ -11,6 +11,8 @@ from .core import (
     AmbiguousModelError,
     CPConstraint,
     CPSlot,
+    ConnectionHandle,
+    ModelingError,
     PortHandle,
     ResolutionIssue,
     ResolutionExplanation,
@@ -23,7 +25,7 @@ from .core.relations import RelSet
 
 if TYPE_CHECKING:
     from .connect223 import S223Connector
-    from .core import ConnectionHandle, Entity, EnumValue, Model
+    from .core import Entity, EnumValue, Model
     from .core.points import PointGroupRef
 
 
@@ -994,6 +996,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 boundary = intent.source if source_inside else intent.target
                 point = point_entities[(id(boundary.owner), boundary.name)]
                 getattr(system, "has_boundary_connection_point").add(point)
+    _place_deferred_links(snapshot, authored_points, connection_entities)
     snapshot._resolving = False
     from .core.query import _restore_named_points
 
@@ -1145,6 +1148,35 @@ def _clone_model(model: Model) -> tuple[Model, dict[Entity, Entity]]:
             copied._rels[name] = new_store
     clone._resolving = False
     return clone, mapping
+
+
+def _place_deferred_links(
+    snapshot: Model,
+    points: dict[PortHandle, Entity],
+    connections: dict[int, Entity],
+) -> None:
+    """Replace ports and connection handles in links with concrete entities."""
+
+    def concrete(entity: Entity, name: str, value: Any) -> Any:
+        if isinstance(value, PortHandle):
+            if value not in points:
+                raise ModelingError(
+                    f"{entity.name}.{name}: port {value.name!r} was not resolved"
+                )
+            return points[value]
+        if isinstance(value, ConnectionHandle):
+            if value.identifier not in connections:
+                raise ModelingError(
+                    f"{entity.name}.{name}: connection {value.name!r} was not resolved"
+                )
+            return connections[value.identifier]
+        return value
+
+    for entity in snapshot.entities:
+        for name, value in entity._data.items():
+            entity._data[name] = concrete(entity, name, value)
+        for name, store in entity._rels.items():
+            store._items = [concrete(entity, name, item) for item in store._items]
 
 
 def _map_value(value: Any, mapping: dict[Entity, Entity]) -> Any:

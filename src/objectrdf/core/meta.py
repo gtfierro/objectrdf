@@ -89,6 +89,11 @@ class PropertySpec:
     term_ranges: tuple[str, ...] = ()
     """Allowed RDF class IRIs for compiled vocabulary individuals."""
 
+    deferred: bool = False
+    """True when the value may name a deferred endpoint (a port, declared
+    point, or connection handle) that resolution replaces with the concrete
+    connection point or connection, e.g. a sensor's observation location."""
+
 
 @dataclass(frozen=True)
 class CPSlot:

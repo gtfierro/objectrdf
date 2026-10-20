@@ -26,6 +26,8 @@ First public release.
   optional SHACL-AF inference, plus querying helpers.
 - Domain configurations and immutable property schemas compiled from SHACL,
   with QUDT-aware quantities (`apply_properties()`, `quantity()`).
+- A sensor's observation or reference location may be a deferred connection,
+  port, or declared point; resolution places it on the concrete entity.
 - Property schemas written in Python: subclass `PropertySchema` and declare
   fields with `quantity_field()`.
 - WATR process and treatment-objective defaults implied by an equipment

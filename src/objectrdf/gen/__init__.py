@@ -71,6 +71,7 @@ def compile_modules(
         ontology_iri=resolved.ontology_iri if resolved else None,
         primary_namespace=resolved.primary_namespace if resolved else None,
         class_properties=resolved.class_properties if resolved else (),
+        deferred_properties=resolved.deferred_properties if resolved else (),
     )
     modules = {"__init__.py": emit_module(ir, resolved)}
     # Keep validation reproducible: generated packages carry the exact graph

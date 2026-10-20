@@ -688,3 +688,31 @@ def test_untyped_declaration_of_enum_predicate_becomes_enum():
     assert props["Concept"].kind == "enum"
     assert props["Concept"].enum_ranges == ()
     assert props["Port"].enum_ranges == ("urn:media#Medium",)
+
+
+def test_overlay_deferred_properties_widen_types_and_mark_specs():
+    graph = rdflib.Graph().parse(
+        data="""
+            @prefix mini: <urn:deferred#> .
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            mini:Sensor a owl:Class .
+            mini:at a owl:ObjectProperty ; rdfs:domain mini:Sensor .
+            mini:near a owl:ObjectProperty ; rdfs:domain mini:Sensor .
+        """,
+        format="turtle",
+    )
+    deferred = compile_source(
+        graph,
+        name="Deferred",
+        overlay=Overlay(deferred_properties=("urn:deferred#at",)),
+    )
+    plain = compile_source(graph, name="Deferred", overlay=Overlay())
+
+    assert "import DeferredEndpoint as _DeferredEndpoint" in deferred
+    assert "at: _RelOne[_EntityBase | _DeferredEndpoint]" in deferred or (
+        "at: _Rel[_EntityBase | _DeferredEndpoint]" in deferred
+    )
+    assert deferred.count("deferred=True") == 1
+    assert "_DeferredEndpoint" not in plain
+    compile(deferred, "<generated deferred ontology>", "exec")

@@ -88,6 +88,7 @@ class PropIR:
     max_count: int | None = None
     inverse: str | None = None
     enum_ranges: tuple[str, ...] = ()  # enum member IRIs (enum props)
+    deferred: bool = False  # value may be a deferred port or connection
 
 
 @dataclass
@@ -165,6 +166,7 @@ def extract(
     ontology_iri: str | None = None,
     primary_namespace: str | None = None,
     class_properties: tuple[str, ...] = (),
+    deferred_properties: tuple[str, ...] = (),
 ) -> SchemaIR:
     """Build the IR from an ontology graph (with its imports merged in).
 
@@ -209,6 +211,8 @@ def extract(
         for prop in cls.own_props:
             if prop.predicate in class_properties:
                 prop.kind = "class"
+            if prop.predicate in deferred_properties and prop.kind == "object":
+                prop.deferred = True
     _attach_class_defaults(graph, classes, names, canonical, class_properties)
     _type_untyped_enum_properties(classes)
 

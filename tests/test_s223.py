@@ -13,6 +13,7 @@ from objectrdf import (  # noqa: E402
     connect,
 )
 from objectrdf.core import RangeError  # noqa: E402
+from objectrdf.qudt import quantity_kinds, units  # noqa: E402
 from objectrdf.s223 import enums  # noqa: E402
 
 S = "http://data.ashrae.org/standard223#"
@@ -466,6 +467,77 @@ def test_medium_domain_conflict_is_named_in_unsat_core(m):
         m.resolve()
     assert caught.value.core
     assert "fan-in: medium Fluid-Air" in caught.value.core
+
+
+def _observed(subject):
+    return subject.quantity(
+        "reading",
+        20.0,
+        unit=units.DEG_C,
+        kind=quantity_kinds.Temperature,
+        capability="observable",
+    )
+
+
+def test_sensor_location_may_be_a_deferred_connection_or_port(m):
+    fan = s223.Fan("fan")
+    duct = connect(s223.Damper("damper"), fan, name="supply-duct")
+    outlet = fan.port("fan-discharge", direction="out")
+    at_duct = s223.TemperatureSensor(
+        "duct-temp", has_observation_location=duct, observes=_observed(duct)
+    )
+    s223.TemperatureSensor(
+        "discharge-temp",
+        has_observation_location=outlet,
+        observes=fan.quantity(
+            "discharge",
+            20.0,
+            unit=units.DEG_C,
+            kind=quantity_kinds.Temperature,
+            capability="observable",
+        ),
+    )
+    assert at_duct.has_observation_location is duct
+
+    resolved = m.resolve()
+    assert resolved["duct-temp"].has_observation_location is resolved.connection(duct)
+    discharge = resolved["discharge-temp"].has_observation_location
+    assert isinstance(discharge, s223.OutletConnectionPoint)
+    assert discharge.name == "fan-discharge"
+    graph = m.graph()
+    location = URIRef("http://data.ashrae.org/standard223#hasObservationLocation")
+    assert set(graph.objects(URIRef(m.namespace + "duct-temp"), location)) == {
+        URIRef(m.namespace + "supply-duct")
+    }
+
+
+def test_changing_a_deferred_sensor_location_invalidates_resolution(m):
+    fan = s223.Fan("fan")
+    first = connect(s223.Damper("damper"), fan, name="first")
+    sensor = s223.TemperatureSensor(
+        "temp", has_observation_location=first, observes=_observed(first)
+    )
+    assert m.resolve()["temp"].has_observation_location.name == "first"
+    outlet = fan.port("fan-discharge", direction="out")
+    sensor.has_observation_location = outlet
+    assert m.resolve()["temp"].has_observation_location.name == "fan-discharge"
+
+
+def test_deferred_locations_are_limited_to_location_properties(m):
+    fan = s223.Fan("fan")
+    duct = connect(s223.Damper("damper"), fan)
+    with pytest.raises(RangeError, match="links entities"):
+        s223.TemperatureSensor(
+            "temp",
+            has_observation_location=fan,
+            observes=duct,
+        )
+    with Model("urn:test:other#"):
+        other = connect(s223.Damper("d2"), s223.Fan("f2"))
+    with pytest.raises(RangeError, match="another Model"):
+        s223.TemperatureSensor(
+            "temp", has_observation_location=other, observes=_observed(duct)
+        )
 
 
 def test_sparse_components_resolve_independently():
