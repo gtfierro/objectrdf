@@ -315,7 +315,9 @@ class ConnectionHandle:
         self._model._touch(self.source, self.target)
 
     def __repr__(self) -> str:
-        return f"<ConnectionHandle {self.source.name}--{self.target.name}>"
+        return (
+            f"<ConnectionHandle {self.name}: {self.source.name} -> {self.target.name}>"
+        )
 
 
 class _StagedCollection:

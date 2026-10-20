@@ -9,7 +9,13 @@ import pytest
 from rdflib import Literal, RDF, URIRef, XSD
 from typing import cast
 
-from objectrdf import Model, PropertySchema, QuantityDefinition, connect
+from objectrdf import (
+    Model,
+    PropertySchema,
+    QuantityDefinition,
+    connect,
+    quantity_field,
+)
 from objectrdf.core.errors import ModelingError
 from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
 from objectrdf.watr import enums
@@ -311,3 +317,66 @@ def test_scalar_capabilities_and_aspects_are_consistent_on_all_subjects(
     assert getattr(prop, "has_unit") is units.PA
     assert getattr(prop, "has_aspect") == [enums.values.Aspect_Nominal]
     assert model["pressure"] is prop
+
+
+class RawWater(PropertySchema):
+    """Raw-water quality entering a plant."""
+
+    flow_rate: float | Q = quantity_field(
+        kind=quantity_kinds.VolumeFlowRate,
+        unit=units.M3_PER_DAY,
+        label="Influent flow",
+        of_medium=enums.values.Fluid_Water,
+        aspects=(enums.values.Aspect_Nominal,),
+        minimum=0.0,
+    )
+    turbidity: float | Q = quantity_field(
+        kind=quantity_kinds.Turbidity,
+        unit=units.NTU,
+        of_medium=enums.values.Fluid_Water,
+    )
+    temperature: float | Q = quantity_field(
+        kind=quantity_kinds.Temperature, unit=units.DEG_C, default=15.0
+    )
+
+
+def test_python_schema_is_a_frozen_validated_dataclass():
+    raw = RawWater(flow_rate=40_000.0, turbidity=12.0)
+    assert raw.temperature == 15.0
+    with pytest.raises(FrozenInstanceError):
+        setattr(raw, "turbidity", 1.0)
+    with pytest.raises(ValueError, match=">= 0.0"):
+        RawWater(flow_rate=-1.0, turbidity=12.0)
+    with pytest.raises(TypeError):
+        RawWater(flow_rate=1.0)  # ty: ignore[missing-argument]
+    description = RawWater.describe()
+    assert "Raw-water quality" in description
+    assert "turbidity: Turbidity" in description
+    assert "default=15.0" in description
+
+
+def test_python_schema_applies_like_a_generated_one():
+    with Model("urn:test:python-schema#") as model:
+        pump = Pump("intake")
+        properties = pump.apply_properties(
+            RawWater(flow_rate=40_000.0, turbidity=Q(12.0, units.NTU)),
+            prefix="raw",
+        )
+    assert list(properties) == ["flow_rate", "turbidity", "temperature"]
+    flow = properties["flow_rate"]
+    assert flow.name == "raw-flow-rate"
+    assert isinstance(flow, QuantifiableProperty)
+    assert flow.label == "Influent flow"
+    assert flow.of_medium is enums.values.Fluid_Water
+    assert list(flow.has_aspect) == [enums.values.Aspect_Nominal]
+    graph = model.graph()
+    turbidity = URIRef(model.namespace + "raw-turbidity")
+    assert (URIRef(model.namespace + "intake"), None, turbidity) in graph
+    assert any(str(unit).endswith("/NTU") for unit in graph.objects(turbidity, None))
+
+
+def test_python_schema_fields_must_declare_quantities():
+    with pytest.raises(TypeError, match="declare count with quantity_field"):
+
+        class Counted(PropertySchema):
+            count: float = 1.0

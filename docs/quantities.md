@@ -120,6 +120,41 @@ See [SHACL configurations](shacl-configurations.md) for schema authoring and
 aspects for individual quantities. Property schemas obtain both their property
 class and their aspects from SHACL.
 
+## Schemas written in Python
+
+A schema does not have to come from SHACL. Subclass `PropertySchema` and
+declare each field with `quantity_field()`; the class becomes a frozen,
+keyword-only dataclass with the same validation, `describe()`, and
+`apply_properties()` behavior as a generated schema:
+
+```python
+from objectrdf import PropertySchema, quantity_field
+from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
+
+class InfluentQuality(PropertySchema):
+    """Raw surface-water quality at the plant intake."""
+
+    flow_rate: float | Q = quantity_field(
+        kind=quantity_kinds.VolumeFlowRate,
+        unit=units.M3_PER_DAY,
+        of_medium=enums.values.Water_Freshwater,
+        minimum=0,
+    )
+    turbidity: float | Q = quantity_field(
+        kind=quantity_kinds.Turbidity, unit=units.NTU, minimum=0
+    )
+    temperature: float | Q = quantity_field(
+        kind=quantity_kinds.Temperature, unit=units.DEG_C, default=12.0
+    )
+
+raw_water.apply_properties(InfluentQuality(flow_rate=40_000, turbidity=18.0))
+```
+
+`unit` is the default for bare numbers; `of_medium`, `of_substance`,
+`aspects`, `minimum`, `maximum`, and `allowed_units` mirror what a SHACL
+property shape supplies. Move a schema into SHACL when other tools or
+packages need to share it.
+
 ## Medium and substance qualifications
 
 A scalar quantity can identify its medium, substance, and interpretation directly:

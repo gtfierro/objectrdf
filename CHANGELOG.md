@@ -26,6 +26,8 @@ First public release.
   optional SHACL-AF inference, plus querying helpers.
 - Domain configurations and immutable property schemas compiled from SHACL,
   with QUDT-aware quantities (`apply_properties()`, `quantity()`).
+- Property schemas written in Python: subclass `PropertySchema` and declare
+  fields with `quantity_field()`.
 - WATR process and treatment-objective defaults implied by an equipment
   class's shapes are filled in at construction.
 - The `objectrdf gen` command for compiling other ontologies, with

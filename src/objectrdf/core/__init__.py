@@ -34,6 +34,7 @@ from .property_schema import (
     PropertySet,
     QuantityAmount,
     QuantityDefinition,
+    quantity_field,
 )
 from .relations import (
     EnumOne,
@@ -88,6 +89,7 @@ __all__ = [
     "PropertySet",
     "QuantityAmount",
     "QuantityDefinition",
+    "quantity_field",
     "RangeError",
     "ResolutionError",
     "ResolutionIssue",

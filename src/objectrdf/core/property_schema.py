@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from collections.abc import Iterator, Mapping
+import dataclasses
 from dataclasses import MISSING, dataclass, fields
 from math import isfinite
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, dataclass_transform
 
 from . import containment
 from .terms import TermValue
@@ -114,12 +115,87 @@ class QuantityDefinition:
         return number, unit
 
 
+_QUANTITY = "objectrdf.quantity"
+
+
+def quantity_field(
+    *,
+    kind: TermValue,
+    unit: TermValue,
+    default: float | QuantityAmount | Any = MISSING,
+    label: str | None = None,
+    description: str | None = None,
+    local_name: str | None = None,
+    of_medium: EnumValue | None = None,
+    of_substance: EnumValue | None = None,
+    aspects: tuple[EnumValue, ...] = (),
+    property_class: type[Entity] | None = None,
+    minimum: float | None = None,
+    maximum: float | None = None,
+    allowed_units: tuple[TermValue, ...] = (),
+    fixed_unit: bool = False,
+) -> Any:
+    """Declare one quantity of a :class:`PropertySchema` written in Python.
+
+    ``kind`` and ``unit`` are QUDT terms; ``unit`` is the default for bare
+    numbers. The other arguments mirror what a SHACL property shape supplies
+    to a generated schema. Omit ``default`` to make the value required.
+    """
+    spec = {
+        "kind": kind,
+        "unit": unit,
+        "label": label,
+        "description": description,
+        "local_name": local_name,
+        "of_medium": of_medium,
+        "of_substance": of_substance,
+        "aspects": tuple(aspects),
+        "property_class": property_class,
+        "minimum": minimum,
+        "maximum": maximum,
+        "allowed_units": tuple(allowed_units),
+        "fixed_unit": fixed_unit,
+    }
+    return dataclasses.field(default=default, metadata={_QUANTITY: spec})
+
+
+@dataclass_transform(
+    kw_only_default=True, frozen_default=True, field_specifiers=(quantity_field,)
+)
 @dataclass(frozen=True, kw_only=True)
 class PropertySchema:
-    """Base for generated frozen dataclasses with explicit typed constructors."""
+    """Base for frozen value schemas with explicit typed constructors.
+
+    Schemas are usually generated from SHACL. A subclass written in Python
+    declares each field with :func:`quantity_field` and becomes a frozen,
+    keyword-only dataclass without a decorator.
+    """
 
     _definitions: ClassVar[tuple[QuantityDefinition, ...]] = ()
-    source_shape: ClassVar[str]
+    source_shape: ClassVar[str] = ""
+
+    def __init_subclass__(cls, **kwargs: Any) -> None:
+        super().__init_subclass__(**kwargs)
+        # Generated schemas list their definitions and apply @dataclass
+        # themselves; doing it here too would fail on the frozen class.
+        if "_definitions" in cls.__dict__:
+            return
+        dataclass(frozen=True, kw_only=True)(cls)
+        origin = f"{cls.__module__}.{cls.__qualname__}"
+        missing = [item.name for item in fields(cls) if _QUANTITY not in item.metadata]
+        if missing:
+            raise TypeError(
+                f"{cls.__name__}: declare {', '.join(missing)} with quantity_field()"
+            )
+        cls.source_shape = origin
+        cls._definitions = tuple(
+            QuantityDefinition(
+                name=item.name,
+                source_shape=f"{origin}.{item.name}",
+                **item.metadata[_QUANTITY],
+            )
+            for item in fields(cls)
+        )
 
     def __post_init__(self) -> None:
         for definition in self._definitions:
