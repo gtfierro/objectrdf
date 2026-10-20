@@ -93,6 +93,26 @@ units without conversion. For several fields with the same quantity kind, use
 source constraints such as fixed labels to distinguish their qualified shapes.
 `describe()` displays units, defaults, and provenance.
 
+## Load saved models
+
+A saved model declares `owl:imports` for `urn:example:pumps#`. `Model.from_graph()`
+only recognizes the extensions bundled with objectrdf from their imports, so
+pass your package's registry when loading:
+
+```python
+from objectrdf import Model
+import pumps
+
+model.save("plant.ttl")
+loaded = Model.from_graph("plant.ttl", registries=pumps.REGISTRY)
+assert isinstance(loaded["pump"], SupplyPump)
+```
+
+The registry includes the base package's classes, so equipment from the base
+in the same graph loads too.
+
+## Limits
+
 The compiler supports one constructive parent per extension class, including
 local inheritance, shape composition through `sh:node` and `sh:and`, scalar
 quantity fields, and inclusive numeric bounds. Complex paths and disjunctive

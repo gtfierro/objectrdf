@@ -20,6 +20,7 @@ parts:
     chapters:
       - file: explanation/lifecycle
       - file: explanation/watr-vocabulary
+      - file: explanation/domain-extensions
   - caption: Reference
     chapters:
       - file: reference/runtime
