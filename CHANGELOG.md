@@ -27,7 +27,10 @@ First public release.
 - Domain configurations and immutable property schemas compiled from SHACL,
   with QUDT-aware quantities (`apply_properties()`, `quantity()`).
 - `.sensor()` on equipment, points, ports, and connections creates an observed
-  quantity and the most specific sensor class for its quantity kind.
+  property and the most specific sensor class for its quantity kind.
+  `.actuator()` on equipment creates a command property and an `Actuator`.
+  Both accept a QUDT quantity kind or an enumeration kind such as
+  `Binary_OnOff`.
 - A sensor's observation or reference location may be a deferred connection,
   port, or declared point; resolution places it on the concrete entity.
 - Property schemas written in Python: subclass `PropertySchema` and declare

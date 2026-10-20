@@ -103,10 +103,10 @@ class PointRef:
         self,
         name: str,
         *,
-        kind: TermValue,
+        kind: TermValue | EnumValue,
         unit: TermValue | None = None,
         sensor_class: type[Entity] | None = None,
-        value: float | QuantityAmount | None = None,
+        value: float | QuantityAmount | EnumValue | None = None,
         label: str | None = None,
         **properties: Any,
     ) -> Entity:

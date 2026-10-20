@@ -540,6 +540,66 @@ def test_deferred_locations_are_limited_to_location_properties(m):
         )
 
 
+def test_actuator_commands_equipment_with_a_quantity_or_enumeration(m):
+    fan = s223.Fan("fan")
+    speed = fan.actuator("fan-speed", kind=quantity_kinds.Frequency, unit=units.HZ)
+    start = fan.actuator(
+        "fan-start", kind=enums.values.Binary_OnOff, value=enums.values.OnOff_Off
+    )
+
+    assert isinstance(speed, s223.Actuator)
+    assert list(speed.actuates) == [fan]
+    [speed_command] = speed.actuated_by_property
+    assert isinstance(speed_command, s223.QuantifiableActuatableProperty)
+    assert speed_command.name == "fan-speed-command"
+    assert speed_command.has_value is None
+    [start_command] = start.actuated_by_property
+    assert isinstance(start_command, s223.EnumeratedActuatableProperty)
+    assert start_command.has_enumeration_kind is enums.values.Binary_OnOff
+    assert start_command.has_value is enums.values.OnOff_Off
+    assert list(fan.actuated_by_property) == [speed_command, start_command]
+    assert {prop.name for prop in fan.has_property} >= {
+        "fan-speed-command",
+        "fan-start-command",
+    }
+    assert m.validate().ok
+
+
+def test_actuator_rejects_mismatched_kinds_and_non_equipment(m):
+    fan = s223.Fan("fan")
+    with pytest.raises(TypeError, match="takes no unit"):
+        fan.actuator("bad", kind=enums.values.Binary_OnOff, unit=units.HZ)
+    with pytest.raises(ValueError, match="member of"):
+        fan.actuator(
+            "bad", kind=enums.values.Binary_OnOff, value=enums.values.Binary_OnOff
+        )
+    with pytest.raises(TypeError, match="takes a number"):
+        fan.actuator(
+            "bad",
+            kind=quantity_kinds.Frequency,
+            unit=units.HZ,
+            value=enums.values.OnOff_On,
+        )
+    # A Sensor is Equipment and may be actuated; its observed property is not.
+    reading = fan.sensor(
+        "fan-temperature", kind=quantity_kinds.Temperature, unit=units.DEG_C
+    ).observes
+    assert reading is not None
+    with pytest.raises(TypeError, match="not Equipment"):
+        reading.actuator("bad", kind=quantity_kinds.Frequency, unit=units.HZ)
+    assert not {"bad", "bad-command"} & {entity.name for entity in m.entities}
+
+
+def test_sensor_observes_an_enumerated_state(m):
+    fan = s223.Fan("fan")
+    status = fan.sensor("fan-status", kind=enums.values.Binary_OnOff)
+
+    assert type(status) is s223.Sensor
+    observed = status.observes
+    assert isinstance(observed, s223.EnumeratedObservableProperty)
+    assert observed.has_enumeration_kind is enums.values.Binary_OnOff
+
+
 def test_sparse_components_resolve_independently():
     with Model("urn:test/sparse#") as model:
         handles = [connect(s223.Damper(f"d{i}"), s223.Fan(f"f{i}")) for i in range(30)]

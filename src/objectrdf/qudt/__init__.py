@@ -8,6 +8,7 @@ from objectrdf.core import (
     ClassInfo,
     ConnectionHandle,
     Entity,
+    EnumValue,
     Lit,
     Model,
     PortHandle,
@@ -148,12 +149,16 @@ def _create_quantity(
         prop._data["has_value"] = Literal(value, datatype=URIRef(datatype))
         prop.meta.model._touch(prop)
     if of is not None:
-        if isinstance(of, PortHandle):
-            of._properties.append(prop)
-            of._model._touch(of.owner)
-        else:
-            getattr(of, "has_property").add(prop)
+        _attach_property(prop, of)
     return cast(PropertyT, prop)
+
+
+def _attach_property(prop: Entity, of: Entity | ConnectionHandle | PortHandle) -> None:
+    if isinstance(of, PortHandle):
+        of._properties.append(prop)
+        of._model._touch(of.owner)
+    else:
+        getattr(of, "has_property").add(prop)
 
 
 def _attached_quantity(
@@ -200,54 +205,61 @@ def _attached_quantity(
         )
 
 
-_SENSOR = "http://data.ashrae.org/standard223#Sensor"
+_S223 = "http://data.ashrae.org/standard223#"
 _LOCATIONS = tuple(
-    f"http://data.ashrae.org/standard223#{name}"
-    for name in ("Connectable", "Connection", "ConnectionPoint")
+    f"{_S223}{name}" for name in ("Connectable", "Connection", "ConnectionPoint")
 )
 
 
-def _attached_sensor(
+def _context(target: Entity | PortHandle | ConnectionHandle) -> tuple[Registry, Model]:
+    if isinstance(target, Entity):
+        return target.meta.registry, target.meta.model
+    if isinstance(target, PortHandle):
+        return target.owner.meta.registry, target._model
+    return target._connection_type().meta.registry, target._model
+
+
+def _s223_class(registry: Registry, name: str) -> Any:
+    cls = registry.by_iri.get(f"{_S223}{name}")
+    if cls is None:
+        raise TypeError(f"{registry.ontology.name} has no {name} class")
+    return cls
+
+
+def _dynamic_property(
     target: Entity | PortHandle | ConnectionHandle,
     name: str,
     *,
-    kind: TermValue,
-    unit: TermValue | None = None,
-    sensor_class: type[Entity] | None = None,
-    value: float | QuantityAmount | None = None,
-    label: str | None = None,
-    **properties: Any,
+    kind: TermValue | EnumValue,
+    unit: TermValue | None,
+    value: float | QuantityAmount | EnumValue | None,
+    capability: Literal["observable", "actuatable"],
+    properties: dict[str, Any],
 ) -> Entity:
-    """Create an observed quantity on ``target`` and a sensor observing it.
+    """An observable or actuatable property, quantified or enumerated.
 
-    The sensor is named ``name`` and observes ``<name>-value``. Without
-    ``sensor_class``, the package's quantity-kind table picks the most
-    specific sensor class, falling back to ``Sensor``.
+    A QUDT quantity kind needs a unit; an enumeration kind such as
+    ``Binary_OnOff`` takes none, and its value must be one of the kind's
+    members.
     """
     from objectrdf.core.property_schema import QuantityDefinition
 
-    if isinstance(target, Entity):
-        registry, model = target.meta.registry, target.meta.model
-        if not any(
-            (cls := registry.by_iri.get(iri)) is not None and isinstance(target, cls)
-            for iri in _LOCATIONS
+    registry, model = _context(target)
+    if isinstance(kind, EnumValue):
+        if unit is not None:
+            raise TypeError(f"{name}: an enumeration kind takes no unit")
+        if value is not None and not (
+            isinstance(value, EnumValue) and value is not kind and value.is_a(kind)
         ):
-            raise TypeError(
-                f"{target.type} cannot be a sensor's observation location; use "
-                "equipment, a connection, or a connection point"
-            )
-    elif isinstance(target, PortHandle):
-        registry, model = target.owner.meta.registry, target._model
-    else:
-        registry, model = target._connection_type().meta.registry, target._model
-    base = registry.by_iri.get(_SENSOR)
-    if base is None:
-        raise TypeError(f"{registry.ontology.name} has no Sensor class")
-    if sensor_class is None:
-        chosen = registry.sensor_classes.get(kind.iri)
-        sensor_class = registry.resolve(chosen) if chosen is not None else base
-    elif not (isinstance(sensor_class, type) and issubclass(sensor_class, base)):
-        raise TypeError(f"sensor_class must be a Sensor subclass, got {sensor_class!r}")
+            raise ValueError(f"{name}: value must be a member of {kind!r}")
+        prefix = "Observable" if capability == "observable" else "Actuatable"
+        prop = _s223_class(registry, f"Enumerated{prefix}Property")(
+            name, has_enumeration_kind=kind, has_value=value, model=model, **properties
+        )
+        _attach_property(prop, target)
+        return prop
+    if isinstance(value, EnumValue):
+        raise TypeError(f"{name}: a quantity takes a number, not {value!r}")
     if isinstance(value, QuantityAmount):
         if unit is not None and unit.iri != value.unit.iri:
             raise ValueError("explicit amount and unit argument disagree")
@@ -255,25 +267,107 @@ def _attached_sensor(
     if unit is None:
         raise TypeError("supply unit= or a QuantityAmount value")
     # Constructing the definition checks that the unit fits the kind.
-    definition = QuantityDefinition(f"{name}-value", "sensor reading", kind, unit)
+    definition = QuantityDefinition(name, "dynamic property", kind, unit)
     number: float | None = None
     if value is not None:
         number, unit = definition.unpack(value)
+    return _create_quantity(
+        _quantity_class(registry, capability),
+        name,
+        number,
+        unit,
+        kind,
+        of=target,
+        **properties,
+    )
+
+
+def _attached_sensor(
+    target: Entity | PortHandle | ConnectionHandle,
+    name: str,
+    *,
+    kind: TermValue | EnumValue,
+    unit: TermValue | None = None,
+    sensor_class: type[Entity] | None = None,
+    value: float | QuantityAmount | EnumValue | None = None,
+    label: str | None = None,
+    **properties: Any,
+) -> Entity:
+    """Create an observed property on ``target`` and a sensor observing it.
+
+    The sensor is named ``name`` and observes ``<name>-value``. Without
+    ``sensor_class``, the package's quantity-kind table picks the most
+    specific sensor class, falling back to ``Sensor``.
+    """
+    registry, model = _context(target)
+    if isinstance(target, Entity) and not any(
+        (cls := registry.by_iri.get(iri)) is not None and isinstance(target, cls)
+        for iri in _LOCATIONS
+    ):
+        raise TypeError(
+            f"{target.type} cannot be a sensor's observation location; use "
+            "equipment, a connection, or a connection point"
+        )
+    base = _s223_class(registry, "Sensor")
+    if sensor_class is None:
+        chosen = registry.sensor_classes.get(kind.iri)
+        sensor_class = registry.resolve(chosen) if chosen is not None else base
+    elif not (isinstance(sensor_class, type) and issubclass(sensor_class, base)):
+        raise TypeError(f"sensor_class must be a Sensor subclass, got {sensor_class!r}")
     constructor: Any = sensor_class
     with model._atomic():
-        observed = _create_quantity(
-            _quantity_class(registry, "observable"),
+        observed = _dynamic_property(
+            target,
             f"{name}-value",
-            number,
-            unit,
-            kind,
-            of=target,
-            **properties,
+            kind=kind,
+            unit=unit,
+            value=value,
+            capability="observable",
+            properties=properties,
         )
         return constructor(
             name,
             has_observation_location=target,
             observes=observed,
+            label=label,
+            model=model,
+        )
+
+
+def _attached_actuator(
+    target: Entity,
+    name: str,
+    *,
+    kind: TermValue | EnumValue,
+    unit: TermValue | None = None,
+    value: float | QuantityAmount | EnumValue | None = None,
+    label: str | None = None,
+    **properties: Any,
+) -> Entity:
+    """Create a command property on equipment and an actuator driven by it.
+
+    The actuator is named ``name``; the equipment and the actuator are both
+    ``actuated_by_property`` the ``<name>-command`` property, and the
+    actuator ``actuates`` the equipment.
+    """
+    registry, model = _context(target)
+    if not isinstance(target, _s223_class(registry, "Equipment")):
+        raise TypeError(f"{target.type} is not Equipment, so it cannot be actuated")
+    with model._atomic():
+        command = _dynamic_property(
+            target,
+            f"{name}-command",
+            kind=kind,
+            unit=unit,
+            value=value,
+            capability="actuatable",
+            properties=properties,
+        )
+        getattr(target, "actuated_by_property").add(command)
+        return _s223_class(registry, "Actuator")(
+            name,
+            actuates=[target],
+            actuated_by_property=[command],
             label=label,
             model=model,
         )

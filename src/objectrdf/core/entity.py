@@ -487,10 +487,10 @@ class Entity:
         self,
         name: str,
         *,
-        kind: TermValue,
+        kind: TermValue | EnumValue,
         unit: TermValue | None = None,
         sensor_class: builtins.type[Entity] | None = None,
-        value: float | QuantityAmount | None = None,
+        value: float | QuantityAmount | EnumValue | None = None,
         label: str | None = None,
         **properties: Any,
     ) -> Entity:
@@ -510,6 +510,36 @@ class Entity:
             kind=kind,
             unit=unit,
             sensor_class=sensor_class,
+            value=value,
+            label=label,
+            **properties,
+        )
+
+    def actuator(
+        self,
+        name: str,
+        *,
+        kind: TermValue | EnumValue,
+        unit: TermValue | None = None,
+        value: float | QuantityAmount | EnumValue | None = None,
+        label: str | None = None,
+        **properties: Any,
+    ) -> Entity:
+        """Add an actuator that commands this equipment.
+
+        Creates an actuatable ``<name>-command`` property and an ``Actuator``
+        named ``name`` that ``actuates`` this equipment; both are
+        ``actuated_by_property`` the command. ``kind`` is a QUDT quantity
+        kind with ``unit=`` (a speed or position setpoint) or an enumeration
+        kind such as ``Binary_OnOff`` (a start/stop command).
+        """
+        from objectrdf.qudt import _attached_actuator
+
+        return _attached_actuator(
+            self,
+            name,
+            kind=kind,
+            unit=unit,
             value=value,
             label=label,
             **properties,
