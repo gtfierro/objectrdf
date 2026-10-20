@@ -49,6 +49,7 @@ from .core import (
     current_model,
 )
 from .core.points import PointGroupRef, PointRef, endpoint_owner
+from .flowsheet import Flowsheet, flowsheet
 
 __version__ = _version("objectrdf")
 
@@ -132,6 +133,7 @@ __all__ = [
     "ResolutionExplanation",
     "Entity",
     "EnumValue",
+    "Flowsheet",
     "Model",
     "ModelingError",
     "ObjectRDFError",
@@ -144,5 +146,6 @@ __all__ = [
     "ValidationError",
     "connect",
     "current_model",
+    "flowsheet",
     "__version__",
 ]

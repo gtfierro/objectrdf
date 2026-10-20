@@ -35,6 +35,10 @@ First public release.
   port, or declared point; resolution places it on the concrete entity.
 - Property schemas written in Python: subclass `PropertySchema` and declare
   fields with `quantity_field()`.
+- `flowsheet(model)` draws a resolved S223 or WATR model as a flow sheet
+  through Graphviz: streams coloured by medium, unit operations listing their
+  processes and objectives, instrument bubbles, system clusters, and
+  boundary terminals.
 - WATR process and treatment-objective defaults implied by an equipment
   class's shapes are filled in at construction.
 - The `objectrdf gen` command for compiling other ontologies, with
