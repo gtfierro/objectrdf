@@ -4,8 +4,10 @@
 generated Python classes used for authoring:
 
 For graphs saved by objectrdf, `owl:imports` on the model ontology identifies
-the generated package. The loader discovers built-in packages and checks the
-recorded `owl:versionInfo` against the installed package when available:
+the generated package. The loader discovers built-in packages, including the
+bundled domain configurations (`watr.drinking_water`, `watr.asm2d`,
+`watr.seawater_ro`, and `s223.hvac`), and checks the recorded
+`owl:versionInfo` against the installed package when available:
 
 ```python
 from objectrdf import Model

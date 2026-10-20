@@ -1,5 +1,6 @@
 """Flow-sheet rendering of resolved S223/WaTr models."""
 
+import re
 import shutil
 
 import pytest
@@ -104,3 +105,16 @@ def test_renders_svg(plant, tmp_path):
     assert svg is not None and "<svg" in svg
     assert sheet.save(tmp_path / "plant.png").read_bytes()[:4] == b"\x89PNG"
     assert sheet.save(tmp_path / "plant.dot").read_text() == sheet.source
+
+
+def test_a_model_loaded_from_turtle_draws_the_same_sheet(plant, tmp_path):
+    resolved = plant.resolve()
+    path = tmp_path / "plant.ttl"
+    resolved.graph().serialize(path, format="turtle")
+    loaded = Model.from_graph(path)
+
+    def shape(source: str) -> list[str]:
+        # Node ids follow iteration order, which RDF does not preserve.
+        return sorted(re.sub(r"\b[nj]\d+\b", "#", line) for line in source.splitlines())
+
+    assert shape(flowsheet(loaded).source) == shape(flowsheet(resolved).source)

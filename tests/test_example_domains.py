@@ -7,7 +7,7 @@ from typing import cast
 
 import pytest
 from rdflib import Graph, Literal, Namespace, URIRef
-from rdflib.namespace import SH
+from rdflib.namespace import OWL, RDF, SH
 
 from objectrdf import Model
 from objectrdf.gen import compile_modules
@@ -134,6 +134,36 @@ def test_conventional_treatment_train_uses_watr_equipment_and_separates_residual
     assert isinstance(clarifier, ClarificationStage)
     assert clarifier.sludge.medium is enums.values.Fluid_Sludge
     assert set(loaded.graph()) == set(graph)
+    # The graph's owl:imports names the domain, so no registry is needed.
+    discovered = Model.from_graph(graph)
+    assert isinstance(discovered["clarifier"], ClarificationStage)
+    assert set(discovered.graph()) == set(graph)
+
+
+def test_registry_discovery_selects_every_imported_domain():
+    from objectrdf.watr.asm2d import AerobicStage
+
+    model = Model("urn:example:mixed-domains#")
+    with model:
+        CoagulationStage("coagulation")
+        AerobicStage("aeration")
+    loaded = Model.from_graph(model.graph())
+    assert isinstance(loaded["coagulation"], CoagulationStage)
+    assert isinstance(loaded["aeration"], AerobicStage)
+
+
+def test_registry_discovery_ignores_a_trailing_hash_in_imports():
+    graph = Graph()
+    ontology = URIRef("urn:example:hand#")
+    graph.add((ontology, RDF.type, OWL.Ontology))
+    graph.add(
+        (ontology, OWL.imports, URIRef("https://w3id.org/objectrdf/drinking-water"))
+    )
+    graph.add(
+        (URIRef("urn:example:hand#stage"), RDF.type, URIRef(CoagulationStage.meta.iri))
+    )
+    loaded = Model.from_graph(graph, strict=False)
+    assert isinstance(loaded["stage"], CoagulationStage)
 
 
 def test_treatment_stage_source_constraints_are_enforced_after_loading():

@@ -23,7 +23,8 @@ First public release.
 - Deferred 223P and WATR connections: the Z3 resolver chooses connection
   points, media, and Connection classes, and `explain()` reports why.
 - `Model.from_graph()` to load existing RDF as typed, editable objects, with
-  optional SHACL-AF inference, plus querying helpers.
+  optional SHACL-AF inference, plus querying helpers. Packages, including the
+  bundled domain configurations, are selected from the graph's `owl:imports`.
 - Domain configurations and immutable property schemas compiled from SHACL,
   with QUDT-aware quantities (`apply_properties()`, `quantity()`).
 - `.sensor()` on equipment, points, ports, and connections creates an observed

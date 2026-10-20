@@ -43,6 +43,9 @@ uv run python scripts/generate_asm2d.py
 The extension reuses the installed base's classes and enumeration values.
 The package exports `REGISTRY`, including base and extension types for graph
 loading; for example, `registries=objectrdf.watr.drinking_water.REGISTRY`.
+Graphs saved by objectrdf import the extension's ontology, so the bundled
+domains are found without `registries=`; a domain compiled elsewhere still
+needs it.
 The package carries the exact source shapes in `_shapes.ttl`; generation
 canonicalizes blank nodes and is deterministic across fresh RDF parses.
 

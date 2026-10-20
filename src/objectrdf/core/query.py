@@ -142,20 +142,39 @@ def load_graph(
     return model
 
 
+#: Installed packages, domain configurations included, that a graph's
+#: ``owl:imports`` can select.
+_PACKAGES = (
+    "watr",
+    "watr.asm2d",
+    "watr.drinking_water",
+    "watr.seawater_ro",
+    "s223",
+    "s223.hvac",
+    "brick",
+    "qudt",
+)
+
+
+def _ontology_key(iri: str) -> str:
+    # ``dw:`` and ``<…/drinking-water>`` name the same ontology.
+    return iri.rstrip("#/")
+
+
 def _discover_registries(graph: rdflib.Graph) -> tuple[Registry, ...]:
-    """Select built-in packages from the model ontology's imports."""
+    """Select installed packages from the model ontology's imports."""
     imports = {
-        str(dependency)
+        _ontology_key(str(dependency))
         for ontology in graph.subjects(RDF.type, OWL.Ontology)
         for dependency in graph.objects(ontology, OWL.imports)
     }
     candidates: list[Registry] = []
-    for package in ("watr", "s223", "brick", "qudt"):
+    for package in _PACKAGES:
         module = import_module(f"objectrdf.{package}")
         registry: Registry = module._REGISTRY
         identity = registry.ontology
         ontology_iri = identity.iri or identity.source
-        if ontology_iri not in imports:
+        if ontology_iri is None or _ontology_key(ontology_iri) not in imports:
             continue
         declared_versions = (
             {
