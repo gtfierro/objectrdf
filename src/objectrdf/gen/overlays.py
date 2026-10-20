@@ -55,6 +55,10 @@ class Overlay:
     """medium enum IRI (or ancestor) -> Connection subclass name, used by
     the negotiator to pick Duct/Pipe/... from the resolved medium."""
 
+    sensor_classes: dict[str, str] = field(default_factory=dict)
+    """QUDT quantity kind IRI -> Sensor subclass name, used by ``.sensor()``
+    to pick the most specific sensor class for an observed quantity."""
+
 
 BRICK = Overlay(
     rshift={"Equipment": "feeds"},
@@ -78,6 +82,25 @@ BRICK = Overlay(
 )
 
 _S223_NS = "http://data.ashrae.org/standard223#"
+_KIND = "http://qudt.org/vocab/quantitykind/"
+
+_S223_SENSORS = {
+    f"{_KIND}AbsoluteHumidity": "HumiditySensor",
+    f"{_KIND}AmountOfSubstanceConcentration": "ConcentrationSensor",
+    f"{_KIND}CorrelatedColorTemperature": "CorrelatedColorTemperatureSensor",
+    f"{_KIND}Duv": "DuvSensor",
+    f"{_KIND}ElectricCurrent": "ElectricCurrentSensor",
+    f"{_KIND}GaugePressure": "GaugePressureSensor",
+    f"{_KIND}Illuminance": "IlluminanceSensor",
+    f"{_KIND}MassConcentration": "ConcentrationSensor",
+    f"{_KIND}MassFlowRate": "FlowSensor",
+    f"{_KIND}Population": "OccupantCountSensor",
+    f"{_KIND}Pressure": "PressureSensor",
+    f"{_KIND}RelativeHumidity": "HumiditySensor",
+    f"{_KIND}Temperature": "TemperatureSensor",
+    f"{_KIND}Voltage": "VoltageSensor",
+    f"{_KIND}VolumeFlowRate": "FlowSensor",
+}
 
 S223 = Overlay(
     containment=(
@@ -106,6 +129,7 @@ S223 = Overlay(
         f"{_S223_NS}Fluid-NaturalGas": "Pipe",
         f"{_S223_NS}Fluid-Oil": "Pipe",
     },
+    sensor_classes=_S223_SENSORS,
 )
 
 _WATR_NS = "https://watermetadata.org/ontology/watr#"
@@ -124,6 +148,16 @@ WATR = Overlay(
     connection_classes={
         **S223.connection_classes,
         f"{_S223_NS}Mix-Fluid": "Pipe",
+    },
+    # Names resolve in the WaTr package, so TemperatureSensor etc. are the
+    # WaTr subclasses of the S223 sensors.
+    sensor_classes={
+        **_S223_SENSORS,
+        f"{_KIND}Conductivity": "ConductivitySensor",
+        f"{_KIND}ElectricConductivity": "ConductivitySensor",
+        f"{_KIND}Frequency": "FrequencySensor",
+        f"{_KIND}Turbidity": "TurbidityMeter",
+        f"{_KIND}Volume": "VolumeSensor",
     },
 )
 

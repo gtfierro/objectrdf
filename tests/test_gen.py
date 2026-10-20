@@ -716,3 +716,30 @@ def test_overlay_deferred_properties_widen_types_and_mark_specs():
     assert deferred.count("deferred=True") == 1
     assert "_DeferredEndpoint" not in plain
     compile(deferred, "<generated deferred ontology>", "exec")
+
+
+def test_overlay_sensor_classes_register_only_known_classes():
+    graph = rdflib.Graph().parse(
+        data="""
+            @prefix mini: <urn:sensors#> .
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            mini:TurbidityMeter a owl:Class .
+        """,
+        format="turtle",
+    )
+    kind = "http://qudt.org/vocab/quantitykind/"
+    source = compile_source(
+        graph,
+        name="Sensors",
+        overlay=Overlay(
+            sensor_classes={
+                f"{kind}Turbidity": "TurbidityMeter",
+                f"{kind}Temperature": "TemperatureSensor",
+            }
+        ),
+    )
+
+    assert (
+        f"_REGISTRY.sensor_classes = {{'{kind}Turbidity': 'TurbidityMeter'}}" in source
+    )
+    assert "# skipped: sensor class TemperatureSensor" in source

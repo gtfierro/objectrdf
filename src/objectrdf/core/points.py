@@ -99,6 +99,38 @@ class PointRef:
             **properties,
         )
 
+    def sensor(
+        self,
+        name: str,
+        *,
+        kind: TermValue,
+        unit: TermValue | None = None,
+        sensor_class: type[Entity] | None = None,
+        value: float | QuantityAmount | None = None,
+        label: str | None = None,
+        **properties: Any,
+    ) -> Entity:
+        """Add a sensor that observes a quantity here.
+
+        Creates an observable ``<name>-value`` property of ``kind`` on this
+        location and a sensor named ``name`` observing it. The sensor class
+        is the most specific one for ``kind`` (``TurbidityMeter`` for
+        Turbidity) unless ``sensor_class`` is given; ``properties`` such as
+        ``of_medium`` go to the observed property.
+        """
+        from objectrdf.qudt import _attached_sensor
+
+        return _attached_sensor(
+            self._port,
+            name,
+            kind=kind,
+            unit=unit,
+            sensor_class=sensor_class,
+            value=value,
+            label=label,
+            **properties,
+        )
+
 
 class PointGroupRef:
     """Stable reference to a declared interchangeable point group."""

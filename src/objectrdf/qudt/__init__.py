@@ -106,7 +106,7 @@ class QuantityValue(Entity):
 def _create_quantity(
     property_class: type[PropertyT],
     name: str,
-    value: float,
+    value: float | None,
     unit: TermValue,
     quantity_kind: TermValue,
     *,
@@ -114,7 +114,10 @@ def _create_quantity(
     datatype: str | None = None,
     **properties: Any,
 ) -> PropertyT:
-    """Instantiate an S223 property with a fixed scalar value and QUDT context.
+    """Instantiate an S223 property with a scalar value and QUDT context.
+
+    ``value`` may be None for an observed or actuated property whose value
+    lives outside the model.
 
     ``property_class`` remains explicit because the ontology, not this helper,
     determines whether the property is observable, actuatable, or static.
@@ -139,7 +142,7 @@ def _create_quantity(
         has_value=value,
         **properties,
     )
-    if datatype is not None:
+    if datatype is not None and value is not None:
         from rdflib import Literal, URIRef
 
         prop._data["has_value"] = Literal(value, datatype=URIRef(datatype))
@@ -194,6 +197,85 @@ def _attached_quantity(
             of=target,
             label=label,
             **properties,
+        )
+
+
+_SENSOR = "http://data.ashrae.org/standard223#Sensor"
+_LOCATIONS = tuple(
+    f"http://data.ashrae.org/standard223#{name}"
+    for name in ("Connectable", "Connection", "ConnectionPoint")
+)
+
+
+def _attached_sensor(
+    target: Entity | PortHandle | ConnectionHandle,
+    name: str,
+    *,
+    kind: TermValue,
+    unit: TermValue | None = None,
+    sensor_class: type[Entity] | None = None,
+    value: float | QuantityAmount | None = None,
+    label: str | None = None,
+    **properties: Any,
+) -> Entity:
+    """Create an observed quantity on ``target`` and a sensor observing it.
+
+    The sensor is named ``name`` and observes ``<name>-value``. Without
+    ``sensor_class``, the package's quantity-kind table picks the most
+    specific sensor class, falling back to ``Sensor``.
+    """
+    from objectrdf.core.property_schema import QuantityDefinition
+
+    if isinstance(target, Entity):
+        registry, model = target.meta.registry, target.meta.model
+        if not any(
+            (cls := registry.by_iri.get(iri)) is not None and isinstance(target, cls)
+            for iri in _LOCATIONS
+        ):
+            raise TypeError(
+                f"{target.type} cannot be a sensor's observation location; use "
+                "equipment, a connection, or a connection point"
+            )
+    elif isinstance(target, PortHandle):
+        registry, model = target.owner.meta.registry, target._model
+    else:
+        registry, model = target._connection_type().meta.registry, target._model
+    base = registry.by_iri.get(_SENSOR)
+    if base is None:
+        raise TypeError(f"{registry.ontology.name} has no Sensor class")
+    if sensor_class is None:
+        chosen = registry.sensor_classes.get(kind.iri)
+        sensor_class = registry.resolve(chosen) if chosen is not None else base
+    elif not (isinstance(sensor_class, type) and issubclass(sensor_class, base)):
+        raise TypeError(f"sensor_class must be a Sensor subclass, got {sensor_class!r}")
+    if isinstance(value, QuantityAmount):
+        if unit is not None and unit.iri != value.unit.iri:
+            raise ValueError("explicit amount and unit argument disagree")
+        unit = value.unit
+    if unit is None:
+        raise TypeError("supply unit= or a QuantityAmount value")
+    # Constructing the definition checks that the unit fits the kind.
+    definition = QuantityDefinition(f"{name}-value", "sensor reading", kind, unit)
+    number: float | None = None
+    if value is not None:
+        number, unit = definition.unpack(value)
+    constructor: Any = sensor_class
+    with model._atomic():
+        observed = _create_quantity(
+            _quantity_class(registry, "observable"),
+            f"{name}-value",
+            number,
+            unit,
+            kind,
+            of=target,
+            **properties,
+        )
+        return constructor(
+            name,
+            has_observation_location=target,
+            observes=observed,
+            label=label,
+            model=model,
         )
 
 

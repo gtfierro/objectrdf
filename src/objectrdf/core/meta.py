@@ -260,6 +260,8 @@ class Registry:
         self.enums_by_iri: dict[str, EnumValue] = {}
         self.terms_by_iri: dict[str, object] = {}
         self.schema_graph = None
+        #: QUDT quantity kind IRI -> Sensor subclass name, for ``.sensor()``
+        self.sensor_classes: dict[str, str] = {}
         # Imported lazily to avoid a module cycle (containment needs Entity).
         from .containment import ContainmentTable
 

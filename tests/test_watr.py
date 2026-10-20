@@ -5,7 +5,9 @@ from rdflib import URIRef
 
 from objectrdf import Model, connect
 from objectrdf import watr
+from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
 from objectrdf.watr import enums
+from objectrdf.watr.drinking_water import RapidSandFiltrationStage
 
 W = "https://watermetadata.org/ontology/watr#"
 
@@ -215,3 +217,73 @@ def test_from_graph_inference_uses_bundled_package_rules(m):
     assert isinstance(clarifier, watr.Clarifier)
     assert watr.Process_Settling in clarifier.has_process
     assert watr.TreatmentObjective_Clarification in clarifier.has_treatment_objective
+
+
+def test_sensor_helper_picks_class_from_quantity_kind(m):
+    intake = watr.Pump("intake")
+    sand_filter = RapidSandFiltrationStage("filter")
+    raw = connect(watr.Tank("reservoir"), intake, name="raw-water")
+    connect(intake, sand_filter.inlet)
+
+    flow = raw.sensor(
+        "raw-flow",
+        kind=quantity_kinds.VolumeFlowRate,
+        unit=units.M3_PER_DAY,
+        of_medium=enums.values.Fluid_Water,
+    )
+    turbidity = sand_filter.filtered_water.sensor(
+        "filtered-turbidity", kind=quantity_kinds.Turbidity, unit=units.NTU
+    )
+    temperature = intake.sensor(
+        "intake-temperature",
+        kind=quantity_kinds.Temperature,
+        value=Q(12.0, units.DEG_C),
+    )
+
+    assert isinstance(flow, watr.FlowSensor)
+    assert isinstance(turbidity, watr.TurbidityMeter)
+    assert isinstance(temperature, watr.TemperatureSensor)
+    reading = flow.observes
+    assert isinstance(reading, watr.QuantifiableObservableProperty)
+    assert reading.name == "raw-flow-value"
+    assert reading.has_value is None
+    assert reading.of_medium is enums.values.Fluid_Water
+    observed = temperature.observes
+    assert observed is not None
+    assert observed.has_value == 12.0
+
+    resolved = m.resolve()
+    assert resolved["raw-flow"].has_observation_location is resolved.connection(raw)
+    assert resolved["filtered-turbidity"].has_observation_location.name == (
+        "filter-filtered_water"
+    )
+
+
+def test_sensor_helper_accepts_explicit_class_and_falls_back_to_sensor(m):
+    tank = watr.Tank("clearwell")
+    level = tank.sensor(
+        "level",
+        kind=quantity_kinds.Length,
+        unit=units.M,
+        sensor_class=watr.LevelSensor,
+    )
+    generic = tank.sensor(
+        "density", kind=quantity_kinds.Density, unit=units.KiloGM_PER_M3
+    )
+
+    assert type(level) is watr.LevelSensor
+    assert type(generic) is watr.Sensor
+    with pytest.raises(TypeError, match="Sensor subclass"):
+        tank.sensor(
+            "bad",
+            kind=quantity_kinds.Length,
+            unit=units.M,
+            sensor_class=watr.Pump,
+        )
+    with pytest.raises(ValueError, match="incompatible"):
+        tank.sensor("bad", kind=quantity_kinds.Temperature, unit=units.M)
+    with pytest.raises(TypeError, match="observation location"):
+        observed = level.observes
+        assert observed is not None
+        observed.sensor("bad", kind=quantity_kinds.Length, unit=units.M)
+    assert "bad" not in {entity.name for entity in m.entities}

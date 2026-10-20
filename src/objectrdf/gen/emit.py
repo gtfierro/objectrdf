@@ -485,6 +485,14 @@ def _emit_overlay(overlay: Overlay, ir: SchemaIR) -> str:
             )
         else:
             lines.append("# skipped: connector (no Connectable in this ontology)")
+    sensors = {
+        kind: name for kind, name in overlay.sensor_classes.items() if name in names
+    }
+    for kind, name in overlay.sensor_classes.items():
+        if name not in names:
+            lines.append(f"# skipped: sensor class {name} (not in this ontology)")
+    if sensors:
+        lines.append(f"_REGISTRY.sensor_classes = {sensors!r}")
     for class_name, prop in overlay.rshift.items():
         if class_name in names and prop in props.get(class_name, set()):
             lines.append(f"{class_name}._RSHIFT = {prop!r}")

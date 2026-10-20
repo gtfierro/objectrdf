@@ -20,6 +20,7 @@ _REGISTRY.by_iri.update(_BASE._REGISTRY.by_iri)
 _REGISTRY.enums_by_iri.update(_BASE._REGISTRY.enums_by_iri)
 _REGISTRY.terms_by_iri.update(_BASE._REGISTRY.terms_by_iri)
 _REGISTRY.containment.rules.extend(_BASE._REGISTRY.containment.rules)
+_REGISTRY.sensor_classes.update(_BASE._REGISTRY.sensor_classes)
 from pathlib import Path as _Path
 from rdflib import Graph as _Graph
 if '__file__' in globals():
