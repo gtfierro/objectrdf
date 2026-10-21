@@ -53,7 +53,7 @@ The script describes reference conditions and topology; it does not solve ASM2d
 reactions or calculate outlet compositions.
 
 Named and unnamed connections use the same port matching. This example selects
-its generated ports explicitly. See the [compiler/runtime guide](../../../docs/shacl-configurations.md)
+its generated ports explicitly. See the [extension compiler reference](../../../docs/book/reference/extension-compiler.md)
 for extension authoring, validation, and supported constraints. Regenerate with:
 
 ```bash

@@ -3,7 +3,7 @@
 `asm2d.ttl` defines the ASM2d equipment configurations, named ports, property
 groups, defaults, units, and split bases in RDF and SHACL. Regenerate its Python
 package with `uv run python scripts/generate_asm2d.py`. See
-[the compiler guide](../docs/shacl-configurations.md). `asm2d-components.ttl`
+[the extension compiler reference](../docs/book/reference/extension-compiler.md). `asm2d-components.ttl`
 adds the component pools used by the WaTr base package.
 
 `seawater-ro.ttl` defines reusable RO and pretreatment process configurations,

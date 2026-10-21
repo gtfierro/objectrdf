@@ -101,7 +101,7 @@ is deterministic).
   handling, the punned enum-subtree carve-out, scalar `hasValue` recognition,
   CP-slot extraction, and the
   medium-domain extraction, and the mutually-required-cycle demotion
-  documented in [s223.md](s223.md).
+  documented in [How connections are resolved](book/explanation/connection-resolution.md).
 
 ## Domain configurations and property schemas
 

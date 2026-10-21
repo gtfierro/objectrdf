@@ -2,28 +2,32 @@
 
 [![CI](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml/badge.svg)](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml)
 
-Author RDF building models — [Brick](https://brickschema.org),
-[ASHRAE 223P](https://open223.info), [WATR](https://watermetadata.org) — as
-plain, typed Python. No RDF in user code; real Turtle out.
+Describe water and wastewater treatment plants as plain, typed Python and
+get RDF that conforms to [WATR](https://github.com/DataDrivenCPS/water-ontology)
+and [ASHRAE 223P](https://open223.info). No RDF in user code; real Turtle out.
+[Brick](https://brickschema.org) building models use the same API.
 
-Bundled ontologies: Brick 1.4.2, ASHRAE 223P (v1.0.0-2026), and WATR
-v0.3.0.rc1, a WATR release candidate whose terms may still change before
-0.3.0.
+Bundled ontologies: WATR v0.3.0.rc1 (a release candidate whose terms may still
+change before 0.3.0), ASHRAE 223P (v1.0.0-2026), and Brick 1.4.2.
 
 ```python
-from objectrdf import Model
-from objectrdf.brick import AHU, VAV, Building, Level, Room
+from objectrdf import Model, connect, flowsheet
+from objectrdf.qudt import quantity_kinds, units
+from objectrdf.watr import Pump
+from objectrdf.watr.drinking_water import ClarificationStage, CoagulationStage
 
-with Model("urn:example/bldg1#") as model:
-    with Building("bldg1"):
-        with Level("floor1"):
-            Room("room101")
+with Model("urn:example:plant#") as model:
+    intake = Pump("intake-pump")
+    coagulation = CoagulationStage("coagulation")
+    clarifier = ClarificationStage("clarifier")
 
-    ahu = AHU("ahu1", label="Main AHU")
-    ahu >> VAV("vav-101")          # brick:feeds
+raw_water = connect(intake, coagulation.inlet, name="raw-water")
+connect(coagulation.outlet, clarifier.inlet, name="coagulated-water")
+raw_water.sensor("raw-water-flow", kind=quantity_kinds.VolumeFlowRate, unit=units.M3_PER_DAY)
 
-model.save("bldg1.ttl")
-print(model.validate())            # SHACL via shifty, errors name your objects
+model.save("plant.ttl")      # connection points and pipes are worked out for you
+print(model.validate())      # SHACL via shifty; errors name your objects
+flowsheet(model).save("plant.svg")
 ```
 
 The ontology classes are generated code, so editors and type checkers see
@@ -43,29 +47,23 @@ uv sync
 Then run an example from the repository root:
 
 ```bash
-uv run python examples/brick/quickstart/brick_quickstart.py
-uv run python examples/s223/ahu/s223_quickstart.py
 uv run python examples/watr/treatment/watr_quickstart.py
 uv run python examples/watr/asm2d/watertap_asm2d.py
+uv run python examples/s223/ahu/s223_quickstart.py
+uv run python examples/brick/quickstart/brick_quickstart.py
 ```
 
 Each example prints a short summary and writes its generated Turtle file next
 to the example script. See [examples/](examples/) for more scenarios.
 
-- Docs: [docs/index.md](docs/index.md)
-- Learning book: [docs/book/](docs/book/README.md) (tutorials, guides,
-  lifecycle explanation, generated API reference)
-- Query existing RDF as typed objects: [docs/querying.md](docs/querying.md)
-- Z3 resolution and media hints: [docs/s223.md](docs/s223.md#giving-the-solver-media-hints)
-- Quantities, scalar values, and stream composition:
-  [docs/quantities.md](docs/quantities.md)
+- Documentation: [the learning book](docs/book/index.md) (tutorials, how-to
+  guides, explanations, and API reference; build it with `make docs`)
+- Start with [modelling a treatment train](docs/book/tutorials/watr-treatment.md)
+  and [characterizing and instrumenting a plant](docs/book/tutorials/watr-instrumented-plant.md)
+- Contributor documentation: [docs/index.md](docs/index.md)
 - Design rationale and roadmap: [DESIGN.md](DESIGN.md)
 - Release notes: [CHANGELOG.md](CHANGELOG.md)
 - Examples organized by ontology: [examples/](examples/)
-- Brick quickstart:
-  [examples/brick/quickstart/brick_quickstart.py](examples/brick/quickstart/brick_quickstart.py)
-- WaTr treatment example:
-  [examples/watr/treatment/watr_quickstart.py](examples/watr/treatment/watr_quickstart.py)
 
 ## Domain configurations and quantities
 
@@ -89,8 +87,10 @@ The same `apply_properties(...)` API works on equipment, points, and connections
 Use `subject.quantity(...)` for individual values. `capability=` selects static,
 observable, or actuatable properties; `has_aspect=` supplies their interpretation.
 
-See [the configuration guide](docs/shacl-configurations.md) and the
-[ASM2d example](docs/asm2d-example.md). Regenerate the supplied domains with
+See [domain extensions](docs/book/explanation/domain-extensions.md), the
+[ASM2d tutorial](docs/book/tutorials/domain-configurations.md), and the
+[extension compiler reference](docs/book/reference/extension-compiler.md).
+Regenerate the supplied domains with
 `uv run python scripts/generate_example_domains.py`.
 
 ## Development
@@ -115,4 +115,4 @@ Use `make test TEST_ARGS="-q tests/test_named_points.py"` to select tests.
 Before uploading a release, run `make dist-check` and upload the files it
 leaves in `dist/`.
 
-Regenerate the Brick package: see [docs/codegen.md](docs/codegen.md).
+To regenerate the committed ontology packages, see [docs/codegen.md](docs/codegen.md).

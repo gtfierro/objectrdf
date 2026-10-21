@@ -1,53 +1,18 @@
-# objectrdf
+# objectrdf contributor documentation
 
-Author RDF building models — Brick, ASHRAE 223P, WATR — as plain, typed
-Python. No IRIs, no triples, no namespaces in user code; the RDF appears when
-you call `model.save()`.
+User documentation, covering how to author, connect, validate, query, and
+extend models, is in [the learning book](book/index.md). Build it with
+`make docs`; every code cell runs during the build.
 
-```python
-from objectrdf import Model
-from objectrdf.brick import AHU, VAV, Building, Level, Room
+The pages here describe how objectrdf works inside and how to change it:
 
-with Model("urn:example/bldg1#") as model:
-    with Building("bldg1"):
-        with Level("floor1"):
-            room = Room("room101")
-
-    ahu = AHU("ahu1", label="Main AHU")
-    vav = VAV("vav-101")
-    ahu >> vav                     # brick:feeds, negotiated by the library
-
-model.save("bldg1.ttl")            # valid Brick Turtle
-print(model.validate())            # SHACL validation (via shifty)
-```
-
-Because the ontology classes are *generated code* (not runtime magic), your
-editor and type checker see everything: completion on `ahu.`, hover-docs
-showing the ontology's own `skos:definition`, and a red squiggle when you
-`feeds` something that can't be fed.
-
-For 223P, one operator replaces the whole connection ceremony:
-
-```python
-from objectrdf.s223 import Damper, Fan
-
-oad = Damper("oa-damper")   # shape-required connection points appear
-oad >> Fan("supply-fan")    # media negotiated, Duct created, inverses set
-```
-
-## Documentation
-
-- [Authoring models](authoring.md) — the Model, containment, `>>`, validation
-- [Querying existing models](querying.md) — hydrate RDF as typed objects
-- [Authoring 223P](s223.md) — enums, connection negotiation, 223 specifics
-- [Authoring WaTr](watr.md) — water-treatment classes on the S223 topology model
-- [Code generation](codegen.md) — how ontologies become Python packages
-- [Architecture](architecture.md) — how the runtime works inside
-- [DESIGN.md](../DESIGN.md) — the full design rationale and roadmap
-- [Quantities and property schemas](quantities.md)
-- [Current implementation roadmap](roadmap.md)
-- [ASM2d example with generated configurations](asm2d-example.md)
-- [Generate domain APIs from SHACL](shacl-configurations.md)
+- [Architecture](architecture.md): the runtime core, the compiler, the 223
+  layer, and domain configurations.
+- [Code generation](codegen.md): solver translation boundary, inheritance
+  repair, UX overlays, and regenerating the committed packages.
+- [Implementation roadmap](roadmap.md): what is done, deferred, and next.
+- [DESIGN.md](../DESIGN.md): the full design rationale.
+- [Book sources](book/README.md): how the learning book is laid out and built.
 
 ## Status
 
@@ -63,4 +28,7 @@ uv sync            # install
 uv run pytest      # tests
 uv run ruff check src tests examples
 uv run ty check src tests examples
+make docs-check    # build the book; warnings are errors
 ```
+
+See `AGENTS.md` for repository conventions.

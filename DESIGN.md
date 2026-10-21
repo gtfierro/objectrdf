@@ -151,7 +151,7 @@ Hierarchy-aware compatibility (`ChilledWater` *is a* `Water`) is used by the
 connection negotiator and by validation. QUDT units and quantity kinds are
 compiled named-individual references rather than locally minted entities:
 `quantity(Property, "temperature", 72.5, units.DEG_F,
-quantity_kinds.Temperature)`. See `docs/quantities.md`.
+quantity_kinds.Temperature)`. See `docs/book/how-to/attach-quantities.md`.
 
 ## 6. The 223 connection model: negotiation + operators
 
@@ -359,7 +359,7 @@ objectrdf/
 RDF and SHACL are the single source for reusable equipment configurations,
 named ports, quantity definitions, and defaults. The compiler generates ordinary
 Python classes with typed constructors and immutable `PropertySchema` values.
-See [the supported authoring and compiler contract](docs/shacl-configurations.md).
+See [the supported authoring and compiler contract](docs/book/reference/extension-compiler.md).
 
 Equipment, points, and connections share `apply_properties(...)`; each
 application creates independent named RDF properties on that exact subject.
