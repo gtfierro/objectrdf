@@ -6,7 +6,7 @@ mystnb:
   execution_in_temp: true
 ---
 
-# Validate and save
+# Validate a model
 
 `validate()` checks the resolved RDF against the SHACL shapes bundled with
 each package, using shifty. It applies S223's and WaTr's SHACL-AF rules first
@@ -68,12 +68,7 @@ resolved["sludge-draw"]
 
 `compile(validate=False)` returns a snapshot without validating.
 
-## Save
+## Next
 
-```{code-cell} python3
-model.save("plant.ttl")
-```
-
-The format follows the extension. `save()` and `graph()` resolve but do not
-validate. The file declares its ontologies with `owl:imports`, which is how
-[loading](save-and-load.md) finds the packages.
+`save()` and `graph()` resolve but do not validate; validate first when the
+file must conform. See [Save, load, and edit models](save-and-load.md).

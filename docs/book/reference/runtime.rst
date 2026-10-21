@@ -85,7 +85,7 @@ Connections and snapshots
    :members: medium, connection_class, label, comment, assign, quantity, apply_properties
 
 .. autoclass:: plumb.ResolvedModel
-   :members: entities, connection, point, explain, graph
+   :members: entities, find, find_all, connection, point, explain, graph
 
 .. autoclass:: plumb.ResolutionReport
    :members: satisfiable, complete

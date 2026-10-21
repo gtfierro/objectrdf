@@ -4,7 +4,7 @@ kernelspec:
   name: python3
 ---
 
-# Attach quantities and property sets
+# Attach quantities
 
 A value such as a tank volume or a raw-water turbidity is an S223 property on
 equipment, a point, or a connection. Units and quantity kinds are QUDT terms
@@ -89,9 +89,9 @@ the pipe, point, or equipment it is on. Resolution uses that:
 - With `of_medium`, the solver keeps the host's medium compatible, and
   `check()` reports a conflict.
 
-Compatible means one medium is the other or a descendant of it, or both are
-mixtures sharing a constituent. `Water_Freshwater` above fits the raw-water
-pipe's `Fluid_Water`. `Fluid_Air` would not:
+`Water_Freshwater` above fits the raw-water pipe's `Fluid_Water`. `Fluid_Air`
+would not; [How connections are resolved](../explanation/connection-resolution.md)
+defines compatible media:
 
 ```{code-cell} python3
 with Model("urn:example:conflict#") as other:
@@ -107,94 +107,6 @@ print(report.status)
 print(report.issues[0].labels[-1])
 ```
 
-Water and sludge share H₂O, so a water property on a sludge line is
-compatible.
-
-## Define a property set in Python
-
-Subclass `PropertySchema` and declare each field with `quantity_field()`:
-
-```{code-cell} python3
-from plumb import PropertySchema, quantity_field
-
-
-class InfluentQuality(PropertySchema):
-    """Raw surface-water quality at the plant intake."""
-
-    flow_rate: float | Q = quantity_field(
-        kind=quantity_kinds.VolumeFlowRate,
-        unit=units.M3_PER_DAY,
-        label="Raw-water flow",
-        of_medium=values.Water_Freshwater,
-        aspects=(values.Aspect_Nominal,),
-        minimum=0,
-    )
-    turbidity: float | Q = quantity_field(
-        kind=quantity_kinds.Turbidity,
-        unit=units.NTU,
-        label="Raw-water turbidity",
-        of_medium=values.Water_Freshwater,
-        aspects=(values.Aspect_Nominal,),
-        minimum=0,
-    )
-    temperature: float | Q = quantity_field(
-        kind=quantity_kinds.Temperature,
-        unit=units.DEG_C,
-        label="Raw-water temperature",
-        of_medium=values.Water_Freshwater,
-        aspects=(values.Aspect_Nominal,),
-        default=12.0,
-    )
-
-
-print(InfluentQuality.describe())
-```
-
-The class is a frozen, keyword-only dataclass. A bare number uses the
-field's unit. A `QuantityAmount` keeps its own compatible unit; nothing is
-converted. Bounds and units are checked on creation:
-
-```{code-cell} python3
-try:
-    InfluentQuality(flow_rate=-5, turbidity=18.0)
-except ValueError as error:
-    print(error)
-```
-
-## Apply a property set
-
-`apply_properties()` attaches one property per field and returns them by
-field name:
-
-```{code-cell} python3
-influent = raw_water.apply_properties(
-    InfluentQuality(flow_rate=40_000, turbidity=Q(18.0, units.NTU))
-)
-dict(influent)
-```
-
-Properties are named `<subject>-<field>`; `prefix=` changes the stem. If a
-name is taken, nothing is applied.
-
-## Use a property set from an ontology
-
-Domain packages compile property schemas from SHACL. ASM2d defines an
-aerobic reactor's design values:
-
-```{code-cell} python3
-from plumb.watr.asm2d import AerobicDesign, AerobicStage
-
-print(AerobicDesign.describe())
-```
-
-```{code-cell} python3
-with model:
-    reactor = AerobicStage("R5")
-dict(reactor.apply_properties(AerobicDesign(oxygen_transfer_coefficient=10.0)))
-```
-
-Start a schema in Python. Move it to SHACL when other models or tools need
-it; see [Domain extensions](../explanation/domain-extensions.md).
 
 ## Attach a plain value
 
@@ -223,3 +135,8 @@ distinguish operating points, samples, or scenarios of the same stream. That
 needs a companion ontology defining the operating point, its time or
 scenario, whether a value is nominal, calculated, or measured, and the
 composition basis.
+
+## Next
+
+[Define and apply property sets](define-property-sets.md) groups quantities
+into a reusable schema.

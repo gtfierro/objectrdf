@@ -41,6 +41,24 @@ selected is Process_ReverseOsmosis, selected.meta.iri
 The lookup raises `KeyError` outside the branch. `issubclass()` and
 `isinstance()` work as usual.
 
+## Inspect a class
+
+`.meta` gives a class's ontology provenance:
+
+```{code-cell} python3
+from plumb.watr import SedimentationTank
+
+SedimentationTank.meta.iri, SedimentationTank.meta.label, SedimentationTank.meta.parents
+```
+
+```{code-cell} python3
+print(SedimentationTank.meta.definition)
+```
+
+`meta.properties` lists the generated attributes and `describe_ports()` the
+connection points. On an object, `meta.instance_iri` and `meta.model`
+identify it.
+
 ## List every class
 
 Each package's `REGISTRY` lists its classes:

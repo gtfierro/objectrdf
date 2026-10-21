@@ -7,18 +7,24 @@ parts:
       - file: tutorials/watr-instrumented-plant
       - file: tutorials/domain-configurations
       - file: tutorials/s223-air-path
-  - caption: How-to guides
+  - caption: "How-to: build a model"
     chapters:
-      - file: how-to/author-a-model
+      - file: how-to/create-objects
       - file: how-to/connect-equipment
-      - file: how-to/attach-quantities
-      - file: how-to/add-sensors-and-actuators
+      - file: how-to/organize-equipment
       - file: how-to/watr-processes
+      - file: how-to/attach-quantities
+      - file: how-to/define-property-sets
+      - file: how-to/add-sensors-and-actuators
+  - caption: "How-to: check and use a model"
+    chapters:
+      - file: how-to/validate-a-model
       - file: how-to/draw-a-flowsheet
-      - file: how-to/validate-and-save
       - file: how-to/save-and-load
       - file: how-to/find-objects
       - file: how-to/find-classes-and-values
+  - caption: "How-to: extend Plumb"
+    chapters:
       - file: how-to/generate-domain-api
   - caption: Explanation
     chapters:

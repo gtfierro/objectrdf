@@ -171,37 +171,9 @@ feed_out = exchanger.port("feed-out", direction="out")
 feed_in.pair(feed_out)
 ```
 
-## Group into a system
+## Next
 
-`model.system(name)` collects the equipment created inside it. `boundary()`
-marks the points where the system meets the rest of the plant:
-
-```{code-cell} python3
-plant = Model("urn:example:plant#")
-with plant:
-    intake = Pump("intake-pump")
-    with plant.system("treatment") as treatment:
-        clarifier = ClarificationStage("clarifier")
-        sand_filter = RapidSandFiltrationStage("sand-filter")
-
-connect(intake, clarifier.inlet, name="raw-water")
-connect(clarifier.clarified_water, sand_filter.inlet, name="clarified-water")
-treatment.boundary(
-    clarifier.sludge,
-    sand_filter.filtered_water,
-    sand_filter.backwash_supply,
-    sand_filter.backwash_waste,
-)
-
-resolved = plant.resolve()
-list(resolved["treatment"].has_boundary_connection_point)
-```
-
-A boundary point may connect to nothing in the model. Ports work too:
-`intake.port("river", direction="in")`.
-
-## Place in a space
-
-Equipment created inside an open `PhysicalSpace` is located there with
-`s223:hasPhysicalLocation`. A `DomainSpace` inside a `PhysicalSpace` is
-enclosed by it. Spaces nest through `s223:contains`, exposed as `contains_`.
+- [Group equipment into systems and spaces](organize-equipment.md) collects
+  connected equipment into systems with boundary points.
+- [Attach quantities](attach-quantities.md) describes what flows in a
+  connection.

@@ -76,22 +76,31 @@ downstream, optionally through pipes of one medium only.
 in SHACL and compiled into Python packages, such as
 `plumb.watr.drinking_water` above.
 
+## Install
+
+Plumb needs Python 3.12 or newer. From a checkout of the repository, install
+it and its dependencies with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv sync
+```
+
+To use it from another project, install the package from the repository:
+
+```bash
+pip install git+https://github.com/gtfierro/plumb
+```
+
+`flowsheet()` renders with [Graphviz](https://graphviz.org/download/); install
+it so `dot` is on your `PATH`. Everything else, including the bundled WaTr,
+S223, and QUDT packages, installs with Plumb.
+
 ## Start here
 
 1. [Model a treatment train](tutorials/watr-treatment.md)
 2. [Instrument a plant](tutorials/watr-instrumented-plant.md)
 3. [Use a domain package](tutorials/domain-configurations.md)
+4. [An S223 air path](tutorials/s223-air-path.md) builds a 223P building
+   system with the same API.
 
-The how-to guides each cover one task. Brick and 223P building models use the
-same API; see [An S223 air path](tutorials/s223-air-path.md).
-
-## Building the book
-
-Every code cell runs when the book is built. From the repository root:
-
-```bash
-uv sync --group docs
-uv run --group docs jupyter-book build docs/book
-```
-
-Open `docs/book/_build/html/index.html`.
+The how-to guides each cover one task.

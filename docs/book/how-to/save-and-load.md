@@ -35,7 +35,7 @@ authored.save("plant.ttl")
 `save()` resolves the model and writes the snapshot. The format follows the
 extension: `.ttl`, `.nt`, `.xml` or `.rdf`, or `.jsonld`; `format=`
 overrides it. `graph()` returns the same RDF as an rdflib graph. Neither
-validates; see [Validate and save](validate-and-save.md).
+validates; see [Validate a model](validate-a-model.md).
 
 The file declares an `owl:Ontology` that imports each ontology it uses, and
 records the installed version of each one that declares a version:
@@ -48,9 +48,34 @@ for _, _, dependency in graph.triples((None, OWL.imports, None)):
     print(dependency, graph.value(dependency, OWL.versionInfo))
 ```
 
-Loading reads these imports to choose packages. The ontology's IRI, label,
-extra imports, and prefixes come from `Model(...)`; see
-[Set ontology metadata](author-a-model.md).
+Loading reads these imports to choose packages.
+
+## Set ontology metadata
+
+The ontology's IRI defaults to the namespace without the trailing `#` or
+`/`. Set it, a label, extra imports, and prefixes on the constructor:
+
+```python
+model = Model(
+    "urn:example:plant#",
+    name="Example plant",
+    ontology_iri="urn:example:plant-model",
+    imports=["urn:example:project-vocabulary"],
+    prefixes={"qudt": "http://qudt.org/schema/qudt/"},
+)
+```
+
+## Share with tools that cannot resolve imports
+
+A model that uses a domain package, such as drinking water, imports that
+package's ontology by IRI. A reader that cannot fetch it can be given the
+schema alongside the model. `export_ontology()` writes the schema of each
+domain package the model uses: its classes, their parents, and its imports:
+
+```{code-cell} python3
+schema = authored.export_ontology("plant-schema.ttl")
+len(schema)
+```
 
 ## Load
 
@@ -74,7 +99,7 @@ matches the graph's `owl:imports` against the installed packages:
 
 | Package | Imports it matches |
 | --- | --- |
-| `plumb.brick`, `plumb.s223`, `plumb.watr`, `plumb.qudt` | the ontology's IRI |
+| `plumb.s223`, `plumb.watr`, `plumb.qudt` | the ontology's IRI |
 | `plumb.watr.drinking_water`, `.asm2d`, `.seawater_ro`, `plumb.s223.hvac` | the extension's IRI |
 
 A domain package's registry includes its base classes, so when a graph
@@ -117,7 +142,7 @@ model = Model.from_graph(bare, registries=drinking_water.REGISTRY)
 type(model["clarifier"]).__name__
 ```
 
-Pass a list for several, such as `[brick.REGISTRY, s223.REGISTRY]`. Every
+Pass a list for several, such as `[watr.REGISTRY, s223.hvac.REGISTRY]`. Every
 generated package exposes `REGISTRY`, and a compiled package's registry
 includes the classes it extends.
 

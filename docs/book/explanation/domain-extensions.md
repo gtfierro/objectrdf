@@ -25,7 +25,7 @@ Write one when a definition outlives one model:
 | You want | Use |
 | --- | --- |
 | A topology for a single plant | Base classes, `connect()`, and `.port()` |
-| Quantities that only one script or notebook needs | A Python `PropertySchema` |
+| Quantities that only one script or notebook needs | A Python [`PropertySchema`](../how-to/define-property-sets.md) |
 | One equipment layout reused across many models | An extension class with named ports |
 | Definitions that other tools read as RDF, or that validation should enforce | An extension |
 
