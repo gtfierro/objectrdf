@@ -27,13 +27,14 @@ from objectrdf.watr.drinking_water import (
 
 values = enums.values
 model = Model("urn:example:flowsheet#")
-with model, model.system("plant"):
-    intake = Pump("intake-pump")
-    clarifier = ClarificationStage("clarifier")
-    sand_filter = RapidSandFiltrationStage("sand-filter")
-    chlorination = ChlorinationStage("chlorine-contact")
-    clearwell = Tank("clearwell", has_role=[values.Role_Storage])
-    sludge_tank = Tank("sludge-holding")
+with model:
+    with model.system("plant"):
+        intake = Pump("intake-pump")
+        clarifier = ClarificationStage("clarifier")
+        sand_filter = RapidSandFiltrationStage("sand-filter")
+        chlorination = ChlorinationStage("chlorine-contact")
+        clearwell = Tank("clearwell", has_role=[values.Role_Storage])
+        sludge_tank = Tank("sludge-holding")
 
 raw = connect(intake, clarifier.inlet, name="raw-water")
 connect(clarifier.clarified_water, sand_filter.inlet, name="settled-water")

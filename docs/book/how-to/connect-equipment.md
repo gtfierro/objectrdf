@@ -114,7 +114,7 @@ values are on `.medium`, `.medium_reason`, and `.evidence`.
 
 ```{code-cell} python3
 pipe = resolved.connection(sludge)
-type(pipe).__name__, pipe.medium, [point.name for point in pipe.connects_at]
+pipe, pipe.medium, list(pipe.connects_at)
 ```
 
 Derived points and pipes exist only in the snapshot. Before resolution,
@@ -122,7 +122,11 @@ Derived points and pipes exist only in the snapshot. Before resolution,
 the snapshot's copy holds every concrete point:
 
 ```{code-cell} python3
-[point.name for point in sludge_pump.ports], [point.name for point in resolved["sludge-pump"].ports]
+list(sludge_pump.ports)
+```
+
+```{code-cell} python3
+list(resolved["sludge-pump"].ports)
 ```
 
 Any edit to the model invalidates the snapshot.
@@ -165,9 +169,9 @@ marks the points where the system meets the rest of the plant:
 plant = Model("urn:example:plant#")
 with plant:
     intake = Pump("intake-pump")
-with plant, plant.system("treatment") as treatment:
-    clarifier = ClarificationStage("clarifier")
-    sand_filter = RapidSandFiltrationStage("sand-filter")
+    with plant.system("treatment") as treatment:
+        clarifier = ClarificationStage("clarifier")
+        sand_filter = RapidSandFiltrationStage("sand-filter")
 
 connect(intake, clarifier.inlet, name="raw-water")
 connect(clarifier.clarified_water, sand_filter.inlet, name="clarified-water")
@@ -179,7 +183,7 @@ treatment.boundary(
 )
 
 resolved = plant.resolve()
-sorted(point.name for point in resolved["treatment"].has_boundary_connection_point)
+list(resolved["treatment"].has_boundary_connection_point)
 ```
 
 A boundary point may connect to nothing in the model. Ports work too:

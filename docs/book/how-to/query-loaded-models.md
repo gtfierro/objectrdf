@@ -45,8 +45,7 @@ len(model)
 `by_class()` groups objects by exact class:
 
 ```{code-cell} python3
-for cls, objects in model.by_class().items():
-    print(cls.__name__, [obj.name for obj in objects])
+model.by_class()
 ```
 
 Points and pipes load as ordinary objects, not as `connect()` calls.
@@ -86,14 +85,13 @@ Traversal is attribute access:
 
 ```{code-cell} python3
 clarifier = model["clarifier"]
-for point in clarifier.has_connection_point:
-    pipe = point.connection
-    print(point.name, point.medium.label, pipe.name if pipe else "-")
+list(clarifier.has_connection_point)
 ```
 
 ```{code-cell} python3
 pipe = model["clarified-water"]
-[point.owner.name for point in pipe.connects_at]
+for point in pipe.connects_at:
+    print(point.owner.name, point.label)
 ```
 
 Or query the RDF with SPARQL:
@@ -102,7 +100,8 @@ Or query the RDF with SPARQL:
 rows = model.graph().query(
     "SELECT ?pump WHERE { ?pump a <https://watermetadata.org/ontology/watr#Pump> }"
 )
-[str(row.pump) for row in rows]
+for row in rows:
+    print(row.pump)
 ```
 
 `model.graph()` returns a copy; updating it does not change the model.

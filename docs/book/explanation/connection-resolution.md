@@ -91,20 +91,16 @@ resolved.explain(raw_water)
 ```
 
 No medium was given. The coagulation inlet has a fixed water medium, and the
-pump accepts water. The resolved RDF:
+pump accepts water. The pipe in the resolved RDF:
 
 ```{code-cell} python3
-import rdflib
+from rdflib import URIRef
 
 graph = resolved.graph()
 pipe = resolved.connection(raw_water)
-subjects = {pipe.meta.instance_iri, *(p.meta.instance_iri for p in pipe.connects_at)}
-excerpt = rdflib.Graph()
-excerpt.namespace_manager = graph.namespace_manager
-for triple in graph:
-    if str(triple[0]) in subjects:
-        excerpt.add(triple)
-print(excerpt.serialize(format="turtle").split("\n\n", 1)[1])
+pipe_rdf = graph.cbd(URIRef(pipe.meta.instance_iri))
+pipe_rdf.namespace_manager = graph.namespace_manager
+print(pipe_rdf.serialize(format="turtle"))
 ```
 
 ## Required properties that require each other

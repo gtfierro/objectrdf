@@ -45,9 +45,13 @@ The connection is a `Duct` because the medium is air. The snapshot holds the
 derived points; the authored model does not:
 
 ```{code-cell} python3
-print("authored:", len(model), "resolved:", len(resolved))
-print("fan ports before:", [point.name for point in fan.ports])
-print("fan ports after:", [point.name for point in resolved[fan.name].ports])
+print("authored:", len(model))
+print("resolved:", len(resolved))
+```
+
+```{code-cell} python3
+resolved_fan = resolved["supply-fan"]
+list(resolved_fan.ports)
 ```
 
 ## 3. Validate

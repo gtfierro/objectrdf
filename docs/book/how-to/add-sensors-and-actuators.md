@@ -100,7 +100,7 @@ speed = high_service.actuator(
 start = high_service.actuator(
     "high-service-start", kind=values.Binary_OnOff, value=values.OnOff_Off
 )
-[command.name for command in high_service.actuated_by_property]
+list(high_service.actuated_by_property)
 ```
 
 A quantity kind gives a `QuantifiableActuatableProperty`. An enumeration

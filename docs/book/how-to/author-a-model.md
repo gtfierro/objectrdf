@@ -30,8 +30,9 @@ Unnamed objects are numbered per class:
 
 ```{code-cell} python3
 with model:
-    spares = [Pump() for _ in range(2)]
-[pump.name for pump in spares]
+    spare = Pump()
+    another_spare = Pump()
+spare.name, another_spare.name
 ```
 
 Outside a `with` block, pass `model=`:

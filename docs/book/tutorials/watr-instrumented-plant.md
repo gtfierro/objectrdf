@@ -92,20 +92,21 @@ plain WaTr classes.
 ```{code-cell} python3
 model = Model("urn:example:surface-water#")
 
-with model, model.system("plant"):
-    intake = Pump("raw-water-pump")
-    coagulation = CoagulationStage("coagulation")
-    flocculation = FlocculationStage("flocculation")
-    clarifier = ClarificationStage("clarifier")
-    sand_filter = RapidSandFiltrationStage("sand-filter")
-    chlorination = ChlorinationStage("chlorine-contact")
-    clearwell = Tank("clearwell", has_role=[values.Role_Storage])
-    high_service = Pump("high-service-pump")
+with model:
+    with model.system("plant"):
+        intake = Pump("raw-water-pump")
+        coagulation = CoagulationStage("coagulation")
+        flocculation = FlocculationStage("flocculation")
+        clarifier = ClarificationStage("clarifier")
+        sand_filter = RapidSandFiltrationStage("sand-filter")
+        chlorination = ChlorinationStage("chlorine-contact")
+        clearwell = Tank("clearwell", has_role=[values.Role_Storage])
+        high_service = Pump("high-service-pump")
 
-    sludge_pump = Pump("sludge-pump")
-    thickener = GravityThickener("thickener")
-    backwash_pump = Pump("backwash-pump")
-    backwash_tank = Tank("backwash-recovery", has_role=[values.Role_Backwash])
+        sludge_pump = Pump("sludge-pump")
+        thickener = GravityThickener("thickener")
+        backwash_pump = Pump("backwash-pump")
+        backwash_tank = Tank("backwash-recovery", has_role=[values.Role_Backwash])
 ```
 
 The thickener's process and objective come from its class:
@@ -200,7 +201,7 @@ high_service.actuator("high-service-speed", kind=quantity_kinds.Frequency, unit=
 high_service.actuator(
     "high-service-start", kind=values.Binary_OnOff, value=values.OnOff_Off
 )
-[command.name for command in high_service.actuated_by_property]
+list(high_service.actuated_by_property)
 ```
 
 ## 7. Resolve, validate, and draw
@@ -213,15 +214,12 @@ resolved.explain(finished)
 The clearwell feeds two pumps. `explain()` shows which outlet each
 connection uses.
 
-Each sensor's location is now a concrete pipe or point:
+The chlorine analyzer was attached to the `finished` handle. In the snapshot,
+its location is the concrete pipe:
 
 ```{code-cell} python3
-from objectrdf.watr import Sensor
-
-for sensor in resolved:
-    if isinstance(sensor, Sensor):
-        location = sensor.has_observation_location
-        print(f"{sensor.name}: {type(sensor).__name__} at {location.name}")
+analyzer = resolved["chlorine-residual"]
+analyzer.has_observation_location
 ```
 
 ```{code-cell} python3

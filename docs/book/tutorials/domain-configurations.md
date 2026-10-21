@@ -23,6 +23,15 @@ from objectrdf.watr.asm2d import AerobicStage, AerobicDesign, OxygenOutletState
 print(AerobicStage.describe_ports())
 ```
 
+Create two stages in a system:
+
+```{code-cell} python3
+with Model("urn:example:two-stages#") as model:
+    with model.system("treatment-system") as system:
+        first = AerobicStage("first")
+        second = AerobicStage("second")
+```
+
 ## 2. Apply design values
 
 `AerobicDesign` is a property schema compiled from SHACL. It requires an
@@ -32,43 +41,63 @@ oxygen transfer coefficient and defaults the volume to 1333 m³:
 print(AerobicDesign.describe())
 ```
 
-Apply one design to both stages. Each stage gets its own properties:
+Create one design and apply it to both stages. Each stage gets its own
+properties:
 
 ```{code-cell} python3
-with Model("urn:example:two-stages#") as model:
-    with model.system("treatment-system") as system:
-        first = AerobicStage("first")
-        second = AerobicStage("second")
-        design = AerobicDesign(oxygen_transfer_coefficient=Q(10.0, units.PER_HR))
-        for stage in (first, second):
-            stage.apply_properties(design)
-            stage.outlet.apply_properties(
-                OxygenOutletState(oxygen_concentration=Q(2.0, units.GM_PER_M3))
-            )
-        link = connect(first.outlet, second.inlet, name="interstage")
-        system.boundary(first.inlet, second.outlet)
+design = AerobicDesign(oxygen_transfer_coefficient=Q(10.0, units.PER_HR))
+first.apply_properties(design)
+second.apply_properties(design)
 
-model["first-volume"] is not model["second-volume"], design.volume
+model["first-volume"], model["second-volume"]
+```
+
+The volume was not given, so it takes the default:
+
+```{code-cell} python3
+design.volume
+```
+
+Set the oxygen concentration leaving each stage:
+
+```{code-cell} python3
+outlet_oxygen = OxygenOutletState(oxygen_concentration=Q(2.0, units.GM_PER_M3))
+first_oxygen = first.outlet.apply_properties(outlet_oxygen)
+second_oxygen = second.outlet.apply_properties(outlet_oxygen)
+
+dict(first_oxygen)
 ```
 
 A bare number uses the field's default unit:
 `OxygenOutletState(oxygen_concentration=2.0)` means 2 g/m³. An explicit
 `Q(...)` keeps its unit.
 
-## 3. Resolve and validate
+## 3. Connect the stages
+
+Mark where flow enters and leaves the system, then connect the first stage to
+the second:
+
+```{code-cell} python3
+system.boundary(first.inlet, second.outlet)
+link = connect(first.outlet, second.inlet, name="interstage")
+```
+
+## 4. Resolve and validate
 
 ```{code-cell} python3
 resolved = model.resolve()
 connection = resolved.connection(link)
-print("connection:", connection.name, connection.medium)
-print("boundaries:", len(resolved["treatment-system"].has_boundary_connection_point))
-print("conforms:", model.validate().ok)
+connection.name, connection.medium
+```
+
+```{code-cell} python3
+model.validate().ok
 ```
 
 Validation uses the shapes bundled with the package, the same ones the Python
 classes were compiled from.
 
-## 4. Load it back
+## 5. Load it back
 
 The graph imports the ASM2d ontology, so `from_graph()` selects the package.
 Loading keeps the values as written; it does not fill in defaults.
@@ -76,8 +105,11 @@ Loading keeps the values as written; it does not fill in defaults.
 ```{code-cell} python3
 graph = resolved.graph()
 loaded = Model.from_graph(graph)
-print(loaded["first"].outlet)
-print(set(loaded.graph()) == set(graph))
+loaded["first"]
+```
+
+```{code-cell} python3
+loaded["first-volume"].has_value
 ```
 
 ## Next

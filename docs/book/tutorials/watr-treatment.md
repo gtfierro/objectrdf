@@ -34,11 +34,7 @@ a WaTr equipment class and fixes its process, objective, and named ports.
 
 ```{code-cell} python3
 from objectrdf import Model, connect
-from objectrdf.watr import (
-    InletConnectionPoint,
-    OutletConnectionPoint,
-    SedimentationTank,
-)
+from objectrdf.watr import SedimentationTank
 from objectrdf.watr.drinking_water import (
     ChlorinationStage,
     ClarificationStage,
@@ -88,40 +84,39 @@ out, and backwash water in and out.
 ## 3. Explore the result
 
 `compile()` resolves the connections, validates the model, and returns a
-snapshot. List each stage's process and objective:
+snapshot:
 
 ```{code-cell} python3
 resolved = model.compile()
+```
+
+Look up the clarifier and list its process and objective:
+
+```{code-cell} python3
+resolved_clarifier = resolved["clarifier"]
+
+for process in resolved_clarifier.has_process:
+    print("process:", process.meta.label)
+
+for objective in resolved_clarifier.has_treatment_objective:
+    print("objective:", objective.meta.label)
+```
+
+Look up a pipe by its name and see which points it joins:
+
+```{code-cell} python3
+pipe = resolved["clarified-water"]
+print(pipe.type, pipe.medium)
+for point in pipe.connects_at:
+    print(point.owner.name, point.label)
+```
+
+List the points where flow crosses the system boundary:
+
+```{code-cell} python3
 plant = resolved["treatment-system"]
-
-for stage in plant.has_member:
-    print(f"{stage.name}: {stage.meta.label}")
-    print("  processes:", ", ".join(p.meta.label for p in stage.has_process))
-    print("  objectives:", ", ".join(o.meta.label for o in stage.has_treatment_objective))
-```
-
-Follow each outlet through its pipe to the next stage:
-
-```{code-cell} python3
-for stage in plant.has_member:
-    for outlet in stage.ports:
-        if not isinstance(outlet, OutletConnectionPoint) or outlet.connection is None:
-            continue
-        pipe = outlet.connection
-        for inlet in pipe.connects_at:
-            if isinstance(inlet, InletConnectionPoint):
-                print(
-                    f"{stage.name}.{outlet.label} → "
-                    f"{inlet.owner.name}.{inlet.label} via {pipe.name}"
-                )
-```
-
-List the boundary points and their media:
-
-```{code-cell} python3
-for point in sorted(plant.has_boundary_connection_point, key=lambda item: item.name):
-    direction = "IN" if isinstance(point, InletConnectionPoint) else "OUT"
-    print(f"{direction:3} {point.owner.name}.{point.label}: {point.medium.label}")
+for point in plant.has_boundary_connection_point:
+    print(point.owner.name, point.label, point.type, point.medium)
 ```
 
 Sludge is its own medium. Both filter outlets carry water and are told apart
@@ -138,12 +133,11 @@ right package. Query by the WaTr parent class:
 
 ```{code-cell} python3
 loaded = Model.from_graph("treatment.ttl")
-for tank in loaded.find_all(SedimentationTank):
-    print(f"{tank.name}: {tank.type}")
-    for outlet in tank.ports:
-        if isinstance(outlet, OutletConnectionPoint):
-            print(f"  {outlet.label}: {outlet.medium.label}")
+loaded.find_all(SedimentationTank)
 ```
+
+The clarifier was saved as a `ClarificationStage`, which is a kind of
+`SedimentationTank`.
 
 ## 5. Draw it
 
