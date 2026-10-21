@@ -1,4 +1,4 @@
-"""Regenerate objectrdf.watr from WaTr v0.3.0.rc1 with its S223 and QUDT imports.
+"""Regenerate plumb.watr from WaTr v0.3.0.rc1 with its S223 and QUDT imports.
 
 `ontology/watr-0.3.0rc1.ttl` is the unmodified `watr.ttl` asset of
 https://github.com/DataDrivenCPS/water-ontology/releases/tag/v0.3.0.rc1.
@@ -11,7 +11,7 @@ import sys
 from ontoenv import OntoEnv
 from rdflib import Graph
 
-from objectrdf.gen import generate
+from plumb.gen import generate
 
 ROOT = Path(__file__).resolve().parents[1]
 WATR_SOURCE = ROOT / "ontology" / "watr-0.3.0rc1.ttl"
@@ -35,7 +35,7 @@ def main() -> None:
     merged.parse(ASM2D_COMPONENTS, format="turtle")
     generate(
         merged,
-        ROOT / "src" / "objectrdf" / "watr",
+        ROOT / "src" / "plumb" / "watr",
         name="WATR",
         source=str(WATR_SOURCE.relative_to(ROOT)),
     )

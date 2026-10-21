@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to objectrdf are documented in this file. The format
+All notable changes to plumb are documented in this file. The format
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the
 project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). While
 the version is below 1.0, minor releases may change the public API.
@@ -42,7 +42,7 @@ First public release.
   boundary terminals.
 - WATR process and treatment-objective defaults implied by an equipment
   class's shapes are filled in at construction.
-- The `objectrdf gen` command for compiling other ontologies, with
+- The `plumb gen` command for compiling other ontologies, with
   deterministic output for an unchanged imports closure.
 
 ### Changed

@@ -3,9 +3,9 @@
 import pytest
 from rdflib import RDF, URIRef
 
-brick = pytest.importorskip("objectrdf.brick")
+brick = pytest.importorskip("plumb.brick")
 
-from objectrdf import Model  # noqa: E402
+from plumb import Model  # noqa: E402
 
 BRICK = "https://brickschema.org/schema/Brick#"
 

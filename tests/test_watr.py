@@ -3,11 +3,11 @@
 import pytest
 from rdflib import URIRef
 
-from objectrdf import Model, connect
-from objectrdf import watr
-from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
-from objectrdf.watr import enums
-from objectrdf.watr.drinking_water import RapidSandFiltrationStage
+from plumb import Model, connect
+from plumb import watr
+from plumb.qudt import QuantityAmount as Q, quantity_kinds, units
+from plumb.watr import enums
+from plumb.watr.drinking_water import RapidSandFiltrationStage
 
 W = "https://watermetadata.org/ontology/watr#"
 
@@ -104,7 +104,7 @@ def test_one_sided_shapes_leave_other_directions_open(m):
 
 
 def test_shape_maximum_still_closes_one_sided_equipment():
-    from objectrdf.watr import seawater_ro
+    from plumb.watr import seawater_ro
 
     with Model("urn:example/feed#") as model:
         connect(

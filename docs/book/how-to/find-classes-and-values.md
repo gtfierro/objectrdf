@@ -13,7 +13,7 @@ browsed as trees.
 ## Browse a class branch
 
 ```{code-cell} python3
-from objectrdf.watr import Process
+from plumb.watr import Process
 
 print(Process.meta.tree(max_depth=2))
 ```
@@ -32,7 +32,7 @@ A class with several parents appears under each one.
 Look up a class within a branch by short name, Python name, or IRI:
 
 ```{code-cell} python3
-from objectrdf.watr import Process_ReverseOsmosis
+from plumb.watr import Process_ReverseOsmosis
 
 selected = Process.meta["ReverseOsmosis"]
 selected is Process_ReverseOsmosis, selected.meta.iri
@@ -46,7 +46,7 @@ The lookup raises `KeyError` outside the branch. `issubclass()` and
 Each package's `REGISTRY` lists its classes:
 
 ```{code-cell} python3
-from objectrdf import watr
+from plumb import watr
 
 len(watr.REGISTRY.classes), watr.REGISTRY.resolve("Process_ReverseOsmosis")
 ```
@@ -59,7 +59,7 @@ The [class catalog](../reference/catalog.md) lists every S223 and WaTr class.
 holds the branches, for tab completion:
 
 ```{code-cell} python3
-from objectrdf.watr import enums
+from plumb.watr import enums
 
 water = enums.Substance.Medium.Mix.Fluid.Water
 water is enums.values.Fluid_Water

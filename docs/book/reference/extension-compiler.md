@@ -1,6 +1,6 @@
 # Extension compiler
 
-`objectrdf gen` compiles an ontology and its SHACL shapes into a Python
+`plumb gen` compiles an ontology and its SHACL shapes into a Python
 package. For a walk-through, see
 [Generate a domain API](../how-to/generate-domain-api.md).
 
@@ -8,13 +8,13 @@ package. For a walk-through, see
 
 ```bash
 # a local ontology file
-objectrdf gen --file pumps.ttl --name Pumps --out pumps
+plumb gen --file pumps.ttl --name Pumps --out pumps
 
 # by IRI: ontoenv resolves and merges the owl:imports closure
-objectrdf gen --iri https://example.org/ontology/pumps --name Pumps --out pumps
+plumb gen --iri https://example.org/ontology/pumps --name Pumps --out pumps
 
 # merge extra graphs, such as shapes published separately
-objectrdf gen --file core.ttl --extra shapes.ttl --name Pumps --out pumps
+plumb gen --file core.ttl --extra shapes.ttl --name Pumps --out pumps
 ```
 
 `--source` records where the ontology came from in the package metadata. The
@@ -35,11 +35,11 @@ An extension names the installed package it builds on:
 ```turtle
 @prefix ex: <urn:example:pumps#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
+@prefix codegen: <https://w3id.org/plumb/codegen#> .
 
 ex: a owl:Ontology ;
     owl:imports <https://watermetadata.org/ontology/watr> ;
-    codegen:baseModule "objectrdf.watr" .
+    codegen:baseModule "plumb.watr" .
 ```
 
 | Annotation | Purpose |

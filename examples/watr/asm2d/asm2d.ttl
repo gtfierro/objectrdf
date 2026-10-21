@@ -1,5 +1,5 @@
 @prefix : <urn:example/watertap/asm2d#> .
-@prefix asm2d: <https://w3id.org/objectrdf/asm2d#> .
+@prefix asm2d: <https://w3id.org/plumb/asm2d#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .

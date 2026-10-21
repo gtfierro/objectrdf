@@ -16,7 +16,7 @@ difference.
 Processes and objectives are class hierarchies. Roles are enum values.
 
 ```{code-cell} python3
-from objectrdf.watr import Process, TreatmentObjective, enums
+from plumb.watr import Process, TreatmentObjective, enums
 
 print(Process.meta.tree(max_depth=1))
 print(TreatmentObjective.meta.tree(max_depth=1))
@@ -28,8 +28,8 @@ When the class fixes a process or objective, the constructor fills it in. A
 gravity thickener needs only its role:
 
 ```{code-cell} python3
-from objectrdf import Model
-from objectrdf.watr import GravityThickener
+from plumb import Model
+from plumb.watr import GravityThickener
 
 with Model("urn:example:thickening#") as model:
     thickener = GravityThickener("primary-thickener", has_role=[enums.values.Role_Primary])
@@ -46,7 +46,7 @@ A sedimentation tank always settles, but its objective depends on the
 installation. State it; the process is still filled in:
 
 ```{code-cell} python3
-from objectrdf.watr import SedimentationTank, TreatmentObjective_Clarification
+from plumb.watr import SedimentationTank, TreatmentObjective_Clarification
 
 with model:
     clarifier = SedimentationTank(
@@ -62,7 +62,7 @@ list(clarifier.has_process), list(clarifier.has_treatment_objective)
 A subclass of the default replaces it:
 
 ```{code-cell} python3
-from objectrdf.watr import MediaFiltrationUnit, Process_RapidSandFiltration
+from plumb.watr import MediaFiltrationUnit, Process_RapidSandFiltration
 
 with model:
     sand_filter = MediaFiltrationUnit(

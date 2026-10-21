@@ -3,18 +3,18 @@
 import pytest
 from rdflib import RDF, URIRef
 
-s223 = pytest.importorskip("objectrdf.s223")
+s223 = pytest.importorskip("plumb.s223")
 
-from objectrdf import (  # noqa: E402
+from plumb import (  # noqa: E402
     AmbiguousModelError,
     Model,
     ModelingError,
     UnsatisfiableModelError,
     connect,
 )
-from objectrdf.core import RangeError  # noqa: E402
-from objectrdf.qudt import quantity_kinds, units  # noqa: E402
-from objectrdf.s223 import enums  # noqa: E402
+from plumb.core import RangeError  # noqa: E402
+from plumb.qudt import quantity_kinds, units  # noqa: E402
+from plumb.s223 import enums  # noqa: E402
 
 S = "http://data.ashrae.org/standard223#"
 

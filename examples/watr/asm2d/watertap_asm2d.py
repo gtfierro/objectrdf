@@ -2,9 +2,9 @@
 
 from pathlib import Path
 
-from objectrdf import Model, connect
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.watr.asm2d import (
+from plumb import Model, connect
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.watr.asm2d import (
     ASM2dState,
     AerobicDesign,
     AerobicStage,

@@ -3,7 +3,7 @@
 import pytest
 import toy
 
-from objectrdf import Model
+from plumb import Model
 
 
 @pytest.fixture

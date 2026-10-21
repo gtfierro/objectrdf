@@ -9,86 +9,86 @@ The :doc:`catalog` lists every importable S223 and WaTr class.
 S223 equipment and connection points
 ------------------------------------
 
-.. autoclass:: objectrdf.s223.Damper
+.. autoclass:: plumb.s223.Damper
    :members:
 
-.. autoclass:: objectrdf.s223.Fan
+.. autoclass:: plumb.s223.Fan
    :members:
 
-.. autoclass:: objectrdf.s223.Chiller
+.. autoclass:: plumb.s223.Chiller
    :members:
 
 WaTr equipment
 --------------
 
-.. autoclass:: objectrdf.watr.Pump
+.. autoclass:: plumb.watr.Pump
    :members:
 
-.. autoclass:: objectrdf.watr.Tank
+.. autoclass:: plumb.watr.Tank
    :members:
 
-.. autoclass:: objectrdf.watr.CoagulationBasin
+.. autoclass:: plumb.watr.CoagulationBasin
    :members:
 
-.. autoclass:: objectrdf.watr.FlocculationBasin
+.. autoclass:: plumb.watr.FlocculationBasin
    :members:
 
-.. autoclass:: objectrdf.watr.RapidSandFilter
+.. autoclass:: plumb.watr.RapidSandFilter
    :members:
 
-.. autoclass:: objectrdf.watr.ChlorinationUnit
+.. autoclass:: plumb.watr.ChlorinationUnit
    :members:
 
 WaTr process and objective vocabulary
 -------------------------------------
 
-.. autoclass:: objectrdf.watr.Process
+.. autoclass:: plumb.watr.Process
    :members:
 
-.. autoclass:: objectrdf.watr.Process_Settling
+.. autoclass:: plumb.watr.Process_Settling
    :members:
 
-.. autoclass:: objectrdf.watr.TreatmentObjective
+.. autoclass:: plumb.watr.TreatmentObjective
    :members:
 
-.. autoclass:: objectrdf.watr.TreatmentObjective_Clarification
+.. autoclass:: plumb.watr.TreatmentObjective_Clarification
    :members:
 
-.. autoclass:: objectrdf.watr.SedimentationTank
+.. autoclass:: plumb.watr.SedimentationTank
    :members:
 
 Generated domain configurations
 --------------------------------
 
-.. autoclass:: objectrdf.watr.drinking_water.CoagulationStage
+.. autoclass:: plumb.watr.drinking_water.CoagulationStage
    :members:
 
-.. autoclass:: objectrdf.watr.drinking_water.FlocculationStage
+.. autoclass:: plumb.watr.drinking_water.FlocculationStage
    :members:
 
-.. autoclass:: objectrdf.watr.drinking_water.ClarificationStage
+.. autoclass:: plumb.watr.drinking_water.ClarificationStage
    :members:
 
-.. autoclass:: objectrdf.watr.drinking_water.RapidSandFiltrationStage
+.. autoclass:: plumb.watr.drinking_water.RapidSandFiltrationStage
    :members:
 
-.. autoclass:: objectrdf.watr.drinking_water.ChlorinationStage
+.. autoclass:: plumb.watr.drinking_water.ChlorinationStage
    :members:
 
-.. autoclass:: objectrdf.s223.hvac.AirWaterCoolingCoil
+.. autoclass:: plumb.s223.hvac.AirWaterCoolingCoil
    :members:
 
-.. autoclass:: objectrdf.watr.asm2d.AerobicStage
+.. autoclass:: plumb.watr.asm2d.AerobicStage
    :members:
 
-.. autoclass:: objectrdf.watr.asm2d.AerobicDesign
+.. autoclass:: plumb.watr.asm2d.AerobicDesign
    :members:
 
-.. autoclass:: objectrdf.watr.seawater_ro.MembraneDesign
+.. autoclass:: plumb.watr.seawater_ro.MembraneDesign
    :members:
 
 Common entity API
 -----------------
 
-.. autoclass:: objectrdf.Entity
+.. autoclass:: plumb.Entity
    :members: name, type, label, comment, contains, port, ports, apply_properties, quantity

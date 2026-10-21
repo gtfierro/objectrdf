@@ -16,13 +16,13 @@ follow their relations, edit them, and save the result.
 Save a small model to load:
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.watr.drinking_water import (
+from plumb import Model, connect
+from plumb.watr.drinking_water import (
     ClarificationStage,
     CoagulationStage,
     RapidSandFiltrationStage,
 )
-from objectrdf.watr import Pump
+from plumb.watr import Pump
 
 with Model("urn:example:plant#") as authored:
     intake = Pump("intake-pump", label="Intake pump")
@@ -56,7 +56,7 @@ Points and pipes load as ordinary objects, not as `connect()` calls.
 `SedimentationTank`:
 
 ```{code-cell} python3
-from objectrdf.watr import SedimentationTank
+from plumb.watr import SedimentationTank
 
 model.find_all(SedimentationTank)
 ```
@@ -65,7 +65,7 @@ Keyword filters match attributes by equality, collection membership, or a
 function:
 
 ```{code-cell} python3
-from objectrdf.watr import Pipe, enums
+from plumb.watr import Pipe, enums
 
 model.find(Pump, label="Intake pump"), model.find_all(Pipe, medium=enums.values.Fluid_Water)
 ```
@@ -111,7 +111,7 @@ for row in rows:
 Edits write through to the graph:
 
 ```{code-cell} python3
-from objectrdf.watr import Tank
+from plumb.watr import Tank
 
 clarifier.label = "Clarifier 1"
 clarifier.has_role.add(enums.values.Role_Primary)
@@ -145,7 +145,7 @@ For RDF without imports, or a package you compiled, pass registries. A domain
 registry includes its base classes:
 
 ```python
-from objectrdf import brick, s223
+from plumb import brick, s223
 
 model = Model.from_graph("building.ttl", registries=[brick.REGISTRY, s223.REGISTRY])
 ```

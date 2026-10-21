@@ -10,16 +10,16 @@ seawater_RO_desalination.html#full-flowsheet
 
 from pathlib import Path
 
-from objectrdf import Model, ResolvedModel, connect
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.watr import (
+from plumb import Model, ResolvedModel, connect
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.watr import (
     Connection,
     Equipment,
     OutletConnectionPoint,
     Property,
     enums,
 )
-from objectrdf.watr.seawater_ro import (
+from plumb.watr.seawater_ro import (
     AdvancedOxidationStage,
     BackwashSeparator,
     BoosterPump,

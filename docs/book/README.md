@@ -1,4 +1,4 @@
-# ObjectRDF learning book
+# Plumb learning book
 
 This [Jupyter Book](https://jupyterbook.org/v1/) follows the Diátaxis layout:
 hands-on tutorials, task guides, an explanation of the lifecycle, and an

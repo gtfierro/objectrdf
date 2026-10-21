@@ -6,8 +6,8 @@ Produces:  bldg1.ttl (Turtle) next to this script.
 
 from pathlib import Path
 
-from objectrdf import Model
-from objectrdf.brick import (
+from plumb import Model
+from plumb.brick import (
     AHU,
     VAV,
     Building,

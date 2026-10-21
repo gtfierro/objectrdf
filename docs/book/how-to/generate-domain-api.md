@@ -20,11 +20,11 @@ property set.
 @prefix kind: <http://qudt.org/vocab/quantitykind/> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
+@prefix codegen: <https://w3id.org/plumb/codegen#> .
 
 ex: a owl:Ontology ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-    codegen:baseModule "objectrdf.s223" .
+    codegen:baseModule "plumb.s223" .
 
 ex:SupplyPump a owl:Class ; rdfs:subClassOf s223:Pump .
 ex:SupplyPumpShape a sh:NodeShape ; sh:targetClass ex:SupplyPump ;
@@ -71,14 +71,14 @@ every rule.
 ## Compile it
 
 ```bash
-objectrdf gen --file pumps.ttl --name Pumps --out pumps
+plumb gen --file pumps.ttl --name Pumps --out pumps
 ```
 
 ## Use it
 
 ```python
-from objectrdf import Model
-from objectrdf.qudt import QuantityAmount as Q, units
+from plumb import Model
+from plumb.qudt import QuantityAmount as Q, units
 from pumps import SupplyPump, PressureDesign
 
 with Model("urn:example:plant#") as model:
@@ -96,7 +96,7 @@ bundled shapes.
 `from_graph()` only detects the bundled extensions. Pass your registry:
 
 ```python
-from objectrdf import Model
+from plumb import Model
 import pumps
 
 model.save("plant.ttl")

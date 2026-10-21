@@ -3,8 +3,8 @@
 import pytest
 import toy
 
-from objectrdf import Model, ModelingError
-from objectrdf.core import RangeError
+from plumb import Model, ModelingError
+from plumb.core import RangeError
 
 
 @pytest.fixture

@@ -2,9 +2,9 @@
 
 ## Project Structure & Module Organization
 
-Python source uses a `src/` layout under `src/objectrdf/`. The stable runtime is
+Python source uses a `src/` layout under `src/plumb/`. The stable runtime is
 in `core/`, ontology compilation lives in `gen/`, and `cli.py` provides the
-`objectrdf` command. Packages such as `brick/` and `s223/` are generated
+`plumb` command. Packages such as `brick/` and `s223/` are generated
 compiler output; change generator logic or overlays and regenerate them instead
 of hand-editing generated classes. Tests are in `tests/`, with shared toy
 ontology classes in `tests/toy.py` and RDF inputs in `tests/fixtures/`. Runnable
@@ -21,7 +21,7 @@ kept in `docs/` and `DESIGN.md`.
 - `make build` creates source and wheel distributions in a cleared `dist/`
   with the `uv_build` backend; `make dist-check` also checks the metadata and
   smoke-tests the installed wheel.
-- `uv run objectrdf gen --file schema.ttl --name Example --out mypkg`
+- `uv run plumb gen --file schema.ttl --name Example --out mypkg`
   compiles a local ontology. See `docs/codegen.md` before regenerating committed
   packages.
 

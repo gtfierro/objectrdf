@@ -4,7 +4,7 @@ from pathlib import Path
 
 from rdflib import Graph
 
-from objectrdf.gen import generate
+from plumb.gen import generate
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -19,7 +19,7 @@ def main() -> None:
         source = ROOT / "ontology" / filename
         generate(
             Graph().parse(source),
-            ROOT / "src" / "objectrdf" / package,
+            ROOT / "src" / "plumb" / package,
             name=name,
             source=str(source.relative_to(ROOT)),
         )

@@ -15,8 +15,8 @@ Objects created inside `with model:` join the model. The name becomes a local
 name in the namespace:
 
 ```{code-cell} python3
-from objectrdf import Model
-from objectrdf.watr import Pump, SedimentationTank, Tank, enums
+from plumb import Model
+from plumb.watr import Pump, SedimentationTank, Tank, enums
 
 model = Model("urn:example:plant#")
 with model:
@@ -50,7 +50,7 @@ object's own model.
 A property the shapes require is a required keyword argument:
 
 ```{code-cell} python3
-from objectrdf.watr import DomainSpace
+from plumb.watr import DomainSpace
 
 try:
     DomainSpace("zone", model=model)
@@ -78,7 +78,7 @@ clearwell.label, list(clearwell.has_role)
 Values are type-checked when set:
 
 ```{code-cell} python3
-from objectrdf.watr import Process_Settling
+from plumb.watr import Process_Settling
 
 try:
     clearwell.has_role.add(Process_Settling)
@@ -95,7 +95,7 @@ An object opened with `with` becomes a container. Objects created inside are
 linked with the predicate the ontology uses for that pair of classes:
 
 ```{code-cell} python3
-from objectrdf.watr import PhysicalSpace
+from plumb.watr import PhysicalSpace
 
 with model:
     with PhysicalSpace("filter-building"):
@@ -114,7 +114,7 @@ list(backwash_pump.has_physical_location)
 does the same and returns `b`. See [Connect equipment](connect-equipment.md).
 
 ```{code-cell} python3
-from objectrdf import connect
+from plumb import connect
 
 raw_water = connect(intake, clarifier, name="raw-water")
 raw_water

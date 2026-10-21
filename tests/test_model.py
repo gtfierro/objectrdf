@@ -4,7 +4,7 @@ import pytest
 import toy
 from rdflib import OWL, RDF, RDFS, Literal, URIRef
 
-from objectrdf import Model, ModelingError
+from plumb import Model, ModelingError
 
 
 def test_entities_require_an_active_model():

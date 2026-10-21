@@ -7,7 +7,7 @@ emitter's output style changes, change this file to match.
 
 from __future__ import annotations
 
-from objectrdf.core import (
+from plumb.core import (
     ClassInfo,
     Entity,
     Lit,

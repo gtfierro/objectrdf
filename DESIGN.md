@@ -1,4 +1,4 @@
-# objectrdf — Design
+# plumb — Design
 
 An object-oriented authoring layer for RDF building/water models (Brick, ASHRAE 223P, WATR).
 Practitioners write plain Python against typed classes; RDF is produced behind the scenes.
@@ -16,29 +16,29 @@ The requirements "synthesize classes dynamically from RDF" and "type annotations
 so LSPs and type checkers work" are in direct tension. Anything built at runtime with
 metaclasses/`type()` is invisible to pyright/mypy and to editor completion.
 
-**Decision: objectrdf is a compiler.** A codegen pipeline reads the ontology (+ SHACL shapes,
+**Decision: plumb is a compiler.** A codegen pipeline reads the ontology (+ SHACL shapes,
 + optionally BuildingMOTIF templates) and emits ordinary Python modules — real `.py` files,
 not `.pyi` stubs, so the static view and runtime behavior cannot drift apart. Precedent:
 protobuf, sqlacodegen, OpenAPI generators.
 
 ```
 ontology.ttl ─┐
-shapes.ttl  ──┼─▶  objectrdf-gen  ─▶  generated package (brick/, s223/, watr/)
+shapes.ttl  ──┼─▶  plumb-gen  ─▶  generated package (brick/, s223/, watr/)
 templates/  ──┘                          │
                                          ▼
-                    small stable runtime (objectrdf core)
+                    small stable runtime (plumb core)
                     Model, Entity, Relation, connection negotiation,
                     rdflib serialization, pyshacl validation
 ```
 
 Consequences:
 
-- Ship pre-generated, versioned packages: `objectrdf.brick` (Brick 1.4.x),
-  `objectrdf.s223` (223P 1.0), `objectrdf.watr`. Users `pip install objectrdf[brick]`
+- Ship pre-generated, versioned packages: `plumb.brick` (Brick 1.4.x),
+  `plumb.s223` (223P 1.0), `plumb.watr`. Users `pip install plumb[brick]`
   and import; they never run the generator unless they have a custom extension ontology.
 - Ontology upgrades become reviewable diffs of generated code.
 - The generator is also a public CLI for extension ontologies and site-specific templates:
-  `objectrdf gen --ontology myext.ttl --base objectrdf.s223 -o mysite/`.
+  `plumb gen --ontology myext.ttl --base plumb.s223 -o mysite/`.
 - Generated code is deliberately boring and declarative — thin classes over runtime
   descriptors — so it's greppable and debuggable.
 
@@ -113,8 +113,8 @@ class Equipment(Entity):
 ## 4. The Model (session) object
 
 ```python
-from objectrdf import Model
-from objectrdf.brick import AHU, VAV, Supply_Fan
+from plumb import Model
+from plumb.brick import AHU, VAV, Supply_Fan
 
 with Model("urn:ex/bldg1#") as m:
     fan = Supply_Fan("sf1", label="Supply Fan 1")
@@ -143,7 +143,7 @@ report = m.validate()        # shifty, errors mapped back to Python objects
 aspects) becomes generated constant namespaces that preserve the hierarchy:
 
 ```python
-from objectrdf.s223.enums import Medium, Role
+from plumb.s223.enums import Medium, Role
 Medium.Water.ChilledWater      # usable anywhere a Medium is expected
 ```
 
@@ -160,8 +160,8 @@ The pain: manually authoring `Connectable → ConnectionPoint → Connection →
 the library works out the plumbing.**
 
 ```python
-from objectrdf.s223 import Damper, Fan, VAV
-from objectrdf.s223.enums import Medium
+from plumb.s223 import Damper, Fan, VAV
+from plumb.s223.enums import Medium
 
 oad = Damper("oa-damper")
 sf  = Fan("supply-fan")
@@ -259,7 +259,7 @@ AHU.meta.shape        # the SHACL shape(s) governing this class (as text/graph o
 Both the generator and the runtime lean on two existing tools:
 
 **[ontoenv](https://ontoenv.gtf.fyi)** — ontology dependency resolution for the compiler.
-`objectrdf gen` takes ontology IRIs, not file paths; ontoenv resolves the `owl:imports`
+`plumb gen` takes ontology IRIs, not file paths; ontoenv resolves the `owl:imports`
 closure (Brick→ref schemas, 223→QUDT, extensions→base ontologies), caches it, and makes
 codegen reproducible. Generation output is byte-identical for an unchanged closure, and
 each generated package bundles the exact graph it was compiled from in `_shapes.ttl`.
@@ -302,7 +302,7 @@ class MakeupAirUnit(s223.AirHandlingUnit):     # template 'makeup-air-unit'
 - Instantiating expands the template body into the model; dependencies resolve
   recursively; unfilled optional params can be filled later (`mau.fill(...)`).
 - Inverse direction also falls out of the design: every generated class knows its shape,
-  so `MakeupAirUnit.as_template()` can emit a MOTIF template — keeping objectrdf
+  so `MakeupAirUnit.as_template()` can emit a MOTIF template — keeping plumb
   interoperable with the existing MOTIF ecosystem rather than parallel to it.
 - The generator accepts template libraries as an input alongside ontologies, so a site's
   `templates/` directory becomes a typed Python module.
@@ -310,14 +310,14 @@ class MakeupAirUnit(s223.AirHandlingUnit):     # template 'makeup-air-unit'
 ## 11. Package layout & stack
 
 ```
-objectrdf/
+plumb/
   core/            # Entity, Model, RelSet, descriptors, edge store
   connect/         # 223 negotiation engine (medium/direction resolution)
   gen/             # the compiler: ontology+SHACL+templates -> python modules
   brick/           # generated (committed, versioned)
   s223/            # generated
   watr/            # generated
-  cli.py           # objectrdf gen ...
+  cli.py           # plumb gen ...
 ```
 
 - uv project, `ruff`, `ty`/pyright in CI **run against the generated packages and the

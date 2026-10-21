@@ -1,5 +1,5 @@
-@prefix dw: <https://w3id.org/objectrdf/drinking-water#> .
-@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
+@prefix dw: <https://w3id.org/plumb/drinking-water#> .
+@prefix codegen: <https://w3id.org/plumb/codegen#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
@@ -14,7 +14,7 @@ dw: a owl:Ontology ;
     rdfs:label "Conventional drinking-water treatment configurations" ;
     rdfs:comment "Five treatment stages with separate clarification sludge and filter backwash boundaries." ;
     rdfs:seeAlso <https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html> ;
-    codegen:baseModule "objectrdf.watr" .
+    codegen:baseModule "plumb.watr" .
 
 # Shared main-path port shapes are reused by several stages. Water stays a
 # broad medium: process labels do not assert measured water quality.

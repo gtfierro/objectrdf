@@ -17,9 +17,9 @@ points, the medium, and the connection class. See
 count, and allowed media.
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.watr import GravityThickener, Pump, enums
-from objectrdf.watr.drinking_water import ClarificationStage, RapidSandFiltrationStage
+from plumb import Model, connect
+from plumb.watr import GravityThickener, Pump, enums
+from plumb.watr.drinking_water import ClarificationStage, RapidSandFiltrationStage
 
 values = enums.values
 print(Pump.describe_ports())

@@ -10,15 +10,15 @@ Produces: ahu.ttl and ahu_schema.ttl next to this script.
 
 from pathlib import Path
 
-from objectrdf import Model, connect
-from objectrdf.s223 import (
+from plumb import Model, connect
+from plumb.s223 import (
     AirHandlingUnit,
     Chiller,
     Damper,
     Fan,
     enums,
 )
-from objectrdf.s223.hvac import AirWaterCoolingCoil
+from plumb.s223.hvac import AirWaterCoolingCoil
 
 with Model("urn:example/ahu#") as model:
     with AirHandlingUnit("ahu-1"):

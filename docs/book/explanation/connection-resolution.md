@@ -17,7 +17,7 @@ A class's shapes say which points it needs: how many, which direction, and
 which media. The compiler turns them into a port contract:
 
 ```{code-cell} python3
-from objectrdf.watr import Clarifier
+from plumb.watr import Clarifier
 
 print(Clarifier.describe_ports())
 ```
@@ -77,9 +77,9 @@ RDF is only written for one interpretation. Contradictions raise
 `explain()` shows each decision:
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.watr import Pump
-from objectrdf.watr.drinking_water import CoagulationStage
+from plumb import Model, connect
+from plumb.watr import Pump
+from plumb.watr.drinking_water import CoagulationStage
 
 with Model("urn:example:resolution#") as model:
     pump = Pump("intake-pump")

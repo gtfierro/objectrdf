@@ -5,10 +5,10 @@ import shutil
 
 import pytest
 
-from objectrdf import Flowsheet, Model, connect, flowsheet
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import LevelSensor, Pump, Tank, enums
-from objectrdf.watr.drinking_water import (
+from plumb import Flowsheet, Model, connect, flowsheet
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import LevelSensor, Pump, Tank, enums
+from plumb.watr.drinking_water import (
     ClarificationStage,
     RapidSandFiltrationStage,
 )

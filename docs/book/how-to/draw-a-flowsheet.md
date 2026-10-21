@@ -16,10 +16,10 @@ with them; its name appears as a tooltip in SVG output.
 ## Draw a model
 
 ```{code-cell} python3
-from objectrdf import Model, connect, flowsheet
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import LevelSensor, Pump, Tank, enums
-from objectrdf.watr.drinking_water import (
+from plumb import Model, connect, flowsheet
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import LevelSensor, Pump, Tank, enums
+from plumb.watr.drinking_water import (
     ChlorinationStage,
     ClarificationStage,
     RapidSandFiltrationStage,
@@ -82,7 +82,7 @@ authored, so a Turtle file loaded back in draws the same sheet. Loading picks
 the WaTr and drinking-water packages from the file's `owl:imports`:
 
 ```{code-cell} python3
-from objectrdf import Model
+from plumb import Model
 
 model.save("plant.ttl")
 loaded = Model.from_graph("plant.ttl")

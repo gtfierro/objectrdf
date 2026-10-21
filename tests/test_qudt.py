@@ -4,13 +4,13 @@ from typing import Any
 
 from rdflib import OWL, Literal, URIRef
 
-from objectrdf import Model, connect, s223
-from objectrdf.qudt import (
+from plumb import Model, connect, s223
+from plumb.qudt import (
     QuantityAmount as Q,
     quantity_kinds,
     units,
 )
-from objectrdf.s223 import enums
+from plumb.s223 import enums
 
 QUDT = "http://qudt.org/schema/qudt/"
 

@@ -4,21 +4,21 @@
 user script
     │  plain typed Python                     existing RDF graph
     ▼
-generated package (objectrdf.brick, ...)      ← output of objectrdf.gen
+generated package (plumb.brick, ...)      ← output of plumb.gen
     │  classes, PropertySpecs, registries          │
     │                                              ▼
     │                                      query hydration (core/query.py)
     ▼
-runtime core (objectrdf.core)
+runtime core (plumb.core)
     │  Entity / Model / descriptors / deferred intentions
     ▼
-Z3 resolution (objectrdf.solver223)
+Z3 resolution (plumb.solver223)
     │  immutable compiled snapshot
     ▼
 rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
 ```
 
-## Runtime core (`src/objectrdf/core/`)
+## Runtime core (`src/plumb/core/`)
 
 - **`meta.py`** — the data generated code instantiates: `OntologyInfo`,
   `PropertySpec` (one attribute: predicate, kind, ranges, cardinality,
@@ -59,7 +59,7 @@ Design invariant: **user-facing errors speak Python** (class names, attribute
 names, entity names), and where the fix is mechanical the message contains
 the exact code to write.
 
-## Compiler (`src/objectrdf/gen/`)
+## Compiler (`src/plumb/gen/`)
 
 The compiler separates extraction, emission, and package policy:
 

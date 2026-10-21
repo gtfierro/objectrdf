@@ -1,10 +1,10 @@
-# objectrdf contributor documentation
+# plumb contributor documentation
 
 User documentation, covering how to author, connect, validate, query, and
 extend models, is in [the learning book](book/index.md). Build it with
 `make docs`; every code cell runs during the build.
 
-The pages here describe how objectrdf works inside and how to change it:
+The pages here describe how plumb works inside and how to change it:
 
 - [Architecture](architecture.md): the runtime core, the compiler, the 223
   layer, and domain configurations.

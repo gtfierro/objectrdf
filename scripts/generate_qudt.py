@@ -6,13 +6,13 @@ import argparse
 from ontoenv import OntoEnv
 from rdflib import Graph
 
-from objectrdf.gen.vocabulary import emit_vocabulary_module
+from plumb.gen.vocabulary import emit_vocabulary_module
 
 QUDT_VERSION = "3.4.0"
 QUDT_ALL = f"http://qudt.org/{QUDT_VERSION}/qudt-all"
 QUDT = "http://qudt.org/schema/qudt/"
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "src" / "objectrdf" / "qudt"
+OUT = ROOT / "src" / "plumb" / "qudt"
 
 
 def main() -> None:

@@ -1,4 +1,4 @@
-# objectrdf
+# plumb
 
 [![CI](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml/badge.svg)](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml)
 
@@ -11,10 +11,10 @@ Bundled ontologies: WATR v0.3.0.rc1 (a release candidate whose terms may still
 change before 0.3.0), ASHRAE 223P (v1.0.0-2026), and Brick 1.4.2.
 
 ```python
-from objectrdf import Model, connect, flowsheet
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import Pump
-from objectrdf.watr.drinking_water import ClarificationStage, CoagulationStage
+from plumb import Model, connect, flowsheet
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import Pump
+from plumb.watr.drinking_water import ClarificationStage, CoagulationStage
 
 with Model("urn:example:plant#") as model:
     intake = Pump("intake-pump")
@@ -36,7 +36,7 @@ link's range doesn't fit.
 
 ## Install and run the examples
 
-Objectrdf requires Python 3.12 or newer. From a checkout of this repository,
+Plumb requires Python 3.12 or newer. From a checkout of this repository,
 install the project and its dependencies with
 [uv](https://docs.astral.sh/uv/):
 
@@ -71,8 +71,8 @@ Reusable equipment layouts and property metadata are defined in RDF and SHACL.
 The compiler generates typed configurations and immutable value schemas:
 
 ```python
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.watr.asm2d import AerobicStage, AerobicDesign, OxygenOutletState
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.watr.asm2d import AerobicStage, AerobicDesign, OxygenOutletState
 
 with Model("urn:example:reactor#") as model:
     reactor = AerobicStage("R5")

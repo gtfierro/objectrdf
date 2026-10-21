@@ -12,8 +12,8 @@ damper to a fan, inspects the chosen connection, and validates the RDF.
 ## 1. Create and connect
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.s223 import Damper, Fan, enums
+from plumb import Model, connect
+from plumb.s223 import Damper, Fan, enums
 
 with Model("urn:example:air-path#") as model:
     damper = Damper("outside-air-damper")

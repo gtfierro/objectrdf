@@ -9,12 +9,12 @@ import pytest
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, SH
 
-from objectrdf import Model
-from objectrdf.gen import compile_modules
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.s223 import AirHandlingUnit, enums as s223_enums
-from objectrdf.s223.hvac import AirWaterCoolingCoil
-from objectrdf.watr import (
+from plumb import Model
+from plumb.gen import compile_modules
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.s223 import AirHandlingUnit, enums as s223_enums
+from plumb.s223.hvac import AirWaterCoolingCoil
+from plumb.watr import (
     ChlorinationUnit,
     CoagulationBasin,
     Connection,
@@ -29,12 +29,12 @@ from objectrdf.watr import (
     drinking_water,
     enums,
 )
-from objectrdf.watr.drinking_water import ClarificationStage, CoagulationStage
-from objectrdf.watr.seawater_ro import MembraneDesign, ROStage
+from plumb.watr.drinking_water import ClarificationStage, CoagulationStage
+from plumb.watr.seawater_ro import MembraneDesign, ROStage
 
 ROOT = Path(__file__).parents[1]
 S223 = Namespace("http://data.ashrae.org/standard223#")
-RO = Namespace("https://w3id.org/objectrdf/seawater-ro#")
+RO = Namespace("https://w3id.org/plumb/seawater-ro#")
 
 
 def example(relative: str):
@@ -64,7 +64,7 @@ def test_example_domain_regeneration_is_deterministic(source, name, package):
     )
     assert first == second
     for filename, text in first.items():
-        assert (ROOT / "src/objectrdf" / package / filename).read_text() == text
+        assert (ROOT / "src/plumb" / package / filename).read_text() == text
 
 
 def test_generated_coil_inherits_containment_and_restores_all_four_ports():
@@ -141,7 +141,7 @@ def test_conventional_treatment_train_uses_watr_equipment_and_separates_residual
 
 
 def test_registry_discovery_selects_every_imported_domain():
-    from objectrdf.watr.asm2d import AerobicStage
+    from plumb.watr.asm2d import AerobicStage
 
     model = Model("urn:example:mixed-domains#")
     with model:
@@ -156,9 +156,7 @@ def test_registry_discovery_ignores_a_trailing_hash_in_imports():
     graph = Graph()
     ontology = URIRef("urn:example:hand#")
     graph.add((ontology, RDF.type, OWL.Ontology))
-    graph.add(
-        (ontology, OWL.imports, URIRef("https://w3id.org/objectrdf/drinking-water"))
-    )
+    graph.add((ontology, OWL.imports, URIRef("https://w3id.org/plumb/drinking-water")))
     graph.add(
         (URIRef("urn:example:hand#stage"), RDF.type, URIRef(CoagulationStage.meta.iri))
     )
@@ -343,7 +341,7 @@ def test_monitoring_examples_collect_system_members_without_fabricating_readings
 def test_configuration_rejects_single_value_for_collection():
     # Shape-constrained configurations check values before the descriptor
     # does; both paths must name the fix rather than iterate the enum.
-    from objectrdf.core import RangeError
+    from plumb.core import RangeError
 
     with Model("urn:test:single-value#"):
         with pytest.raises(RangeError, match=r"has_role takes a collection"):

@@ -3,7 +3,7 @@
 import pytest
 import toy
 
-from objectrdf import Model, ModelingError
+from plumb import Model, ModelingError
 
 
 @pytest.fixture
@@ -56,7 +56,7 @@ def test_abstract_class_rejected(m):
 
 
 def test_entity_base_cannot_be_instantiated(m):
-    from objectrdf import Entity
+    from plumb import Entity
 
     with pytest.raises(TypeError, match="cannot be instantiated directly"):
         Entity("x")

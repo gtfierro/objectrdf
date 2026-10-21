@@ -7,10 +7,10 @@ seawater_RO_desalination.html#pre-treatment
 
 from pathlib import Path
 
-from objectrdf import Model, connect
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.watr import enums
-from objectrdf.watr.seawater_ro import (
+from plumb import Model, connect
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.watr import enums
+from plumb.watr.seawater_ro import (
     BackwashStage,
     CartridgeFiltrationStage,
     ChlorinationStage,

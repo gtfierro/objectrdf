@@ -1,5 +1,5 @@
-title: ObjectRDF learning book
-author: ObjectRDF contributors
+title: Plumb learning book
+author: Plumb contributors
 only_build_toc_files: true
 execute:
   execute_notebooks: auto

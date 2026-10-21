@@ -18,10 +18,10 @@ A property schema is a group of quantities. Each field has a QUDT quantity
 kind, a unit, and the medium it describes.
 
 ```{code-cell} python3
-from objectrdf import Model, PropertySchema, connect, flowsheet, quantity_field
-from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
-from objectrdf.watr import GravityThickener, LevelSensor, Pump, Tank, enums
-from objectrdf.watr.drinking_water import (
+from plumb import Model, PropertySchema, connect, flowsheet, quantity_field
+from plumb.qudt import QuantityAmount as Q, quantity_kinds, units
+from plumb.watr import GravityThickener, LevelSensor, Pump, Tank, enums
+from plumb.watr.drinking_water import (
     ChlorinationStage,
     ClarificationStage,
     CoagulationStage,

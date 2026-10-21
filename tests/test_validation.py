@@ -4,7 +4,7 @@ import pytest
 import rdflib
 import toy
 
-from objectrdf import Model, ValidationError
+from plumb import Model, ValidationError
 
 # Shapes for the toy ontology: a Meter must have at least one hasPoint.
 TOY_SHAPES = """

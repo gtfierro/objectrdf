@@ -4,7 +4,7 @@ import pytest
 import toy
 from rdflib import RDF, RDFS, Graph, Literal, Namespace, URIRef
 
-from objectrdf import Model, ModelingError, connect
+from plumb import Model, ModelingError, connect
 
 EX = Namespace("urn:example#")
 TOY = Namespace("urn:toy#")
@@ -191,7 +191,7 @@ def test_loaded_graph_can_be_validated_without_authoring_resolution():
 
 
 def test_graph_backed_model_rejects_uncommitted_solver_intentions():
-    from objectrdf.watr import Pump, Tank
+    from plumb.watr import Pump, Tank
 
     graph = Graph()
     graph.add((EX.pump, RDF.type, URIRef(Pump.meta.iri)))

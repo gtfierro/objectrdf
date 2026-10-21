@@ -1,11 +1,11 @@
-"""Regenerate objectrdf.brick from Brick 1.4 with its RealEstateCore, QUDT,
+"""Regenerate plumb.brick from Brick 1.4 with its RealEstateCore, QUDT,
 and other imports."""
 
 from pathlib import Path
 
 from ontoenv import OntoEnv
 
-from objectrdf.gen import generate
+from plumb.gen import generate
 
 ROOT = Path(__file__).resolve().parents[1]
 BRICK_SOURCE = "https://brickschema.org/schema/1.4/Brick.ttl"
@@ -19,9 +19,7 @@ def main() -> None:
         graph, _closure = env.get_closure(BRICK_IRI)
     finally:
         env.close()
-    generate(
-        graph, ROOT / "src" / "objectrdf" / "brick", name="Brick", source=BRICK_SOURCE
-    )
+    generate(graph, ROOT / "src" / "plumb" / "brick", name="Brick", source=BRICK_SOURCE)
 
 
 if __name__ == "__main__":

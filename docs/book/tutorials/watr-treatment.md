@@ -21,7 +21,7 @@ calculate removal, dose, or contact time.
 
 ## 1. Import the stages
 
-`objectrdf.watr.drinking_water` provides one class per stage. Each subclasses
+`plumb.watr.drinking_water` provides one class per stage. Each subclasses
 a WaTr equipment class and fixes its process, objective, and named ports.
 
 | Stage | Class | WaTr parent |
@@ -33,9 +33,9 @@ a WaTr equipment class and fixes its process, objective, and named ports.
 | Disinfection | `ChlorinationStage` | `ChlorinationUnit` |
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.watr import SedimentationTank
-from objectrdf.watr.drinking_water import (
+from plumb import Model, connect
+from plumb.watr import SedimentationTank
+from plumb.watr.drinking_water import (
     ChlorinationStage,
     ClarificationStage,
     CoagulationStage,
@@ -142,7 +142,7 @@ The clarifier was saved as a `ClarificationStage`, which is a kind of
 ## 5. Draw it
 
 ```{code-cell} python3
-from objectrdf import flowsheet
+from plumb import flowsheet
 
 flowsheet(loaded, title="Conventional treatment train")
 ```

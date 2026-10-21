@@ -20,7 +20,7 @@ in the alphabetical index.
 :tags: [hide-input]
 from html import escape
 from IPython.display import HTML, display
-from objectrdf import s223, watr
+from plumb import s223, watr
 
 def class_anchor(package, cls):
     return f"{package}-class-{cls.__name__}"

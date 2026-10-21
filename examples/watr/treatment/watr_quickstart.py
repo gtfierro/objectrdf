@@ -9,9 +9,9 @@ Run: uv run python examples/watr/treatment/watr_quickstart.py
 
 from pathlib import Path
 
-from objectrdf import Model, connect
-from objectrdf.watr import Pipe, System
-from objectrdf.watr.drinking_water import (
+from plumb import Model, connect
+from plumb.watr import Pipe, System
+from plumb.watr.drinking_water import (
     ChlorinationStage,
     ClarificationStage,
     CoagulationStage,

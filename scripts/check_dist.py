@@ -1,4 +1,4 @@
-"""Smoke-test an installed objectrdf wheel before upload.
+"""Smoke-test an installed plumb wheel before upload.
 
 ``make dist-check`` runs this in a throwaway environment that has only the
 built wheel installed, so it catches files missing from the distribution
@@ -8,8 +8,8 @@ rather than from the source tree.
 from importlib import resources
 from pathlib import Path
 
-import objectrdf
-from objectrdf import Model, connect, watr
+import plumb
+from plumb import Model, connect, watr
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGES = (
@@ -24,16 +24,16 @@ PACKAGES = (
 
 
 def main() -> None:
-    installed = Path(objectrdf.__file__).resolve()
+    installed = Path(plumb.__file__).resolve()
     if installed.is_relative_to(ROOT / "src"):
         raise SystemExit(f"imported the source tree, not the wheel: {installed}")
 
     for name in PACKAGES:
-        shapes = resources.files(f"objectrdf.{name}") / "_shapes.ttl"
+        shapes = resources.files(f"plumb.{name}") / "_shapes.ttl"
         if not shapes.is_file():
-            raise SystemExit(f"objectrdf.{name} is missing _shapes.ttl")
-    if not (resources.files("objectrdf") / "py.typed").is_file():
-        raise SystemExit("objectrdf is missing py.typed")
+            raise SystemExit(f"plumb.{name} is missing _shapes.ttl")
+    if not (resources.files("plumb") / "py.typed").is_file():
+        raise SystemExit("plumb is missing py.typed")
 
     with Model("urn:example/dist-check#") as model:
         clarifier = watr.Clarifier("clarifier")
@@ -44,7 +44,7 @@ def main() -> None:
     model.resolve()
     model.validate()
 
-    print(f"objectrdf {objectrdf.__version__} wheel OK ({installed.parent})")
+    print(f"plumb {plumb.__version__} wheel OK ({installed.parent})")
 
 
 if __name__ == "__main__":

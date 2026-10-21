@@ -1,43 +1,43 @@
 Runtime API reference
 =====================
 
-These signatures and docstrings are imported from the installed ``objectrdf``
+These signatures and docstrings are imported from the installed ``plumb``
 package during the book build. The :doc:`../explanation/lifecycle` explains
 when to use each operation.
 
 Model
 -----
 
-.. autoclass:: objectrdf.Model
+.. autoclass:: plumb.Model
    :members: system, from_graph, by_class, find, find_all, check, resolve, compile, graph, save, validate, export_ontology
 
-.. automethod:: objectrdf.core.Entity.describe_ports
+.. automethod:: plumb.core.Entity.describe_ports
 
-.. autoattribute:: objectrdf.core.Entity.ports
+.. autoattribute:: plumb.core.Entity.ports
 
 Property schemas
 ----------------
 
-.. autoclass:: objectrdf.PropertySchema
+.. autoclass:: plumb.PropertySchema
    :members: describe
 
-.. autoclass:: objectrdf.qudt.QuantityAmount
+.. autoclass:: plumb.qudt.QuantityAmount
    :members:
 
-.. autoclass:: objectrdf.PropertySet
+.. autoclass:: plumb.PropertySet
    :members:
 
-.. automethod:: objectrdf.core.Entity.apply_properties
+.. automethod:: plumb.core.Entity.apply_properties
 
-.. automethod:: objectrdf.core.Entity.quantity
+.. automethod:: plumb.core.Entity.quantity
 
-.. autoclass:: objectrdf.PointRef
+.. autoclass:: plumb.PointRef
    :members: medium, quantity, apply_properties
 
-.. autoclass:: objectrdf.PointGroupRef
+.. autoclass:: plumb.PointGroupRef
    :members:
 
-.. autoclass:: objectrdf.PortHandle
+.. autoclass:: plumb.PortHandle
    :members: medium, direction, pair, quantity, apply_properties
 
 Class discovery
@@ -46,49 +46,49 @@ Class discovery
 Use ``SomeClass.meta["ChildName"]`` for a descendant scoped to that class.
 The lookup also accepts the full Python name or ontology class IRI.
 
-.. autoclass:: objectrdf.core.ClassMetaView
+.. autoclass:: plumb.core.ClassMetaView
    :members: iri, label, definition, ontology, registry, parents, children, subclasses, descendants, tree, properties, port_contract, describe_ports, abstract
 
-.. autoclass:: objectrdf.core.Registry
+.. autoclass:: plumb.core.Registry
    :members: classes, subclasses, tree, resolve
 
-.. autoclass:: objectrdf.core.EnumValue
+.. autoclass:: plumb.core.EnumValue
    :members: iri, label, definition, parent, parents, children, descendants, tree, tree_text, is_a
 
-.. autoclass:: objectrdf.core.PortContract
+.. autoclass:: plumb.core.PortContract
    :members:
 
-.. autoclass:: objectrdf.core.PortSlot
+.. autoclass:: plumb.core.PortSlot
    :members:
 
 Connections and snapshots
 -------------------------
 
-.. autofunction:: objectrdf.connect
+.. autofunction:: plumb.connect
 
-.. autoclass:: objectrdf.ConnectionHandle
+.. autoclass:: plumb.ConnectionHandle
    :members: medium, connection_class, label, comment, assign, quantity, apply_properties
 
-.. autoclass:: objectrdf.ResolvedModel
+.. autoclass:: plumb.ResolvedModel
    :members: entities, connection, point, explain, graph
 
-.. autoclass:: objectrdf.ResolutionReport
+.. autoclass:: plumb.ResolutionReport
    :members: satisfiable, complete
 
-.. autoclass:: objectrdf.ResolutionExplanation
+.. autoclass:: plumb.ResolutionExplanation
    :members:
 
 Validation and errors
 ---------------------
 
-.. autoclass:: objectrdf.ValidationReport
+.. autoclass:: plumb.ValidationReport
    :members: violations
 
-.. autoclass:: objectrdf.core.Issue
+.. autoclass:: plumb.core.Issue
    :members:
 
-.. autoexception:: objectrdf.AmbiguousModelError
+.. autoexception:: plumb.AmbiguousModelError
 
-.. autoexception:: objectrdf.UnsatisfiableModelError
+.. autoexception:: plumb.UnsatisfiableModelError
 
-.. autoexception:: objectrdf.ValidationError
+.. autoexception:: plumb.ValidationError

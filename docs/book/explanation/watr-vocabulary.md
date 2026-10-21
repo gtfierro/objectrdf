@@ -1,6 +1,6 @@
 # The WaTr vocabulary
 
-`objectrdf.watr` is generated from WaTr
+`plumb.watr` is generated from WaTr
 [v0.3.0.rc1](https://github.com/DataDrivenCPS/water-ontology/releases/tag/v0.3.0.rc1),
 vendored unmodified as `ontology/watr-0.3.0rc1.ttl`. Terms may change before
 0.3.0.
@@ -59,11 +59,11 @@ The bundled shapes also check percentage compositions:
 
 ## Names shared with S223
 
-`objectrdf.watr` contains the S223 classes it imports as well as WaTr's own.
+`plumb.watr` contains the S223 classes it imports as well as WaTr's own.
 When both define a name, WaTr's keeps it and S223's gets a suffix: `Pump` is
 `watr:Pump` and `Pump_2` is `s223:Pump`. WaTr's pump accepts any `Mix-Fluid`,
 including sludge; S223's admits only water, oil, or refrigerant. Check
 `Pump.meta.iri` when it matters.
 
 WaTr's enum additions, such as `Fluid_Sludge` and `Role_Backwash`, sit
-alongside the S223 values in `objectrdf.watr.enums`.
+alongside the S223 values in `plumb.watr.enums`.

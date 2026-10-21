@@ -15,8 +15,8 @@ subclasses of base equipment and uses SHACL to fix what the base leaves open:
 - defaults that the model author can replace;
 - property schemas: groups of quantities with kinds, units, and bounds.
 
-`objectrdf gen` compiles it into a package beside its base, such as
-`objectrdf.watr.drinking_water`. Model authors just import it.
+`plumb gen` compiles it into a package beside its base, such as
+`plumb.watr.drinking_water`. Model authors just import it.
 
 ## When to write one
 
@@ -44,7 +44,7 @@ them. A Python schema exists only in its program.
 
 ## A worked example: drinking water
 
-`objectrdf.watr.drinking_water` is compiled from
+`plumb.watr.drinking_water` is compiled from
 [`ontology/drinking-water.ttl`](https://github.com/gtfierro/objectrdf/blob/main/ontology/drinking-water.ttl),
 a teaching configuration of conventional surface-water treatment. Each stage
 fixes its process, objective, and connection points:
@@ -88,9 +88,9 @@ Each `sh:name` becomes an attribute, and the process and objective are filled
 in:
 
 ```{code-cell} python3
-from objectrdf import Model
-from objectrdf.watr import SedimentationTank
-from objectrdf.watr.drinking_water import ClarificationStage
+from plumb import Model
+from plumb.watr import SedimentationTank
+from plumb.watr.drinking_water import ClarificationStage
 
 print(ClarificationStage.describe_ports())
 

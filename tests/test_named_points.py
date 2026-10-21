@@ -7,10 +7,10 @@ import sys
 import pytest
 from rdflib import Graph, URIRef
 
-from objectrdf import AmbiguousModelError, Model, connect
-from objectrdf.core.errors import ModelingError
-from objectrdf.gen import generate
-from objectrdf.s223 import Chiller, Damper, Fan, OutletConnectionPoint, Pump, enums
+from plumb import AmbiguousModelError, Model, connect
+from plumb.core.errors import ModelingError
+from plumb.gen import generate
+from plumb.s223 import Chiller, Damper, Fan, OutletConnectionPoint, Pump, enums
 
 
 @pytest.fixture

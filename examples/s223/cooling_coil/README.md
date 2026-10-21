@@ -3,7 +3,7 @@
 Run `uv run python examples/s223/cooling_coil/cooling_coil.py` from the repository
 root. It writes an instance graph and its portable ontology schema.
 
-The model imports `AirWaterCoolingCoil` from `objectrdf.s223.hvac`. Its four
+The model imports `AirWaterCoolingCoil` from `plumb.s223.hvac`. Its four
 named points (`air_inlet`, `air_outlet`, `water_inlet`, and `water_outlet`) and
 fixed media are defined in [ontology/hvac.ttl](../../../ontology/hvac.ttl).
 The same configuration is used by the [AHU example](../ahu/).

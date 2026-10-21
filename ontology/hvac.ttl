@@ -1,5 +1,5 @@
-@prefix codegen: <https://w3id.org/objectrdf/codegen#> .
-@prefix ex: <https://w3id.org/objectrdf/hvac#> .
+@prefix codegen: <https://w3id.org/plumb/codegen#> .
+@prefix ex: <https://w3id.org/plumb/hvac#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
@@ -8,14 +8,14 @@
 
 ex: a owl:Ontology ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
-    codegen:baseModule "objectrdf.s223" .
+    codegen:baseModule "plumb.s223" .
 
 ex:AirWaterCoolingCoilShape a sh:NodeShape ;
-    sh:property <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> ;
+    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> ;
     sh:targetClass ex:AirWaterCoolingCoil .
 
 ex:AirWaterCoolingCoil a owl:Class ;
@@ -23,71 +23,71 @@ ex:AirWaterCoolingCoil a owl:Class ;
     rdfs:comment "A cooling coil with separate air and water inlets and outlets." ;
     rdfs:subClassOf s223:CoolingCoil .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0> sh:name "air_inlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0> sh:name "air_inlet" ;
     sh:path s223:hasConnectionPoint ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
     sh:qualifiedValueShape ex:AirWaterCoolingCoil_air_inletPointShape .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1> sh:name "air_outlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1> sh:name "air_outlet" ;
     sh:path s223:hasConnectionPoint ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
     sh:qualifiedValueShape ex:AirWaterCoolingCoil_air_outletPointShape .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2> sh:name "water_inlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2> sh:name "water_inlet" ;
     sh:path s223:hasConnectionPoint ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
     sh:qualifiedValueShape ex:AirWaterCoolingCoil_water_inletPointShape .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3> sh:name "water_outlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3> sh:name "water_outlet" ;
     sh:path s223:hasConnectionPoint ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
     sh:qualifiedValueShape ex:AirWaterCoolingCoil_water_outletPointShape .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> sh:maxCount 4 ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> sh:maxCount 4 ;
     sh:minCount 4 ;
     sh:path s223:hasConnectionPoint .
 
 ex:AirWaterCoolingCoil_air_inletPointShape sh:class s223:InletConnectionPoint ;
-    sh:property <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> .
+    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Air ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Air ;
     sh:path s223:hasMedium .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> sh:hasValue "air_inlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> sh:hasValue "air_inlet" ;
     sh:path rdfs:label .
 
 ex:AirWaterCoolingCoil_air_outletPointShape sh:class s223:OutletConnectionPoint ;
-    sh:property <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> .
+    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Air ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Air ;
     sh:path s223:hasMedium .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> sh:hasValue "air_outlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> sh:hasValue "air_outlet" ;
     sh:path rdfs:label .
 
 ex:AirWaterCoolingCoil_water_inletPointShape sh:class s223:InletConnectionPoint ;
-    sh:property <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> .
+    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
     sh:path s223:hasMedium .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> sh:hasValue "water_inlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> sh:hasValue "water_inlet" ;
     sh:path rdfs:label .
 
 ex:AirWaterCoolingCoil_water_outletPointShape sh:class s223:OutletConnectionPoint ;
-    sh:property <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0>,
-        <https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> .
+    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0>,
+        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0> sh:hasValue s223:Fluid-Water ;
     sh:path s223:hasMedium .
 
-<https://w3id.org/objectrdf/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> sh:hasValue "water_outlet" ;
+<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> sh:hasValue "water_outlet" ;
     sh:path rdfs:label .
 

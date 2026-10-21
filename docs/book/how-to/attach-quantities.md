@@ -8,13 +8,13 @@ kernelspec:
 
 A value such as a tank volume or a raw-water turbidity is an S223 property on
 equipment, a point, or a connection. Units and quantity kinds are QUDT terms
-from `objectrdf.qudt`.
+from `plumb.qudt`.
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
-from objectrdf.watr import Pump, Tank, enums
-from objectrdf.watr.drinking_water import CoagulationStage
+from plumb import Model, connect
+from plumb.qudt import QuantityAmount as Q, quantity_kinds, units
+from plumb.watr import Pump, Tank, enums
+from plumb.watr.drinking_water import CoagulationStage
 
 values = enums.values
 model = Model("urn:example:quantities#")
@@ -115,7 +115,7 @@ compatible.
 Subclass `PropertySchema` and declare each field with `quantity_field()`:
 
 ```{code-cell} python3
-from objectrdf import PropertySchema, quantity_field
+from plumb import PropertySchema, quantity_field
 
 
 class InfluentQuality(PropertySchema):
@@ -182,7 +182,7 @@ Domain packages compile property schemas from SHACL. ASM2d defines an
 aerobic reactor's design values:
 
 ```{code-cell} python3
-from objectrdf.watr.asm2d import AerobicDesign, AerobicStage
+from plumb.watr.asm2d import AerobicDesign, AerobicStage
 
 print(AerobicDesign.describe())
 ```
@@ -201,7 +201,7 @@ it; see [Domain extensions](../explanation/domain-extensions.md).
 When no QUDT quantity kind fits, use S223's `Property` with a literal:
 
 ```{code-cell} python3
-from objectrdf.watr import Property
+from plumb.watr import Property
 
 permeability = Property(
     "water-permeability",

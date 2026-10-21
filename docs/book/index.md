@@ -6,7 +6,7 @@ mystnb:
   execution_in_temp: true
 ---
 
-# ObjectRDF
+# Plumb
 
 Write water and wastewater treatment plant models in Python and get RDF that
 conforms to [WaTr](https://github.com/DataDrivenCPS/water-ontology) and ASHRAE
@@ -15,14 +15,14 @@ conforms to [WaTr](https://github.com/DataDrivenCPS/water-ontology) and ASHRAE
 A semantic model of a plant is useful to analytics, controls, and digital
 twins, but writing one by hand is slow: every pipe needs connection points on
 both ends, matching media, inverse links, and the right classes, and nothing
-checks the result until a SHACL validator runs. ObjectRDF lets you state what
+checks the result until a SHACL validator runs. Plumb lets you state what
 the plant is. It fills in the rest and checks it as you go.
 
 ```{code-cell} python3
-from objectrdf import Model, connect, flowsheet
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import Pump
-from objectrdf.watr.drinking_water import (
+from plumb import Model, connect, flowsheet
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import Pump
+from plumb.watr.drinking_water import (
     ClarificationStage,
     CoagulationStage,
     RapidSandFiltrationStage,
@@ -72,7 +72,7 @@ same typed objects, chosen from the file's `owl:imports`.
 
 **Domain packages.** Reusable equipment layouts and property sets are written
 in SHACL and compiled into Python packages, such as
-`objectrdf.watr.drinking_water` above.
+`plumb.watr.drinking_water` above.
 
 ## Start here
 

@@ -6,7 +6,7 @@ DOCS_ARGS ?=
 
 PYTHON_PATHS := src tests examples
 DOCS_DIR := docs/book
-FORMAT_EXCLUDE := src/objectrdf/qudt/units.py,src/objectrdf/qudt/quantity_kinds.py
+FORMAT_EXCLUDE := src/plumb/qudt/units.py,src/plumb/qudt/quantity_kinds.py
 
 .PHONY: help setup check test lint format-check typecheck format build dist-check docs docs-rebuild \
 	docs-check docs-open docs-clean regen examples clean
@@ -39,7 +39,7 @@ build: ## Build the source distribution and wheel in dist/, replacing old output
 
 dist-check: build ## Build, then check metadata and smoke-test the installed wheel
 	$(UV) run --isolated --no-project --with twine twine check --strict dist/*
-	$(UV) run --isolated --no-project --with dist/objectrdf-*.whl \
+	$(UV) run --isolated --no-project --with dist/plumb_rdf-*.whl \
 		python -I scripts/check_dist.py
 
 docs: ## Build HTML documentation and execute tutorial notebooks

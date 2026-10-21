@@ -21,7 +21,7 @@ system boundary points: raw-water inlet, finished-water outlet, sludge outlet,
 backwash supply inlet, and spent-backwash outlet. Backwashing is an intermittent
 operation; the graph describes its paths without scheduling it.
 
-The Python stage classes come from `objectrdf.watr.drinking_water`, generated
+The Python stage classes come from `plumb.watr.drinking_water`, generated
 from [`ontology/drinking-water.ttl`](../../../ontology/drinking-water.ttl).
 That source selects existing WaTr equipment classes, process terms, treatment
 objectives, and named ports. Edit the source and run `make regen` to regenerate

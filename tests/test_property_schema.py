@@ -9,18 +9,18 @@ import pytest
 from rdflib import Literal, RDF, URIRef, XSD
 from typing import cast
 
-from objectrdf import (
+from plumb import (
     Model,
     PropertySchema,
     QuantityDefinition,
     connect,
     quantity_field,
 )
-from objectrdf.core.errors import ModelingError
-from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
-from objectrdf.watr import enums
-from objectrdf.watr import Pump, QuantifiableProperty
-from objectrdf.watr.asm2d import (
+from plumb.core.errors import ModelingError
+from plumb.qudt import QuantityAmount as Q, quantity_kinds, units
+from plumb.watr import enums
+from plumb.watr import Pump, QuantifiableProperty
+from plumb.watr.asm2d import (
     AerobicDesign,
     AerobicStage,
     OverallFlowSplit,
@@ -190,12 +190,12 @@ def test_fraction_bounds_and_machine_readable_basis():
     assert (
         subject,
         RDF.type,
-        URIRef("https://w3id.org/objectrdf/asm2d#SplitFraction"),
+        URIRef("https://w3id.org/plumb/asm2d#SplitFraction"),
     ) in graph
     assert (
         subject,
-        URIRef("https://w3id.org/objectrdf/asm2d#hasSplitBasis"),
-        URIRef("https://w3id.org/objectrdf/asm2d#OverallFlow"),
+        URIRef("https://w3id.org/plumb/asm2d#hasSplitBasis"),
+        URIRef("https://w3id.org/plumb/asm2d#OverallFlow"),
     ) in graph
 
 
@@ -208,7 +208,7 @@ def test_full_asm2d_semantics_validation_and_hydration():
     spec.loader.exec_module(example)
     model = example.build_model()
     resolved = model.resolve()
-    from objectrdf.watr import Connection
+    from plumb.watr import Connection
 
     connections = [entity for entity in resolved if isinstance(entity, Connection)]
     assert len(connections) == 14

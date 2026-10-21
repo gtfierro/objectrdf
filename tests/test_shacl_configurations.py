@@ -10,14 +10,14 @@ from rdflib import Graph, Literal, Namespace, URIRef, OWL, RDF, RDFS
 from rdflib.compare import isomorphic
 from rdflib.namespace import SH
 
-from objectrdf import Model, connect
-from objectrdf.core.errors import ModelingError
-from objectrdf.gen import compile_modules, generate
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.watr import Process_Aeration, Process_Denitrification, enums
-from objectrdf.watr.asm2d import AerobicStage, RecyclePump
+from plumb import Model, connect
+from plumb.core.errors import ModelingError
+from plumb.gen import compile_modules, generate
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.watr import Process_Aeration, Process_Denitrification, enums
+from plumb.watr.asm2d import AerobicStage, RecyclePump
 
-EX = Namespace("https://w3id.org/objectrdf/asm2d#")
+EX = Namespace("https://w3id.org/plumb/asm2d#")
 S223 = Namespace("http://data.ashrae.org/standard223#")
 QUDT = Namespace("http://qudt.org/schema/qudt/")
 SOURCE = Path(__file__).parents[1] / "ontology/asm2d.ttl"
@@ -41,7 +41,7 @@ def test_regeneration_is_byte_identical_across_fresh_parses():
         Graph().parse(SOURCE), name="ASM2d", source="ontology/asm2d.ttl"
     )
     assert first == second
-    output = Path(__file__).parents[1] / "src/objectrdf/watr/asm2d"
+    output = Path(__file__).parents[1] / "src/plumb/watr/asm2d"
     for filename, text in first.items():
         assert (output / filename).read_text() == text
 
@@ -52,7 +52,7 @@ def test_explicit_names_cannot_shadow_the_package_registry(node):
     graph.set(
         (
             node,
-            URIRef("https://w3id.org/objectrdf/codegen#pythonName"),
+            URIRef("https://w3id.org/plumb/codegen#pythonName"),
             Literal("REGISTRY"),
         )
     )
@@ -208,7 +208,7 @@ def test_generated_typing_checks_required_fields_and_value_types(tmp_path):
         pytest.skip("ty is not installed")
     fixture = tmp_path / "bad_schema_calls.py"
     fixture.write_text(
-        "from objectrdf.watr.asm2d import AerobicDesign\n"
+        "from plumb.watr.asm2d import AerobicDesign\n"
         "AerobicDesign(oxygen_transfer_coeficient=10.0)\n"
         "AerobicDesign(oxygen_transfer_coefficient='ten')\n"
     )

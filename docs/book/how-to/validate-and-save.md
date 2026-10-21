@@ -13,9 +13,9 @@ each package, using shifty. It applies S223's and WaTr's SHACL-AF rules first
 and maps each result back to a Python object.
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.watr import Pump, Tank
-from objectrdf.watr.drinking_water import ClarificationStage
+from plumb import Model, connect
+from plumb.watr import Pump, Tank
+from plumb.watr.drinking_water import ClarificationStage
 
 model = Model("urn:example:validate#")
 with model:

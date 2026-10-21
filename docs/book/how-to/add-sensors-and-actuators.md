@@ -11,10 +11,10 @@ command property and the actuator that carries it out. Both work on
 equipment, named points, and connection handles.
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import LevelSensor, Pump, Tank, enums
-from objectrdf.watr.drinking_water import ChlorinationStage, RapidSandFiltrationStage
+from plumb import Model, connect
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import LevelSensor, Pump, Tank, enums
+from plumb.watr.drinking_water import ChlorinationStage, RapidSandFiltrationStage
 
 values = enums.values
 model = Model("urn:example:instruments#")
@@ -122,7 +122,7 @@ analyzer.observes.of_medium
 ```
 
 ```{code-cell} python3
-from objectrdf import flowsheet
+from plumb import flowsheet
 
 flowsheet(resolved)
 ```
@@ -132,7 +132,7 @@ flowsheet(resolved)
 `.sensor()` is shorthand for:
 
 ```python
-from objectrdf.watr import TurbidityMeter
+from plumb.watr import TurbidityMeter
 
 turbidity = filtered.quantity(
     "filtered-turbidity-value",

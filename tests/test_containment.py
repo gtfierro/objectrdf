@@ -3,8 +3,8 @@
 import pytest
 import toy
 
-from objectrdf import Model
-from objectrdf.core import ContainmentError
+from plumb import Model
+from plumb.core import ContainmentError
 
 
 @pytest.fixture

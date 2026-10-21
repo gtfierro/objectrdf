@@ -1,6 +1,6 @@
 # Code generation
 
-objectrdf is a compiler: ontology + SHACL in, ordinary Python modules out.
+plumb is a compiler: ontology + SHACL in, ordinary Python modules out.
 Generated packages are real code (not stubs, not runtime metaclasses), so
 editors, type checkers, and debuggers see exactly what runs.
 
@@ -52,11 +52,11 @@ don't contribute to the Python MRO.
 ## UX overlays
 
 Operator sugar and containment rules are *policy*, not ontology fact, so they
-live in overlays (`objectrdf/gen/overlays.py`), keyed by ontology name. An
+live in overlays (`plumb/gen/overlays.py`), keyed by ontology name. An
 overlay entry that doesn't resolve against a given ontology version is
 skipped with a comment in the generated file, so one overlay can serve many
 versions. Pass `--no-overlay` to disable, or supply your own
-`Overlay` via the Python API (`objectrdf.gen.compile_source`).
+`Overlay` via the Python API (`plumb.gen.compile_source`).
 
 ## Regenerating the committed packages
 
@@ -67,7 +67,7 @@ uv run pytest tests/test_brick.py
 
 The script bundles Brick's RealEstateCore, QUDT, and other imports into
 `_shapes.ttl` through ontoenv. S223 is compiled from the published 223P
-document alone, since units and quantity kinds come from `objectrdf.qudt`:
+document alone, since units and quantity kinds come from `plumb.qudt`:
 
 ```bash
 uv run python scripts/generate_s223.py

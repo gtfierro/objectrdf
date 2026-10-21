@@ -1,4 +1,4 @@
-"""Build a small water-distribution network directly in objectrdf.
+"""Build a small water-distribution network directly in plumb.
 
 Unlike the EPANET example, this script has no input file.  The nodes, pipes,
 and instruments below are the source of truth, so the model can also serve as
@@ -13,9 +13,9 @@ Topology:
                              south -> east -> delivery
 """
 
-from objectrdf import Model
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import (
+from plumb import Model
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import (
     FlowSensor,
     Junction,
     LevelSensor,
@@ -67,7 +67,7 @@ def build_model() -> Model:
             # 2. Topology
             # ------------------------------------------------------------------
             # The >> operator reads in the direction of nominal water flow.
-            # objectrdf retains these as connection intentions and infers the
+            # plumb retains these as connection intentions and infers the
             # concrete connection-point annotations when the model is resolved.
             reservoir >> pump >> header
 

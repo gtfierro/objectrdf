@@ -7,7 +7,7 @@ kernelspec:
 # Use a domain package
 
 A domain package adds reusable equipment and property schemas on top of WaTr.
-This tutorial builds two aerobic reactor stages with `objectrdf.watr.asm2d`,
+This tutorial builds two aerobic reactor stages with `plumb.watr.asm2d`,
 the activated-sludge package.
 
 ## 1. Create the stages
@@ -16,9 +16,9 @@ the activated-sludge package.
 `outlet` ports:
 
 ```{code-cell} python3
-from objectrdf import Model, connect
-from objectrdf.qudt import QuantityAmount as Q, units
-from objectrdf.watr.asm2d import AerobicStage, AerobicDesign, OxygenOutletState
+from plumb import Model, connect
+from plumb.qudt import QuantityAmount as Q, units
+from plumb.watr.asm2d import AerobicStage, AerobicDesign, OxygenOutletState
 
 print(AerobicStage.describe_ports())
 ```

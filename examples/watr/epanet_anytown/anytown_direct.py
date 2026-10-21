@@ -1,4 +1,4 @@
-"""Author the Anytown distribution network directly in objectrdf.
+"""Author the Anytown distribution network directly in plumb.
 
 This version intentionally does not read ``Anytown.inp``.  It keeps the
 network assets, topology, and monitoring plan together as ordinary Python.
@@ -6,9 +6,9 @@ The topology is Thomas M. Walski's "01 Anytown" network (2016), available
 under CC BY-NC 4.0 from https://uknowledge.uky.edu/wdst_models/1/.
 """
 
-from objectrdf import Model
-from objectrdf.qudt import quantity_kinds, units
-from objectrdf.watr import (
+from plumb import Model
+from plumb.qudt import quantity_kinds, units
+from plumb.watr import (
     FlowSensor,
     Junction,
     PressureSensor,

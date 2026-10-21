@@ -6,9 +6,9 @@ Produces: cooling_coil.ttl and cooling_coil_schema.ttl next to this script.
 
 from pathlib import Path
 
-from objectrdf import Model, connect
-from objectrdf.s223 import Chiller, Fan
-from objectrdf.s223.hvac import AirWaterCoolingCoil
+from plumb import Model, connect
+from plumb.s223 import Chiller, Fan
+from plumb.s223.hvac import AirWaterCoolingCoil
 
 with Model("urn:example:hvac#") as model:
     supply_fan = Fan("supply-fan")

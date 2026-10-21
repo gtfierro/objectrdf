@@ -4,7 +4,7 @@ from pathlib import Path
 
 from rdflib import Graph
 
-from objectrdf.gen import generate
+from plumb.gen import generate
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -13,7 +13,7 @@ def main() -> None:
     source = ROOT / "ontology" / "asm2d.ttl"
     generate(
         Graph().parse(source),
-        ROOT / "src" / "objectrdf" / "watr" / "asm2d",
+        ROOT / "src" / "plumb" / "watr" / "asm2d",
         name="ASM2d",
         source="ontology/asm2d.ttl",
     )

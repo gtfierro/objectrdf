@@ -34,8 +34,8 @@ directory contains its runnable Python and related inputs or generated RDF.
 
 Reusable configurations and value schemas come from RDF and SHACL in
 [`ontology/`](../ontology/). Model authors import them from
-`objectrdf.s223.hvac`, `objectrdf.watr.asm2d`, `objectrdf.watr.seawater_ro`, or
-`objectrdf.watr.drinking_water`. Regenerate the packages after editing their sources:
+`plumb.s223.hvac`, `plumb.watr.asm2d`, `plumb.watr.seawater_ro`, or
+`plumb.watr.drinking_water`. Regenerate the packages after editing their sources:
 
 ```bash
 uv run python scripts/generate_example_domains.py

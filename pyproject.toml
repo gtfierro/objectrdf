@@ -1,5 +1,5 @@
 [project]
-name = "objectrdf"
+name = "plumb-rdf"
 version = "0.1.0"
 description = "Author RDF building models (Brick, 223P, WATR) as plain typed Python"
 readme = "README.md"
@@ -49,12 +49,12 @@ Issues = "https://github.com/gtfierro/objectrdf/issues"
 Changelog = "https://github.com/gtfierro/objectrdf/blob/main/CHANGELOG.md"
 
 [project.scripts]
-objectrdf = "objectrdf.cli:main"
+plumb = "plumb.cli:main"
 
 [tool.ruff]
 line-length = 88
 # Generated packages are compiler output; they carry `# ruff: noqa` too.
-extend-exclude = ["src/objectrdf/brick", "src/objectrdf/s223", "src/objectrdf/watr"]
+extend-exclude = ["src/plumb/brick", "src/plumb/s223", "src/plumb/watr"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -70,3 +70,6 @@ dev = [
     "ty>=0.0.62",
 ]
 docs = ["jupyter-book>=1.0,<2"]
+
+[tool.uv.build-backend]
+module-name = "plumb"

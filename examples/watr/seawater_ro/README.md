@@ -10,7 +10,7 @@ The script writes `seawater_ro_full.ttl` and describes the concrete routing of
 27 connections, including the pressure exchanger's two paired circuits.
 
 Equipment configurations and quantity schemas are imported from
-`objectrdf.watr.seawater_ro`. Their processes, roles, named branch ports,
+`plumb.watr.seawater_ro`. Their processes, roles, named branch ports,
 quantity kinds, units, labels, and nominal aspects come from
 [ontology/seawater-ro.ttl](../../../ontology/seawater-ro.ttl). For example:
 

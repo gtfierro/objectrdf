@@ -11,7 +11,7 @@ Then run:
     uv run python examples/watr/epanet_anytown/epanet_anytown_to_watr.py \
         examples/watr/epanet_anytown/Anytown.inp
 
-The converter uses only the standard library and objectrdf. EPANET pipes are
+The converter uses only the standard library and plumb. EPANET pipes are
 modeled as bidirectional S223 Pipe connections because their simulated flow can
 reverse. Pumps and valves retain the nominal Node1-to-Node2 direction from the
 input file.
@@ -26,9 +26,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from objectrdf import Model, connect
-from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
-from objectrdf.watr import (
+from plumb import Model, connect
+from plumb.qudt import QuantityAmount as Q, quantity_kinds, units
+from plumb.watr import (
     FlowSensor,
     Junction,
     LevelSensor,

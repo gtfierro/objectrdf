@@ -7,10 +7,10 @@ from pathlib import Path
 import pytest
 import rdflib
 
-from objectrdf import Model, ModelingError
-from objectrdf.gen import compile_modules, compile_source, extract, generate
-from objectrdf.gen import naming
-from objectrdf.gen.overlays import Overlay
+from plumb import Model, ModelingError
+from plumb.gen import compile_modules, compile_source, extract, generate
+from plumb.gen import naming
+from plumb.gen.overlays import Overlay
 
 FIXTURE = Path(__file__).parent / "fixtures" / "mini.ttl"
 
