@@ -7,7 +7,7 @@ tree-like view; connections give a directed flow graph, and the two are walked
 by separate methods.
 
 User-facing documentation is in
-[Query and edit saved models](book/how-to/query-loaded-models.md). This page
+[Find objects in a model](book/how-to/find-objects.md). This page
 records the semantics and the decisions behind them.
 
 ## One matching rule

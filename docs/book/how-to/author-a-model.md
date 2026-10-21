@@ -108,7 +108,7 @@ list(backwash_pump.has_physical_location)
 - `via="property_name"` picks the predicate when more than one applies.
 - A class the container cannot hold raises `ContainmentError`.
 - `contents`, `find_all()`, and `find_parent()` search containment; see
-  [Query and edit saved models](query-loaded-models.md).
+  [Find objects in a model](find-objects.md).
 
 ## Connect objects
 

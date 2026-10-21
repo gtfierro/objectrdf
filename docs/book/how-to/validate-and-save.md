@@ -76,4 +76,4 @@ model.save("plant.ttl")
 
 The format follows the extension. `save()` and `graph()` resolve but do not
 validate. The file declares its ontologies with `owl:imports`, which is how
-[loading](query-loaded-models.md) finds the packages.
+[loading](save-and-load.md) finds the packages.

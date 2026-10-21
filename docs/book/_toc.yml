@@ -16,7 +16,8 @@ parts:
       - file: how-to/watr-processes
       - file: how-to/draw-a-flowsheet
       - file: how-to/validate-and-save
-      - file: how-to/query-loaded-models
+      - file: how-to/save-and-load
+      - file: how-to/find-objects
       - file: how-to/find-classes-and-values
       - file: how-to/generate-domain-api
   - caption: Explanation

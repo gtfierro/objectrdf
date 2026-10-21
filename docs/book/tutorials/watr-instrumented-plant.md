@@ -236,4 +236,5 @@ model.save("plant.ttl")
 
 - [Attach quantities and property sets](../how-to/attach-quantities.md)
 - [Add sensors and actuators](../how-to/add-sensors-and-actuators.md)
-- [Query and edit saved models](../how-to/query-loaded-models.md)
+- [Save, load, and edit models](../how-to/save-and-load.md)
+- [Find objects in a model](../how-to/find-objects.md)

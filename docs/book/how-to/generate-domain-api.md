@@ -104,7 +104,8 @@ loaded = Model.from_graph("plant.ttl", registries=pumps.REGISTRY)
 assert isinstance(loaded["pump"], SupplyPump)
 ```
 
-The registry includes the base classes.
+The registry includes the base classes. See
+[Save, load, and edit models](save-and-load.md) for how registries are chosen.
 
 ## Regenerate the bundled packages
 

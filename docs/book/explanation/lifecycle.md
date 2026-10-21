@@ -43,6 +43,7 @@ validate.
 `Model.from_graph()` builds objects from existing RDF. A loaded model is
 backed by its graph, and edits write through to it. It has no resolution
 step, so `connect()` and `model.system()` are unavailable, but its pipes and
-points are concrete, so it can be searched and walked directly.
+points are concrete, so it can be searched and walked directly. See
+[Save, load, and edit models](../how-to/save-and-load.md).
 
 The internals are in `docs/architecture.md` in the repository.
