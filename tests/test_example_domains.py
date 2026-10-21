@@ -34,7 +34,7 @@ from plumb.watr.seawater_ro import MembraneDesign, ROStage
 
 ROOT = Path(__file__).parents[1]
 S223 = Namespace("http://data.ashrae.org/standard223#")
-RO = Namespace("https://w3id.org/plumb/seawater-ro#")
+RO = Namespace("https://watermetadata.org/plumb/seawater-ro#")
 
 
 def example(relative: str):
@@ -156,7 +156,13 @@ def test_registry_discovery_ignores_a_trailing_hash_in_imports():
     graph = Graph()
     ontology = URIRef("urn:example:hand#")
     graph.add((ontology, RDF.type, OWL.Ontology))
-    graph.add((ontology, OWL.imports, URIRef("https://w3id.org/plumb/drinking-water")))
+    graph.add(
+        (
+            ontology,
+            OWL.imports,
+            URIRef("https://watermetadata.org/plumb/drinking-water"),
+        )
+    )
     graph.add(
         (URIRef("urn:example:hand#stage"), RDF.type, URIRef(CoagulationStage.meta.iri))
     )

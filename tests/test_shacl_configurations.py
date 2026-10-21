@@ -17,7 +17,7 @@ from plumb.qudt import QuantityAmount as Q, units
 from plumb.watr import Process_Aeration, Process_Denitrification, enums
 from plumb.watr.asm2d import AerobicStage, RecyclePump
 
-EX = Namespace("https://w3id.org/plumb/asm2d#")
+EX = Namespace("https://watermetadata.org/plumb/asm2d#")
 S223 = Namespace("http://data.ashrae.org/standard223#")
 QUDT = Namespace("http://qudt.org/schema/qudt/")
 SOURCE = Path(__file__).parents[1] / "ontology/asm2d.ttl"
@@ -52,7 +52,7 @@ def test_explicit_names_cannot_shadow_the_package_registry(node):
     graph.set(
         (
             node,
-            URIRef("https://w3id.org/plumb/codegen#pythonName"),
+            URIRef("https://watermetadata.org/plumb/codegen#pythonName"),
             Literal("REGISTRY"),
         )
     )

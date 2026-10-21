@@ -20,7 +20,7 @@ from plumb.core import Entity, PropertySpec, Registry
 
 from . import naming
 
-CODEGEN = rdflib.Namespace("https://w3id.org/plumb/codegen#")
+CODEGEN = rdflib.Namespace("https://watermetadata.org/plumb/codegen#")
 S223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
 QUDT = rdflib.Namespace("http://qudt.org/schema/qudt/")
 

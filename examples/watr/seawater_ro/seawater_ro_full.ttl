@@ -4,7 +4,7 @@
 @prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
-@prefix seawater-ro: <https://w3id.org/plumb/seawater-ro#> .
+@prefix seawater-ro: <https://watermetadata.org/plumb/seawater-ro#> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix watr: <https://watermetadata.org/ontology/watr#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -12,8 +12,8 @@
 <urn:example/watertap/seawater-ro/full> a owl:Ontology ;
     rdfs:label "WaTr seawater RO reference" ;
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
-        seawater-ro:,
-        <https://watermetadata.org/ontology/watr> .
+        <https://watermetadata.org/ontology/watr>,
+        seawater-ro: .
 
 :seawater-ro-system a s223:System ;
     rdfs:label "Seawater RO treatment train" ;

@@ -35,7 +35,7 @@ An extension names the installed package it builds on:
 ```turtle
 @prefix ex: <urn:example:pumps#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix codegen: <https://w3id.org/plumb/codegen#> .
+@prefix codegen: <https://watermetadata.org/plumb/codegen#> .
 
 ex: a owl:Ontology ;
     owl:imports <https://watermetadata.org/ontology/watr> ;

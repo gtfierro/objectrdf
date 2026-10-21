@@ -1,5 +1,5 @@
-@prefix dw: <https://w3id.org/plumb/drinking-water#> .
-@prefix codegen: <https://w3id.org/plumb/codegen#> .
+@prefix dw: <https://watermetadata.org/plumb/drinking-water#> .
+@prefix codegen: <https://watermetadata.org/plumb/codegen#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .

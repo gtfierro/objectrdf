@@ -1,5 +1,5 @@
 @prefix : <urn:example/treatment#> .
-@prefix drinking-water: <https://w3id.org/plumb/drinking-water#> .
+@prefix drinking-water: <https://watermetadata.org/plumb/drinking-water#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix s223: <http://data.ashrae.org/standard223#> .
@@ -7,8 +7,8 @@
 
 <urn:example/treatment> a owl:Ontology ;
     rdfs:label "Conventional surface-water treatment train" ;
-    owl:imports drinking-water:,
-        <https://watermetadata.org/ontology/watr> .
+    owl:imports <https://watermetadata.org/ontology/watr>,
+        drinking-water: .
 
 :treatment-system a s223:System ;
     rdfs:label "treatment-system" ;

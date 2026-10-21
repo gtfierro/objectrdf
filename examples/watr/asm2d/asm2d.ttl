@@ -1,5 +1,5 @@
 @prefix : <urn:example/watertap/asm2d#> .
-@prefix asm2d: <https://w3id.org/plumb/asm2d#> .
+@prefix asm2d: <https://watermetadata.org/plumb/asm2d#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix quantitykind: <http://qudt.org/vocab/quantitykind/> .
 @prefix qudt: <http://qudt.org/schema/qudt/> .
@@ -12,8 +12,8 @@
 <urn:example/watertap/asm2d> a owl:Ontology ;
     rdfs:label "WaterTAP ASM2d flowsheet" ;
     owl:imports <http://qudt.org/3.4.0/qudt-all>,
-        asm2d:,
-        <https://watermetadata.org/ontology/watr> .
+        <https://watermetadata.org/ontology/watr>,
+        asm2d: .
 
 :ASM2d-system a s223:System ;
     rdfs:label "WaterTAP ASM2d treatment train" ;

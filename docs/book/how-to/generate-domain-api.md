@@ -20,7 +20,7 @@ property set.
 @prefix kind: <http://qudt.org/vocab/quantitykind/> .
 @prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix codegen: <https://w3id.org/plumb/codegen#> .
+@prefix codegen: <https://watermetadata.org/plumb/codegen#> .
 
 ex: a owl:Ontology ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;

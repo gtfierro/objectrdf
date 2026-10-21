@@ -190,12 +190,12 @@ def test_fraction_bounds_and_machine_readable_basis():
     assert (
         subject,
         RDF.type,
-        URIRef("https://w3id.org/plumb/asm2d#SplitFraction"),
+        URIRef("https://watermetadata.org/plumb/asm2d#SplitFraction"),
     ) in graph
     assert (
         subject,
-        URIRef("https://w3id.org/plumb/asm2d#hasSplitBasis"),
-        URIRef("https://w3id.org/plumb/asm2d#OverallFlow"),
+        URIRef("https://watermetadata.org/plumb/asm2d#hasSplitBasis"),
+        URIRef("https://watermetadata.org/plumb/asm2d#OverallFlow"),
     ) in graph
 
 

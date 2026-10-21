@@ -12,7 +12,7 @@ from plumb.core import (Entity as _Entity, ClassInfo as _ClassInfo, CPSlot as _C
 from plumb.core.points import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef
 from plumb.core.shape_constraints import ShapeValues as _ShapeValues
 from plumb.qudt import units as _units, quantity_kinds as _kinds
-ONTOLOGY = _OntologyInfo('DrinkingWater', 'https://w3id.org/plumb/drinking-water#', source='ontology/drinking-water.ttl')
+ONTOLOGY = _OntologyInfo('DrinkingWater', 'https://watermetadata.org/plumb/drinking-water#', source='ontology/drinking-water.ttl')
 _REGISTRY = _Registry(ONTOLOGY)
 REGISTRY = _REGISTRY
 _REGISTRY.by_name.update(_BASE._REGISTRY.by_name)
@@ -30,7 +30,7 @@ _REGISTRY.terms_by_iri.update({})
 class ChlorinationStage(_BASE.ChlorinationUnit):
     'Chlorine dosing and a contact stage with the objective of disinfection.'
     _classinfo = _ClassInfo(
-        iri='https://w3id.org/plumb/drinking-water#ChlorinationStage',
+        iri='https://watermetadata.org/plumb/drinking-water#ChlorinationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Chlorination and contact stage',
@@ -39,8 +39,8 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb1821d557d202af516a5e45ed030891a444ec946dd8b0c97ab9ce55507a9240f2b', required=(_BASE.Process_Chlorination,), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_treatment_objective', 'cbd78b350f97cb1aaf88e57bcec3b96ba4b8ea8f095487f7dc8d140b6c0529aa97', required=(_BASE.TreatmentObjective_Disinfection,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb12af41702c1ba288b2ea584cf88da18317ab814bb3ccb2f4c0ac463cf27a6da02', required=(_BASE.Process_Chlorination,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_treatment_objective', 'cb137a260cbcfcac91ed1a981800f20aedbec4428d23987bd6d27e25414069ac49a', required=(_BASE.TreatmentObjective_Disinfection,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
     inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
@@ -89,7 +89,7 @@ class ChlorinationStage(_BASE.ChlorinationUnit):
 class ClarificationStage(_BASE.SedimentationTank):
     'Settles flocs and separates clarified water from a sludge withdrawal.'
     _classinfo = _ClassInfo(
-        iri='https://w3id.org/plumb/drinking-water#ClarificationStage',
+        iri='https://watermetadata.org/plumb/drinking-water#ClarificationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Clarification stage',
@@ -98,8 +98,8 @@ class ClarificationStage(_BASE.SedimentationTank):
         cp_slots=(_CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='clarified_water', label='clarified_water'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='https://watermetadata.org/ontology/watr#Fluid-Sludge', min_count=1, max_count=1, name='sludge', label='sludge'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb732140c42afdc63278487f511a6dddb56cfd3545f49fcfcfd2ece73cf901d139', required=(_BASE.Process_Settling,), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_treatment_objective', 'cb2fd2e9d081cb19bea52e4603593ca87ce9ee627a15eff8006d421e92e4b21b2', required=(_BASE.TreatmentObjective_Clarification,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb13e81b1c87f466d28536cc9d6f11d9aad2144e9578de3d59e3c94c5defab8ced4', required=(_BASE.Process_Settling,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_treatment_objective', 'cb1556cb4a6cc4ab703282b9b374494717d39be8abc289956e40f483833734f7bf3', required=(_BASE.TreatmentObjective_Clarification,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 3
     clarified_water = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='out', label='clarified_water')
@@ -150,7 +150,7 @@ class ClarificationStage(_BASE.SedimentationTank):
 class CoagulationStage(_BASE.CoagulationBasin):
     'Coagulant addition and particle destabilization ahead of flocculation.'
     _classinfo = _ClassInfo(
-        iri='https://w3id.org/plumb/drinking-water#CoagulationStage',
+        iri='https://watermetadata.org/plumb/drinking-water#CoagulationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Coagulation stage',
@@ -159,8 +159,8 @@ class CoagulationStage(_BASE.CoagulationBasin):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb16ad896b8a10c7c751aaf34da3ecc2e2e0e9d5e5534a298def8815b2371b4e589', required=(_BASE.Process_Coagulation,), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_treatment_objective', 'cb7016eac5307e8cb34c5efa607ddc78211f15a751c76ef7f9af99f74c046e939b', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb172c0e033255224fb32955471031954076a4e16527a4ede2a11cc4196e495ac8e', required=(_BASE.Process_Coagulation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_treatment_objective', 'cb14be08cca11b578ad72e53d419b982daa7fb5dce47d2ac407e95368bcd49d1610', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
     inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
@@ -209,7 +209,7 @@ class CoagulationStage(_BASE.CoagulationBasin):
 class FlocculationStage(_BASE.FlocculationBasin):
     'Gentle mixing to form flocs that can settle in the clarifier.'
     _classinfo = _ClassInfo(
-        iri='https://w3id.org/plumb/drinking-water#FlocculationStage',
+        iri='https://watermetadata.org/plumb/drinking-water#FlocculationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Flocculation stage',
@@ -218,8 +218,8 @@ class FlocculationStage(_BASE.FlocculationBasin):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='outlet', label='outlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cba5be655409a1546d89a59a06a02c145147bff9b0fd3660d59bb56904ef32da14', required=(_BASE.Process_Flocculation,), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_treatment_objective', 'cb9d0dbf1e57e4f612212d20ba3b78ad263f9147b03e514f4d54d6beffb5c6020d', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb673a4698bea5cc55d6d1597ab783628d1e847b0697741aaeec137d798e5e948a', required=(_BASE.Process_Flocculation,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_treatment_objective', 'cb1326af8ed69dab16e7cf90378ac3e8b121b45469b489e8fe9c5a35e71b23f77f3', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 2
     inlet = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='inlet')
@@ -268,7 +268,7 @@ class FlocculationStage(_BASE.FlocculationBasin):
 class RapidSandFiltrationStage(_BASE.RapidSandFilter):
     'Filters clarified water through sand; spent backwash leaves separately during cleaning.'
     _classinfo = _ClassInfo(
-        iri='https://w3id.org/plumb/drinking-water#RapidSandFiltrationStage',
+        iri='https://watermetadata.org/plumb/drinking-water#RapidSandFiltrationStage',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Rapid sand filtration stage',
@@ -277,8 +277,8 @@ class RapidSandFiltrationStage(_BASE.RapidSandFilter):
         cp_slots=(_CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='backwash_supply', label='backwash_supply'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='backwash_waste', label='backwash_waste'), _CPSlot(cp_class='OutletConnectionPoint', direction='out', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='filtered_water', label='filtered_water'), _CPSlot(cp_class='InletConnectionPoint', direction='in', medium='http://data.ashrae.org/standard223#Fluid-Water', min_count=1, max_count=1, name='inlet', label='inlet'),),
     )
     _shape_constraints = (
-        _ShapeValues('has_process', 'cb136173b156ca2050c2a6b64e1f0a37ea9bfdc3db95636c7c07535fe7c588fb803', required=(_BASE.Process_RapidSandFiltration,), defaults=(), choices=(), minimum=0, maximum=None),
-        _ShapeValues('has_treatment_objective', 'cbb21c7fd37a6009a96d33589f769c7815502b23c4426048ccd0e0c6a8519acdf7', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_process', 'cb1646f6a6b21cab8cbfcf97528ad0560db127964549809ee2057975a54b4bff291', required=(_BASE.Process_RapidSandFiltration,), defaults=(), choices=(), minimum=0, maximum=None),
+        _ShapeValues('has_treatment_objective', 'cb1b45607b38c7a00dd4e618c308c6ce9f6a7b7c7f4f442f5efd3b0ad7e0b18c3f5', required=(_BASE.TreatmentObjective_TurbidityRemoval,), defaults=(), choices=(), minimum=0, maximum=None),
     )
     _shape_max_ports = 4
     backwash_supply = _PointDeclaration[_PointRef](count=1, medium=_BASE._REGISTRY.enums_by_iri['http://data.ashrae.org/standard223#Fluid-Water'], direction='in', label='backwash_supply')

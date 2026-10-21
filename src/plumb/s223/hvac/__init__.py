@@ -12,7 +12,7 @@ from plumb.core import (Entity as _Entity, ClassInfo as _ClassInfo, CPSlot as _C
 from plumb.core.points import PointDeclaration as _PointDeclaration, PointRef as _PointRef, PointGroupRef as _PointGroupRef
 from plumb.core.shape_constraints import ShapeValues as _ShapeValues
 from plumb.qudt import units as _units, quantity_kinds as _kinds
-ONTOLOGY = _OntologyInfo('HVAC', 'https://w3id.org/plumb/hvac#', source='ontology/hvac.ttl')
+ONTOLOGY = _OntologyInfo('HVAC', 'https://watermetadata.org/plumb/hvac#', source='ontology/hvac.ttl')
 _REGISTRY = _Registry(ONTOLOGY)
 REGISTRY = _REGISTRY
 _REGISTRY.by_name.update(_BASE._REGISTRY.by_name)
@@ -30,7 +30,7 @@ _REGISTRY.terms_by_iri.update({})
 class AirWaterCoolingCoil(_BASE.CoolingCoil):
     'A cooling coil with separate air and water inlets and outlets.'
     _classinfo = _ClassInfo(
-        iri='https://w3id.org/plumb/hvac#AirWaterCoolingCoil',
+        iri='https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil',
         ontology=ONTOLOGY,
         registry=_REGISTRY,
         label='Air and water cooling coil',

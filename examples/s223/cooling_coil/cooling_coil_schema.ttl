@@ -1,91 +1,91 @@
-@prefix ns1: <https://w3id.org/plumb/codegen#> .
+@prefix ns1: <https://watermetadata.org/plumb/codegen#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/plumb/hvac#> a owl:Ontology ;
+<https://watermetadata.org/plumb/hvac#> a owl:Ontology ;
     owl:imports <http://data.ashrae.org/standard223/1.0/model/all> ;
     ns1:baseModule "plumb.s223" .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape> a sh:NodeShape ;
-    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> ;
-    sh:targetClass <https://w3id.org/plumb/hvac#AirWaterCoolingCoil> .
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape> a sh:NodeShape ;
+    sh:property <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> ;
+    sh:targetClass <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil> a owl:Class ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil> a owl:Class ;
     rdfs:label "Air and water cooling coil" ;
     rdfs:comment "A cooling coil with separate air and water inlets and outlets." ;
     rdfs:subClassOf <http://data.ashrae.org/standard223#CoolingCoil> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0> sh:name "air_inlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/0> sh:name "air_inlet" ;
     sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
-    sh:qualifiedValueShape <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape> .
+    sh:qualifiedValueShape <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1> sh:name "air_outlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/1> sh:name "air_outlet" ;
     sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
-    sh:qualifiedValueShape <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape> .
+    sh:qualifiedValueShape <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2> sh:name "water_inlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/2> sh:name "water_inlet" ;
     sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
-    sh:qualifiedValueShape <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape> .
+    sh:qualifiedValueShape <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3> sh:name "water_outlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/3> sh:name "water_outlet" ;
     sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> ;
     sh:qualifiedMaxCount 1 ;
     sh:qualifiedMinCount 1 ;
-    sh:qualifiedValueShape <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape> .
+    sh:qualifiedValueShape <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> sh:maxCount 4 ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoilShape/hasConnectionPoint/4> sh:maxCount 4 ;
     sh:minCount 4 ;
     sh:path <http://data.ashrae.org/standard223#hasConnectionPoint> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape> sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> ;
-    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> .
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape> sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> ;
+    sh:property <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Air> ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Air> ;
     sh:path <http://data.ashrae.org/standard223#hasMedium> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> sh:hasValue "air_inlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_inletPointShape/label/1> sh:hasValue "air_inlet" ;
     sh:path rdfs:label .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape> sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> ;
-    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> .
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape> sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> ;
+    sh:property <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Air> ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Air> ;
     sh:path <http://data.ashrae.org/standard223#hasMedium> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> sh:hasValue "air_outlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_air_outletPointShape/label/1> sh:hasValue "air_outlet" ;
     sh:path rdfs:label .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape> sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> ;
-    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> .
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape> sh:class <http://data.ashrae.org/standard223#InletConnectionPoint> ;
+    sh:property <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Water> ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Water> ;
     sh:path <http://data.ashrae.org/standard223#hasMedium> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> sh:hasValue "water_inlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_inletPointShape/label/1> sh:hasValue "water_inlet" ;
     sh:path rdfs:label .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape> sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> ;
-    sh:property <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0>,
-        <https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> .
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape> sh:class <http://data.ashrae.org/standard223#OutletConnectionPoint> ;
+    sh:property <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0>,
+        <https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Water> ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/hasMedium/0> sh:hasValue <http://data.ashrae.org/standard223#Fluid-Water> ;
     sh:path <http://data.ashrae.org/standard223#hasMedium> .
 
-<https://w3id.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> sh:hasValue "water_outlet" ;
+<https://watermetadata.org/plumb/hvac#AirWaterCoolingCoil_water_outletPointShape/label/1> sh:hasValue "water_outlet" ;
     sh:path rdfs:label .
 
