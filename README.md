@@ -4,12 +4,14 @@
 [![Docs](https://github.com/gtfierro/plumb/actions/workflows/docs.yml/badge.svg)](https://gtfierro.github.io/plumb/)
 
 Describe water and wastewater treatment plants as plain, typed Python and
-get RDF that conforms to [WATR](https://github.com/DataDrivenCPS/water-ontology)
-and [ASHRAE 223P](https://open223.info). No RDF in user code; real Turtle out.
-[Brick](https://brickschema.org) building models use the same API.
+get RDF that conforms to the [WATR](https://github.com/DataDrivenCPS/water-ontology)
+water treatment ontology and [ASHRAE 223P](https://open223.info), which it
+builds on. No RDF in user code; real Turtle out.
 
 Bundled ontologies: WATR v0.3.0.rc1 (a release candidate whose terms may still
-change before 0.3.0), ASHRAE 223P (v1.0.0-2026), and Brick 1.4.2.
+change before 0.3.0), ASHRAE 223P (v1.0.0-2026), and the QUDT units and
+quantity kinds they use. Domain packages for drinking water, activated sludge
+(ASM2d), and seawater reverse osmosis come compiled from SHACL.
 
 ```python
 from plumb import Model, connect, flowsheet
@@ -35,6 +37,16 @@ The ontology classes are generated code, so editors and type checkers see
 everything: completion, ontology definitions on hover, and type errors when a
 link's range doesn't fit.
 
+Saved models load back as the same objects, and can be searched by class,
+medium, or role, or walked along the flow:
+
+```python
+from plumb.watr import enums
+
+plant = Model.from_graph("plant.ttl")
+plant["intake-pump"].find_all_next(through={"medium": enums.values.Fluid_Water})
+```
+
 ## Install and run the examples
 
 Plumb requires Python 3.12 or newer. From a checkout of this repository,
@@ -50,8 +62,7 @@ Then run an example from the repository root:
 ```bash
 uv run python examples/watr/treatment/watr_quickstart.py
 uv run python examples/watr/asm2d/watertap_asm2d.py
-uv run python examples/s223/ahu/s223_quickstart.py
-uv run python examples/brick/quickstart/brick_quickstart.py
+uv run python examples/watr/seawater_ro/watertap_seawater_ro_full.py
 ```
 
 Each example prints a short summary and writes its generated Turtle file next
@@ -61,7 +72,9 @@ to the example script. See [examples/](examples/) for more scenarios.
   (tutorials, how-to guides, explanations, and API reference; build it locally
   with `make docs`)
 - Start with [modelling a treatment train](docs/book/tutorials/watr-treatment.md)
-  and [characterizing and instrumenting a plant](docs/book/tutorials/watr-instrumented-plant.md)
+  and [characterizing and instrumenting a plant](docs/book/tutorials/watr-instrumented-plant.md);
+  [an S223 air path](docs/book/tutorials/s223-air-path.md) shows the same API
+  on a 223P building system
 - Contributor documentation: [docs/index.md](docs/index.md)
 - Design rationale and roadmap: [DESIGN.md](DESIGN.md)
 - Release notes: [CHANGELOG.md](CHANGELOG.md)
