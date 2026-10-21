@@ -6,25 +6,40 @@ kernelspec:
 
 # An S223 air path
 
-The API is the same for 223P building systems. This tutorial connects a
-damper to a fan, inspects the chosen connection, and validates the RDF.
+The API is the same for 223P building systems. This tutorial builds an air
+handling unit around a damper and a fan, inspects the chosen connection,
+walks the air path, and validates the RDF.
 
 ## 1. Create and connect
 
+The damper and fan are created inside the AHU, so the AHU contains them. A
+zone damper outside the AHU takes its supply air:
+
 ```{code-cell} python3
 from plumb import Model, connect
-from plumb.s223 import Damper, Fan, enums
+from plumb.s223 import AirHandlingUnit, Damper, Fan, enums
 
 with Model("urn:example:air-path#") as model:
-    damper = Damper("outside-air-damper")
-    fan = Fan("supply-fan")
-    air_link = connect(damper, fan)
+    with AirHandlingUnit("ahu") as ahu:
+        damper = Damper("outside-air-damper")
+        fan = Fan("supply-fan")
+    zone_damper = Damper("zone-damper")
 
+air_link = connect(damper, fan)
+connect(ahu, zone_damper, name="supply-duct")
 print(damper.name, fan.name, air_link.name)
 ```
 
 `damper >> fan` also records the connection, but returns the fan for
 chaining.
+
+The AHU's own inlet and outlet stand for points inside it. `maps_to` says
+which: air enters through the damper and leaves through the fan.
+
+```{code-cell} python3
+model["outside-air-damper-in"].maps_to = model["ahu-in"]
+model["supply-fan-out"].maps_to = model["ahu-out"]
+```
 
 ## 2. Resolve
 
@@ -54,7 +69,40 @@ resolved_fan = resolved["supply-fan"]
 list(resolved_fan.ports)
 ```
 
-## 3. Validate
+## 3. Walk the air path
+
+`find_all_previous()` walks upstream along ducts and points. By default
+equipment is a single node, so the zone damper sees only the AHU:
+
+```{code-cell} python3
+zone = resolved["zone-damper"]
+zone.find_all_previous()
+```
+
+`descend=True` also steps into containers through their `maps_to` points.
+`walk()` shows how far away each object is:
+
+```{code-cell} python3
+for hop in zone.walk("upstream", descend=True):
+    print(hop.depth, hop.entity.name)
+```
+
+The fan is one step in, behind the AHU's outlet. The damper is one step past
+it, through the duct the solver chose. Containment answers the other
+question, what holds the fan:
+
+```{code-cell} python3
+resolved["supply-fan"].find_parent(AirHandlingUnit)
+```
+
+A walk can also start inside a container. It leaves through `maps_to`
+without needing `descend`:
+
+```{code-cell} python3
+resolved["supply-fan"].find_all_next()
+```
+
+## 4. Validate
 
 ```{code-cell} python3
 validation = model.validate()
