@@ -2,6 +2,8 @@
 file_format: mystnb
 kernelspec:
   name: python3
+mystnb:
+  execution_in_temp: true
 ---
 
 # Draw a flow sheet
@@ -62,6 +64,31 @@ connection points the solver chose. What you see:
   than repeated as a stream property.
 - Systems are dashed clusters. A system's boundary point that has no
   connection becomes a feed or product terminal.
+
+## Change the layout
+
+`direction="TB"` stacks the train top to bottom instead of left to right,
+which suits long trains on a narrow page:
+
+```{code-cell} python3
+flowsheet(model, direction="TB", properties=False, legend=False)
+```
+
+## Draw a saved model
+
+`flowsheet()` reads the RDF view of the model, not the Python objects you
+authored, so a Turtle file loaded back in draws the same sheet. Loading picks
+the WaTr and drinking-water packages from the file's `owl:imports`:
+
+```{code-cell} python3
+from objectrdf import Model
+
+model.save("plant.ttl")
+loaded = Model.from_graph("plant.ttl")
+flowsheet(loaded, title="Loaded from plant.ttl")
+```
+
+A `ResolvedModel` from `model.compile()` works too, and skips the resolve step.
 
 ## Simplify or export
 

@@ -26,7 +26,7 @@ model.save("plant.ttl")
 ## Where to start
 
 1. [Model a treatment train](tutorials/watr-treatment.md): stages, named
-   points, system boundaries, saving and loading.
+   points, system boundaries, saving, loading, and drawing the flow sheet.
 2. [Characterize and instrument a plant](tutorials/watr-instrumented-plant.md):
    pumps and residuals, an influent property set, sensors, actuators, and a
    flow sheet.

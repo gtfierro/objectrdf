@@ -179,6 +179,19 @@ for tank in loaded.find_all(SedimentationTank):
             print(f"  {outlet.label}: {outlet.medium.label}")
 ```
 
+Draw the loaded train as a flow sheet. The stages list their processes and
+objectives, and the unconnected boundary points become feed and product
+terminals:
+
+```{code-cell} python3
+from objectrdf import flowsheet
+
+flowsheet(loaded, title="Conventional treatment train")
+```
+
+[Draw a flow sheet](../how-to/draw-a-flowsheet.md) covers instruments,
+layout, and export.
+
 Run the complete serializing example with
 `uv run python examples/watr/treatment/watr_quickstart.py`. To change the
 reusable stages, edit their RDF/SHACL source and run `make regen`.
