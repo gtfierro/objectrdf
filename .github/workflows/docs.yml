@@ -1,0 +1,58 @@
+name: Docs
+
+# Publish the learning book to GitHub Pages. The book executes its tutorial
+# notebooks and imports the runtime for API reference, so it also rebuilds
+# when the package, examples, or ontologies change.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/book/**"
+      - "src/**"
+      - "examples/**"
+      - "ontology/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; let an in-progress deployment finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  UV_LOCKED: "1"
+
+jobs:
+  build:
+    name: Build book
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+          enable-cache: true
+      - run: sudo apt-get update && sudo apt-get install -y graphviz
+      - run: uv sync --group docs
+      - run: make docs-check
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/book/_build/html
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
