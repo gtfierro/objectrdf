@@ -121,6 +121,7 @@ S223 = Overlay(
     deferred_properties=(
         f"{_S223_NS}hasObservationLocation",
         f"{_S223_NS}hasReferenceLocation",
+        f"{_S223_NS}mapsTo",
     ),
     connector=True,
     connection_classes={

@@ -4230,6 +4230,7 @@ _P_ConnectionPoint_maps_to = _PropertySpec(
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
     ranges=('ConnectionPoint',),
     max_count=1,
+    deferred=True,
 )
 
 _P_ConnectionPoint_connection = _PropertySpec(
@@ -4305,7 +4306,7 @@ class ConnectionPoint(Concept):
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
-    maps_to: _RelOne[ConnectionPoint] = _RelOne(_P_ConnectionPoint_maps_to)
+    maps_to: _RelOne[ConnectionPoint | _DeferredEndpoint] = _RelOne(_P_ConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     connection: _RelOne[Connection] = _RelOne(_P_ConnectionPoint_connection)
@@ -4330,7 +4331,7 @@ class ConnectionPoint(Concept):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: ConnectionPoint | None = None,
+        maps_to: ConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -4374,6 +4375,7 @@ _P_BidirectionalConnectionPoint_maps_to = _PropertySpec(
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
     ranges=('BidirectionalConnectionPoint', 'ConnectionPoint'),
     max_count=1,
+    deferred=True,
 )
 
 class BidirectionalConnectionPoint(ConnectionPoint):
@@ -4394,7 +4396,7 @@ class BidirectionalConnectionPoint(ConnectionPoint):
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_BidirectionalConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
-    maps_to: _RelOne[BidirectionalConnectionPoint | ConnectionPoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
+    maps_to: _RelOne[BidirectionalConnectionPoint | ConnectionPoint | _DeferredEndpoint] = _RelOne(_P_BidirectionalConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     def __init__(
@@ -4407,7 +4409,7 @@ class BidirectionalConnectionPoint(ConnectionPoint):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: BidirectionalConnectionPoint | ConnectionPoint | None = None,
+        maps_to: BidirectionalConnectionPoint | ConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -15949,6 +15951,7 @@ _P_InletConnectionPoint_maps_to = _PropertySpec(
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
     ranges=('ConnectionPoint', 'InletConnectionPoint'),
     max_count=1,
+    deferred=True,
 )
 
 _P_InletConnectionPoint_paired_with = _PropertySpec(
@@ -15976,7 +15979,7 @@ class InletConnectionPoint(ConnectionPoint):
         properties=(_P_InletConnectionPoint_maps_to, _P_InletConnectionPoint_paired_with,),
     )
 
-    maps_to: _RelOne[ConnectionPoint | InletConnectionPoint] = _RelOne(_P_InletConnectionPoint_maps_to)
+    maps_to: _RelOne[ConnectionPoint | InletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_InletConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_InletConnectionPoint_paired_with)
@@ -15992,7 +15995,7 @@ class InletConnectionPoint(ConnectionPoint):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: ConnectionPoint | InletConnectionPoint | None = None,
+        maps_to: ConnectionPoint | InletConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,
@@ -18699,6 +18702,7 @@ _P_OutletConnectionPoint_maps_to = _PropertySpec(
     definition='A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}).',
     ranges=('ConnectionPoint', 'OutletConnectionPoint'),
     max_count=1,
+    deferred=True,
 )
 
 class OutletConnectionPoint(ConnectionPoint):
@@ -18719,7 +18723,7 @@ class OutletConnectionPoint(ConnectionPoint):
     paired_with: _RelOne[ConnectionPoint] = _RelOne(_P_OutletConnectionPoint_paired_with)
     """A `Relation` that associates two `ConnectionPoint`s where an `InletConnectionPoint` shares the same `Substance-Medium` with an `OutletConnectionPoint`. (http://data.ashrae.org/standard223#pairedConnectionPoint)"""
 
-    maps_to: _RelOne[ConnectionPoint | OutletConnectionPoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
+    maps_to: _RelOne[ConnectionPoint | OutletConnectionPoint | _DeferredEndpoint] = _RelOne(_P_OutletConnectionPoint_maps_to)
     """A `Relation` that associates a `ConnectionPoint` of a `Connectable` with a corresponding `ConnectionPoint` of the one containing it. The associated `ConnectionPoint`s shall have a compatible medium (see {s223:Substance-Medium}). (http://data.ashrae.org/standard223#mapsTo)"""
 
     def __init__(
@@ -18732,7 +18736,7 @@ class OutletConnectionPoint(ConnectionPoint):
         has_electrical_phase: _EnumValue | None = None,
         has_property: _Iterable[Property] = (),
         has_role: _Iterable[_EnumValue] = (),
-        maps_to: ConnectionPoint | OutletConnectionPoint | None = None,
+        maps_to: ConnectionPoint | OutletConnectionPoint | _DeferredEndpoint | None = None,
         paired_with: ConnectionPoint | None = None,
         label: str | None = None,
         comment: str | None = None,

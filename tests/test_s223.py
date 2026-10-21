@@ -719,3 +719,86 @@ def test_system_scope_boundary_after_the_block_reaches_the_system(m):
     resolved = m.resolve()
     boundary = resolved["transfer-system"].has_boundary_connection_point
     assert "discharge" in {point.name for point in boundary}
+
+
+# -- maps_to on deferred ports ---------------------------------------------
+
+
+def _ahu_with_coil(model):
+    from plumb.s223.hvac import AirWaterCoolingCoil
+
+    with s223.AirHandlingUnit("ahu") as ahu:
+        coil = AirWaterCoolingCoil("coil")
+    chiller = s223.Chiller("chiller")
+    return ahu, coil, chiller
+
+
+def test_port_maps_to_container_port_and_validates(m):
+    ahu, coil, chiller = _ahu_with_coil(m)
+    chw_in = ahu.port("chw-in", direction="in")
+    chw_out = ahu.port("chw-out", direction="out")
+    coil.water_inlet.maps_to = chw_in
+    coil.water_outlet.maps_to = chw_out
+    coil.air_inlet.maps_to = m["ahu-in"]
+    coil.air_outlet.maps_to = m["ahu-out"]
+    connect(chiller, chw_in, name="chw-supply")
+    connect(chw_out, chiller, name="chw-return")
+    assert coil.water_inlet.maps_to is chw_in
+
+    resolved = m.resolve()
+    inner = resolved["coil-water_inlet"]
+    assert inner.maps_to is resolved["chw-in"]
+    assert resolved["chw-in"].medium is enums.values.Fluid_Water
+    assert resolved["coil-air_outlet"].maps_to is resolved["ahu-out"]
+    assert resolved["chiller"].find_all_next(type(coil), descend=True) == [resolved["coil"]]
+    assert m.validate().ok
+
+
+def test_concrete_point_maps_to_port(m):
+    ahu, coil, chiller = _ahu_with_coil(m)
+    with m:
+        damper = s223.Damper("damper")
+    ahu.contains(damper)
+    inlet = ahu.port("mixed-air", direction="in")
+    m["damper-in"].maps_to = inlet
+    resolved = m.resolve()
+    assert resolved["damper-in"].maps_to is resolved["mixed-air"]
+    assert resolved["mixed-air"].medium is resolved["damper-in"].medium
+
+
+def test_mapped_ports_share_a_medium(m):
+    ahu, coil, chiller = _ahu_with_coil(m)
+    coil.water_inlet.maps_to = ahu.port(
+        "chw-in", direction="in", medium=enums.values.Fluid_Air
+    )
+    with pytest.raises(UnsatisfiableModelError, match="same medium"):
+        m.resolve()
+
+
+def test_mapped_ports_face_the_same_way(m):
+    ahu, coil, chiller = _ahu_with_coil(m)
+    coil.water_inlet.maps_to = ahu.port("chw-out", direction="out")
+    with pytest.raises(UnsatisfiableModelError, match="same way"):
+        m.resolve()
+
+
+def test_maps_to_rejects_own_equipment_and_other_models(m):
+    ahu, coil, chiller = _ahu_with_coil(m)
+    with pytest.raises(ModelingError, match="its own equipment"):
+        coil.water_inlet.maps_to = coil.water_outlet
+    with Model("urn:test/other#"):
+        other = s223.AirHandlingUnit("other-ahu")
+    with pytest.raises(ValueError, match="another Model"):
+        coil.water_inlet.maps_to = other.port("chw-in", direction="in")
+
+
+def test_changing_maps_to_invalidates_resolution(m):
+    ahu, coil, chiller = _ahu_with_coil(m)
+    first = ahu.port("chw-a", direction="in")
+    second = ahu.port("chw-b", direction="in")
+    coil.water_inlet.maps_to = first
+    assert m.resolve()["coil-water_inlet"].maps_to.name == "chw-a"
+    coil.water_inlet.maps_to = second
+    assert m.resolve()["coil-water_inlet"].maps_to.name == "chw-b"
+    coil.water_inlet.maps_to = None
+    assert m.resolve()["coil-water_inlet"].maps_to is None

@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, Iterator, Literal
 
 from .enums import _local
 from .errors import ModelingError
-from .points import PointRef
+from .points import PointRef, endpoint_owner
 from .terms import TermValue
 
 if TYPE_CHECKING:
@@ -43,6 +43,7 @@ class PortHandle:
         self._fixed_medium = fixed_medium
         self.symmetry_key: str | None = None
         self._paired_with: PortHandle | None = None
+        self._maps_to: PortHandle | Entity | None = None
         self.roles: list[EnumValue] = []
         self._properties: list[Entity] = []
         self._boundary_systems: list[Entity] = []
@@ -77,6 +78,30 @@ class PortHandle:
         other._paired_with = self
         self._model._touch(self.owner, other.owner)
         return self
+
+    @property
+    def maps_to(self) -> PortHandle | Entity | None:
+        """The container's point this port stands for, as ``s223:mapsTo``.
+
+        The target may be another port or a concrete point. Resolution gives
+        both the same medium and writes the link onto the concrete points.
+        """
+        return self._maps_to
+
+    @maps_to.setter
+    def maps_to(self, value: PortHandle | PointRef | Entity | None) -> None:
+        self._model._assert_mutable()
+        if isinstance(value, PointRef):
+            value = value._port
+        if value is not None:
+            _check_mapping(self, value)
+        previous = self._maps_to
+        self._maps_to = value
+        owners = [self.owner]
+        for target in (previous, value):
+            if target is not None:
+                owners.append(endpoint_owner(target))
+        self._model._touch(*owners)
 
     def quantity(
         self,
@@ -145,6 +170,30 @@ class PortHandle:
 
     def __repr__(self) -> str:
         return f"<PortHandle {self.owner.name}.{self.name}>"
+
+
+def _check_mapping(port: PortHandle, target: object) -> None:
+    """Reject a ``maps_to`` target that cannot be the container's point."""
+    from .entity import Entity
+
+    if isinstance(target, PortHandle):
+        model = target._model
+    elif isinstance(target, Entity):
+        model = target._model
+    else:
+        raise TypeError(
+            f"{port.owner.name}.{port.name}.maps_to takes a port or connection "
+            f"point, got {type(target).__name__}"
+        )
+    if model is not port._model:
+        raise ValueError(
+            f"{port.owner.name}.{port.name}.maps_to: target belongs to another Model"
+        )
+    if target is port or endpoint_owner(target) is port.owner:
+        raise ModelingError(
+            f"{port.owner.name}.{port.name} cannot map to a point of its own "
+            "equipment; maps_to names a point of the containing equipment"
+        )
 
 
 class ConnectionHandle:

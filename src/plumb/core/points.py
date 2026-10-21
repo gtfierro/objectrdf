@@ -63,6 +63,15 @@ class PointRef:
     def medium(self, value: Any) -> None:
         self._port.medium = value
 
+    @property
+    def maps_to(self) -> Any:
+        """The container's point this one stands for, as ``s223:mapsTo``."""
+        return self._port.maps_to
+
+    @maps_to.setter
+    def maps_to(self, value: Any) -> None:
+        self._port.maps_to = value
+
     def __repr__(self) -> str:
         return f"<PointRef {self.owner.name}.{self.name}>"
 

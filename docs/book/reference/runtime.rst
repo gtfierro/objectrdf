@@ -47,13 +47,13 @@ Property schemas
 .. automethod:: plumb.core.Entity.quantity
 
 .. autoclass:: plumb.PointRef
-   :members: medium, quantity, apply_properties
+   :members: medium, maps_to, quantity, apply_properties
 
 .. autoclass:: plumb.PointGroupRef
    :members:
 
 .. autoclass:: plumb.PortHandle
-   :members: medium, direction, pair, quantity, apply_properties
+   :members: medium, direction, pair, maps_to, quantity, apply_properties
 
 Class discovery
 ---------------

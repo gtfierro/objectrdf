@@ -19,7 +19,11 @@ class-specific preservation flag. For every pair of active ports on an entity,
 the optimizer adds an affinity preference only when their compiled domains
 overlap. Extension authors therefore influence assignment by publishing
 accurate `hasMedium` constraints on qualified ConnectionPoint shapes. Hard
-equality exists only across the two endpoints of a Connection.
+equality exists only across the two endpoints of a Connection, between paired
+ports, and across `mapsTo`. A point that a part's point maps onto drops its
+own class's medium domain, since a container's shapes describe its own
+points: an AHU's chilled-water port takes the coil's medium, not air. Mapped
+points are solved in one component and must share a direction.
 
 The `connection_classes` overlay mapping is separate: it maps a resolved
 medium or ancestor to the resource to materialize, such as `Fluid-Water` →

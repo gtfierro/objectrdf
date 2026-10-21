@@ -150,6 +150,7 @@ def _component_key(
                     type(point).__name__,
                     medium.iri if medium is not None else None,
                     bound.name if bound is not None else None,
+                    _mapping_name(_mapped(point)),
                     _property_media_key(getattr(point, "has_property", ())),
                 )
             )
@@ -161,6 +162,7 @@ def _component_key(
                         f"deferred-{port.direction}",
                         port.medium.iri if port.medium is not None else None,
                         port.paired_with.name if port.paired_with is not None else None,
+                        _mapping_name(port.maps_to),
                         _property_media_key(port._properties),
                     )
                 )
@@ -186,7 +188,8 @@ def _component_key(
 def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]]:
     """Partition intentions by shared endpoint for sparse-model scaling."""
     handles = list(model._connection_intents)
-    if not handles:
+    mappings = _mappings(model)
+    if not handles and not mappings:
         return [
             ([], {entity}) for entity in model.entities if _has_named_points(entity)
         ]
@@ -206,10 +209,17 @@ def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]
 
     for handle in handles:
         union(_owner(handle.source), _owner(handle.target))
-    groups: dict[Entity, list[ConnectionHandle]] = {}
+    # A mapped port and its container's point share a medium, so the two
+    # pieces of equipment are solved together.
+    for source, target in mappings:
+        union(_owner(source), _owner(target))
+    groups: dict[Entity, tuple[list[ConnectionHandle], set[Entity]]] = {}
     for handle in handles:
-        groups.setdefault(find(_owner(handle.source)), []).append(handle)
-    result = [(component, set()) for component in groups.values()]
+        groups.setdefault(find(_owner(handle.source)), ([], set()))[0].append(handle)
+    for source, target in mappings:
+        for owner in (_owner(source), _owner(target)):
+            groups.setdefault(find(owner), ([], set()))[1].add(owner)
+    result = list(groups.values())
     connected = set(parent)
     result.extend(
         ([], {entity})
@@ -217,6 +227,44 @@ def _components(model: Model) -> list[tuple[list[ConnectionHandle], set[Entity]]
         if entity not in connected and _has_named_points(entity)
     )
     return result
+
+
+def _mapped(point: Entity | PortHandle) -> Entity | PortHandle | None:
+    """The point ``point`` maps to, a port before resolution or a point."""
+    if isinstance(point, PortHandle):
+        return point.maps_to
+    return getattr(point, "maps_to", None)
+
+
+def _point_sources(entity: Entity) -> list[Entity | PortHandle]:
+    """The concrete points and authored ports of ``entity``."""
+    sources: list[Entity | PortHandle] = list(getattr(entity, "has_connection_point"))
+    sources.extend(
+        port for port in entity.meta.model._port_intents if port.owner is entity
+    )
+    return sources
+
+
+def _mappings(
+    model: Model,
+) -> list[tuple[Entity | PortHandle, Entity | PortHandle]]:
+    """``maps_to`` links with a port on either side, which the solver joins."""
+    sources: list[Entity | PortHandle] = list(model._port_intents)
+    sources.extend(entity for entity in model.entities if _mapped(entity) is not None)
+    result = []
+    for source in sources:
+        target = _mapped(source)
+        if target is None:
+            continue
+        if isinstance(source, PortHandle) or isinstance(target, PortHandle):
+            result.append((source, target))
+    return result
+
+
+def _mapping_name(point: Entity | PortHandle | None) -> str | None:
+    if isinstance(point, PortHandle):
+        return f"{point.owner.name}.{point.name}"
+    return point.name if point is not None else None
 
 
 def _has_named_points(entity: Entity) -> bool:
@@ -256,6 +304,15 @@ def _solve_component(
         }
         for entity in entities
     }
+    # A container's shapes describe its own points, not the parts' points
+    # mapped onto it: an AHU lists only air points, yet its chilled-water
+    # inlet stands for a coil's. The part decides a mapped point's medium.
+    mapped_targets = {
+        _mapped(source)
+        for entity in entities
+        for source in _point_sources(entity)
+        if _mapped(source) is not None
+    }
     for entity in sorted(entities, key=lambda item: item.name):
         entity_points = _make_points(entity, incident[entity], enum_values)
         points.extend(entity_points)
@@ -284,6 +341,8 @@ def _solve_component(
                         ("explicit medium " if point.authored else "medium ")
                         + _local(stated.iri),
                     )
+                continue
+            if (point.authored or point.existing) in mapped_targets:
                 continue
             roots = _point_roots(point)
             if roots:
@@ -337,6 +396,30 @@ def _solve_component(
             other = None
         if paired is not None and other is not None:
             solver.add(point.medium == other.medium)
+    # A port and the container's point it maps to carry the same medium and
+    # face the same way: an inlet stands for the container's inlet.
+    alternatives: dict[Entity | PortHandle, list[_Point]] = {}
+    for point in points:
+        key = point.authored if point.authored is not None else point.existing
+        if key is not None:
+            alternatives.setdefault(key, []).append(point)
+    for source, sides in alternatives.items():
+        targets = alternatives.get(_mapped(source))
+        if not targets:
+            continue
+        tracked(
+            sides[0].medium == targets[0].medium,
+            sides[0].name,
+            f"maps to {targets[0].name}, so they carry the same medium",
+        )
+        for side in sides:
+            for target in targets:
+                if _direction_of(side.cls) != _direction_of(target.cls):
+                    tracked(
+                        z3.Not(z3.And(side.active, target.active)),
+                        side.name,
+                        f"maps to {target.name}, so they face the same way",
+                    )
 
     point_selections: dict[tuple[int, int], z3.BoolRef] = {}
     intent_mediums: dict[int, z3.ArithRef] = {}
@@ -1064,6 +1147,11 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 "paired_with",
                 authored_points[handle.paired_with],
             )
+        target = handle.maps_to
+        if isinstance(target, PortHandle):
+            setattr(point, "maps_to", authored_points[target])
+        elif target is not None:
+            setattr(point, "maps_to", mapping[target])
     for authored_system, authored_members in model._system_intents:
         system = mapping[authored_system]
         members = set(authored_members)

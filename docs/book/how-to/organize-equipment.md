@@ -92,9 +92,39 @@ air["supply-fan-out"].maps_to = air["ahu-out"]
 air.resolve()["zone-damper"].find_all_previous(descend=True)
 ```
 
-`maps_to` is set on concrete points, so it works for points the equipment
-creates when it is constructed, such as `ahu-in` here. Ports that exist only
-after resolution cannot be mapped yet.
+## Map a part's port onto its container
+
+A port can stand for a part's point too. A cooling coil inside the AHU takes
+chilled water, but the AHU's own shape has only air points. Give the AHU a
+port for the water and map the coil's inlet onto it:
+
+```{code-cell} python3
+from plumb.s223 import Chiller
+from plumb.s223.hvac import AirWaterCoolingCoil
+
+with Model("urn:example:plant-room#") as plant:
+    with AirHandlingUnit("ahu") as ahu:
+        coil = AirWaterCoolingCoil("cooling-coil")
+    chiller = Chiller("chiller")
+chw_in = ahu.port("chw-in", direction="in")
+chw_out = ahu.port("chw-out", direction="out")
+coil.water_inlet.maps_to = chw_in
+coil.water_outlet.maps_to = chw_out
+connect(chiller, chw_in, name="chw-supply")
+connect(chw_out, chiller, name="chw-return")
+
+resolved = plant.resolve()
+resolved["chw-in"].medium, resolved["chiller"].find_all_next(descend=True)
+```
+
+The coil's water inlet and the AHU port resolve to one medium, so the AHU
+port carries water although nothing on the AHU says so. Mapped points must
+face the same way: an inlet maps to an inlet. Pipes connect to the AHU's
+port, not to the coil, as 223P requires for equipment inside equipment.
+
+Either side of `maps_to` can be a port, a named point such as
+`coil.water_inlet`, or a concrete point such as `plant["ahu-in"]`. A port
+cannot map to a point of its own equipment.
 
 ## Find what contains what
 
