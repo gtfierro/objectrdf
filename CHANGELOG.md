@@ -7,17 +7,6 @@ the version is below 1.0, minor releases may change the public API.
 
 ## [Unreleased]
 
-### Added
-
-- BeautifulSoup-style traversal: `find()`/`find_all()` with class, attribute,
-  and `exact()` filters on models and objects; containment navigation
-  (`contents`, `container`, `find_parent()`); and flow walks
-  (`find_all_next()`, `find_all_previous()`, `walk()`) with `through=` and
-  `descend=`.
-- `maps_to` on ports and named points, so a part's point can map onto a
-  container port that exists only after resolution. The resolver gives both
-  points one medium and direction.
-
 ## [0.1.0] - Unreleased
 
 First public release.
@@ -55,6 +44,14 @@ First public release.
   class's shapes are filled in at construction.
 - The `plumb gen` command for compiling other ontologies, with
   deterministic output for an unchanged imports closure.
+- BeautifulSoup-style traversal: `find()`/`find_all()` with class, attribute,
+  and `exact()` filters on models and objects; containment navigation
+  (`contents`, `container`, `find_parent()`); and flow walks
+  (`find_all_next()`, `find_all_previous()`, `walk()`) with `through=` and
+  `descend=`.
+- `maps_to` on ports and named points, so a part's point can map onto a
+  container port that exists only after resolution. The resolver gives both
+  points one medium and direction.
 
 ### Changed
 

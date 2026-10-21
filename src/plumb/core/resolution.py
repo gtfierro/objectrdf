@@ -178,7 +178,9 @@ def _check_mapping(port: PortHandle, target: object) -> None:
 
     if isinstance(target, PortHandle):
         model = target._model
-    elif isinstance(target, Entity):
+    elif isinstance(target, Entity) and isinstance(
+        target, port.owner.meta.registry.resolve("ConnectionPoint")
+    ):
         model = target._model
     else:
         raise TypeError(

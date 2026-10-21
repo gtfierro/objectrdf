@@ -750,7 +750,9 @@ def test_port_maps_to_container_port_and_validates(m):
     assert inner.maps_to is resolved["chw-in"]
     assert resolved["chw-in"].medium is enums.values.Fluid_Water
     assert resolved["coil-air_outlet"].maps_to is resolved["ahu-out"]
-    assert resolved["chiller"].find_all_next(type(coil), descend=True) == [resolved["coil"]]
+    assert resolved["chiller"].find_all_next(type(coil), descend=True) == [
+        resolved["coil"]
+    ]
     assert m.validate().ok
 
 
@@ -786,6 +788,8 @@ def test_maps_to_rejects_own_equipment_and_other_models(m):
     ahu, coil, chiller = _ahu_with_coil(m)
     with pytest.raises(ModelingError, match="its own equipment"):
         coil.water_inlet.maps_to = coil.water_outlet
+    with pytest.raises(TypeError, match="port or connection point"):
+        coil.water_inlet.maps_to = ahu
     with Model("urn:test/other#"):
         other = s223.AirHandlingUnit("other-ahu")
     with pytest.raises(ValueError, match="another Model"):
