@@ -6,12 +6,15 @@ kernelspec:
 
 # Connect equipment
 
-`connect(a, b)` records that flow goes from `a` to `b`. You do not create pipes
-or connection points yourself. When the model is resolved, the solver picks
-the connection points, the medium, and the connection class (`Pipe` for
-water). This page builds a clarifier's residuals line with WaTr equipment.
+`connect(a, b)` records that flow goes from `a` to `b`. You do not create
+pipes or connection points. When the model resolves, the solver picks the
+points, the medium, and the connection class. See
+[How connections are resolved](../explanation/connection-resolution.md).
 
-## Connect and check
+## Read a class's port requirements
+
+`describe_ports()` lists the connection points a class requires: direction,
+count, and allowed media.
 
 ```{code-cell} python3
 from objectrdf import Model, connect
@@ -19,6 +22,27 @@ from objectrdf.watr import GravityThickener, Pump, enums
 from objectrdf.watr.drinking_water import ClarificationStage, RapidSandFiltrationStage
 
 values = enums.values
+print(Pump.describe_ports())
+```
+
+`"in"` is flow arriving at the equipment, `"out"` is flow leaving it, and
+`"bi"` is either. A medium root admits everything beneath it. Domain classes
+also list their named points:
+
+```{code-cell} python3
+print(ClarificationStage.describe_ports())
+```
+
+The same information is structured on `meta.port_contract`:
+
+```{code-cell} python3
+for slot in Pump.meta.port_contract.slots:
+    print(slot.direction, slot.point_class.__name__, slot.min_count, slot.max_count)
+```
+
+## Connect and check
+
+```{code-cell} python3
 model = Model("urn:example:residuals#")
 with model:
     clarifier = ClarificationStage("clarifier")
@@ -27,27 +51,26 @@ with model:
     thickener = GravityThickener("thickener")
 
 sludge = connect(clarifier, sludge_pump, name="sludge-draw")
-print(model.check().status)
-```
-
-`check()` solves without building anything. `underconstrained` means more
-than one valid answer: the clarifier has a water outlet and a sludge outlet,
-and a WaTr pump accepts either. The issue says which connection is undecided:
-
-```{code-cell} python3
-for issue in model.check().issues:
+report = model.check()
+print(report.status)
+for issue in report.issues:
     print(issue.message)
 ```
 
-An underconstrained report is still truthy, so test `report.complete` or
-`report.status` rather than `if report`. `resolve()`, `graph()`, `save()`, and
-`validate()` refuse to guess: they raise `AmbiguousModelError`, or
-`UnsatisfiableModelError` for a contradiction.
+`check()` solves without building anything. It returns one of:
 
-## Give the solver a hint
+- `complete`: exactly one answer.
+- `underconstrained`: more than one. Here the clarifier has a water and a
+  sludge outlet, and a WaTr pump accepts either.
+- `unsatisfiable`: none. The issues name the authored facts in conflict.
 
-Add the narrowest fact you know. Here that is the medium of the connection,
-either when it is created or later on the handle:
+An underconstrained report is truthy; test `report.complete`. `resolve()`,
+`graph()`, `save()`, and `validate()` raise `AmbiguousModelError` or
+`UnsatisfiableModelError` instead of guessing.
+
+## Add a hint
+
+Add the narrowest fact you know. Here, the medium:
 
 ```{code-cell} python3
 sludge.medium = values.Fluid_Sludge
@@ -55,42 +78,38 @@ connect(sludge_pump, thickener, name="sludge-to-thickener")
 print(model.check().status)
 ```
 
-The second connection needs no hint. Only the sludge medium fits both the
-pump's outlet and the thickener's inlet once the pump carries sludge.
+The second connection needs no hint: the pump now carries sludge.
 
-Other hints:
+| Hint | Example |
+| --- | --- |
+| Medium | `connect(a, b, medium=...)` or `handle.medium = ...` |
+| Named point | `connect(clarifier.clarified_water, ...)` |
+| Declared port | `equipment.port("dosing", direction="in", medium=...)` |
+| Connection class | `connect(a, b, connection=Pipe)` |
 
-- **A named point.** Equipment from a domain package has named points, such
-  as `clarifier.clarified_water` and `clarifier.sludge`. Connecting a named
-  point selects it outright, as in the next cell.
-- **A port.** `equipment.port(name, direction=..., medium=...)` declares a
-  point that the shapes do not mention, such as a dosing inlet, with a
-  stable name. Its `medium=` overrides the class's medium domain.
-- **A neighbour.** Equipment with a fixed medium settles its connections, as
-  the thickener did above.
-- **A connection class.** `connect(a, b, connection=SomeConnection)`
-  constrains the class that is created.
+A named point selects that point outright:
 
 ```{code-cell} python3
 connect(clarifier.clarified_water, sand_filter.inlet, name="clarified-water")
 print(model.check().status)
 ```
 
-A medium on equipment itself, as in `Tank(..., medium=[...])`, records
-`s223:hasMedium` on the tank but does not constrain its connections. To fix
-what a tank receives, give its port or connection the medium.
+`.port()` declares a point the shapes do not mention, with a stable name.
+Its `medium=` overrides the class's medium domain.
 
-## See what the solver chose
+`Tank(..., medium=[...])` records `s223:hasMedium` on the tank but does not
+constrain its connections. Put the medium on the port or connection instead.
+
+## Inspect the result
 
 ```{code-cell} python3
 resolved = model.resolve()
 resolved.explain(sludge)
 ```
 
-The explanation lists the chosen points, the medium, and why: an explicit
-connection or port, a paired port, an ontology constraint that left one
-choice, or the solver's preference for fewer medium changes. The same values
-are on `explanation.medium`, `.medium_reason`, and `.evidence`.
+The explanation gives the chosen points, the medium, and the reason. The same
+values are on `.medium`, `.medium_reason`, and `.evidence`.
+
 `resolved.connection(handle)` returns the concrete connection:
 
 ```{code-cell} python3
@@ -98,13 +117,19 @@ pipe = resolved.connection(sludge)
 type(pipe).__name__, pipe.medium, [point.name for point in pipe.connects_at]
 ```
 
-The authored model never gains the derived points and pipes. They exist in
-the resolved snapshot, and any later edit to the model invalidates it.
+Derived points and pipes exist only in the snapshot. Before resolution,
+`equipment.ports` holds points that already exist and declared ports. After,
+the snapshot's copy holds every concrete point:
 
-## Describe the connection
+```{code-cell} python3
+[point.name for point in sludge_pump.ports], [point.name for point in resolved["sludge-pump"].ports]
+```
 
-Handles accept connection properties before the connection exists. Roles
-and labels are copied to the resolved connection:
+Any edit to the model invalidates the snapshot.
+
+## Describe a connection
+
+Set properties on the handle. They are copied to the resolved connection:
 
 ```python
 sludge.label = "Clarifier sludge draw"
@@ -112,23 +137,18 @@ spent = connect(sand_filter.backwash_waste, recovery_tank, name="spent-backwash"
 spent.has_role.add(values.Role_Backwash)
 ```
 
-Collections on a handle work like collections on any object: use `.add()` for
-one value, and assignment to replace them all. Roles describe the connection;
-they do not affect which medium the solver picks.
+Roles do not affect which medium the solver picks.
 
-## More points than the shapes require
+## Add more points
 
-Shape requirements are minimums. A `Clarifier` whose shapes list only
-outlets still gets an inlet when something connects into it. To add a point
-the shapes do not need, request one:
+Shape requirements are minimums. Request an extra point with `ports="new"`:
 
 ```python
 connect(source, mixer, ports="new")
 ```
 
-Ports on the two sides of equipment that carry the same flow, such as the
-feed side of a heat exchanger, can be paired. Pairing makes their media equal
-and records `s223:pairedConnectionPoint`:
+Pair two ports that carry the same flow through a device. Pairing makes their
+media equal and records `s223:pairedConnectionPoint`:
 
 ```python
 feed_in = exchanger.port("feed-in", direction="in")
@@ -136,11 +156,10 @@ feed_out = exchanger.port("feed-out", direction="out")
 feed_in.pair(feed_out)
 ```
 
-## Systems and boundaries
+## Group into a system
 
-`model.system(name)` collects the equipment created inside it into an
-`s223:System`. Connections that cross the system's edge give it boundary
-connection points when the model resolves:
+`model.system(name)` collects the equipment created inside it. `boundary()`
+marks the points where the system meets the rest of the plant:
 
 ```{code-cell} python3
 plant = Model("urn:example:plant#")
@@ -163,13 +182,11 @@ resolved = plant.resolve()
 sorted(point.name for point in resolved["treatment"].has_boundary_connection_point)
 ```
 
-`boundary()` also names points that connect to nothing in the model, such as
-the sludge outlet here: they are where the system meets the rest of the
-plant. Ports work too, as in `intake.port("river", direction="in")`.
+A boundary point may connect to nothing in the model. Ports work too:
+`intake.port("river", direction="in")`.
 
-## Spaces
+## Place in a space
 
 Equipment created inside an open `PhysicalSpace` is located there with
-`s223:hasPhysicalLocation`. A `DomainSpace` (which needs `has_domain`) inside
-a `PhysicalSpace` is enclosed by it. Spaces nest through `s223:contains`,
-exposed as `contains_` because `contains()` is the containment method.
+`s223:hasPhysicalLocation`. A `DomainSpace` inside a `PhysicalSpace` is
+enclosed by it. Spaces nest through `s223:contains`, exposed as `contains_`.

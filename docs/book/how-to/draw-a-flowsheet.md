@@ -13,7 +13,7 @@ Streams are lines, not boxes: each connection is drawn between the equipment
 it joins, coloured by its medium. A connection with properties is labelled
 with them; its name appears as a tooltip in SVG output.
 
-## A small train
+## Draw a model
 
 ```{code-cell} python3
 from objectrdf import Model, connect, flowsheet

@@ -1,9 +1,8 @@
 # Extension compiler
 
-`objectrdf gen` compiles an ontology and its SHACL shapes into an ordinary
-Python package. This page lists what the compiler reads. For a walk-through,
-see [Generate a domain API](../how-to/generate-domain-api.md). For why and
-when, see [Domain extensions](../explanation/domain-extensions.md).
+`objectrdf gen` compiles an ontology and its SHACL shapes into a Python
+package. For a walk-through, see
+[Generate a domain API](../how-to/generate-domain-api.md).
 
 ## Command line
 

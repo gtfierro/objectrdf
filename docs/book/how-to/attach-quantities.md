@@ -6,9 +6,9 @@ kernelspec:
 
 # Attach quantities and property sets
 
-Values such as a design flow, a tank volume, or the turbidity of raw water are
-S223 properties attached to equipment, points, or connections. Units and
-quantity kinds are QUDT terms from `objectrdf.qudt`.
+A value such as a tank volume or a raw-water turbidity is an S223 property on
+equipment, a point, or a connection. Units and quantity kinds are QUDT terms
+from `objectrdf.qudt`.
 
 ```{code-cell} python3
 from objectrdf import Model, connect
@@ -26,10 +26,9 @@ raw_water = connect(intake, coagulation.inlet, name="raw-water")
 connect(coagulation.outlet, clearwell, name="coagulated-water")
 ```
 
-## One quantity
+## Attach one quantity
 
-`.quantity()` creates a property with a value, unit, and quantity kind, and
-attaches it:
+`.quantity()` creates and attaches a property with a value, unit, and kind:
 
 ```{code-cell} python3
 volume = clearwell.quantity(
@@ -42,7 +41,7 @@ volume = clearwell.quantity(
 volume, volume.has_value, volume.has_unit
 ```
 
-The unit must match the quantity kind's dimensions:
+The unit must match the kind's dimensions:
 
 ```{code-cell} python3
 try:
@@ -51,14 +50,20 @@ except ValueError as error:
     print(error)
 ```
 
-`capability=` picks the property class: `"static"` (the default) for a fixed
-value, `"observable"` for something measured, and `"actuatable"` for a
-writable setpoint. It says nothing about interpretation, so add
-`Aspect_Nominal` yourself for a nominal value. For a measured value that a
-sensor reports, use [`.sensor()`](add-sensors-and-actuators.md).
+`capability=` picks the property class:
 
-A quantity on a stream describes what flows in it. Qualify it with the medium
-and the substance:
+| Capability | Use |
+| --- | --- |
+| `"static"` (default) | a fixed value |
+| `"observable"` | a measured value; see [`.sensor()`](add-sensors-and-actuators.md) |
+| `"actuatable"` | a writable setpoint |
+
+Add `Aspect_Nominal` yourself for a nominal value.
+
+## Qualify a stream quantity
+
+A quantity on a connection describes what flows in it. Name the medium and,
+for a constituent, the substance:
 
 ```{code-cell} python3
 toc = raw_water.quantity(
@@ -72,14 +77,12 @@ toc = raw_water.quantity(
 toc.of_medium, toc.of_substance
 ```
 
-`raw_water` is a connection handle, so the property moves to the concrete pipe
-when the model resolves. Ports and named points accept quantities the same
-way.
+The property moves to the concrete pipe when the model resolves. Ports and
+named points accept quantities the same way.
 
-## A property set written in Python
+## Define a property set in Python
 
-Several quantities that always go together form a schema. Subclass
-`PropertySchema` and declare each field with `quantity_field()`:
+Subclass `PropertySchema` and declare each field with `quantity_field()`:
 
 ```{code-cell} python3
 from objectrdf import PropertySchema, quantity_field
@@ -117,9 +120,9 @@ class InfluentQuality(PropertySchema):
 print(InfluentQuality.describe())
 ```
 
-The class is a frozen, keyword-only dataclass. Bare numbers use the field's
-unit. A `QuantityAmount` keeps its own unit if it is compatible, with no
-conversion. Bounds and units are checked when you create the value:
+The class is a frozen, keyword-only dataclass. A bare number uses the
+field's unit. A `QuantityAmount` keeps its own compatible unit; nothing is
+converted. Bounds and units are checked on creation:
 
 ```{code-cell} python3
 try:
@@ -128,7 +131,9 @@ except ValueError as error:
     print(error)
 ```
 
-`apply_properties()` attaches one property per field and returns them keyed by
+## Apply a property set
+
+`apply_properties()` attaches one property per field and returns them by
 field name:
 
 ```{code-cell} python3
@@ -138,15 +143,13 @@ influent = raw_water.apply_properties(
 dict(influent)
 ```
 
-Each application creates new properties named after the subject and field.
-Use `prefix=` to choose a different stem. A name that is already taken makes
-the whole application fail, leaving the model unchanged.
+Properties are named `<subject>-<field>`; `prefix=` changes the stem. If a
+name is taken, nothing is applied.
 
-## A property set from an ontology
+## Use a property set from an ontology
 
-Domain packages compile property schemas from SHACL, so the definition is
-shared RDF rather than Python. The ASM2d package defines the design values
-of an aerobic reactor, with a default volume:
+Domain packages compile property schemas from SHACL. ASM2d defines an
+aerobic reactor's design values:
 
 ```{code-cell} python3
 from objectrdf.watr.asm2d import AerobicDesign, AerobicStage
@@ -160,15 +163,12 @@ with model:
 dict(reactor.apply_properties(AerobicDesign(oxygen_transfer_coefficient=10.0)))
 ```
 
-Write a schema in Python while you work out what you need, and move it to SHACL
-when other models or tools need to share it. See
-[Domain extensions](../explanation/domain-extensions.md).
+Start a schema in Python. Move it to SHACL when other models or tools need
+it; see [Domain extensions](../explanation/domain-extensions.md).
 
-## A plain value
+## Attach a plain value
 
-S223's `Property` takes a literal directly. Use it when no QUDT quantity kind
-fits. It carries less meaning than a quantity, so prefer `.quantity()` when you
-can:
+When no QUDT quantity kind fits, use S223's `Property` with a literal:
 
 ```{code-cell} python3
 from objectrdf.watr import Property
@@ -183,19 +183,13 @@ permeability = Property(
 coagulation.has_property.add(permeability)
 ```
 
-## What the ontologies cannot express yet
+QUDT has no kind for reverse-osmosis water permeability (`M-PER-SEC-PA`),
+hence the plain `Property` above.
 
-S223 and WaTr describe a nominal, untimed value on equipment or a stream: the
-value, unit, quantity kind, medium, and substance. They cannot yet tell apart
-several operating points or samples of the same stream. A distinct operating
-point needs a companion ontology that defines:
+## Limits
 
-- an operating-point class and how it relates to the connection;
-- whether a state is nominal, calculated, measured, or constrained;
-- time, scenario, or run identity and the validity interval;
-- the cardinality and ownership of its properties;
-- composition semantics, including the balance basis.
-
-QUDT also has no quantity kind for reverse-osmosis water permeability
-(`M-PER-SEC-PA`), which is why the example above uses a plain `Property`.
-WaTr would need to define that kind before it can be a checked quantity.
+S223 and WaTr describe one nominal, untimed value per property. They cannot
+distinguish operating points, samples, or scenarios of the same stream. That
+needs a companion ontology defining the operating point, its time or
+scenario, whether a value is nominal, calculated, or measured, and the
+composition basis.

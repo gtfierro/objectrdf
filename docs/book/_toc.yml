@@ -17,10 +17,7 @@ parts:
       - file: how-to/draw-a-flowsheet
       - file: how-to/validate-and-save
       - file: how-to/query-loaded-models
-      - file: how-to/explore-classes
-      - file: how-to/explore-enums
-      - file: how-to/inspect-port-contracts
-      - file: how-to/diagnose-resolution
+      - file: how-to/find-classes-and-values
       - file: how-to/generate-domain-api
   - caption: Explanation
     chapters:

@@ -1,14 +1,14 @@
-# Generate a domain API from RDF and SHACL
+# Generate a domain API
 
-Use an ontology extension when several models share equipment roles, named ports,
-or quantity metadata. Maintain those definitions in RDF and SHACL, then generate
-the Python package. Model authors import it without running the compiler.
+Write equipment and property sets in RDF and SHACL, then compile them into a
+Python package. [Domain extensions](../explanation/domain-extensions.md)
+explains when to.
 
-## Declare the base package and equipment
+## Write the extension
 
-Save this source as `pumps.ttl`. The annotation identifies the installed base
-package. Ontology classes supply identity and inheritance; SHACL supplies required
-members, defaults, cardinalities, and point layouts.
+Save this as `pumps.ttl`. `codegen:baseModule` names the installed package it
+extends. It defines a supply pump with named water ports and a pressure
+property set.
 
 ```turtle
 @prefix ex: <urn:example:pumps#> .
@@ -59,22 +59,22 @@ ex:Pressure sh:class s223:QuantifiableProperty ;
         [ sh:path s223:hasAspect ; sh:hasValue s223:Aspect-Nominal ] .
 ```
 
-`sh:hasValue` on a collection supplies required members while allowing additional
-valid values. `sh:defaultValue` supplies a replaceable default on new instances.
-Use `sh:in` for finite choices. Named ports need a fixed direction, medium,
-positive exact count, and distinguishing facts when several ports share a
-medium and direction. Fixed labels provide those facts in this example.
+- `sh:hasValue` adds a required member; other values are still allowed.
+- `sh:defaultValue` sets a replaceable default.
+- `sh:in` lists the allowed choices.
+- Each named port needs a fixed direction, medium, and count. The fixed
+  labels tell the two water ports apart.
 
-## Compile and use the package
+The [extension compiler reference](../reference/extension-compiler.md) lists
+every rule.
 
-Run from the directory containing `pumps.ttl`:
+## Compile it
 
 ```bash
 objectrdf gen --file pumps.ttl --name Pumps --out pumps
 ```
 
-The generated package contains typed constructors and frozen quantity schemas,
-plus the exact source shapes used for validation:
+## Use it
 
 ```python
 from objectrdf import Model
@@ -88,16 +88,12 @@ with Model("urn:example:plant#") as model:
 assert model.validate().ok
 ```
 
-A bare pressure value uses Pa, the source default. Explicit values preserve their
-units without conversion. For several fields with the same quantity kind, use
-source constraints such as fixed labels to distinguish their qualified shapes.
-`describe()` displays units, defaults, and provenance.
+A bare pressure uses Pa, the source default. Validation uses the package's
+bundled shapes.
 
 ## Load saved models
 
-A saved model declares `owl:imports` for `urn:example:pumps#`. `Model.from_graph()`
-only recognizes the extensions bundled with objectrdf from their imports, so
-pass your package's registry when loading:
+`from_graph()` only detects the bundled extensions. Pass your registry:
 
 ```python
 from objectrdf import Model
@@ -108,19 +104,12 @@ loaded = Model.from_graph("plant.ttl", registries=pumps.REGISTRY)
 assert isinstance(loaded["pump"], SupplyPump)
 ```
 
-The registry includes the base package's classes, so equipment from the base
-in the same graph loads too.
+The registry includes the base classes.
 
-## Limits
+## Regenerate the bundled packages
 
-The compiler supports one constructive parent per extension class, including
-local inheritance, shape composition through `sh:node` and `sh:and`, scalar
-quantity fields, and inclusive numeric bounds. Complex paths and disjunctive
-constructive layouts produce diagnostics. Full validation still uses the original
-shapes, including constraints outside the constructive projection.
-
-The repository sources `ontology/asm2d.ttl`, `ontology/seawater-ro.ttl`,
-`ontology/drinking-water.ttl`, and `ontology/hvac.ttl` regenerate with:
+The sources are `ontology/drinking-water.ttl`, `asm2d.ttl`,
+`seawater-ro.ttl`, and `hvac.ttl`:
 
 ```bash
 uv run python scripts/generate_example_domains.py

@@ -6,35 +6,31 @@ mystnb:
   execution_in_temp: true
 ---
 
-# Tutorial: model a conventional water treatment train
+# Model a treatment train
 
-Build a surface-water treatment train using WaTr's treatment equipment and
-process vocabulary. The sequence follows the conventional steps described in
-[CDC's treatment overview](https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html):
-coagulation, flocculation, sedimentation, filtration, and disinfection.
+This tutorial models a conventional surface-water treatment train:
+coagulation, flocculation, sedimentation, filtration, and disinfection
+([CDC overview](https://www.cdc.gov/drinking-water/about/how-water-treatment-works.html)).
+You will connect the stages, mark the system boundary, explore the result,
+save it, and load it again.
 
 ![Treatment train with sludge and filter backwash branches](../_static/treatment-train.svg)
 
-| Stage | WaTr equipment class | Purpose in this train |
+The model records equipment, connectivity, and treatment intent. It does not
+calculate removal, dose, or contact time.
+
+## 1. Import the stages
+
+`objectrdf.watr.drinking_water` provides one class per stage. Each subclasses
+a WaTr equipment class and fixes its process, objective, and named ports.
+
+| Stage | Class | WaTr parent |
 | --- | --- | --- |
-| Coagulation | `CoagulationBasin` | Add coagulant to destabilize suspended particles. |
-| Flocculation | `FlocculationBasin` | Mix gently so particles form larger flocs. |
-| Clarification | `SedimentationTank` | Settle flocs; withdraw sludge separately. |
-| Filtration | `RapidSandFilter` | Remove remaining suspended particles through sand media. |
-| Chlorination and contact | `ChlorinationUnit` | Dose chlorine and provide a contact stage for disinfection. |
-
-This is an equipment and connectivity model. It records treatment intent;
-it does not calculate removal efficiency, chlorine dose, or contact time.
-Chemical-feed equipment, filter-cleaning controls, and residuals handling sit
-outside the model boundary.
-
-## 1. Import the treatment configurations
-
-The configurations below subclass the WaTr equipment in the table. Their
-processes, treatment objectives, and named ports come from
-`ontology/drinking-water.ttl`, compiled into `objectrdf.watr.drinking_water`.
-Model authors import these definitions rather than writing Python subclasses
-or port-selection helpers.
+| Coagulation | `CoagulationStage` | `CoagulationBasin` |
+| Flocculation | `FlocculationStage` | `FlocculationBasin` |
+| Clarification | `ClarificationStage` | `SedimentationTank` |
+| Filtration | `RapidSandFiltrationStage` | `RapidSandFilter` |
+| Disinfection | `ChlorinationStage` | `ChlorinationUnit` |
 
 ```{code-cell} python3
 from objectrdf import Model, connect
@@ -52,11 +48,11 @@ from objectrdf.watr.drinking_water import (
 )
 ```
 
-## 2. Author the train and its boundaries
+## 2. Connect the stages
 
-Connect explicit named ports along the production path. The clarifier has a
-separate sludge outlet. The filter has distinct production and backwash ports,
-so its waste cannot accidentally become the supply to disinfection.
+Connect named ports along the production path. The clarifier's `sludge`
+outlet and the filter's backwash ports are separate points, so waste cannot
+end up feeding the next stage.
 
 ```{code-cell} python3
 with Model("urn:example/treatment#") as model:
@@ -85,23 +81,14 @@ with Model("urn:example/treatment#") as model:
         )
 ```
 
-The system scope collects five treatment units. Its five boundary points
-represent raw water entering, finished water leaving, sludge withdrawal,
-clean backwash water entering, and spent backwash leaving. Boundary points
-connect to the surrounding plant without adding placeholder equipment.
+`model.system()` groups the stages. `boundary()` marks the points where flow
+crosses into or out of the system: raw water in, finished water out, sludge
+out, and backwash water in and out.
 
-Backwashing is an intermittent cleaning operation. These ports describe
-available paths; they do not imply that production and backwashing run
-simultaneously. The external clean-water supply and waste handling are left
-outside this train.
+## 3. Explore the result
 
-## 3. Explore the treatment train
-
-`compile()` resolves the connections and validates the model against its SHACL
-shapes. Use the resulting snapshot to explore the equipment and its connections.
-
-Start with the system's members: what treatment does each unit perform, and
-what is it intended to achieve? The process and objective labels come from WaTr.
+`compile()` resolves the connections, validates the model, and returns a
+snapshot. List each stage's process and objective:
 
 ```{code-cell} python3
 resolved = model.compile()
@@ -113,10 +100,7 @@ for stage in plant.has_member:
     print("  objectives:", ", ".join(o.meta.label for o in stage.has_treatment_objective))
 ```
 
-Next, discover how these units are connected, without supplying the sequence
-of stages or the connection handles used during authoring. Follow each outlet
-through its pipe to the receiving unit's inlet. A boundary outlet has no
-internal pipe, so it does not lead to another unit in this model.
+Follow each outlet through its pipe to the next stage:
 
 ```{code-cell} python3
 for stage in plant.has_member:
@@ -132,10 +116,7 @@ for stage in plant.has_member:
                 )
 ```
 
-This reveals that clarified water feeds the sand filter and filtered water
-feeds the chlorination stage. Sludge and spent backwash do not feed another
-treatment stage here. To find their exit points, inspect the system boundary:
-which flows enter or leave, at which unit, and carrying what medium?
+List the boundary points and their media:
 
 ```{code-cell} python3
 for point in sorted(plant.has_boundary_connection_point, key=lambda item: item.name):
@@ -143,32 +124,17 @@ for point in sorted(plant.has_boundary_connection_point, key=lambda item: item.n
     print(f"{direction:3} {point.owner.name}.{point.label}: {point.medium.label}")
 ```
 
-The report separates the raw-water inlet from the backwash supply inlet, and
-the finished-water outlet from the sludge and backwash waste outlets. It also
-shows sludge as a distinct medium, while the two filter outlets both carry
-water. Their named ports identify their different purposes.
+Sludge is its own medium. Both filter outlets carry water and are told apart
+by name.
 
-Water remains the broad `Fluid_Water` medium throughout the main path. A
-`TreatmentObjective_Disinfection` term expresses the purpose of the final
-stage; it does not assert a measured water quality or treatment outcome.
-
-## 4. Save the model as RDF
-
-Write the resolved RDF to `treatment.ttl` in the current working directory:
+## 4. Save and load
 
 ```{code-cell} python3
 model.save("treatment.ttl")
 ```
 
-The file contains the equipment, processes, treatment objectives, connections,
-and system boundaries, ready to share or load in another session.
-
-## 5. Load and explore the saved model
-
-The saved file imports the drinking-water ontology, so loading it selects the
-domain package and its WaTr base classes. Retrieve settling tanks by their
-WaTr equipment class, even though the saved objects use the more specific
-`ClarificationStage` configuration, and report their outlet streams.
+The file imports the drinking-water ontology, so `from_graph()` selects the
+right package. Query by the WaTr parent class:
 
 ```{code-cell} python3
 loaded = Model.from_graph("treatment.ttl")
@@ -179,9 +145,7 @@ for tank in loaded.find_all(SedimentationTank):
             print(f"  {outlet.label}: {outlet.medium.label}")
 ```
 
-Draw the loaded train as a flow sheet. The stages list their processes and
-objectives, and the unconnected boundary points become feed and product
-terminals:
+## 5. Draw it
 
 ```{code-cell} python3
 from objectrdf import flowsheet
@@ -189,12 +153,10 @@ from objectrdf import flowsheet
 flowsheet(loaded, title="Conventional treatment train")
 ```
 
-[Draw a flow sheet](../how-to/draw-a-flowsheet.md) covers instruments,
-layout, and export.
+Unconnected boundary points are drawn as feed and product terminals.
 
-Run the complete serializing example with
-`uv run python examples/watr/treatment/watr_quickstart.py`. To change the
-reusable stages, edit their RDF/SHACL source and run `make regen`.
-Continue with [characterizing and instrumenting a plant](watr-instrumented-plant.md),
-which adds pumps, residuals, an influent property set, sensors, and a flow
-sheet to this train.
+## Next
+
+[Instrument a plant](watr-instrumented-plant.md) adds pumps, residuals
+handling, an influent property set, sensors, and actuators to this train. The
+script version is `examples/watr/treatment/watr_quickstart.py`.

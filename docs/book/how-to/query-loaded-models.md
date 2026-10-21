@@ -8,13 +8,12 @@ mystnb:
 
 # Query and edit saved models
 
-`Model.from_graph()` loads RDF as the same typed Python objects you author
-with. You can then find objects by class, follow their relations, edit them,
-and save the result.
+`Model.from_graph()` loads RDF as typed Python objects. Find them by class,
+follow their relations, edit them, and save the result.
 
 ## Load a model
 
-First save a small treatment model to load:
+Save a small model to load:
 
 ```{code-cell} python3
 from objectrdf import Model, connect
@@ -36,28 +35,26 @@ connect(clarifier.clarified_water, sand_filter.inlet, name="clarified-water")
 authored.save("plant.ttl")
 ```
 
-The saved graph's `owl:imports` names the packages it needs, so loading takes
-just the file:
+The file's `owl:imports` names the packages it needs:
 
 ```{code-cell} python3
 model = Model.from_graph("plant.ttl")
 len(model)
 ```
 
-`by_class()` groups the objects by their exact class:
+`by_class()` groups objects by exact class:
 
 ```{code-cell} python3
 for cls, objects in model.by_class().items():
     print(cls.__name__, [obj.name for obj in objects])
 ```
 
-Loading reads the saved points and pipes as ordinary objects: the resolved
-graph, not the `connect()` calls that produced it.
+Points and pipes load as ordinary objects, not as `connect()` calls.
 
 ## Find objects
 
-`find_all()` includes subclasses. The clarifier was saved as a drinking-water
-`ClarificationStage`, and it is also a WaTr `SedimentationTank`:
+`find_all()` includes subclasses. A `ClarificationStage` is a
+`SedimentationTank`:
 
 ```{code-cell} python3
 from objectrdf.watr import SedimentationTank
@@ -65,8 +62,8 @@ from objectrdf.watr import SedimentationTank
 model.find_all(SedimentationTank)
 ```
 
-Keyword filters use attribute names. A value matches by equality, by
-membership for collections, or through a function:
+Keyword filters match attributes by equality, collection membership, or a
+function:
 
 ```{code-cell} python3
 from objectrdf.watr import Pipe, enums
@@ -75,15 +72,17 @@ model.find(Pump, label="Intake pump"), model.find_all(Pipe, medium=enums.values.
 ```
 
 `find()` returns the first match or `None`. Item lookup takes a local name or
-a full IRI:
+an IRI:
 
 ```{code-cell} python3
 model["clarifier"] is model["urn:example:plant#clarifier"]
 ```
 
+To find a class to search for, see [Find classes and values](find-classes-and-values.md).
+
 ## Follow relations
 
-From there, traversal is attribute access:
+Traversal is attribute access:
 
 ```{code-cell} python3
 clarifier = model["clarifier"]
@@ -97,7 +96,7 @@ pipe = model["clarified-water"]
 [point.owner.name for point in pipe.connects_at]
 ```
 
-For graph-shaped questions that read better in SPARQL, query the RDF:
+Or query the RDF with SPARQL:
 
 ```{code-cell} python3
 rows = model.graph().query(
@@ -106,34 +105,11 @@ rows = model.graph().query(
 [str(row.pump) for row in rows]
 ```
 
-`model.graph()` returns a copy, so a SPARQL update on it does not change the
-model.
-
-## Discover classes
-
-You do not need to know the class names in advance. Each class's `.meta`
-navigates the hierarchy:
-
-```{code-cell} python3
-from objectrdf.watr import Process
-
-print(Process.meta.tree(max_depth=2))
-```
-
-`meta.children` lists direct subclasses, `meta.descendants` all of them, and
-`meta[name_or_iri]` finds one within the branch:
-
-```{code-cell} python3
-Process.meta["Settling"], len(Process.meta.descendants)
-```
-
-Each package's `REGISTRY.classes` lists every class it defines, and the
-[class catalog](../reference/catalog.md) lists every S223 and WaTr class. These
-are Python classes, so `issubclass` and `isinstance` work as usual.
+`model.graph()` returns a copy; updating it does not change the model.
 
 ## Edit and save
 
-Edits to a loaded object write through to its RDF graph:
+Edits write through to the graph:
 
 ```{code-cell} python3
 from objectrdf.watr import Tank
@@ -145,14 +121,12 @@ with model:
 model.save("plant-updated.ttl")
 ```
 
-Only the triples behind generated attributes are replaced. Classes,
-predicates, and values the package does not know about stay in the graph
-untouched. If you pass an `rdflib.Graph` to `from_graph()`, that graph is
-updated in place.
+Only triples behind generated attributes change; unknown triples stay. A
+graph passed to `from_graph()` is updated in place. Edits made through rdflib
+after loading are not seen by the objects.
 
-`connect()` and `model.system()` do not work on a loaded model yet, because
-there is no solver step to place them. Edit the concrete pipes and points
-instead:
+`connect()` and `model.system()` do not work on a loaded model. Edit the
+concrete pipes and points instead:
 
 ```{code-cell} python3
 try:
@@ -161,19 +135,15 @@ except Exception as error:
     print(type(error).__name__, error)
 ```
 
-Changes made directly through rdflib after loading are not reflected in the
-objects.
-
 ## Which packages load
 
-`from_graph()` reads the graph's `owl:imports` and picks the installed
-packages that match: Brick, S223, WaTr, QUDT, and the bundled domain packages
-(`watr.drinking_water`, `watr.asm2d`, `watr.seawater_ro`, and `s223.hvac`).
-When a package records a version, the version in the graph must match the
-installed one.
+`from_graph()` matches the graph's `owl:imports` against the installed
+packages: Brick, S223, WaTr, QUDT, and the bundled domain packages
+(`watr.drinking_water`, `watr.asm2d`, `watr.seawater_ro`, `s223.hvac`).
+Versions must match.
 
-For RDF without those imports, or for a package you compiled yourself, pass
-the registries. A domain package's registry includes its base classes:
+For RDF without imports, or a package you compiled, pass registries. A domain
+registry includes its base classes:
 
 ```python
 from objectrdf import brick, s223
@@ -181,18 +151,16 @@ from objectrdf import brick, s223
 model = Model.from_graph("building.ttl", registries=[brick.REGISTRY, s223.REGISTRY])
 ```
 
-RDF classes from none of the packages stay in the graph without becoming
-Python objects. By default, a relation that points at such a resource raises
-an error that names the missing registry. `strict=False` skips those values
-instead.
+Resources of unknown classes stay in the graph but are not loaded. A relation
+to one raises an error naming the missing registry; `strict=False` skips it.
 
 ## Load with inference
 
-`infer=True` runs SHACL-AF rules before the objects are built. The rules come
-from the selected packages' bundled shapes unless you pass `shapes=`:
+`infer=True` runs the packages' SHACL-AF rules before loading. Pass
+`shapes=` for other rules:
 
 ```python
 model = Model.from_graph("plant.ttl", infer=True)
 ```
 
-Inference is off by default because it changes the graph you are querying.
+Inference is off by default because it changes the graph.

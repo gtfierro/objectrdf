@@ -6,20 +6,16 @@ mystnb:
   execution_in_temp: true
 ---
 
-# Tutorial: characterize and instrument a plant
+# Instrument a plant
 
-This tutorial extends [the treatment train](watr-treatment.md) into a small
-plant. Raw water is pumped through coagulation, flocculation, clarification,
-filtration, and chlorination into a clearwell, then out to distribution.
-Clarifier sludge is thickened, and the filter is backwashed from the clearwell.
-Along the way you describe the raw water with a property set, add sensors and
-actuators, and draw the plant.
+This tutorial extends [the treatment train](watr-treatment.md) into a plant
+with pumps, a clearwell, sludge thickening, and filter backwash. You will
+describe the raw water, add sensors and actuators, and draw the result.
 
 ## 1. Describe the influent
 
-The raw-water quality belongs to the stream entering the plant. Write it as a
-property schema in Python: a frozen dataclass whose fields carry a QUDT kind,
-a unit, and the medium they describe.
+A property schema is a group of quantities. Each field has a QUDT quantity
+kind, a unit, and the medium it describes.
 
 ```{code-cell} python3
 from objectrdf import Model, PropertySchema, connect, flowsheet, quantity_field
@@ -78,8 +74,8 @@ raw = InfluentQuality(flow_rate=40_000, turbidity=Q(18.0, units.NTU), organic_ca
 raw
 ```
 
-Bare numbers take the field's unit, and the temperature takes its default.
-Values are checked when the schema is created:
+Bare numbers take the field's unit. Omitted fields take their default.
+Units and bounds are checked on creation:
 
 ```{code-cell} python3
 try:
@@ -90,8 +86,8 @@ except ValueError as error:
 
 ## 2. Create the equipment
 
-The treatment stages come from the drinking-water domain package; pumps, tanks,
-and the thickener are WaTr classes.
+The stages come from `drinking_water`. Pumps, tanks, and the thickener are
+plain WaTr classes.
 
 ```{code-cell} python3
 model = Model("urn:example:surface-water#")
@@ -112,14 +108,16 @@ with model, model.system("plant"):
     backwash_tank = Tank("backwash-recovery", has_role=[values.Role_Backwash])
 ```
 
+The thickener's process and objective come from its class:
+
 ```{code-cell} python3
 list(thickener.has_process), list(thickener.has_treatment_objective)
 ```
 
 ## 3. Connect the main path
 
-Named points pick the stage outlets. Where an end is a whole pump or tank, the
-solver chooses its connection point.
+Named points select stage ports. For a whole pump or tank, the solver picks
+the point.
 
 ```{code-cell} python3
 raw_water = connect(intake, coagulation.inlet, name="raw-water")
@@ -134,8 +132,8 @@ print(model.check().status)
 
 ## 4. Add residuals and backwash
 
-The sludge line needs its medium: the clarifier has both a water and a sludge
-outlet, and a WaTr pump accepts either.
+The sludge line needs a medium. A WaTr pump accepts water or sludge, so
+nothing else says which one flows.
 
 ```{code-cell} python3
 connect(clarifier.sludge, sludge_pump, name="sludge-draw", medium=values.Fluid_Sludge)
@@ -146,8 +144,8 @@ connect(sand_filter.backwash_waste, backwash_tank, name="spent-backwash")
 print(model.check().status)
 ```
 
-Mark where the plant meets the outside world. These ports connect to nothing
-in the model:
+Mark where the plant meets the outside. These ports connect to nothing in
+the model:
 
 ```{code-cell} python3
 model["plant"].boundary(
@@ -160,7 +158,7 @@ model["plant"].boundary(
 
 ## 5. Characterize the influent
 
-Apply the property set to the raw-water connection:
+Attach the property set to the raw-water connection:
 
 ```{code-cell} python3
 influent = raw_water.apply_properties(raw)
@@ -174,10 +172,8 @@ turbidity.has_value, turbidity.has_unit, turbidity.of_medium
 
 ## 6. Add instruments
 
-A sensor goes where it measures: a flow meter on the raw-water line, a
-turbidimeter on the filter outlet, a chlorine analyzer on the finished water,
-and a level sensor on the clearwell. A quantity that names a substance must
-also name the medium it is in.
+Call `.sensor()` on what is measured. A quantity that names a substance,
+such as chlorine, must also name its medium.
 
 ```{code-cell} python3
 raw_water.sensor(
@@ -198,7 +194,7 @@ clearwell.sensor(
 )
 ```
 
-The high-service pump gets a speed command and an on/off command:
+Give the high-service pump a speed command and an on/off command:
 
 ```{code-cell} python3
 high_service.actuator("high-service-speed", kind=quantity_kinds.Frequency, unit=units.HZ)
@@ -215,10 +211,10 @@ resolved = model.compile()
 resolved.explain(finished)
 ```
 
-The clearwell has two outlets, to the high-service pump and to the backwash
-pump. The explanation shows which point each connection uses.
+The clearwell feeds two pumps. `explain()` shows which outlet each
+connection uses.
 
-Every sensor now points at a concrete pipe or connection point:
+Each sensor's location is now a concrete pipe or point:
 
 ```{code-cell} python3
 from objectrdf.watr import Sensor
@@ -233,12 +229,14 @@ for sensor in resolved:
 flowsheet(resolved, title="Surface-water treatment plant")
 ```
 
-Save it to share:
+Save it:
 
 ```{code-cell} python3
 model.save("plant.ttl")
 ```
 
-Continue with [quantities and property sets](../how-to/attach-quantities.md),
-[sensors and actuators](../how-to/add-sensors-and-actuators.md), or
-[querying the saved model](../how-to/query-loaded-models.md).
+## Next
+
+- [Attach quantities and property sets](../how-to/attach-quantities.md)
+- [Add sensors and actuators](../how-to/add-sensors-and-actuators.md)
+- [Query and edit saved models](../how-to/query-loaded-models.md)

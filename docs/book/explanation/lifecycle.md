@@ -1,68 +1,41 @@
-# How an authored model becomes RDF
-
-An authored `Model` is a mutable collection of typed Python entities and
-deferred intentions. Generated ontology packages supply class signatures,
-property descriptors, enum individuals, metadata, and compiled SHACL
-constraints. The compiler produces those packages ahead of time; ordinary
-model scripts import them without compiling an ontology again.
+# Model lifecycle
 
 ```text
-generated classes → authored entities and handles → check() → resolve()
-                                                         ├─→ graph()/save() → RDF
-                                                         └─→ validate()/compile()
-                                                              → shifty → report
+generated classes → authored model → check() → resolve() → graph() / save()
+                                                         └→ validate() / compile()
 ```
 
-## Authoring and resolution
+## Generate
 
-Inside `with Model(namespace)`, constructors bind entities to the model.
-Descriptors check property values against generated ranges and keep inverse
-relationships synchronized. The model holds the authored entities; a call to
-`connect(a, b)` records flow direction and returns a `ConnectionHandle`.
-Some fixed-medium points are created during construction; other point
-requirements can remain deferred. You can add
-medium hints, roles, labels, and other connection properties to the handle.
+The compiler turns an ontology and its SHACL shapes into a Python package
+ahead of time. Model scripts import the package; they never run the compiler.
 
-`check()` asks the Z3 resolver whether constraints admit a complete,
-unambiguous graph. It reports `complete`, `underconstrained`, or
-`unsatisfiable`; an underconstrained report is still satisfiable. The
-constraints come from authored facts and compiled SHACL point layouts,
-cardinality, class requirements, and permitted media. The solver ranks valid
-media assignments using overlap between a device's port domains. This
-ranking does not express physical conservation of a medium.
+## Author
 
-`resolve()` selects concrete connection points and connection subclasses,
-creates inverse relationships, and returns a frozen `ResolvedModel`. A handle
-still points to the authored intention; `resolved.connection(handle)` maps it
-to the concrete entity. `resolved.explain(handle)` records the selected
-endpoints, medium, and evidence. The authored model is not filled with derived
-entities. A later authored edit invalidates its cached snapshot.
+An authored `Model` is mutable. Constructors check required properties,
+attributes check their values, and inverse relations stay in sync.
+`connect()` records an intention and returns a handle. Points the shapes fix
+are created with the equipment; the rest wait for resolution.
 
-## SHACL inference and validation
+## Resolve
 
-Z3 resolution and SHACL inference have different jobs. Z3 chooses the
-connection topology and media before RDF is emitted. shifty runs SHACL Core
-validation and, by default, SHACL-AF forward rules against the resolved RDF
-and shapes bundled with the generated packages. Thus `model.validate()` is
-the operation that runs shifty; `model.resolve()` alone does not. Validation
-returns a `ValidationReport` whose issues map focus IRIs back to Python
-entities when possible. Informational notices can coexist with `ok=True`.
+`check()` asks the Z3 solver whether the model has exactly one
+interpretation. `resolve()` builds it: a frozen `ResolvedModel` with every
+connection point, connection, and inverse relation. The authored model is not
+changed, and any later edit invalidates the snapshot. See
+[How connections are resolved](connection-resolution.md).
 
-`model.compile()` calls `resolve()` and then `validate()` by default. It raises
-`ValidationError` for violations and returns the frozen snapshot on success.
-`graph()` and `save()` resolve and serialize, but do not validate. An
-`owl:Ontology` declaration and imports for referenced packages are emitted
-with authored models.
+## Validate
 
-## Loading existing RDF
+`validate()` runs shifty on the resolved RDF: SHACL-AF rules, then SHACL Core
+validation, against the shapes bundled with each package. `compile()`
+resolves and validates in one call. `graph()` and `save()` resolve but do not
+validate.
 
-`Model.from_graph()` follows a separate path: it can run shifty inference
-before hydrating typed objects when `infer=True`. A loaded model is backed by
-its graph; edits to generated attributes replace their managed triples while
-preserving other RDF. The default is `infer=False`, since rule inference can
-add triples to the queried graph. New deferred S223 or WaTr connections and
-system scopes are not supported on a loaded model.
+## Load
 
-[How connections are resolved](connection-resolution.md) covers the solver's
-constraints. For the runtime and compiler internals, see `docs/architecture.md`
-in the repository.
+`Model.from_graph()` builds objects from existing RDF. A loaded model is
+backed by its graph, and edits write through to it. It has no resolution
+step, so `connect()` and `model.system()` are unavailable.
+
+The internals are in `docs/architecture.md` in the repository.

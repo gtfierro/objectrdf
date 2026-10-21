@@ -1,90 +1,69 @@
-# What the new WaTr vocabulary means
+# The WaTr vocabulary
 
-This package is generated from WaTr
+`objectrdf.watr` is generated from WaTr
 [v0.3.0.rc1](https://github.com/DataDrivenCPS/water-ontology/releases/tag/v0.3.0.rc1),
-vendored unmodified as `ontology/watr-0.3.0rc1.ttl`. It is a release
-candidate, so terms may still change before WaTr 0.3.0.
+vendored unmodified as `ontology/watr-0.3.0rc1.ttl`. Terms may change before
+0.3.0.
 
 ## Equipment, process, objective, and role
 
-These four descriptions answer different questions about one unit:
+Each answers a different question about a unit:
 
-| Question | RDF relation | Example |
+| Question | Relation | Example |
 | --- | --- | --- |
-| What kind of equipment is it? | `rdf:type` | `watr:GravityThickener` |
-| What activity does it perform? | `watr:hasProcess` | `watr:Process-Settling` |
-| What result is it intended to achieve? | `watr:hasTreatmentObjective` | `watr:TreatmentObjective-Thickening` |
-| How is it used in this system? | `s223:hasRole` | `watr:Role-Primary` |
+| What is it? | `rdf:type` | `watr:GravityThickener` |
+| What does it do? | `watr:hasProcess` | `watr:Process-Settling` |
+| What is it for? | `watr:hasTreatmentObjective` | `watr:TreatmentObjective-Thickening` |
+| What is its place in this system? | `s223:hasRole` | `watr:Role-Primary` |
 
-A sedimentation tank can clarify water, while a gravity thickener uses the
-same settling process to thicken sludge. The process describes the mechanism;
-the objective describes the intended outcome. A role such as `Role-Primary`
-describes its place in a particular treatment system.
+A sedimentation tank and a gravity thickener share a process, settling, but
+not an objective: one clarifies water, the other thickens sludge. A role
+depends on the installation.
 
-The generated `objectrdf.watr` module exposes the `Process` and
-`TreatmentObjective` class hierarchies. Equipment and systems have
-`has_process` and `has_treatment_objective` properties, which accept the
-corresponding generated classes as punned ontology terms. These relations
-serialize the ontology class IRIs directly, without creating named process or
-objective objects. Roles are enum values in
-`objectrdf.watr.enums` and can be passed to `has_role`. The
-[authoring guide](../how-to/watr-processes.md) shows all three together.
+Processes and objectives are classes, used directly as values; they serialize
+as class IRIs. Roles are enum values. See
+[Set processes, objectives, and roles](../how-to/watr-processes.md).
 
-Some processes and objectives are fixed by the equipment class. For example,
-every `GravityThickener` performs settling to thicken sludge. WaTr's
-`ClassDefaultsRule` infers these in RDF, and the generated constructors apply
-the same defaults: `GravityThickener("thickener")` already has
-`Process_Settling` and `TreatmentObjective_Thickening`. A default is added
-only when you have not supplied that term or a subclass of it, so
-`MediaFiltrationUnit(has_process=[Process_RapidSandFiltration])` does not also
-get the generic `Process_MediaFiltration`.
+## Class defaults
 
-`ProcessObjectiveRule` adds the objective a process declares
-(`Process-Chlorination` implies disinfection). That rule is not applied to
-Python objects: `model.validate(infer=True)` uses it during validation, and
-`Model.from_graph(..., infer=True)` applies it before loading an RDF graph. A
-role depends on the installation and is never supplied by these rules.
+Some processes and objectives follow from the equipment class: every
+`GravityThickener` settles to thicken. WaTr's `ClassDefaultsRule` infers these
+in RDF, and generated constructors apply the same defaults. A default is
+skipped when you supply that term or a subclass of it.
 
-Class defaults are applied when Python constructs an object, not when
-`Model.from_graph()` loads RDF: a loaded graph keeps exactly the triples it
-contains. Load with `infer=True` to have `ClassDefaultsRule` add them from the
-package's bundled rules. The two differ in one detail: the constructor adds
-only the most specific implied term (`Process_Settling` for a clarifier),
-while the rule also adds each inherited requirement (`Process_Separation`).
-Both satisfy the shapes.
+| Where | Defaults applied |
+| --- | --- |
+| Python constructor | most specific term only |
+| `ClassDefaultsRule` (`validate()`, or `from_graph(infer=True)`) | every implied term |
+| `from_graph()` without `infer` | none; the graph is kept as written |
 
-## Aqueous media and constituents
+`ProcessObjectiveRule` adds the objective a process implies
+(`Process-Chlorination` implies disinfection). It runs only as a SHACL rule.
+No rule supplies a role.
 
-WaTr 0.3 models freshwater with an H₂O constituent and seawater, brackish water,
-and brine with H₂O and NaCl constituents. S223 can use a shared constituent
-to treat those media as compatible at connections. This establishes
-compatibility; it does not assert equal composition or enforce a material
-balance. `Fluid-Sludge` is a `Mix-Fluid` composed of water and solids, not a
-kind of `Fluid-Water`, so a sludge port does not accept a water-only
-connection.
+## Media and constituents
 
-The bundled shapes also check percentage compositions. A composition whose
-stated lower percentages exceed 100% violates
-`CompositionPercentageShape`. If exactly one constituent percentage is
-missing and the others determine a nonnegative remainder,
-`CompositionComplementRule` can infer that value. A range or multiple missing
-values does not determine one remainder. These are SHACL validation and
-inference rules; selecting a medium with `connect(..., medium=...)` does not
-calculate composition.
+WaTr models freshwater with an H₂O constituent, and seawater, brackish water,
+and brine with H₂O and NaCl. A shared constituent makes media compatible at a
+connection. It does not assert equal composition.
 
-See [Explore enumeration hierarchies](../how-to/explore-enums.md) to inspect
-the media branches in Python, and [Inspect port requirements](../how-to/inspect-port-contracts.md)
-to see which media a particular equipment class permits.
+`Fluid-Sludge` is a `Mix-Fluid` of water and solids, not a kind of
+`Fluid-Water`, so a sludge port does not accept a water-only connection.
+
+The bundled shapes also check percentage compositions:
+
+- `CompositionPercentageShape` flags constituent percentages that exceed
+  100%.
+- `CompositionComplementRule` infers a single missing percentage from the
+  rest.
 
 ## Names shared with S223
 
 `objectrdf.watr` contains the S223 classes it imports as well as WaTr's own.
-When both define the same local name, the WaTr class keeps the plain name and
-the S223 class gets a suffix: `Pump` is `watr:Pump`, and `Pump_2` is
-`s223:Pump`. WaTr's pump accepts any `Mix-Fluid`, including sludge, so it
-extends `s223:Equipment` rather than `s223:Pump`, which admits only water,
-oil, or refrigerant. Check `Pump.meta.iri` when the distinction matters.
+When both define a name, WaTr's keeps it and S223's gets a suffix: `Pump` is
+`watr:Pump` and `Pump_2` is `s223:Pump`. WaTr's pump accepts any `Mix-Fluid`,
+including sludge; S223's admits only water, oil, or refrigerant. Check
+`Pump.meta.iri` when it matters.
 
-WaTr's enumeration additions, such as `Fluid_Sludge`, `Role_Backwash`, and
-constituents such as `Constituent_SuspendedSolids`, sit alongside the S223
-values in `objectrdf.watr.enums`.
+WaTr's enum additions, such as `Fluid_Sludge` and `Role_Backwash`, sit
+alongside the S223 values in `objectrdf.watr.enums`.

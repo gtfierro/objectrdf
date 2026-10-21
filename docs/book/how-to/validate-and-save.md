@@ -6,12 +6,11 @@ mystnb:
   execution_in_temp: true
 ---
 
-# Validate and save a model
+# Validate and save
 
-Validation checks the resolved RDF against the SHACL shapes bundled with each
-generated package, using shifty. It also applies the SHACL-AF rules that
-carry S223's and WaTr's inferences, and maps every result back to your Python
-objects.
+`validate()` checks the resolved RDF against the SHACL shapes bundled with
+each package, using shifty. It applies S223's and WaTr's SHACL-AF rules first
+and maps each result back to a Python object.
 
 ```{code-cell} python3
 from objectrdf import Model, connect
@@ -37,36 +36,37 @@ for issue in report.violations:
     print("  ", issue.message)
 ```
 
-The sludge tank has no connections, and WaTr requires every tank to have a
-fluid connection point. `report.issues` also holds warnings and
-informational notices, which do not make `report.ok` false. A boundary point
-that connects to nothing, for example, is an informational notice.
+The sludge tank has no connection point. Connect it:
 
 ```{code-cell} python3
 connect(clarifier.sludge, sludge_tank, name="sludge-draw")
 model.validate().ok
 ```
 
-`validate()` resolves the model first, so an ambiguous or contradictory model
-raises `AmbiguousModelError` or `UnsatisfiableModelError` before any shapes
-run.
+`report.issues` also holds warnings and informational notices, which do not
+affect `report.ok`. An unconnected boundary point is a notice.
 
-To check against your own shapes as well, pass a Turtle path or an
-`rdflib.Graph`: `model.validate("site-rules.ttl")`. Pass `infer=False` only
-when you deliberately want to validate without the SHACL-AF rules.
+## Add your own shapes
 
-## Compile: resolve and validate in one step
+Pass a Turtle path or an `rdflib.Graph`:
 
-`compile()` resolves, validates, and returns the frozen snapshot, or raises
-`ValidationError` listing the violations:
+```python
+model.validate("site-rules.ttl")
+```
+
+`infer=False` skips the SHACL-AF rules.
+
+## Compile
+
+`compile()` resolves, validates, and returns the snapshot, or raises
+`ValidationError`:
 
 ```{code-cell} python3
 resolved = model.compile()
 resolved["sludge-draw"]
 ```
 
-Use `compile(validate=False)` only when you need a partial model on purpose,
-for example while diagnosing it.
+`compile(validate=False)` returns a snapshot without validating.
 
 ## Save
 
@@ -74,8 +74,6 @@ for example while diagnosing it.
 model.save("plant.ttl")
 ```
 
-The format comes from the file extension. `save()` and `graph()` resolve the
-model but do not validate it, so run `validate()` or `compile()` first when
-the file must conform. The saved graph declares the ontologies it uses with
-`owl:imports`, which is how [loading it again](query-loaded-models.md)
-finds the right packages.
+The format follows the extension. `save()` and `graph()` resolve but do not
+validate. The file declares its ontologies with `owl:imports`, which is how
+[loading](query-loaded-models.md) finds the packages.

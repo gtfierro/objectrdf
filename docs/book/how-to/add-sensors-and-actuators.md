@@ -6,12 +6,9 @@ kernelspec:
 
 # Add sensors and actuators
 
-`.sensor()` adds a sensor and the quantity it observes in one call. `.actuator()`
-adds a command to a piece of equipment and the actuator that carries it out.
-Both work on equipment, on connections that have not been resolved yet, and
-on named points.
-
-## A small filter train
+`.sensor()` adds a sensor and the property it observes. `.actuator()` adds a
+command property and the actuator that carries it out. Both work on
+equipment, named points, and connection handles.
 
 ```{code-cell} python3
 from objectrdf import Model, connect
@@ -32,10 +29,9 @@ connect(chlorination.outlet, clearwell, name="disinfected-water")
 finished = connect(clearwell, high_service, name="finished-water")
 ```
 
-## Sensors
+## Add a sensor
 
-Call `.sensor()` on what the sensor measures. A turbidimeter on the filter's
-outlet:
+Call `.sensor()` on what is measured. A turbidimeter on the filter outlet:
 
 ```{code-cell} python3
 turbidimeter = sand_filter.filtered_water.sensor(
@@ -47,15 +43,15 @@ turbidimeter = sand_filter.filtered_water.sensor(
 turbidimeter, turbidimeter.observes
 ```
 
-The sensor class comes from the quantity kind, using the most specific class
-the package defines. WaTr gives `TurbidityMeter` for turbidity,
-`FlowSensor` for flow rates, `ConcentrationSensor` for concentrations, and
-`ConductivitySensor`, `TemperatureSensor`, and `PressureSensor` for theirs.
-The observed property is a `QuantifiableObservableProperty` named
-`<name>-value`. Keywords such as `of_medium`, `of_substance`, and `value` go
-to that property.
+The sensor class is the most specific one the package defines for the
+quantity kind: `TurbidityMeter`, `FlowSensor`, `ConcentrationSensor`,
+`ConductivitySensor`, `TemperatureSensor`, or `PressureSensor` in WaTr. The
+observed property is named `<name>-value`; `of_medium`, `of_substance`, and
+`value` go to it.
 
-A chlorine analyzer on a connection that does not exist yet:
+## Measure a connection
+
+A chlorine analyzer on a connection handle:
 
 ```{code-cell} python3
 analyzer = finished.sensor(
@@ -68,12 +64,11 @@ analyzer = finished.sensor(
 analyzer.has_observation_location
 ```
 
-The location is the connection handle for now. Resolution replaces it with the
-concrete pipe.
+Resolution replaces the handle with the concrete pipe.
 
-When the quantity kind has no specific sensor class, you get a plain `Sensor`.
-Pass `sensor_class=` to choose one, such as a level sensor that measures a
-length:
+## Choose the sensor class
+
+A kind with no specific class gives a plain `Sensor`. Pass `sensor_class=`:
 
 ```{code-cell} python3
 level = clearwell.sensor(
@@ -85,19 +80,20 @@ level = clearwell.sensor(
 level
 ```
 
-An enumeration kind makes a status reading instead of a number, observed by
-an `EnumeratedObservableProperty`:
+## Observe a status
+
+An enumeration kind gives an `EnumeratedObservableProperty` instead of a
+number:
 
 ```{code-cell} python3
 running = high_service.sensor("high-service-running", kind=values.Binary_OnOff)
 running.observes
 ```
 
-## Actuators
+## Add an actuator
 
-`.actuator()` creates an actuatable `<name>-command` property and an `Actuator`
-named `name` that `actuates` the equipment. The equipment and the actuator are
-both `actuated_by_property` the command:
+`.actuator()` creates a `<name>-command` property and an `Actuator` that
+`actuates` the equipment. Both are `actuated_by_property` the command:
 
 ```{code-cell} python3
 speed = high_service.actuator(
@@ -109,11 +105,10 @@ start = high_service.actuator(
 [command.name for command in high_service.actuated_by_property]
 ```
 
-A quantity kind with a unit makes a `QuantifiableActuatableProperty`, such as
-a speed or position setpoint. An enumeration kind makes an
-`EnumeratedActuatableProperty`, and `value=` must be one of its members.
+A quantity kind gives a `QuantifiableActuatableProperty`. An enumeration
+kind gives an `EnumeratedActuatableProperty`; `value=` must be a member.
 
-## After resolution
+## Resolve and draw
 
 ```{code-cell} python3
 resolved = model.compile()
@@ -127,9 +122,9 @@ from objectrdf import flowsheet
 flowsheet(resolved)
 ```
 
-## Building one by hand
+## Build a sensor by hand
 
-`.sensor()` is shorthand. The same sensor written out in full:
+`.sensor()` is shorthand for:
 
 ```python
 from objectrdf.watr import TurbidityMeter
@@ -148,5 +143,5 @@ TurbidityMeter(
 )
 ```
 
-`has_observation_location` and `has_reference_location` accept connection
-handles, ports, and named points. Other relations take concrete objects only.
+`has_observation_location` and `has_reference_location` accept handles,
+ports, and named points. Other relations need concrete objects.
