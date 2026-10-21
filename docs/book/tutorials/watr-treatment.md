@@ -165,16 +165,13 @@ and system boundaries, ready to share or load in another session.
 
 ## 5. Load and explore the saved model
 
-Pass the domain package's `REGISTRY` to load all its types, including the WaTr
-base classes. You do not need to choose an equipment class to obtain the registry.
-For example, retrieve settling tanks by their WaTr equipment class, even though
-the saved objects use the more specific
+The saved file imports the drinking-water ontology, so loading it selects the
+domain package and its WaTr base classes. Retrieve settling tanks by their
+WaTr equipment class, even though the saved objects use the more specific
 `ClarificationStage` configuration, and report their outlet streams.
 
 ```{code-cell} python3
-from objectrdf.watr import drinking_water
-
-loaded = Model.from_graph("treatment.ttl", registries=drinking_water.REGISTRY)
+loaded = Model.from_graph("treatment.ttl")
 for tank in loaded.find_all(SedimentationTank):
     print(f"{tank.name}: {tank.type}")
     for outlet in tank.ports:
@@ -185,5 +182,6 @@ for tank in loaded.find_all(SedimentationTank):
 Run the complete serializing example with
 `uv run python examples/watr/treatment/watr_quickstart.py`. To change the
 reusable stages, edit their RDF/SHACL source and run `make regen`.
-Continue with [WaTr processes and objectives](../how-to/watr-processes.md)
-or [domain configurations and quantity schemas](domain-configurations.md).
+Continue with [characterizing and instrumenting a plant](watr-instrumented-plant.md),
+which adds pumps, residuals, an influent property set, sensors, and a flow
+sheet to this train.

@@ -75,3 +75,16 @@ calculate composition.
 See [Explore enumeration hierarchies](../how-to/explore-enums.md) to inspect
 the media branches in Python, and [Inspect port requirements](../how-to/inspect-port-contracts.md)
 to see which media a particular equipment class permits.
+
+## Names shared with S223
+
+`objectrdf.watr` contains the S223 classes it imports as well as WaTr's own.
+When both define the same local name, the WaTr class keeps the plain name and
+the S223 class gets a suffix: `Pump` is `watr:Pump`, and `Pump_2` is
+`s223:Pump`. WaTr's pump accepts any `Mix-Fluid`, including sludge, so it
+extends `s223:Equipment` rather than `s223:Pump`, which admits only water,
+oil, or refrigerant. Check `Pump.meta.iri` when the distinction matters.
+
+WaTr's enumeration additions, such as `Fluid_Sludge`, `Role_Backwash`, and
+constituents such as `Constituent_SuspendedSolids`, sit alongside the S223
+values in `objectrdf.watr.enums`.

@@ -1,29 +1,55 @@
 # Learn ObjectRDF
 
-ObjectRDF lets you author ontology-backed RDF as Python objects. Its generated
-S223 and WaTr packages supply classes and enum values; the runtime records
-relations, resolves deferred connections, validates against SHACL, and emits
-RDF.
+ObjectRDF lets you describe water and wastewater treatment plants as Python
+objects and write them out as RDF that conforms to the
+[WaTr](https://github.com/DataDrivenCPS/water-ontology) and ASHRAE 223P ontologies. The generated
+`objectrdf.watr` package gives you WaTr's equipment, processes, treatment
+objectives, media, and roles as typed classes and values. The runtime works
+out the connection points and pipes between equipment, validates the model
+against the ontologies' SHACL shapes, and loads saved RDF back as objects.
 
-Start with [an S223 air path](tutorials/s223-air-path.md), then build a
-[conventional WaTr treatment train](tutorials/watr-treatment.md). Each tutorial is an
-executable MyST notebook page. Continue with
-[generated configurations and quantity schemas](tutorials/domain-configurations.md)
-to build a domain model from supplied RDF/SHACL definitions.
+```python
+from objectrdf import Model, connect
+from objectrdf.watr import Pump
+from objectrdf.watr.drinking_water import ClarificationStage, CoagulationStage
 
-Use the task guides to [explore classes](how-to/explore-classes.md),
-[explore enums](how-to/explore-enums.md),
-[inspect port requirements](how-to/inspect-port-contracts.md),
-[generate a domain API](how-to/generate-domain-api.md),
-[diagnose a model](how-to/diagnose-resolution.md), or
-[validate and query RDF](how-to/validate-and-query.md). The
-[lifecycle explanation](explanation/lifecycle.md) shows where Z3 and shifty
-act. The [runtime reference](reference/runtime.rst),
-[ontology reference](reference/ontologies.rst), and
-[complete class catalog](reference/catalog.md) are generated from Python
-metadata when the book builds.
+with Model("urn:example:plant#") as model:
+    intake = Pump("intake-pump")
+    coagulation = CoagulationStage("coagulation")
+    clarifier = ClarificationStage("clarifier")
 
-From this repository's root:
+connect(intake, coagulation.inlet)
+connect(coagulation.outlet, clarifier.inlet)
+model.save("plant.ttl")
+```
+
+## Where to start
+
+1. [Model a treatment train](tutorials/watr-treatment.md): stages, named
+   points, system boundaries, saving and loading.
+2. [Characterize and instrument a plant](tutorials/watr-instrumented-plant.md):
+   pumps and residuals, an influent property set, sensors, actuators, and a
+   flow sheet.
+3. [Use generated configurations](tutorials/domain-configurations.md): the
+   ASM2d activated-sludge package and its property schemas.
+
+The task guides cover [authoring](how-to/author-a-model.md),
+[connecting equipment](how-to/connect-equipment.md),
+[quantities and property sets](how-to/attach-quantities.md),
+[sensors and actuators](how-to/add-sensors-and-actuators.md),
+[processes and objectives](how-to/watr-processes.md),
+[flow sheets](how-to/draw-a-flowsheet.md),
+[validation](how-to/validate-and-save.md), and
+[querying saved models](how-to/query-loaded-models.md). To package reusable
+equipment layouts and property sets for your own models, read
+[domain extensions](explanation/domain-extensions.md), then
+[generate a domain API](how-to/generate-domain-api.md).
+
+The same API works for 223P building systems and for Brick;
+[the S223 air path](tutorials/s223-air-path.md) is a short example.
+
+Every code cell in this book runs when the book is built, so the output you
+see is what the current version produces. From the repository root:
 
 ```bash
 uv sync --group docs

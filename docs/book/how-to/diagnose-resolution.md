@@ -61,7 +61,7 @@ On a loaded RDF model, those concrete points are available immediately.
 for authored models. They raise `AmbiguousModelError` or
 `UnsatisfiableModelError` when the solver cannot produce one.
 
-For a known point on a particular device, use `device.port("supply", "out",
-medium=enums.values.Fluid_Water)` and connect that port. The
-repository's `docs/s223.md` guide describes port pairing and media hints
-in more detail.
+For a known point on a particular device, use `device.port("supply",
+direction="out", medium=enums.values.Fluid_Water)` and connect that port.
+[Connect equipment](connect-equipment.md) covers media hints and port
+pairing in more detail.

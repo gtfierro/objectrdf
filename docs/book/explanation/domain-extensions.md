@@ -23,7 +23,7 @@ like any other and never run the compiler themselves.
 
 Most models need no extension. Plain WaTr or S223 equipment, `connect()`, and
 `.port()` describe a one-off topology, and a
-[Python `PropertySchema`](https://github.com/gtfierro/objectrdf/blob/main/docs/quantities.md#schemas-written-in-python)
+[Python `PropertySchema`](../how-to/attach-quantities.md)
 captures a set of quantities used in one notebook or script.
 
 Write an extension when the definition outlives one model:
@@ -139,4 +139,4 @@ model = Model.from_graph("plant.ttl", registries=pumps.REGISTRY)
 To write your own extension, follow
 [Generate a domain API](../how-to/generate-domain-api.md). For everything the
 compiler supports, see
-[the SHACL configurations reference](https://github.com/gtfierro/objectrdf/blob/main/docs/shacl-configurations.md).
+[the extension compiler reference](../reference/extension-compiler.md).

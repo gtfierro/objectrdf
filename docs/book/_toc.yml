@@ -3,26 +3,34 @@ root: index
 parts:
   - caption: Tutorials
     chapters:
-      - file: tutorials/s223-air-path
       - file: tutorials/watr-treatment
+      - file: tutorials/watr-instrumented-plant
       - file: tutorials/domain-configurations
+      - file: tutorials/s223-air-path
   - caption: How-to guides
     chapters:
+      - file: how-to/author-a-model
+      - file: how-to/connect-equipment
+      - file: how-to/attach-quantities
+      - file: how-to/add-sensors-and-actuators
+      - file: how-to/watr-processes
+      - file: how-to/draw-a-flowsheet
+      - file: how-to/validate-and-save
+      - file: how-to/query-loaded-models
       - file: how-to/explore-classes
       - file: how-to/explore-enums
-      - file: how-to/watr-processes
-      - file: how-to/generate-domain-api
       - file: how-to/inspect-port-contracts
       - file: how-to/diagnose-resolution
-      - file: how-to/draw-a-flowsheet
-      - file: how-to/validate-and-query
+      - file: how-to/generate-domain-api
   - caption: Explanation
     chapters:
-      - file: explanation/lifecycle
       - file: explanation/watr-vocabulary
+      - file: explanation/lifecycle
+      - file: explanation/connection-resolution
       - file: explanation/domain-extensions
   - caption: Reference
     chapters:
       - file: reference/runtime
+      - file: reference/extension-compiler
       - file: reference/ontologies
       - file: reference/catalog

@@ -63,5 +63,6 @@ preserving other RDF. The default is `infer=False`, since rule inference can
 add triples to the queried graph. New deferred S223 or WaTr connections and
 system scopes are not supported on a loaded model.
 
-The repository's `docs/architecture.md` describes the runtime and compiler
-modules; `docs/s223.md` covers the solver's constraint details.
+[How connections are resolved](connection-resolution.md) covers the solver's
+constraints. For the runtime and compiler internals, see `docs/architecture.md`
+in the repository.

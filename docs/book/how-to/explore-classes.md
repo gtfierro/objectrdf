@@ -84,4 +84,4 @@ print(registry.resolve("Process_ReverseOsmosis") is Process_ReverseOsmosis)
 
 For a searchable list with direct parents and class IRIs, use the
 [class catalog](../reference/catalog.md). To inspect instances of these
-classes in a loaded model, use the [query guide](validate-and-query.md).
+classes in a loaded model, use the [query guide](validate-and-save.md).

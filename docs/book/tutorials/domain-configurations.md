@@ -77,15 +77,14 @@ to serialize the resolved graph.
 
 ## 3. Load the same configuration from RDF
 
-The generated registry contains both domain and linked base types. Hydration
-restores named point references from their RDF facts and preserves values as
-written; it does not fill missing defaults.
+The graph imports the ASM2d ontology, so loading it selects the `asm2d`
+package, which also contains the WaTr base classes. Loading restores named
+point references from their RDF facts and keeps values as written; it does not
+fill in missing defaults.
 
 ```{code-cell} python3
-from objectrdf.watr import asm2d
-
 graph = resolved.graph()
-loaded = Model.from_graph(graph, registries=asm2d.REGISTRY)
+loaded = Model.from_graph(graph)
 assert loaded["first"].outlet.medium is first.outlet.medium
 assert set(loaded.graph()) == set(graph)
 print("loaded outlet:", loaded["first"].outlet)

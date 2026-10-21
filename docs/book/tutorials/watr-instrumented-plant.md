@@ -1,0 +1,244 @@
+---
+file_format: mystnb
+kernelspec:
+  name: python3
+mystnb:
+  execution_in_temp: true
+---
+
+# Tutorial: characterize and instrument a plant
+
+This tutorial extends [the treatment train](watr-treatment.md) into a small
+plant. Raw water is pumped through coagulation, flocculation, clarification,
+filtration, and chlorination into a clearwell, then out to distribution.
+Clarifier sludge is thickened, and the filter is backwashed from the clearwell.
+Along the way you describe the raw water with a property set, add sensors and
+actuators, and draw the plant.
+
+## 1. Describe the influent
+
+The raw-water quality belongs to the stream entering the plant. Write it as a
+property schema in Python: a frozen dataclass whose fields carry a QUDT kind,
+a unit, and the medium they describe.
+
+```{code-cell} python3
+from objectrdf import Model, PropertySchema, connect, flowsheet, quantity_field
+from objectrdf.qudt import QuantityAmount as Q, quantity_kinds, units
+from objectrdf.watr import GravityThickener, LevelSensor, Pump, Tank, enums
+from objectrdf.watr.drinking_water import (
+    ChlorinationStage,
+    ClarificationStage,
+    CoagulationStage,
+    FlocculationStage,
+    RapidSandFiltrationStage,
+)
+
+values = enums.values
+
+
+class InfluentQuality(PropertySchema):
+    """Raw surface-water quality at the plant intake."""
+
+    flow_rate: float | Q = quantity_field(
+        kind=quantity_kinds.VolumeFlowRate,
+        unit=units.M3_PER_DAY,
+        label="Raw-water flow",
+        of_medium=values.Water_Freshwater,
+        aspects=(values.Aspect_Nominal,),
+        minimum=0,
+    )
+    turbidity: float | Q = quantity_field(
+        kind=quantity_kinds.Turbidity,
+        unit=units.NTU,
+        label="Raw-water turbidity",
+        of_medium=values.Water_Freshwater,
+        aspects=(values.Aspect_Nominal,),
+        minimum=0,
+    )
+    organic_carbon: float | Q = quantity_field(
+        kind=quantity_kinds.MassConcentration,
+        unit=units.MilliGM_PER_L,
+        label="Total organic carbon",
+        of_medium=values.Water_Freshwater,
+        of_substance=values.Constituent_OrganicCarbon,
+        aspects=(values.Aspect_Nominal,),
+        minimum=0,
+    )
+    temperature: float | Q = quantity_field(
+        kind=quantity_kinds.Temperature,
+        unit=units.DEG_C,
+        label="Raw-water temperature",
+        of_medium=values.Water_Freshwater,
+        aspects=(values.Aspect_Nominal,),
+        default=12.0,
+    )
+
+
+raw = InfluentQuality(flow_rate=40_000, turbidity=Q(18.0, units.NTU), organic_carbon=3.5)
+raw
+```
+
+Bare numbers take the field's unit, and the temperature takes its default.
+Values are checked when the schema is created:
+
+```{code-cell} python3
+try:
+    InfluentQuality(flow_rate=40_000, turbidity=Q(18.0, units.KiloGM), organic_carbon=3.5)
+except ValueError as error:
+    print(error)
+```
+
+## 2. Create the equipment
+
+The treatment stages come from the drinking-water domain package; pumps, tanks,
+and the thickener are WaTr classes.
+
+```{code-cell} python3
+model = Model("urn:example:surface-water#")
+
+with model, model.system("plant"):
+    intake = Pump("raw-water-pump")
+    coagulation = CoagulationStage("coagulation")
+    flocculation = FlocculationStage("flocculation")
+    clarifier = ClarificationStage("clarifier")
+    sand_filter = RapidSandFiltrationStage("sand-filter")
+    chlorination = ChlorinationStage("chlorine-contact")
+    clearwell = Tank("clearwell", has_role=[values.Role_Storage])
+    high_service = Pump("high-service-pump")
+
+    sludge_pump = Pump("sludge-pump")
+    thickener = GravityThickener("thickener")
+    backwash_pump = Pump("backwash-pump")
+    backwash_tank = Tank("backwash-recovery", has_role=[values.Role_Backwash])
+```
+
+```{code-cell} python3
+list(thickener.has_process), list(thickener.has_treatment_objective)
+```
+
+## 3. Connect the main path
+
+Named points pick the stage outlets. Where an end is a whole pump or tank, the
+solver chooses its connection point.
+
+```{code-cell} python3
+raw_water = connect(intake, coagulation.inlet, name="raw-water")
+connect(coagulation.outlet, flocculation.inlet, name="coagulated-water")
+connect(flocculation.outlet, clarifier.inlet, name="flocculated-water")
+connect(clarifier.clarified_water, sand_filter.inlet, name="clarified-water")
+connect(sand_filter.filtered_water, chlorination.inlet, name="filtered-water")
+connect(chlorination.outlet, clearwell, name="disinfected-water")
+finished = connect(clearwell, high_service, name="finished-water")
+print(model.check().status)
+```
+
+## 4. Add residuals and backwash
+
+The sludge line needs its medium: the clarifier has both a water and a sludge
+outlet, and a WaTr pump accepts either.
+
+```{code-cell} python3
+connect(clarifier.sludge, sludge_pump, name="sludge-draw", medium=values.Fluid_Sludge)
+connect(sludge_pump, thickener, name="sludge-to-thickener", medium=values.Fluid_Sludge)
+connect(clearwell, backwash_pump, name="backwash-draw")
+connect(backwash_pump, sand_filter.backwash_supply, name="backwash-supply")
+connect(sand_filter.backwash_waste, backwash_tank, name="spent-backwash")
+print(model.check().status)
+```
+
+Mark where the plant meets the outside world. These ports connect to nothing
+in the model:
+
+```{code-cell} python3
+model["plant"].boundary(
+    intake.port("raw-water-suction", direction="in"),
+    high_service.port("distribution", direction="out"),
+    thickener.port("thickened-sludge", direction="out", medium=values.Fluid_Sludge),
+    thickener.port("thickener-supernatant", direction="out", medium=values.Fluid_Water),
+)
+```
+
+## 5. Characterize the influent
+
+Apply the property set to the raw-water connection:
+
+```{code-cell} python3
+influent = raw_water.apply_properties(raw)
+dict(influent)
+```
+
+```{code-cell} python3
+turbidity = influent["turbidity"]
+turbidity.has_value, turbidity.has_unit, turbidity.of_medium
+```
+
+## 6. Add instruments
+
+A sensor goes where it measures: a flow meter on the raw-water line, a
+turbidimeter on the filter outlet, a chlorine analyzer on the finished water,
+and a level sensor on the clearwell. A quantity that names a substance must
+also name the medium it is in.
+
+```{code-cell} python3
+raw_water.sensor(
+    "raw-water-flow", kind=quantity_kinds.VolumeFlowRate, unit=units.M3_PER_DAY
+)
+sand_filter.filtered_water.sensor(
+    "filter-effluent-turbidity", kind=quantity_kinds.Turbidity, unit=units.NTU
+)
+finished.sensor(
+    "chlorine-residual",
+    kind=quantity_kinds.MassConcentration,
+    unit=units.MilliGM_PER_L,
+    of_medium=values.Fluid_Water,
+    of_substance=values.Constituent_ChlorineResidual,
+)
+clearwell.sensor(
+    "clearwell-level", kind=quantity_kinds.Length, unit=units.M, sensor_class=LevelSensor
+)
+```
+
+The high-service pump gets a speed command and an on/off command:
+
+```{code-cell} python3
+high_service.actuator("high-service-speed", kind=quantity_kinds.Frequency, unit=units.HZ)
+high_service.actuator(
+    "high-service-start", kind=values.Binary_OnOff, value=values.OnOff_Off
+)
+[command.name for command in high_service.actuated_by_property]
+```
+
+## 7. Resolve, validate, and draw
+
+```{code-cell} python3
+resolved = model.compile()
+resolved.explain(finished)
+```
+
+The clearwell has two outlets, to the high-service pump and to the backwash
+pump. The explanation shows which point each connection uses.
+
+Every sensor now points at a concrete pipe or connection point:
+
+```{code-cell} python3
+from objectrdf.watr import Sensor
+
+for sensor in resolved:
+    if isinstance(sensor, Sensor):
+        location = sensor.has_observation_location
+        print(f"{sensor.name}: {type(sensor).__name__} at {location.name}")
+```
+
+```{code-cell} python3
+flowsheet(resolved, title="Surface-water treatment plant")
+```
+
+Save it to share:
+
+```{code-cell} python3
+model.save("plant.ttl")
+```
+
+Continue with [quantities and property sets](../how-to/attach-quantities.md),
+[sensors and actuators](../how-to/add-sensors-and-actuators.md), or
+[querying the saved model](../how-to/query-loaded-models.md).
