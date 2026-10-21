@@ -530,6 +530,14 @@ class ResolvedModel:
     def __len__(self) -> int:
         return len(self._model)
 
+    def find_all(self, entity_type: Any = None, /, **options: Any) -> list[Any]:
+        """``Model.find_all`` over the concrete snapshot entities."""
+        return self._model.find_all(entity_type, **options)
+
+    def find(self, entity_type: Any = None, /, **options: Any) -> Any:
+        """``Model.find`` over the concrete snapshot entities."""
+        return self._model.find(entity_type, **options)
+
     def connection(self, handle: ConnectionHandle) -> Any:
         """Return the concrete connection corresponding to ``handle``."""
         try:

@@ -56,6 +56,7 @@ from .resolution import (
     ResolutionReport,
     ResolvedModel,
 )
+from .traversal import Crossing, Exact, Hop, exact
 from .validation import Issue, ValidationReport
 from .terms import TermValue
 
@@ -72,11 +73,14 @@ __all__ = [
     "ContainmentError",
     "ContainmentRule",
     "ContainmentTable",
+    "Crossing",
     "Entity",
     "EnumOne",
     "EnumSet",
     "EnumValues",
     "EnumValue",
+    "Exact",
+    "Hop",
     "InstanceMetaView",
     "Issue",
     "Lit",
@@ -108,5 +112,6 @@ __all__ = [
     "ValueOne",
     "UnsatisfiableModelError",
     "current_model",
+    "exact",
     "provided",
 ]

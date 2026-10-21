@@ -15,6 +15,21 @@ Model
 
 .. autoattribute:: plumb.core.Entity.ports
 
+Traversal
+---------
+
+.. autoclass:: plumb.core.Entity
+   :no-index:
+   :members: contents, descendants, container, containers, find, find_all, find_parent, find_parents, walk, find_next, find_all_next, find_previous, find_all_previous
+
+.. autofunction:: plumb.exact
+
+.. autoclass:: plumb.Hop
+   :members:
+
+.. autoclass:: plumb.Crossing
+   :members:
+
 Property schemas
 ----------------
 

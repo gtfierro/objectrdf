@@ -8,8 +8,8 @@ Deterministic and documented, because generated names are user-facing API:
   (``hasPoint`` -> ``has_point``);
 - names colliding with reserved Entity API (``name``, ``type``, ``label``,
   ``comment``, ``meta``, ``model``, ``contains``, ``ports``,
-  ``describe_ports``) or Python keywords get a
-  trailing ``_``;
+  ``describe_ports``, the find and walk methods, ...) or Python keywords
+  get a trailing ``_``;
 - two terms mapping to the same Python name are disambiguated by suffixing
   ``_2``, ``_3``, ... (stable across runs); deprecated terms are suffixed
   before current ones, then sorted-IRI order decides.
@@ -37,6 +37,19 @@ RESERVED = frozenset(
         "quantity",
         "boundary",
         "port",
+        "contents",
+        "descendants",
+        "container",
+        "containers",
+        "find",
+        "find_all",
+        "find_parent",
+        "find_parents",
+        "walk",
+        "find_next",
+        "find_all_next",
+        "find_previous",
+        "find_all_previous",
     }
 ) | frozenset(keyword.kwlist)
 

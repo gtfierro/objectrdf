@@ -26,6 +26,8 @@ if TYPE_CHECKING:
 from .core import (
     AmbiguousModelError,
     ConnectionHandle,
+    Crossing,
+    Hop,
     PortHandle,
     PortContract,
     PortSlot,
@@ -47,6 +49,7 @@ from .core import (
     ValidationError,
     ValidationReport,
     current_model,
+    exact,
 )
 from .core.points import PointGroupRef, PointRef, endpoint_owner
 from .flowsheet import Flowsheet, flowsheet
@@ -121,6 +124,8 @@ def connect(
 __all__ = [
     "AmbiguousModelError",
     "ConnectionHandle",
+    "Crossing",
+    "Hop",
     "PortHandle",
     "PortContract",
     "PortSlot",
@@ -146,6 +151,7 @@ __all__ = [
     "ValidationError",
     "connect",
     "current_model",
+    "exact",
     "flowsheet",
     "__version__",
 ]

@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 from collections import Counter
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Iterable, Mapping
 from importlib import import_module
 from functools import lru_cache
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 from urllib.parse import unquote
 
 import rdflib
@@ -16,8 +16,8 @@ from rdflib import RDF, RDFS, OWL, Literal, URIRef
 from .entity import Entity
 from .errors import ModelingError
 from .meta import PropertySpec, Registry
-from .relations import RelSet
 from .terms import TermValue
+from .traversal import matches as matches
 
 if TYPE_CHECKING:
     from .model import Model
@@ -254,28 +254,6 @@ def _restore_named_points(
         entity._named_points[name] = (
             refs[0] if len(refs) == 1 else PointGroupRef(entity, name, refs)
         )
-
-
-def matches(entity: Entity, attributes: Mapping[str, object]) -> bool:
-    """Apply simple BeautifulSoup-style attribute filters to an entity."""
-    for name, expected in attributes.items():
-        if name == "iri":
-            actual: Any = entity.meta.instance_iri
-        else:
-            try:
-                actual = getattr(entity, name)
-            except AttributeError:
-                return False
-        if callable(expected):
-            predicate = cast(Callable[[Any], object], expected)
-            if not predicate(actual):
-                return False
-        elif isinstance(actual, (RelSet, list, tuple, set, frozenset)):
-            if expected not in actual:
-                return False
-        elif actual != expected:
-            return False
-    return True
 
 
 def _read_graph(source: rdflib.Graph | str | Path) -> rdflib.Graph:

@@ -22,16 +22,18 @@ from plumb.watr.drinking_water import (
     CoagulationStage,
     RapidSandFiltrationStage,
 )
-from plumb.watr import Pump
+from plumb.watr import Pump, Tank
 
 with Model("urn:example:plant#") as authored:
     intake = Pump("intake-pump", label="Intake pump")
     coagulation = CoagulationStage("coagulation")
     clarifier = ClarificationStage("clarifier")
     sand_filter = RapidSandFiltrationStage("sand-filter")
+    holding = Tank("sludge-holding")
 connect(intake, coagulation.inlet, name="raw-water")
 connect(coagulation.outlet, clarifier.inlet, name="coagulated-water")
 connect(clarifier.clarified_water, sand_filter.inlet, name="clarified-water")
+connect(clarifier.sludge, holding, name="sludge-line")
 authored.save("plant.ttl")
 ```
 
@@ -70,6 +72,22 @@ from plumb.watr import Pipe, enums
 model.find(Pump, label="Intake pump"), model.find_all(Pipe, medium=enums.values.Fluid_Water)
 ```
 
+A class or enum value also matches anything narrower, so `Fluid_Water`
+matches seawater and hot water too. Wrap a value in `exact()` to match only
+that value. Lists mean any of, compiled regexes search strings, and
+`True`/`False` test whether an attribute has a value:
+
+```{code-cell} python3
+import re
+from plumb import exact
+
+(
+    len(model.find_all(Pipe, medium=enums.values.Fluid_Water)),
+    model.find_all(Pipe, medium=exact(enums.values.Fluid_Sludge)),
+    model.find_all(Pump, label=re.compile("^Intake")),
+)
+```
+
 `find()` returns the first match or `None`. Item lookup takes a local name or
 an IRI:
 
@@ -94,7 +112,57 @@ for point in pipe.connects_at:
     print(point.owner.name, point.label)
 ```
 
-Or query the RDF with SPARQL:
+## Search inside and above an object
+
+Containment comes from the package's containment rules, whichever side
+stores the edge. An entity's `find_all()` searches what it contains:
+
+```python
+ahu.contents                          # direct children
+ahu.find_all(Damper)                  # anything ahu contains, at any depth
+ahu.find_all(Equipment, recursive=False)
+damper.container                      # the one direct container, or None
+damper.find_parent(PhysicalSpace)     # nearest matching container
+```
+
+## Follow the flow
+
+`find_next()` and `find_all_next()` follow connections downstream,
+nearest first; `find_previous()` and `find_all_previous()` go upstream.
+Pipes and connection points are stepped over:
+
+```{code-cell} python3
+model["intake-pump"].find_all_next()
+```
+
+```{code-cell} python3
+model["sand-filter"].find_previous(Pump)
+```
+
+Keyword filters select the results. `through=` restricts the path instead:
+here only pipes carrying water, or anything narrower, are followed, so the
+sludge branch is left out:
+
+```{code-cell} python3
+model["intake-pump"].find_all_next(through={"medium": enums.values.Fluid_Water})
+```
+
+`walk()` yields each step with its distance and the path taken:
+
+```{code-cell} python3
+for hop in model["intake-pump"].walk():
+    print(hop.depth, hop.entity.name, [step.connection.name for step in hop.via])
+```
+
+Equipment is a single node unless `descend=True`, which steps into
+containers through their `maps_to` points. `include_connections=True` also
+returns pipes. Bidirectional points are crossed in either direction. A model
+authored with `connect()` walks only after resolution:
+`model.resolve()["intake-pump"].find_all_next()`.
+
+## Query with SPARQL
+
+`model.graph()` returns the RDF for SPARQL queries:
 
 ```{code-cell} python3
 rows = model.graph().query(
@@ -104,7 +172,7 @@ for row in rows:
     print(row.pump)
 ```
 
-`model.graph()` returns a copy; updating it does not change the model.
+The graph is a copy; updating it does not change the model.
 
 ## Edit and save
 

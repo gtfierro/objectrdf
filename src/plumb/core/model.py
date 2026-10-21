@@ -35,11 +35,18 @@ if TYPE_CHECKING:
         ResolutionReport,
         ResolvedModel,
     )
+    from .traversal import Exact
     from .validation import ValidationReport
 
 #: The ambient model set by ``with Model(...)`` blocks.
 _current: ContextVar[Model | None] = ContextVar("plumb_model", default=None)
 _EntityT = TypeVar("_EntityT", bound="Entity")
+
+#: The searched-type argument of the find methods: a class (subclasses
+#: included), a tuple of classes, ``exact(cls)``, or ``None`` for any entity.
+type EntityTypeFilter[T: Entity] = (
+    type[T] | tuple[type[Entity] | Exact[type[Entity]], ...] | Exact[type[T]] | None
+)
 
 
 def current_model() -> Model | None:
@@ -87,6 +94,8 @@ class Model:
         self._next_intent_id = 1
         self._revision = 0
         self._resolved_cache: ResolvedModel | None = None
+        #: Containment and topology indexes (``plumb.core.traversal``).
+        self._traversal_indexes: dict[str, Any] = {}
         self._component_cache: dict[tuple[Any, ...], Any] = {}
         self._frozen = False
         self._resolving = False
@@ -194,6 +203,7 @@ class Model:
         self._assert_mutable()
         self._revision += 1
         self._resolved_cache = None
+        self._traversal_indexes = {}
         if self._loaded_graph is not None:
             self._sync_loaded_graph(*entities)
 
@@ -441,41 +451,42 @@ class Model:
 
     def find_all(
         self,
-        entity_type: type[_EntityT],
+        entity_type: EntityTypeFilter[_EntityT] = None,
         /,
+        *,
+        limit: int | None = None,
+        attrs: Mapping[str, object] | None = None,
         **attributes: object,
     ) -> list[_EntityT]:
         """Return objects of ``entity_type`` matching the given attributes.
 
-        Subclasses are included. For multi-valued relationships an attribute
-        filter means membership, so ``find_all(AHU, feeds=vav)`` works as
-        expected.
+        Subclasses are included; pass a tuple for several types or
+        ``exact(cls)`` for one class only. Filters match by equality, and a
+        class or enum value also matches anything narrower; see
+        ``docs/traversal.md`` for lists, regexes, presence tests, and
+        callables. On multi-valued relationships a filter means membership,
+        so ``find_all(AHU, feeds=vav)`` works as expected. ``attrs`` passes
+        filters whose names collide with these keyword options.
         """
-        from .query import matches
+        from .traversal import merge_filters, select
 
-        return [
-            entity
-            for entity in self.entities
-            if isinstance(entity, entity_type) and matches(entity, attributes)
-        ]
+        return select(
+            self.entities, entity_type, merge_filters(attributes, attrs), limit
+        )
 
     def find(
         self,
-        entity_type: type[_EntityT],
+        entity_type: EntityTypeFilter[_EntityT] = None,
         /,
+        *,
+        attrs: Mapping[str, object] | None = None,
         **attributes: object,
     ) -> _EntityT | None:
         """Return the first matching object, or ``None``."""
-        from .query import matches
+        from .traversal import merge_filters, select
 
-        return next(
-            (
-                entity
-                for entity in self.entities
-                if isinstance(entity, entity_type) and matches(entity, attributes)
-            ),
-            None,
-        )
+        found = select(self.entities, entity_type, merge_filters(attributes, attrs), 1)
+        return found[0] if found else None
 
     # -- RDF output -------------------------------------------------------
 

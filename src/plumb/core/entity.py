@@ -8,7 +8,17 @@ the model's serializer. User code should never need an import from ``rdflib``.
 from __future__ import annotations
 
 import builtins
-from typing import TYPE_CHECKING, Any, ClassVar, Iterator, Literal, Self, overload
+from collections.abc import Callable, Mapping
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Iterator,
+    Literal,
+    Self,
+    TypeVar,
+    overload,
+)
 
 from . import containment as _containment
 from .errors import ModelingError, RangeError
@@ -39,6 +49,13 @@ if TYPE_CHECKING:
     from .property_schema import PropertySchema, PropertySet, QuantityAmount
     from .points import PointRef
     from .resolution import PortHandle
+    from .model import EntityTypeFilter
+    from .traversal import Crossing, Hop
+
+_EntityT = TypeVar("_EntityT", bound="Entity")
+
+#: The ``through=`` argument of the walk methods.
+type Through = Mapping[str, object] | Callable[[Crossing], object] | None
 
 
 class ClassMetaView:
@@ -240,9 +257,9 @@ class Entity:
     auto-generated per model as ``<class>_<n>`` (``vav_1``, ``vav_2``, ...).
 
     Reserved attribute names (``name``, ``type``, ``label``, ``comment``,
-    ``meta``, ``model``, ``ports``, ``describe_ports``): ontology properties
-    that would collide are renamed
-    by the generator's collision policy.
+    ``meta``, ``model``, ``ports``, ``describe_ports``, the find and walk
+    methods, ...; see ``plumb.gen.naming.RESERVED``): ontology properties
+    that would collide are renamed by the generator's collision policy.
     """
 
     #: Ontology provenance; set in the class body by generated code.
@@ -449,6 +466,246 @@ class Entity:
         for child in children:
             table.apply(self, child, via=via)
         return self
+
+    @property
+    def contents(self) -> tuple[Entity, ...]:
+        """Entities this one directly contains, in model order."""
+        from .traversal import contents
+
+        return contents(self)
+
+    @property
+    def descendants(self) -> Iterator[Entity]:
+        """Everything this entity contains, depth-first, each entity once."""
+        from .traversal import descendants
+
+        return descendants(self)
+
+    @property
+    def container(self) -> Entity | None:
+        """The direct container; raises ``ModelingError`` if there are several."""
+        from .traversal import container
+
+        return container(self)
+
+    @property
+    def containers(self) -> Iterator[Entity]:
+        """Every container of this entity, nearest first."""
+        from .traversal import containers
+
+        return containers(self)
+
+    def find_all(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        recursive: bool = True,
+        limit: int | None = None,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> list[_EntityT]:
+        """Contained entities matching a type and filters, as ``Model.find_all``.
+
+        Searches everything this entity contains, or only its direct
+        contents with ``recursive=False``.
+        """
+        from .traversal import contents, descendants, merge_filters, select
+
+        candidates = descendants(self) if recursive else contents(self)
+        return select(candidates, entity_type, merge_filters(attributes, attrs), limit)
+
+    def find(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        recursive: bool = True,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> _EntityT | None:
+        """The first contained entity matching a type and filters, or ``None``."""
+        found = self.find_all(
+            entity_type, recursive=recursive, limit=1, attrs=attrs, **attributes
+        )
+        return found[0] if found else None
+
+    def find_parents(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        limit: int | None = None,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> list[_EntityT]:
+        """Containers matching a type and filters, nearest first."""
+        from .traversal import containers, merge_filters, select
+
+        filters = merge_filters(attributes, attrs)
+        return select(containers(self), entity_type, filters, limit)
+
+    def find_parent(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> _EntityT | None:
+        """The nearest container matching a type and filters, or ``None``."""
+        found = self.find_parents(entity_type, limit=1, attrs=attrs, **attributes)
+        return found[0] if found else None
+
+    # -- topology ---------------------------------------------------------
+
+    def walk(
+        self,
+        direction: Literal["downstream", "upstream"] = "downstream",
+        *,
+        through: Through = None,
+        descend: bool = False,
+        include_connections: bool = False,
+        max_hops: int | None = None,
+    ) -> Iterator[Hop]:
+        """Walk the connection graph breadth-first, nearest entities first.
+
+        ``through`` prunes the path: a mapping of filters checked against
+        each pipe or connection crossed, or a callable given each
+        :class:`~plumb.core.traversal.Crossing`. ``descend`` steps into
+        containers through ``maps_to``. Pipes and connections are yielded
+        only with ``include_connections``. See ``docs/traversal.md``.
+        """
+        from .traversal import walk
+
+        return walk(
+            self,
+            direction,
+            through=through,
+            descend=descend,
+            include_connections=include_connections,
+            max_hops=max_hops,
+        )
+
+    def find_all_next(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        through: Through = None,
+        descend: bool = False,
+        include_connections: bool = False,
+        max_hops: int | None = None,
+        limit: int | None = None,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> list[_EntityT]:
+        """Downstream entities matching a type and filters, nearest first.
+
+        Filters apply to the results; ``through`` applies to the path.
+        """
+        return self._find_along(
+            "downstream",
+            entity_type,
+            attributes,
+            attrs,
+            limit=limit,
+            through=through,
+            descend=descend,
+            include_connections=include_connections,
+            max_hops=max_hops,
+        )
+
+    def find_next(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        through: Through = None,
+        descend: bool = False,
+        include_connections: bool = False,
+        max_hops: int | None = None,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> _EntityT | None:
+        """The nearest downstream entity matching a type and filters."""
+        found = self.find_all_next(
+            entity_type,
+            through=through,
+            descend=descend,
+            include_connections=include_connections,
+            max_hops=max_hops,
+            limit=1,
+            attrs=attrs,
+            **attributes,
+        )
+        return found[0] if found else None
+
+    def find_all_previous(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        through: Through = None,
+        descend: bool = False,
+        include_connections: bool = False,
+        max_hops: int | None = None,
+        limit: int | None = None,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> list[_EntityT]:
+        """Upstream entities matching a type and filters, nearest first."""
+        return self._find_along(
+            "upstream",
+            entity_type,
+            attributes,
+            attrs,
+            limit=limit,
+            through=through,
+            descend=descend,
+            include_connections=include_connections,
+            max_hops=max_hops,
+        )
+
+    def find_previous(
+        self,
+        entity_type: EntityTypeFilter[_EntityT] = None,
+        /,
+        *,
+        through: Through = None,
+        descend: bool = False,
+        include_connections: bool = False,
+        max_hops: int | None = None,
+        attrs: dict[str, object] | None = None,
+        **attributes: object,
+    ) -> _EntityT | None:
+        """The nearest upstream entity matching a type and filters."""
+        found = self.find_all_previous(
+            entity_type,
+            through=through,
+            descend=descend,
+            include_connections=include_connections,
+            max_hops=max_hops,
+            limit=1,
+            attrs=attrs,
+            **attributes,
+        )
+        return found[0] if found else None
+
+    def _find_along(
+        self,
+        direction: Literal["downstream", "upstream"],
+        entity_type: object,
+        attributes: dict[str, object],
+        attrs: dict[str, object] | None,
+        *,
+        limit: int | None,
+        **options: Any,
+    ) -> list[Any]:
+        from .traversal import find_along, merge_filters
+
+        filters = merge_filters(attributes, attrs)
+        return find_along(self, direction, entity_type, filters, limit=limit, **options)
 
     def quantity(
         self,

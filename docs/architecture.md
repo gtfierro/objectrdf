@@ -47,9 +47,14 @@ rdflib (serialization) · shifty (SHACL) · ontoenv (imports resolution)
   snapshots; output graphs declare an `owl:Ontology` and import the generated
   packages and compiled vocabularies they reference.
 - **`query.py`** — optionally runs shifty inference, chooses the most-specific
-  generated class for each typed RDF resource, hydrates generated attributes,
-  and implements the `find`/`find_all` filter semantics. Generated attribute
-  changes replace their managed triples while unmodeled RDF is preserved.
+  generated class for each typed RDF resource, and hydrates generated
+  attributes. Generated attribute changes replace their managed triples while
+  unmodeled RDF is preserved.
+- **`traversal.py`** — the `find`/`find_all` filter semantics (narrowing
+  classes and enum values, `exact()`), containment navigation over the
+  registries' containment tables, and breadth-first topology walks over the
+  223 connection vocabulary. Its indexes are cached on the model and dropped
+  by every edit. See [traversal.md](traversal.md).
 - **`resolution.py`** — stable authored `ConnectionHandle`s, staged generated
   property collections, and the `ResolutionReport`/`ResolvedModel` public API.
 - **`validation.py`** — runs shifty, then translates the standard SHACL

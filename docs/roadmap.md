@@ -12,6 +12,9 @@
   QUDT quantity values, and concise quantity authoring.
 - A nominal stream-state authoring view using existing S223/WaTr semantics.
 - Per-connection solver explanations with authored and inferred evidence.
+- BeautifulSoup-style traversal: narrowing filters with `exact()`,
+  containment search, and topology walks with `through=` path filters
+  ([traversal.md](traversal.md)).
 
 ## Deferred deliberately
 
