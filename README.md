@@ -1,6 +1,7 @@
 # plumb
 
-[![CI](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml/badge.svg)](https://github.com/gtfierro/objectrdf/actions/workflows/ci.yml)
+[![CI](https://github.com/gtfierro/plumb/actions/workflows/ci.yml/badge.svg)](https://github.com/gtfierro/plumb/actions/workflows/ci.yml)
+[![Docs](https://github.com/gtfierro/plumb/actions/workflows/docs.yml/badge.svg)](https://gtfierro.github.io/plumb/)
 
 Describe water and wastewater treatment plants as plain, typed Python and
 get RDF that conforms to [WATR](https://github.com/DataDrivenCPS/water-ontology)
@@ -56,8 +57,9 @@ uv run python examples/brick/quickstart/brick_quickstart.py
 Each example prints a short summary and writes its generated Turtle file next
 to the example script. See [examples/](examples/) for more scenarios.
 
-- Documentation: [the learning book](docs/book/index.md) (tutorials, how-to
-  guides, explanations, and API reference; build it with `make docs`)
+- Documentation: [the learning book](https://gtfierro.github.io/plumb/)
+  (tutorials, how-to guides, explanations, and API reference; build it locally
+  with `make docs`)
 - Start with [modelling a treatment train](docs/book/tutorials/watr-treatment.md)
   and [characterizing and instrumenting a plant](docs/book/tutorials/watr-instrumented-plant.md)
 - Contributor documentation: [docs/index.md](docs/index.md)

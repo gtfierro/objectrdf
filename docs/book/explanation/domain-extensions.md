@@ -45,7 +45,7 @@ them. A Python schema exists only in its program.
 ## A worked example: drinking water
 
 `plumb.watr.drinking_water` is compiled from
-[`ontology/drinking-water.ttl`](https://github.com/gtfierro/objectrdf/blob/main/ontology/drinking-water.ttl),
+[`ontology/drinking-water.ttl`](https://github.com/gtfierro/plumb/blob/main/ontology/drinking-water.ttl),
 a teaching configuration of conventional surface-water treatment. Each stage
 fixes its process, objective, and connection points:
 

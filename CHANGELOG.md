@@ -67,5 +67,5 @@ First public release.
   media its class's shapes mention, so a `Fan` can have a declared
   electricity inlet. Medium-domain conflicts now appear in unsatisfiable cores.
 
-[Unreleased]: https://github.com/gtfierro/objectrdf/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/gtfierro/objectrdf/releases/tag/v0.1.0
+[Unreleased]: https://github.com/gtfierro/plumb/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/gtfierro/plumb/releases/tag/v0.1.0
