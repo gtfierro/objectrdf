@@ -80,6 +80,36 @@ toc.of_medium, toc.of_substance
 The property moves to the concrete pipe when the model resolves. Ports and
 named points accept quantities the same way.
 
+## The medium of a property
+
+223P requires a property's `of_medium` to be compatible with the medium of
+the pipe, point, or equipment it is on. Resolution uses that:
+
+- Without `of_medium`, the property takes its host's resolved medium.
+- With `of_medium`, the solver keeps the host's medium compatible, and
+  `check()` reports a conflict.
+
+Compatible means one medium is the other or a descendant of it, or both are
+mixtures sharing a constituent. `Water_Freshwater` above fits the raw-water
+pipe's `Fluid_Water`. `Fluid_Air` would not:
+
+```{code-cell} python3
+with Model("urn:example:conflict#") as other:
+    stage = CoagulationStage("coagulation")
+    sump = Tank("sump")
+drain = connect(stage.outlet, sump, name="drain")
+drain.quantity(
+    "drain-temperature", 15, unit=units.DEG_C, kind=quantity_kinds.Temperature,
+    of_medium=values.Fluid_Air,
+)
+report = other.check()
+print(report.status)
+print(report.issues[0].labels[-1])
+```
+
+Water and sludge share H₂O, so a water property on a sludge line is
+compatible.
+
 ## Define a property set in Python
 
 Subclass `PropertySchema` and declare each field with `quantity_field()`:

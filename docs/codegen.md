@@ -27,6 +27,14 @@ medium or ancestor to the resource to materialize, such as `Fluid-Water` →
 `handle.medium`, or authored ConnectionPoints as described in
 [Connect equipment](book/how-to/connect-equipment.md).
 
+One SHACL-SPARQL constraint is translated by hand: 223P's "Incompatible
+Medium" rule, which requires a property's `ofMedium` to be compatible with its
+host's `hasMedium`. The generator emits each medium's constituents
+(`EnumValue.constituents`), `EnumValue.compatible_with()` implements the
+rule's four cases, and the solver constrains each pipe's and point's medium
+by the properties attached to it. Resolution then fills in `ofMedium` where
+it is missing.
+
 **Final solver TODO:** implement a bounded SHACL-SPARQL-to-Z3 translator for
 basic graph patterns, equality/inequality, `EXISTS`/`NOT EXISTS`, `UNION`,
 subclass paths, and constituent-medium compatibility. Unsupported queries

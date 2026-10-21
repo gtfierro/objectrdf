@@ -1923,6 +1923,20 @@ _E_Synchronization_Upsampling = _EnumValue('https://watermetadata.org/ontology/w
 """Increase the sampling frequency of data to a higher rate"""
 _E_EnumerationKind_Runtime = _EnumValue('https://watermetadata.org/ontology/watr#EnumerationKind-Runtime', label='Runtime', definition='An enumeration kind describing the accumulated operating time of a piece of equipment.', parent=_E_EnumerationKind)
 """An enumeration kind describing the accumulated operating time of a piece of equipment."""
+_E_Fluid_Water.constituents = (_E_Constituent_H2O,)
+_E_Water_ChilledWater.constituents = (_E_Constituent_H2O,)
+_E_Water_GlycolSolution.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
+_E_GlycolSolution_15Percent.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
+_E_GlycolSolution_30Percent.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
+_E_Water_HotWater.constituents = (_E_Constituent_H2O,)
+_E_Water_Steam.constituents = (_E_Constituent_H2O,)
+_E_Water_Brackish.constituents = (_E_Constituent_H2O, _E_Salt_NaCl,)
+_E_Water_Brine.constituents = (_E_Constituent_H2O, _E_Salt_NaCl,)
+_E_Water_Freshwater.constituents = (_E_Constituent_H2O,)
+_E_Water_Seawater.constituents = (_E_Constituent_H2O, _E_Salt_NaCl,)
+_E_Fluid_Sludge.constituents = (_E_Constituent_H2O, _E_Constituent_InorganicSolids, _E_Constituent_OrganicSolids,)
+_E_Sludge_MixedLiquor.constituents = (_E_Constituent_H2O, _E_Constituent_SuspendedSolids,)
+_E_PowerAndSignal_PoE.constituents = (_E_DC_PoE, _E_Signal_WiredEthernet,)
 EnumerationKind = _E_EnumerationKind
 Aspect = _E_EnumerationKind_Aspect
 Binary = _E_EnumerationKind_Binary

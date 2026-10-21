@@ -172,8 +172,8 @@ turbidity.has_value, turbidity.has_unit, turbidity.of_medium
 
 ## 6. Add instruments
 
-Call `.sensor()` on what is measured. A quantity that names a substance,
-such as chlorine, must also name its medium.
+Call `.sensor()` on what is measured. Each observed property takes the
+medium of the pipe or point it is on.
 
 ```{code-cell} python3
 raw_water.sensor(
@@ -186,7 +186,6 @@ finished.sensor(
     "chlorine-residual",
     kind=quantity_kinds.MassConcentration,
     unit=units.MilliGM_PER_L,
-    of_medium=values.Fluid_Water,
     of_substance=values.Constituent_ChlorineResidual,
 )
 clearwell.sensor(

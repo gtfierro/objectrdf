@@ -23,7 +23,15 @@ from typing import TextIO
 class EnumValue:
     """One enumeration member (a punned class/individual in the ontology)."""
 
-    __slots__ = ("iri", "label", "definition", "parent", "parents", "_children")
+    __slots__ = (
+        "iri",
+        "label",
+        "definition",
+        "parent",
+        "parents",
+        "constituents",
+        "_children",
+    )
 
     def __init__(
         self,
@@ -38,6 +46,8 @@ class EnumValue:
         self.definition = definition
         self.parent = parent
         self.parents: tuple[EnumValue, ...] = (parent,) if parent is not None else ()
+        # Constituents of a mixture medium (``s223:composedOf/ofConstituent``).
+        self.constituents: tuple[EnumValue, ...] = ()
         self._children: dict[str, EnumValue] = {}
         if parent is not None:
             parent._children[_segment(iri)] = self
@@ -61,6 +71,31 @@ class EnumValue:
             seen.add(node.iri)
             frontier.extend(node.parents)
         return False
+
+    def compatible_with(self, other: EnumValue) -> bool:
+        """True if S223 deems the two media compatible.
+
+        Pure media are compatible when one is the other or its descendant. A
+        mixture is compatible with a pure medium when one of its constituents
+        is, and with another mixture when they share a constituent. These are
+        the cases of 223P's "Incompatible Medium" constraints, which compare
+        an entity's ``hasMedium`` with the ``ofMedium`` of its properties.
+        """
+
+        def related(left: EnumValue, right: EnumValue) -> bool:
+            return left.is_a(right) or right.is_a(left)
+
+        if not self.constituents and not other.constituents:
+            return related(self, other)
+        if not self.constituents:
+            return any(related(self, part) for part in other.constituents)
+        if not other.constituents:
+            return any(related(part, other) for part in self.constituents)
+        return any(
+            related(left, right)
+            for left in self.constituents
+            for right in other.constituents
+        )
 
     @property
     def children(self) -> tuple[EnumValue, ...]:
@@ -180,9 +215,11 @@ class EnumValue:
                 "definition",
                 "parent",
                 "parents",
+                "constituents",
                 "children",
                 "descendants",
                 "is_a",
+                "compatible_with",
                 "tree",
                 "tree_text",
                 *self._children,

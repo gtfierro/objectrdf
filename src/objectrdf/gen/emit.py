@@ -425,6 +425,10 @@ def emit_enums_module(ir: SchemaIR) -> str:
         for parent in member.parents:
             if parent != member.parent:
                 lines.append(f"_E_{member.name}._add_parent(_E_{parent})")
+    for member in ir.enums:
+        if member.constituents:
+            parts = ", ".join(f"_E_{name}" for name in member.constituents)
+            lines.append(f"_E_{member.name}.constituents = ({parts},)")
 
     roots = [member for member in ir.enums if member.parent is None]
     public: list[str] = []

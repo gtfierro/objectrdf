@@ -60,6 +60,7 @@
     rdfs:label "Pressure" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.01325e+05 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:Pressure ;
     qudt:hasUnit unit:PA .
 
@@ -164,6 +165,7 @@
     rdfs:label "Fraction" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 6e-01 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
     qudt:hasUnit unit:UNITLESS ;
     asm2d:hasSplitBasis asm2d:OverallFlow .
@@ -172,6 +174,7 @@
     rdfs:label "Fraction" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 9.7955e-01 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:DimensionlessRatio ;
     qudt:hasUnit unit:UNITLESS ;
     asm2d:hasSplitBasis asm2d:OverallFlow .
@@ -180,6 +183,7 @@
     rdfs:label "Flow rate" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.8446e+04 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:VolumeFlowRate ;
     qudt:hasUnit unit:M3-PER-DAY .
 
@@ -187,6 +191,7 @@
     rdfs:label "Pressure" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.01325e+05 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:Pressure ;
     qudt:hasUnit unit:PA .
 
@@ -274,6 +279,7 @@
     rdfs:label "Temperature" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 2.9815e+02 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:Temperature ;
     qudt:hasUnit unit:K .
 

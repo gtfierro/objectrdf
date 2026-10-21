@@ -1603,6 +1603,14 @@ _E_ThermodynamicPhase_Solid = _EnumValue('http://data.ashrae.org/standard223#The
 """`ThermodynamicPhase-Solid`"""
 _E_ThermodynamicPhase_Vapor = _EnumValue('http://data.ashrae.org/standard223#ThermodynamicPhase-Vapor', label='Vapor phase', definition='`ThermodynamicPhase-Vapor`', parent=_E_EnumerationKind_ThermodynamicPhase)
 """`ThermodynamicPhase-Vapor`"""
+_E_Fluid_Water.constituents = (_E_Constituent_H2O,)
+_E_Water_ChilledWater.constituents = (_E_Constituent_H2O,)
+_E_Water_GlycolSolution.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
+_E_GlycolSolution_15Percent.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
+_E_GlycolSolution_30Percent.constituents = (_E_Constituent_Glycol, _E_Constituent_H2O,)
+_E_Water_HotWater.constituents = (_E_Constituent_H2O,)
+_E_Water_Steam.constituents = (_E_Constituent_H2O,)
+_E_PowerAndSignal_PoE.constituents = (_E_DC_PoE, _E_Signal_WiredEthernet,)
 EnumerationKind = _E_EnumerationKind
 Aspect = _E_EnumerationKind_Aspect
 Binary = _E_EnumerationKind_Binary

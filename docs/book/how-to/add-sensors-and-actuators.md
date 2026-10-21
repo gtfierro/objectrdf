@@ -38,7 +38,6 @@ turbidimeter = sand_filter.filtered_water.sensor(
     "filter-effluent-turbidity",
     kind=quantity_kinds.Turbidity,
     unit=units.NTU,
-    of_medium=values.Fluid_Water,
 )
 turbidimeter, turbidimeter.observes
 ```
@@ -58,7 +57,6 @@ analyzer = finished.sensor(
     "chlorine-residual",
     kind=quantity_kinds.MassConcentration,
     unit=units.MilliGM_PER_L,
-    of_medium=values.Fluid_Water,
     of_substance=values.Constituent_ChlorineResidual,
 )
 analyzer.has_observation_location
@@ -114,6 +112,13 @@ kind gives an `EnumeratedActuatableProperty`; `value=` must be a member.
 resolved = model.compile()
 analyzer = resolved["chlorine-residual"]
 analyzer.has_observation_location is resolved.connection(finished)
+```
+
+The observed property takes the pipe's medium; see
+[Attach quantities](attach-quantities.md):
+
+```{code-cell} python3
+analyzer.observes.of_medium
 ```
 
 ```{code-cell} python3

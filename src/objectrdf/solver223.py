@@ -150,6 +150,7 @@ def _component_key(
                     type(point).__name__,
                     medium.iri if medium is not None else None,
                     bound.name if bound is not None else None,
+                    _property_media_key(getattr(point, "has_property", ())),
                 )
             )
         for port in endpoint.meta.model._port_intents:
@@ -160,6 +161,7 @@ def _component_key(
                         f"deferred-{port.direction}",
                         port.medium.iri if port.medium is not None else None,
                         port.paired_with.name if port.paired_with is not None else None,
+                        _property_media_key(port._properties),
                     )
                 )
         endpoint_facts.append(
@@ -174,6 +176,7 @@ def _component_key(
             handle.connection_class.__name__
             if handle.connection_class is not None
             else None,
+            _property_media_key(handle._assignments.get("has_property", ())),
         )
         for handle in sorted(handles, key=lambda item: item.identifier)
     )
@@ -382,6 +385,25 @@ def _solve_component(
         if uses:
             solver.add(z3.PbLe([(use, 1) for use in uses], 0 if bound else 1))
 
+    for host, variable, active, properties in _property_hosts(
+        points, handles, intent_mediums
+    ):
+        for prop in properties:
+            stated = _of_medium(prop)
+            if stated is None:
+                continue
+            compatible = [
+                enum_ids[value.iri]
+                for value in enum_values
+                if value.compatible_with(stated)
+            ]
+            tracked(
+                z3.Implies(active, z3.Or([variable == item for item in compatible])),
+                prop.name,
+                f"ofMedium {_local(stated.iri)} must be compatible with the "
+                f"medium of {host}",
+            )
+
     if solver.check() == z3.unsat:
         core = tuple(str(item) for item in solver.unsat_core())
         messages = tuple(labels.get(item, item) for item in core)
@@ -450,6 +472,64 @@ def _solve_component(
             connector,
         ),
     )
+
+
+def _property_hosts(
+    points: list[_Point],
+    handles: list[ConnectionHandle],
+    intent_mediums: dict[int, z3.ArithRef],
+) -> Iterable[tuple[str, z3.ArithRef, z3.BoolRef, Iterable[Entity]]]:
+    """Each solved medium with the properties attached to its host.
+
+    223P requires a property's ``ofMedium`` to be compatible with the
+    ``hasMedium`` of the entity it describes, so these properties constrain
+    the medium the solver chooses.
+    """
+    for handle in handles:
+        yield (
+            handle.name,
+            intent_mediums[handle.identifier],
+            z3.BoolVal(True),
+            handle._assignments.get("has_property", ()),
+        )
+    for point in points:
+        if point.authored is not None:
+            properties: Iterable[Entity] = point.authored._properties
+        elif point.existing is not None:
+            properties = getattr(point.existing, "has_property", ())
+        else:
+            continue
+        yield point.name, point.medium, point.active, properties
+
+
+def _of_medium(prop: Entity) -> EnumValue | None:
+    return getattr(prop, "of_medium") if _has_of_medium(prop) else None
+
+
+def _has_of_medium(prop: Entity) -> bool:
+    return any("of_medium" in cls.__dict__ for cls in type(prop).__mro__)
+
+
+def _property_media_key(properties: Iterable[Entity]) -> tuple[Any, ...]:
+    return tuple(
+        sorted(
+            (prop.name, medium.iri if (medium := _of_medium(prop)) else None)
+            for prop in properties
+        )
+    )
+
+
+def _fill_property_media(snapshot: Model) -> None:
+    """Give each property without ``ofMedium`` the medium of its host."""
+    from .core import EnumValue
+
+    for entity in snapshot.entities:
+        medium = getattr(entity, "medium", None)
+        if not isinstance(medium, EnumValue):
+            continue
+        for prop in getattr(entity, "has_property", ()):
+            if _has_of_medium(prop) and getattr(prop, "of_medium") is None:
+                setattr(prop, "of_medium", medium)
 
 
 def _relevant_media(
@@ -997,6 +1077,7 @@ def _materialize(model: Model, plans: list[_Plan]) -> ResolvedModel:
                 point = point_entities[(id(boundary.owner), boundary.name)]
                 getattr(system, "has_boundary_connection_point").add(point)
     _place_deferred_links(snapshot, authored_points, connection_entities)
+    _fill_property_media(snapshot)
     snapshot._resolving = False
     from .core.query import _restore_named_points
 

@@ -46,6 +46,8 @@ to:
   one connection;
 - each point's medium is within its allowed domain, and a connection's
   medium matches both of its points;
+- a property's `of_medium` is compatible with the medium of the pipe or
+  point it is on (223P's "Incompatible Medium" rule);
 - anything you stated: `medium=`, a named point or port, `connection=`, or a
   paired port.
 
@@ -55,6 +57,11 @@ domain.
 Among valid answers, Z3 prefers fewer medium changes: two ports on one device
 prefer the same medium when their domains overlap. This is a preference, not
 a claim that equipment preserves its medium.
+
+A property without `of_medium` takes the resolved medium of its host. A
+property with one only has to be compatible: the same medium, an ancestor or
+descendant, or a mixture sharing a constituent. Water and sludge share H₂O,
+so this rarely separates them.
 
 The medium picks the connection class: water, gas, and oil give a `Pipe`,
 and air a `Duct`, unless `connection=` says otherwise.

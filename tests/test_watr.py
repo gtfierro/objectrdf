@@ -259,6 +259,84 @@ def test_sensor_helper_picks_class_from_quantity_kind(m):
     )
 
 
+def test_media_compatibility_follows_s223_constituent_rules():
+    values = enums.values
+    # Pure media: one must be the other or its descendant.
+    assert values.Fluid_Air.compatible_with(values.Mix_Fluid)
+    # Mixtures sharing a constituent (H2O) are compatible, even sludge and water.
+    assert values.Fluid_Water.compatible_with(values.Water_Freshwater)
+    assert values.Fluid_Water.compatible_with(values.Fluid_Sludge)
+    assert values.Water_Seawater.compatible_with(values.Water_Brine)
+    # A mixture and a pure medium need a related constituent.
+    assert not values.Fluid_Water.compatible_with(values.Fluid_Air)
+    assert not values.Fluid_Water.compatible_with(values.Mix_Fluid)
+
+
+def test_property_without_of_medium_takes_its_resolved_hosts_medium(m):
+    chlorination = watr.ChlorinationUnit("contact")
+    stage = RapidSandFiltrationStage("filter")
+    clearwell = watr.Tank("clearwell")
+    connect(stage.filtered_water, chlorination)
+    finished = connect(chlorination, clearwell, name="finished")
+    residual = finished.sensor(
+        "chlorine-residual",
+        kind=quantity_kinds.MassConcentration,
+        unit=units.MilliGM_PER_L,
+        of_substance=enums.values.Constituent_ChlorineResidual,
+    )
+    turbidity = stage.filtered_water.sensor(
+        "filtered-turbidity", kind=quantity_kinds.Turbidity, unit=units.NTU
+    )
+    stated = finished.quantity(
+        "finished-temperature",
+        12.0,
+        unit=units.DEG_C,
+        kind=quantity_kinds.Temperature,
+        of_medium=enums.values.Water_Freshwater,
+    )
+
+    # 223P requires ofMedium alongside ofSubstance; compile validates.
+    resolved = m.compile()
+    water = resolved.connection(finished).medium
+    assert water is enums.values.Fluid_Water
+    assert resolved["chlorine-residual-value"].of_medium is water
+    assert resolved["filtered-turbidity-value"].of_medium is water
+    # A stated medium is kept, and the authored model is not changed.
+    assert resolved["finished-temperature"].of_medium is enums.values.Water_Freshwater
+    assert isinstance(stated, watr.QuantifiableProperty)
+    assert stated.of_medium is enums.values.Water_Freshwater
+    for sensor in (residual, turbidity):
+        assert isinstance(sensor, watr.Sensor)
+        observed = sensor.observes
+        assert isinstance(observed, watr.QuantifiableObservableProperty)
+        assert observed.of_medium is None
+
+
+def test_incompatible_of_medium_is_a_resolution_conflict(m):
+    stage = RapidSandFiltrationStage("filter")
+    clearwell = watr.Tank("clearwell")
+    filtered = connect(stage.filtered_water, clearwell, name="filtered")
+    temperature = filtered.quantity(
+        "air-temperature",
+        20.0,
+        unit=units.DEG_C,
+        kind=quantity_kinds.Temperature,
+        of_medium=enums.values.Fluid_Air,
+    )
+
+    report = m.check()
+    assert report.status == "unsatisfiable"
+    assert any(
+        "air-temperature: ofMedium Fluid-Air must be compatible" in label
+        for issue in report.issues
+        for label in issue.labels
+    )
+
+    assert isinstance(temperature, watr.QuantifiableProperty)
+    temperature.of_medium = enums.values.Water_Freshwater
+    assert m.check().complete
+
+
 def test_sensor_helper_accepts_explicit_class_and_falls_back_to_sensor(m):
     tank = watr.Tank("clearwell")
     level = tank.sensor(

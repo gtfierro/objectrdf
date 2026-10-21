@@ -39,6 +39,8 @@ _SCHEMA_RANGE = (
     URIRef("http://schema.org/rangeIncludes"),
 )
 
+_S223 = rdflib.Namespace("http://data.ashrae.org/standard223#")
+
 _UNCONSTRAINED_VALUE_PREDICATES = {
     "http://data.ashrae.org/standard223#hasValue",
 }
@@ -140,6 +142,7 @@ class EnumIR:
     definition: str | None = None
     parent: str | None = None  # python name of the parent member
     parents: tuple[str, ...] = ()  # all direct parents, including the primary
+    constituents: tuple[str, ...] = ()  # python names, via composedOf/ofConstituent
 
 
 @dataclass
@@ -364,6 +367,18 @@ def _enum_ir(
                 names[str(parent)]
                 for parent in graph.objects(URIRef(member.iri), RDFS.subClassOf)
                 if str(parent) in enum_iris
+            )
+        )
+        member.constituents = tuple(
+            sorted(
+                {
+                    names[str(constituent)]
+                    for composition in graph.objects(
+                        URIRef(member.iri), _S223.composedOf
+                    )
+                    for constituent in graph.objects(composition, _S223.ofConstituent)
+                    if str(constituent) in enum_iris
+                }
             )
         )
     return ordered

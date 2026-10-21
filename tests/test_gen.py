@@ -350,6 +350,37 @@ def test_punned_enum_is_emitted_only_as_reference_instance():
     assert "    Fluid_Air = _E_Fluid_Air" in modules["enums.py"]
 
 
+def test_enum_constituents_are_emitted():
+    graph = rdflib.Graph().parse(
+        data="""
+            @prefix ex: <urn:media#> .
+            @prefix owl: <http://www.w3.org/2002/07/owl#> .
+            @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+            @prefix s223: <http://data.ashrae.org/standard223#> .
+            <urn:media> a owl:Ontology .
+            ex:EnumerationKind a owl:Class .
+            ex:Fluid a owl:Class ; rdfs:subClassOf ex:EnumerationKind .
+            ex:Constituent a owl:Class ; rdfs:subClassOf ex:EnumerationKind .
+            ex:Constituent-H2O a owl:Class ; rdfs:subClassOf ex:Constituent .
+            ex:Constituent-NaCl a owl:Class ; rdfs:subClassOf ex:Constituent .
+            ex:Fluid-Brine a owl:Class ;
+                rdfs:subClassOf ex:Fluid ;
+                s223:composedOf [ s223:ofConstituent ex:Constituent-NaCl ],
+                    [ s223:ofConstituent ex:Constituent-H2O ] .
+        """,
+        format="turtle",
+    )
+    modules = compile_modules(
+        graph, name="Media", overlay=Overlay(enum_root="urn:media#EnumerationKind")
+    )
+
+    assert (
+        "_E_Fluid_Brine.constituents = (_E_Constituent_H2O, _E_Constituent_NaCl,)"
+        in modules["enums.py"]
+    )
+    assert "_E_Fluid.constituents" not in modules["enums.py"]
+
+
 def test_multiple_inheritance_constructor_unions_parent_properties():
     graph = rdflib.Graph().parse(
         data="""

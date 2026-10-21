@@ -136,6 +136,7 @@
     rdfs:label "Nominal permeate-side pressure" ;
     s223:hasAspect s223:Aspect-Nominal ;
     s223:hasValue 1.01325e+05 ;
+    s223:ofMedium s223:Fluid-Water ;
     qudt:hasQuantityKind quantitykind:Pressure ;
     qudt:hasUnit unit:PA .
 
