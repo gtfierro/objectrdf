@@ -129,6 +129,17 @@ list(sludge_pump.ports)
 list(resolved["sludge-pump"].ports)
 ```
 
+The snapshot can be walked along its pipes. `through=` follows only pipes
+carrying one medium, here the sludge line:
+
+```{code-cell} python3
+start = resolved["clarifier"]
+start.find_all_next(), start.find_all_next(through={"medium": values.Fluid_Sludge})
+```
+
+See [Query and edit saved models](query-loaded-models.md) for the other
+search and walk methods.
+
 Any edit to the model invalidates the snapshot.
 
 ## Describe a connection

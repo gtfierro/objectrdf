@@ -122,6 +122,21 @@ for point in plant.has_boundary_connection_point:
 Sludge is its own medium. Both filter outlets carry water and are told apart
 by name.
 
+Follow the flow instead of reading pipes one at a time. `find_all_next()`
+steps over pipes and points and returns the equipment downstream, nearest
+first:
+
+```{code-cell} python3
+resolved["coagulation"].find_all_next()
+```
+
+Class arguments match subclasses, so asking for a `SedimentationTank`
+upstream of disinfection finds the clarifier:
+
+```{code-cell} python3
+resolved["chlorination-contact"].find_previous(SedimentationTank)
+```
+
 ## 4. Save and load
 
 ```{code-cell} python3
@@ -137,7 +152,12 @@ loaded.find_all(SedimentationTank)
 ```
 
 The clarifier was saved as a `ClarificationStage`, which is a kind of
-`SedimentationTank`.
+`SedimentationTank`. A loaded model has its pipes and points already, so it
+can be walked without resolving:
+
+```{code-cell} python3
+loaded["clarifier"].find_next()
+```
 
 ## 5. Draw it
 

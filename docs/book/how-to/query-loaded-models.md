@@ -22,13 +22,14 @@ from plumb.watr.drinking_water import (
     CoagulationStage,
     RapidSandFiltrationStage,
 )
-from plumb.watr import Pump, Tank
+from plumb.watr import PhysicalSpace, Pump, Tank
 
 with Model("urn:example:plant#") as authored:
-    intake = Pump("intake-pump", label="Intake pump")
-    coagulation = CoagulationStage("coagulation")
-    clarifier = ClarificationStage("clarifier")
-    sand_filter = RapidSandFiltrationStage("sand-filter")
+    with PhysicalSpace("treatment-building"):
+        intake = Pump("intake-pump", label="Intake pump")
+        coagulation = CoagulationStage("coagulation")
+        clarifier = ClarificationStage("clarifier")
+        sand_filter = RapidSandFiltrationStage("sand-filter")
     holding = Tank("sludge-holding")
 connect(intake, coagulation.inlet, name="raw-water")
 connect(coagulation.outlet, clarifier.inlet, name="coagulated-water")
@@ -115,15 +116,23 @@ for point in pipe.connects_at:
 ## Search inside and above an object
 
 Containment comes from the package's containment rules, whichever side
-stores the edge. An entity's `find_all()` searches what it contains:
+stores the edge. Here each stage records `has_physical_location`, and the
+building still lists them as its contents:
 
-```python
-ahu.contents                          # direct children
-ahu.find_all(Damper)                  # anything ahu contains, at any depth
-ahu.find_all(Equipment, recursive=False)
-damper.container                      # the one direct container, or None
-damper.find_parent(PhysicalSpace)     # nearest matching container
+```{code-cell} python3
+building = model["treatment-building"]
+building.contents
 ```
+
+An entity's `find_all()` searches what it contains, at any depth unless
+`recursive=False`. `find_parent()` searches upward:
+
+```{code-cell} python3
+building.find_all(SedimentationTank), model["clarifier"].find_parent(PhysicalSpace)
+```
+
+`container` is the one direct container (or `None`); `containers` and
+`find_parents()` go all the way up.
 
 ## Follow the flow
 

@@ -68,7 +68,9 @@ add an instrument and its property in one call.
 processes, streams, and instruments.
 
 **Load, query, and edit.** `Model.from_graph()` reads saved RDF back as the
-same typed objects, chosen from the file's `owl:imports`.
+same typed objects, chosen from the file's `owl:imports`. `find_all()`
+selects by class, medium, or role, and `find_all_next()` follows the flow
+downstream, optionally through pipes of one medium only.
 
 **Domain packages.** Reusable equipment layouts and property sets are written
 in SHACL and compiled into Python packages, such as
