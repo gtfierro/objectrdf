@@ -127,9 +127,8 @@ make help           # all available targets
 Use `make test TEST_ARGS="-q tests/test_named_points.py"` to select tests.
 `make format` formats source while excluding generated ontology output.
 `make clean` removes documentation, build output, and tool caches.
-To release, bump `version` in `pyproject.toml`, date the release in
-`CHANGELOG.md`, tag the commit `v<version>`, and publish a GitHub release
-from the tag. The release workflow runs the checks, builds the
-distributions, publishes them to PyPI, and attaches them to the release.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for pull requests, generated packages,
+and the release procedure.
 
 To regenerate the committed ontology packages, see [docs/codegen.md](docs/codegen.md).

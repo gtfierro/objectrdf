@@ -33,4 +33,5 @@ uv run ty check src tests examples
 make docs-check    # build the book; warnings are errors
 ```
 
-See `AGENTS.md` for repository conventions.
+See [CONTRIBUTING.md](../CONTRIBUTING.md) for pull requests and the release
+procedure, and `AGENTS.md` for repository conventions.
