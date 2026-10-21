@@ -682,8 +682,11 @@ class _SystemScope:
         return self
 
     def boundary(self, *points: Entity | PortHandle | PointRef) -> _SystemScope:
-        """Stage explicit boundary points while collecting system members."""
-        self._boundaries.extend(points)
+        """Mark boundary points; staged until the scope closes, direct after."""
+        if self.entity is not None:
+            self.entity.boundary(*points)
+        else:
+            self._boundaries.extend(points)
         return self
 
     def __exit__(self, *exc_info: object) -> None:

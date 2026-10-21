@@ -704,3 +704,18 @@ def test_system_scope_collects_members_and_resolved_boundaries(m):
         "pump-1",
         "pump-2",
     }
+
+
+def test_system_scope_boundary_after_the_block_reaches_the_system(m):
+    source = s223.Chiller("source")
+    with m.system("transfer-system") as scope:
+        pump = s223.Pump("pump")
+    source >> pump
+    discharge = pump.port(
+        "discharge", direction="out", medium=s223.enums.values.Fluid_Water
+    )
+    scope.boundary(discharge)
+
+    resolved = m.resolve()
+    boundary = resolved["transfer-system"].has_boundary_connection_point
+    assert "discharge" in {point.name for point in boundary}
